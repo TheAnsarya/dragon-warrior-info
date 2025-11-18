@@ -124,27 +124,33 @@ dragon-warrior-info/
 
 ## 🛠️ Tools Overview
 
+### Build System
+
+- **build.ps1** - PowerShell build pipeline with Ophis assembler integration
+- **asset_processor.py** - Extract assets from reference ROM and generate insertion code
+- **rom_comparator.py** - Compare built ROM against reference with detailed analysis
+- **build_reporter.py** - Generate comprehensive HTML/Markdown build reports
+- Complete asset extraction and insertion pipeline (not just db declarations)
+- Exact percentage matching with detailed difference reports
+- Visual HTML reports with match percentages and section analysis
+
 ### ROM Analysis
+
 - **rom_analyzer.py** - Comprehensive ROM inspection and analysis
 - **extract_assets.py** - Extract graphics, text, music, and data
 - Multi-format hex dumps with pattern analysis
 - Text string detection and encoding analysis
 - Data structure identification and mapping
 
-### GitHub Integration  
+### GitHub Integration
+
 - **github_issues.py** - Automated issue creation and management
 - Project board integration with GitHub Projects
 - Bulk issue creation from YAML configuration
 - Standard Dragon Warrior project issues template
 
-### Build System
-- **build.ps1** - Comprehensive PowerShell build pipeline
-- Ophis assembler integration
-- Asset processing and validation
-- Automated testing and verification
-- Clean/rebuild functionality with symbol generation
-
 ### Testing Framework
+
 - **test_framework.py** - Pytest-based comprehensive testing
 - ROM validation and integrity checking
 - Tool functionality testing
@@ -170,6 +176,7 @@ This project welcomes contributions! See the documentation for:
 - **Session Logging** - All development work is logged in `~docs/session-logs/`
 
 ### Development Workflow
+
 1. Set up Python virtual environment with dependencies
 2. Run existing tests: `python -m pytest tests/ -v`
 3. Create feature branch with descriptive name
@@ -183,11 +190,13 @@ This project welcomes contributions! See the documentation for:
 This project builds upon excellent existing work:
 
 ### Original Disassembly
+
 - **Source Files** - Complete 33,000+ line disassembly in `source_files/`
 - **Ophis Assembler** - Included in `Ophis/` directory
 - **Build Infrastructure** - Foundation build scripts and structure
 
 ### FFMQ Project Patterns
+
 - **Project Structure** - Based on [FFMQ project](https://github.com/TheAnsarya/ffmq-info) proven patterns
 - **Tool Design** - Python-based analysis and automation tools
 - **Documentation Standards** - Comprehensive documentation framework
@@ -196,13 +205,18 @@ This project builds upon excellent existing work:
 ## 🗺️ Roadmap
 
 ### Phase 1: Foundation (COMPLETE)
+
 - ✅ Project structure and build system
 - ✅ Python virtual environment and dependencies
 - ✅ Basic ROM analysis tools
 - ✅ Documentation framework
 - ✅ Testing infrastructure
+- ✅ Asset extraction and processing system
+- ✅ ROM comparison and validation tools
+- ✅ Comprehensive build reporting
 
 ### Phase 2: Analysis & Documentation (IN PROGRESS)
+
 - 🔄 Complete ROM memory mapping
 - 🔄 Data structure identification
 - 🔄 Text encoding system analysis
@@ -210,6 +224,7 @@ This project builds upon excellent existing work:
 - 🔄 Music/audio system analysis
 
 ### Phase 3: Advanced Tools (PLANNED)
+
 - ⏳ Visual data editors (character stats, items, monsters)
 - ⏳ Graphics editing pipeline (CHR-ROM to PNG)
 - ⏳ Text editing system with compression
@@ -217,6 +232,7 @@ This project builds upon excellent existing work:
 - ⏳ Advanced modding capabilities
 
 ### Phase 4: Distribution (FUTURE)
+
 - ⏳ Package management system
 - ⏳ Emulator integration for testing
 - ⏳ Community mod sharing platform
