@@ -7,7 +7,9 @@ The goal is full documentation of the game as markdown files and a `data crystal
 
 create the scripts (see reference in ffmq) for building the source code, using the extracted/reinserted assets, not just using `db` databank declarations, that compares to the reference rom which is at `\~roms\Dragon Warrior (U) (PRG1) [!].nes` (use the PRG1 version, not the PRG0 version) and create reports with the exact percentage and which parts match,  
 
-git comment each effort with descriptions and push;
+git comment each effort with descriptions and push; you hit an error `Sorry, the response hit the length limit. Please rephrase your prompt.` so make smaller replies or whatever you have to do to not hit this error; go back to: create the scripts (see reference in ffmq) for building the source code, using the extracted/reinserted assets, not just using `db` databank declarations, that compares to the reference rom which is at `\~roms\Dragon Warrior (U) (PRG1) [!].nes` (use the PRG1 version, not the PRG0 version) and create reports with the exact percentage and which parts match,  
+
+git comment and push; now, augment the asset exrtaction-edit-reinsert pipeline with json files for the dat structures (levels, stores, maps, monsters, etc) and graphics and palettes (into png files), and maps; create editors using the edit-level asset files for world map, town and dungeon maps, stores, monster stats, dialog, font, graphics, items, spells, etc.
 
 
 

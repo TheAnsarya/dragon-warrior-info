@@ -22,28 +22,28 @@ console = Console()
 
 class ROMComparator:
 	"""Compare built ROM against reference ROM with detailed analysis"""
-	
+
 	def __init__(self, reference_rom: str, built_rom: str):
 		self.reference_rom = Path(reference_rom)
 		self.built_rom = Path(built_rom)
-		
+
 		if not self.reference_rom.exists():
 			raise FileNotFoundError(f"Reference ROM not found: {reference_rom}")
 		if not self.built_rom.exists():
 			raise FileNotFoundError(f"Built ROM not found: {built_rom}")
-		
+
 		with open(self.reference_rom, 'rb') as f:
 			self.ref_data = f.read()
 		with open(self.built_rom, 'rb') as f:
 			self.built_data = f.read()
-		
+
 		console.print(f"[green]Reference ROM: {self.reference_rom.name} ({len(self.ref_data)} bytes)[/green]")
 		console.print(f"[green]Built ROM: {self.built_rom.name} ({len(self.built_data)} bytes)[/green]")
-	
+
 	def compare_roms(self) -> Dict[str, Any]:
 		"""Perform comprehensive ROM comparison"""
 		console.print("\n[blue]Performing detailed ROM comparison...[/blue]")
-		
+
 		comparison = {
 			"reference_rom": str(self.reference_rom),
 			"built_rom": str(self.built_rom),
@@ -57,15 +57,15 @@ class ROMComparator:
 			"match_percentage": 0.0,
 			"match_report": {}
 		}
-		
+
 		# Calculate overall match percentage
 		if comparison["size_match"]:
 			matching_bytes = comparison["byte_analysis"]["matching_bytes"]
 			total_bytes = len(self.ref_data)
 			comparison["match_percentage"] = (matching_bytes / total_bytes) * 100
-		
+
 		return comparison
-	
+
 	def _compare_checksums(self) -> Dict[str, str]:
 		"""Compare ROM checksums"""
 		return {
@@ -75,7 +75,7 @@ class ROMComparator:
 			"built_sha1": hashlib.sha1(self.built_data).hexdigest(),
 			"md5_match": hashlib.md5(self.ref_data).hexdigest() == hashlib.md5(self.built_data).hexdigest()
 		}
-	
+
 	def _analyze_bytes(self) -> Dict[str, Any]:
 		"""Analyze byte-by-byte differences"""
 		if len(self.ref_data) != len(self.built_data):
@@ -84,56 +84,56 @@ class ROMComparator:
 				"matching_bytes": 0,
 				"different_bytes": 0
 			}
-		
+
 		matching = 0
 		different = 0
-		
+
 		for i in range(len(self.ref_data)):
 			if self.ref_data[i] == self.built_data[i]:
 				matching += 1
 			else:
 				different += 1
-		
+
 		return {
 			"total_bytes": len(self.ref_data),
 			"matching_bytes": matching,
 			"different_bytes": different,
 			"match_percentage": (matching / len(self.ref_data)) * 100
 		}
-	
+
 	def _analyze_sections(self) -> Dict[str, Any]:
 		"""Analyze ROM sections (header, PRG, CHR)"""
 		sections = {}
-		
+
 		# Header comparison (first 16 bytes)
 		if len(self.ref_data) >= 16 and len(self.built_data) >= 16:
 			ref_header = self.ref_data[:16]
 			built_header = self.built_data[:16]
-			
+
 			sections["header"] = {
 				"offset": 0,
 				"size": 16,
 				"matches": ref_header == built_header,
 				"differences": self._find_section_differences(ref_header, built_header, 0)
 			}
-		
+
 		# PRG-ROM comparison
 		if len(self.ref_data) >= 16:
 			header = self.ref_data[:16]
 			if header[:4] == b'NES\x1a':  # Valid iNES header
 				prg_size = header[4] * 16384
-				
+
 				if 16 + prg_size <= min(len(self.ref_data), len(self.built_data)):
 					ref_prg = self.ref_data[16:16 + prg_size]
 					built_prg = self.built_data[16:16 + prg_size]
-					
+
 					sections["prg_rom"] = {
 						"offset": 16,
 						"size": prg_size,
 						"matches": ref_prg == built_prg,
 						"differences": self._find_section_differences(ref_prg, built_prg, 16)
 					}
-				
+
 				# CHR-ROM comparison (if present)
 				chr_size = header[5] * 8192
 				if chr_size > 0:
@@ -141,24 +141,24 @@ class ROMComparator:
 					if chr_offset + chr_size <= min(len(self.ref_data), len(self.built_data)):
 						ref_chr = self.ref_data[chr_offset:chr_offset + chr_size]
 						built_chr = self.built_data[chr_offset:chr_offset + chr_size]
-						
+
 						sections["chr_rom"] = {
 							"offset": chr_offset,
 							"size": chr_size,
 							"matches": ref_chr == built_chr,
 							"differences": self._find_section_differences(ref_chr, built_chr, chr_offset)
 						}
-		
+
 		return sections
-	
+
 	def _find_section_differences(self, ref_data: bytes, built_data: bytes, base_offset: int) -> List[Dict[str, Any]]:
 		"""Find differences in a specific section"""
 		if len(ref_data) != len(built_data):
 			return [{"error": "Section sizes don't match"}]
-		
+
 		differences = []
 		current_diff = None
-		
+
 		for i in range(len(ref_data)):
 			if ref_data[i] != built_data[i]:
 				if current_diff is None:
@@ -178,21 +178,21 @@ class ROMComparator:
 					# End current difference
 					differences.append(current_diff)
 					current_diff = None
-		
+
 		# Add final difference if exists
 		if current_diff is not None:
 			differences.append(current_diff)
-		
+
 		# Limit to first 50 differences to avoid huge reports
 		return differences[:50]
-	
+
 	def _find_differences(self) -> List[Dict[str, Any]]:
 		"""Find all byte-level differences"""
 		if len(self.ref_data) != len(self.built_data):
 			return [{"error": "ROM sizes don't match"}]
-		
+
 		return self._find_section_differences(self.ref_data, self.built_data, 0)
-	
+
 	def generate_report(self, comparison: Dict[str, Any], output_file: Optional[str] = None) -> str:
 		"""Generate detailed comparison report"""
 		report_lines = [
@@ -207,7 +207,7 @@ class ROMComparator:
 			f"- **MD5 Match:** {'✅ Yes' if comparison['checksums']['md5_match'] else '❌ No'}",
 			""
 		]
-		
+
 		# Size information
 		report_lines.extend([
 			"## Size Analysis",
@@ -215,7 +215,7 @@ class ROMComparator:
 			f"- **Built Size:** {comparison['built_size']:,} bytes",
 			""
 		])
-		
+
 		# Checksum information
 		checksums = comparison["checksums"]
 		report_lines.extend([
@@ -226,7 +226,7 @@ class ROMComparator:
 			f"- **Built SHA1:** `{checksums['built_sha1']}`",
 			""
 		])
-		
+
 		# Byte analysis
 		if "byte_analysis" in comparison and "error" not in comparison["byte_analysis"]:
 			ba = comparison["byte_analysis"]
@@ -238,7 +238,7 @@ class ROMComparator:
 				f"- **Match Percentage:** {ba['match_percentage']:.4f}%",
 				""
 			])
-		
+
 		# Section analysis
 		if "section_analysis" in comparison:
 			report_lines.append("## Section Analysis")
@@ -247,7 +247,7 @@ class ROMComparator:
 				diff_count = len(section_data.get("differences", []))
 				report_lines.append(f"- **{section_name.upper()}:** {status} ({diff_count} difference blocks)")
 			report_lines.append("")
-		
+
 		# Differences (first 10)
 		if "differences" in comparison and comparison["differences"]:
 			report_lines.extend([
@@ -255,7 +255,7 @@ class ROMComparator:
 				"| Offset | Length | Reference | Built |",
 				"|--------|---------|-----------|-------|"
 			])
-			
+
 			for diff in comparison["differences"][:10]:
 				if "error" not in diff:
 					offset = f"0x{diff['start_offset']:08X}"
@@ -265,27 +265,27 @@ class ROMComparator:
 					if diff['length'] > 8:
 						ref_hex += "..."
 						built_hex += "..."
-					
+
 					report_lines.append(f"| {offset} | {length} | {ref_hex} | {built_hex} |")
-			
+
 			report_lines.append("")
-		
+
 		report_text = "\n".join(report_lines)
-		
+
 		if output_file:
 			output_path = Path(output_file)
 			output_path.parent.mkdir(parents=True, exist_ok=True)
-			
+
 			with open(output_path, 'w', encoding='utf-8') as f:
 				f.write(report_text)
-			
+
 			console.print(f"[green]Report saved to: {output_path}[/green]")
-		
+
 		return report_text
-	
+
 	def display_summary(self, comparison: Dict[str, Any]):
 		"""Display comparison summary in console"""
-		
+
 		# Overall status
 		if comparison["match_percentage"] == 100.0:
 			status = "[green]PERFECT MATCH[/green]"
@@ -295,28 +295,28 @@ class ROMComparator:
 			status = "[orange3]GOOD MATCH[/orange3]"
 		else:
 			status = "[red]SIGNIFICANT DIFFERENCES[/red]"
-		
+
 		console.print(Panel.fit(
 			f"ROM Comparison: {status}\n"
 			f"Match Percentage: [bold]{comparison['match_percentage']:.4f}%[/bold]",
 			border_style="blue",
 			title="Comparison Result"
 		))
-		
+
 		# Summary table
 		table = Table(title="ROM Comparison Summary")
 		table.add_column("Metric", style="cyan", no_wrap=True)
 		table.add_column("Reference", style="green")
 		table.add_column("Built", style="blue")
 		table.add_column("Match", style="bold")
-		
+
 		table.add_row(
 			"Size",
 			f"{comparison['reference_size']:,} bytes",
 			f"{comparison['built_size']:,} bytes",
 			"✅" if comparison['size_match'] else "❌"
 		)
-		
+
 		checksums = comparison["checksums"]
 		table.add_row(
 			"MD5",
@@ -324,7 +324,7 @@ class ROMComparator:
 			checksums['built_md5'][:16] + "...",
 			"✅" if checksums['md5_match'] else "❌"
 		)
-		
+
 		if "byte_analysis" in comparison and "error" not in comparison["byte_analysis"]:
 			ba = comparison["byte_analysis"]
 			table.add_row(
@@ -333,7 +333,7 @@ class ROMComparator:
 				f"{ba['different_bytes']:,} different",
 				f"{ba['match_percentage']:.2f}%"
 			)
-		
+
 		console.print(table)
 
 @click.command()
@@ -343,25 +343,25 @@ class ROMComparator:
 @click.option('--json-output', help='JSON output file for build system')
 def compare_roms(reference_rom: str, built_rom: str, output: Optional[str], json_output: Optional[str]):
 	"""Compare built ROM against reference ROM"""
-	
+
 	console.print("[bold blue]Dragon Warrior ROM Comparator[/bold blue]\n")
-	
+
 	try:
 		comparator = ROMComparator(reference_rom, built_rom)
 		comparison = comparator.compare_roms()
-		
+
 		# Display summary
 		comparator.display_summary(comparison)
-		
+
 		# Generate reports
 		if output:
 			comparator.generate_report(comparison, output)
-		
+
 		if json_output:
 			with open(json_output, 'w', encoding='utf-8') as f:
 				json.dump(comparison, f, indent=2)
 			console.print(f"[green]JSON data saved to: {json_output}[/green]")
-		
+
 		# Exit with appropriate code
 		if comparison["match_percentage"] == 100.0:
 			console.print("\n[green]✅ Perfect match![/green]")
@@ -369,7 +369,7 @@ def compare_roms(reference_rom: str, built_rom: str, output: Optional[str], json
 		else:
 			console.print(f"\n[yellow]⚠️  {comparison['match_percentage']:.4f}% match[/yellow]")
 			sys.exit(1 if comparison["match_percentage"] < 90.0 else 0)
-		
+
 	except Exception as e:
 		console.print(f"[red]Error: {e}[/red]")
 		sys.exit(1)

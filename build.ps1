@@ -345,14 +345,14 @@ if ($buildSuccess) {
 	$referenceRom = "~roms\Dragon Warrior (U) (PRG1) [!].nes"
 	if (Test-Path $referenceRom) {
 		Write-Host "`n📊 Comparing against reference ROM..." -ForegroundColor $ColorInfo
-		
+
 		try {
 			$reportDir = Join-Path $BuildDir "reports"
 			$reportFile = Join-Path $reportDir "rom_comparison.md"
 			$jsonFile = Join-Path $reportDir "rom_comparison.json"
-			
+
 			& python "tools\build\rom_comparator.py" $referenceRom $builtRom --output $reportFile --json-output $jsonFile
-			
+
 			if ($LASTEXITCODE -eq 0) {
 				Write-Host "✅ ROM comparison complete - see $reportFile" -ForegroundColor $ColorSuccess
 			} else {
