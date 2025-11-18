@@ -1,10 +1,13 @@
 
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 use the FFMQ SNES disassembly project as a reference for project management, not data or code as it is obviously a different game, website at `https://github.com/TheAnsarya/ffmq-info/` and git project at `https://github.com/TheAnsarya/ffmq-info.git` and locally at `C:\Users\me\source\repos\ffmq-info`; use `.editorconfig` for formatting and format every file (tabs not spaces, lowercase hexadecimal); create a venv sandboxed python environment; create github issues (ref ffmq project for github python scipts) using github project and kanban board `https://github.com/users/TheAnsarya/projects/5/views/1`; when planning or making new un-planned work, always create githuib issues and todo lists; and update them as you complete work; always create session logs in `~docs\session-logs` and ai chat logs at `~docs\chat-logs\` as markdown log files
 The goal is full documentation of the game as markdown files and a `data crystal` style wikitext structure documenting the entire game's rom structure (in abstract, and exact) and ROM map and SRAM map and hacking information; create hacking tools (asset editing tools) and extract all assets for editing, and then tools to reinsert those assets during the build process; oh yeah, a full build pipeline; basically, make this project awesome but without adding nonsense and use up the token space, don't waste my money, go as long as you can, but creating git commits as you go and updating github issues as you go, and updating logs, etc.;
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+create the scripts (see reference in ffmq) for building the source code, using the extracted/reinserted assets, not just using `db` databank declarations, that compares to the reference rom which is at `\~roms\Dragon Warrior (U) (PRG1) [!].nes` (use the PRG1 version, not the PRG0 version) and create reports with the exact percentage and which parts match,  
 
-
+git comment each effort with descriptions and push;
 
 
 

@@ -26,25 +26,25 @@ console = Console()
 
 class GitHubManager:
 	"""GitHub issues and project management automation"""
-	
+
 	def __init__(self):
 		self.token = os.getenv('GITHUB_TOKEN')
 		if not self.token:
 			console.print("[red]ERROR: GITHUB_TOKEN environment variable not set[/red]")
 			console.print("Create a personal access token at: https://github.com/settings/tokens")
 			sys.exit(1)
-		
+
 		self.github = Github(self.token)
 		self.repo_name = "TheAnsarya/dragon-warrior-info"
 		self.project_id = 5  # GitHub Project #5
-		
+
 		try:
 			self.repo = self.github.get_repo(self.repo_name)
 		except Exception as e:
 			console.print(f"[red]ERROR: Cannot access repository {self.repo_name}: {e}[/red]")
 			sys.exit(1)
-	
-	def create_issue(self, title: str, body: str, labels: List[str] = None, 
+
+	def create_issue(self, title: str, body: str, labels: List[str] = None,
 					assignee: str = None, milestone: str = None) -> Dict[str, Any]:
 		"""Create a new GitHub issue"""
 		try:
@@ -57,7 +57,7 @@ class GitHubManager:
 						# Create label if it doesn't exist
 						self.repo.create_label(label_name, color="0052cc")
 					issue_labels.append(label_name)
-			
+
 			# Create the issue
 			issue = self.repo.create_issue(
 				title=title,
@@ -65,7 +65,7 @@ class GitHubManager:
 				labels=issue_labels,
 				assignee=assignee if assignee else None
 			)
-			
+
 			console.print(f"[green]✅ Created issue #{issue.number}: {title}[/green]")
 			return {
 				"number": issue.number,
@@ -74,22 +74,22 @@ class GitHubManager:
 				"labels": labels or [],
 				"created_at": issue.created_at.isoformat()
 			}
-			
+
 		except Exception as e:
 			console.print(f"[red]ERROR creating issue: {e}[/red]")
 			return None
-	
+
 	def list_issues(self, state: str = "open", labels: List[str] = None) -> List[Dict[str, Any]]:
 		"""List issues with optional filtering"""
 		try:
 			issues = self.repo.get_issues(state=state, labels=labels or [])
-			
+
 			table = Table(title=f"GitHub Issues ({state.upper()})")
 			table.add_column("#", style="cyan", no_wrap=True)
 			table.add_column("Title", style="bold")
 			table.add_column("Labels", style="green")
 			table.add_column("Updated", style="dim")
-			
+
 			issue_list = []
 			for issue in issues[:20]:  # Limit to 20 most recent
 				labels_str = ", ".join([label.name for label in issue.labels])
@@ -107,20 +107,20 @@ class GitHubManager:
 					"state": issue.state,
 					"updated_at": issue.updated_at.isoformat()
 				})
-			
+
 			console.print(table)
 			return issue_list
-			
+
 		except Exception as e:
 			console.print(f"[red]ERROR listing issues: {e}[/red]")
 			return []
-	
-	def update_issue(self, issue_number: int, title: str = None, body: str = None, 
+
+	def update_issue(self, issue_number: int, title: str = None, body: str = None,
 					state: str = None, labels: List[str] = None) -> bool:
 		"""Update an existing issue"""
 		try:
 			issue = self.repo.get_issue(issue_number)
-			
+
 			if title:
 				issue.edit(title=title)
 			if body:
@@ -129,20 +129,20 @@ class GitHubManager:
 				issue.edit(state=state)
 			if labels is not None:
 				issue.edit(labels=labels)
-			
+
 			console.print(f"[green]✅ Updated issue #{issue_number}[/green]")
 			return True
-			
+
 		except Exception as e:
 			console.print(f"[red]ERROR updating issue #{issue_number}: {e}[/red]")
 			return False
-	
+
 	def bulk_create_from_yaml(self, yaml_file: str) -> List[Dict[str, Any]]:
 		"""Create multiple issues from YAML configuration"""
 		try:
 			with open(yaml_file, 'r', encoding='utf-8') as f:
 				config = yaml.safe_load(f)
-			
+
 			created_issues = []
 			for issue_config in config.get('issues', []):
 				result = self.create_issue(
@@ -153,10 +153,10 @@ class GitHubManager:
 				)
 				if result:
 					created_issues.append(result)
-			
+
 			console.print(f"[green]✅ Created {len(created_issues)} issues from {yaml_file}[/green]")
 			return created_issues
-			
+
 		except Exception as e:
 			console.print(f"[red]ERROR creating issues from YAML: {e}[/red]")
 			return []
@@ -210,7 +210,7 @@ def bulk_create(yaml_file: str):
 def init():
 	"""Initialize project with standard Dragon Warrior issues"""
 	manager = GitHubManager()
-	
+
 	# Create standard project issues based on FFMQ patterns
 	standard_issues = [
 		{
@@ -346,7 +346,7 @@ Follow FFMQ documentation structure and completeness.
 			"labels": ["documentation", "tutorial", "medium-priority"]
 		}
 	]
-	
+
 	created_issues = []
 	for issue in standard_issues:
 		result = manager.create_issue(
@@ -356,14 +356,14 @@ Follow FFMQ documentation structure and completeness.
 		)
 		if result:
 			created_issues.append(result)
-	
+
 	# Save created issues to file for tracking
 	timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 	output_file = f"~docs/github_issues_created_{timestamp}.json"
-	
+
 	with open(output_file, 'w', encoding='utf-8') as f:
 		json.dump(created_issues, f, indent=2)
-	
+
 	console.print(f"[green]✅ Created {len(created_issues)} standard issues[/green]")
 	console.print(f"[blue]📁 Issue details saved to: {output_file}[/blue]")
 
