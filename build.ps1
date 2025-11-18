@@ -193,12 +193,17 @@ function Invoke-AssetProcessing {
 	Write-BuildLog "Processing game assets..."
 
 	# Check if Python tools are available
-	$assetTool = Join-Path $ToolsDir "asset_processor.py"
+	$assetTool = Join-Path $ToolsDir "build" "asset_processor.py"
 	if (Test-Path $assetTool) {
 		Write-BuildLog "Running asset processor..."
 		try {
-			& python $assetTool --input $AssetDir --output $BuildDir 2>&1
-			Write-BuildLog "Asset processing completed" "SUCCESS"
+			$referenceRom = "~roms\Dragon Warrior (U) (PRG1) [!].nes"
+			if (Test-Path $referenceRom) {
+				& python $assetTool --reference-rom $referenceRom --output-dir $AssetDir 2>&1
+				Write-BuildLog "Asset processing completed" "SUCCESS"
+			} else {
+				Write-BuildLog "Reference ROM not found at $referenceRom - skipping asset processing" "WARNING"
+			}
 		} catch {
 			Write-BuildLog "Asset processing failed: $_" "WARNING"
 		}
@@ -328,11 +333,48 @@ try {
 
 if ($buildSuccess) {
 	Write-Host "`n✅ Build completed successfully!" -ForegroundColor $ColorSuccess
-	Write-Host "ROM file: $(Join-Path $BuildDir $Output)" -ForegroundColor $ColorInfo
+	$builtRom = Join-Path $BuildDir $Output
+	Write-Host "ROM file: $builtRom" -ForegroundColor $ColorInfo
 
 	if ($Symbols) {
-		$symbolFile = (Join-Path $BuildDir $Output) -replace '\.nes$', '.sym'
+		$symbolFile = $builtRom -replace '\.nes$', '.sym'
 		Write-Host "Symbol file: $symbolFile" -ForegroundColor $ColorInfo
+	}
+
+	# Compare against reference ROM
+	$referenceRom = "~roms\Dragon Warrior (U) (PRG1) [!].nes"
+	if (Test-Path $referenceRom) {
+		Write-Host "`n📊 Comparing against reference ROM..." -ForegroundColor $ColorInfo
+		
+		try {
+			$reportDir = Join-Path $BuildDir "reports"
+			$reportFile = Join-Path $reportDir "rom_comparison.md"
+			$jsonFile = Join-Path $reportDir "rom_comparison.json"
+			
+			& python "tools\build\rom_comparator.py" $referenceRom $builtRom --output $reportFile --json-output $jsonFile
+			
+			if ($LASTEXITCODE -eq 0) {
+				Write-Host "✅ ROM comparison complete - see $reportFile" -ForegroundColor $ColorSuccess
+			} else {
+				Write-Host "⚠️  ROM differs from reference - see $reportFile for details" -ForegroundColor $ColorWarning
+			}
+		} catch {
+			Write-Host "⚠️  Could not compare ROM: $_" -ForegroundColor $ColorWarning
+		}
+	} else {
+		Write-Host "ℹ️  Reference ROM not found at $referenceRom - skipping comparison" -ForegroundColor $ColorInfo
+	}
+
+	# Generate comprehensive build report
+	Write-Host "`n📊 Generating build report..." -ForegroundColor $ColorInfo
+	try {
+		& python "tools\build\build_reporter.py" $BuildDir --format both
+		$reportFile = Join-Path $BuildDir "reports" "build_report.html"
+		if (Test-Path $reportFile) {
+			Write-Host "📄 Build report: $reportFile" -ForegroundColor $ColorSuccess
+		}
+	} catch {
+		Write-Host "⚠️  Could not generate build report: $_" -ForegroundColor $ColorWarning
 	}
 } else {
 	Write-Host "`n❌ Build failed!" -ForegroundColor $ColorError
