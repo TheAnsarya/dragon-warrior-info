@@ -1,0 +1,38 @@
+# Dragon Warrior Info Project - Python Dependencies
+# Based on FFMQ reference project requirements
+
+# Core libraries for ROM analysis and manipulation
+pillow>=10.0.0          # Graphics processing and PNG conversion
+requests>=2.31.0        # HTTP requests for GitHub API
+click>=8.1.0           # CLI interface creation
+colorama>=0.4.6        # Colored terminal output
+tqdm>=4.66.0           # Progress bars
+tabulate>=0.9.0        # Table formatting
+
+# Data processing and analysis
+pandas>=2.1.0          # Data analysis and CSV processing
+numpy>=1.24.0          # Numerical computations
+matplotlib>=3.7.0      # Plotting and data visualization
+
+# ROM/Binary file processing
+construct>=2.10.0      # Binary data parsing
+bitstring>=4.0.0       # Bit manipulation
+hexdump>=3.3           # Hex dump utilities
+
+# GitHub API and automation
+PyGithub>=1.59.0       # GitHub API wrapper
+python-dotenv>=1.0.0   # Environment variable management
+
+# Development and testing
+pytest>=7.4.0         # Testing framework
+pytest-cov>=4.1.0     # Coverage reporting
+black>=23.7.0          # Code formatting
+flake8>=6.0.0          # Linting
+
+# Documentation generation
+markdown>=3.4.0        # Markdown processing
+jinja2>=3.1.0          # Template engine
+
+# Project management
+rich>=13.5.0           # Rich text and formatting
+pyyaml>=6.0.0          # YAML configuration files
