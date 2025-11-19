@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Dragon Warrior Asset Extractor
 Extract graphics, text, music, and data from Dragon Warrior ROM
@@ -92,9 +92,9 @@ class DragonWarriorROM:
 		# Read NES header
 		if len(self.rom_data) >= 16:
 			header = self.rom_data[:16]
-			if header[:4] == b'NES\x1a':  # iNES header signature
-				prg_size = header[4] * 16384  # PRG ROM size in 16KB units
-				chr_size = header[5] * 8192   # CHR ROM size in 8KB units
+			if header[:4] == b'NES\x1a':	# iNES header signature
+				prg_size = header[4] * 16384	# PRG ROM size in 16KB units
+				chr_size = header[5] * 8192	 # CHR ROM size in 8KB units
 
 				console.print(f"NES ROM detected - PRG: {prg_size//1024}KB, CHR: {chr_size//1024}KB")
 
@@ -117,7 +117,7 @@ class DragonWarriorROM:
 							"file": str(chr_file),
 							"offset": chr_start,
 							"size": chr_size,
-							"tiles": chr_size // 16  # Each tile is 16 bytes
+							"tiles": chr_size // 16	# Each tile is 16 bytes
 						}
 					}
 				else:
@@ -151,10 +151,10 @@ class DragonWarriorROM:
 				current_text = b""
 
 				for byte in section_data:
-					if 0x20 <= byte <= 0x7E:  # Printable ASCII range
+					if 0x20 <= byte <= 0x7E:	# Printable ASCII range
 						current_text += bytes([byte])
 					else:
-						if len(current_text) >= 3:  # Minimum text length
+						if len(current_text) >= 3:	# Minimum text length
 							text_sequences.append(current_text.decode('ascii', errors='ignore'))
 						current_text = b""
 
@@ -187,10 +187,10 @@ class DragonWarriorROM:
 
 		# Dragon Warrior data structures (estimates - need research)
 		data_areas = [
-			(0x6000, 0x6100, "character_stats", 8),  # Character base stats
-			(0x6100, 0x6200, "item_data", 16),       # Item definitions
-			(0x6200, 0x6400, "monster_stats", 32),   # Monster stats
-			(0x6400, 0x6500, "spell_data", 8),       # Spell definitions
+			(0x6000, 0x6100, "character_stats", 8),	# Character base stats
+			(0x6100, 0x6200, "item_data", 16),		 # Item definitions
+			(0x6200, 0x6400, "monster_stats", 32),	 # Monster stats
+			(0x6400, 0x6500, "spell_data", 8),		 # Spell definitions
 		]
 
 		for start, end, section, record_size in data_areas:
@@ -326,7 +326,7 @@ class DragonWarriorROM:
 @click.option('--music', is_flag=True, help='Extract music only')
 @click.option('--verify-only', is_flag=True, help='Verify ROM only, no extraction')
 def extract_assets(rom_file: str, output: str, graphics: bool, text: bool,
-				  data: bool, music: bool, verify_only: bool):
+					data: bool, music: bool, verify_only: bool):
 	"""Extract assets from Dragon Warrior ROM file"""
 
 	console.print("[bold blue]Dragon Warrior Asset Extractor[/bold blue]")

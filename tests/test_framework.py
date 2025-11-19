@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Dragon Warrior Testing Framework
 Comprehensive testing for tools and ROM validation
@@ -34,11 +34,11 @@ class TestConfig:
 
 		# Create iNES header
 		header = bytearray(16)
-		header[0:4] = b'NES\x1a'  # iNES signature
-		header[4] = 16  # 16 * 16KB = 256KB PRG-ROM
-		header[5] = 0   # No CHR-ROM (uses CHR-RAM)
-		header[6] = 0   # Mapper 0 (NROM), horizontal mirroring
-		header[7] = 0   # Mapper 0 continued
+		header[0:4] = b'NES\x1a'	# iNES signature
+		header[4] = 16	# 16 * 16KB = 256KB PRG-ROM
+		header[5] = 0	 # No CHR-ROM (uses CHR-RAM)
+		header[6] = 0	 # Mapper 0 (NROM), horizontal mirroring
+		header[7] = 0	 # Mapper 0 continued
 
 		# Create ROM data
 		with open(rom_path, 'wb') as f:
@@ -49,23 +49,23 @@ class TestConfig:
 
 			# Add some patterns for testing
 			# Reset vector at end
-			prg_data[-6:-4] = b'\x00\x80'  # NMI vector
-			prg_data[-4:-2] = b'\x00\x80'  # RESET vector
-			prg_data[-2:] = b'\x00\x80'    # IRQ vector
+			prg_data[-6:-4] = b'\x00\x80'	# NMI vector
+			prg_data[-4:-2] = b'\x00\x80'	# RESET vector
+			prg_data[-2:] = b'\x00\x80'	# IRQ vector
 
 			# Add some sample text patterns
-			text_offset = 0x8000 - 0x10  # Adjust for header
+			text_offset = 0x8000 - 0x10	# Adjust for header
 			sample_text = b"HELLO WORLD\x00THE HERO AWAKENS\x00DRAGON WARRIOR\x00"
 			prg_data[text_offset:text_offset+len(sample_text)] = sample_text
 
 			# Add some data patterns
 			data_offset = 0x6000 - 0x10
-			for i in range(32):  # 32 monster records
+			for i in range(32):	# 32 monster records
 				record = bytearray(8)
-				record[0] = i  # Monster ID
-				record[1] = 50 + i * 5  # HP
-				record[2] = 10 + i  # Attack
-				record[3] = 5 + i // 2  # Defense
+				record[0] = i	# Monster ID
+				record[1] = 50 + i * 5	# HP
+				record[2] = 10 + i	# Attack
+				record[3] = 5 + i // 2	# Defense
 				prg_data[data_offset + i*8:data_offset + (i+1)*8] = record
 
 			f.write(prg_data)
@@ -113,7 +113,7 @@ class TestROMAnalyzer:
 		analyzer = ROMAnalyzer(str(sample_rom))
 		header = analyzer.header_info
 
-		assert header["signature"] == "NES\x1a"[:3]  # ASCII portion
+		assert header["signature"] == "NES\x1a"[:3]	# ASCII portion
 		assert header["mapper"] == 0
 		assert header["mirroring"] == "horizontal"
 		assert header["battery"] is False
@@ -127,8 +127,8 @@ class TestROMAnalyzer:
 		# Test hex dump of header
 		dump = analyzer.hex_dump(0, 16, 16)
 
-		assert "4e 45 53 1a" in dump  # iNES signature in hex
-		assert len(dump.split('\n')) == 1  # One line for 16 bytes
+		assert "4e 45 53 1a" in dump	# iNES signature in hex
+		assert len(dump.split('\n')) == 1	# One line for 16 bytes
 
 	def test_pattern_analysis(self, sample_rom):
 		"""Test data pattern analysis"""
@@ -168,7 +168,7 @@ class TestROMAnalyzer:
 		assert "header" in memory_map
 		assert "prg_rom" in memory_map
 		assert memory_map["prg_rom"]["size"] == 256 * 1024
-		assert len(memory_map["prg_rom"]["banks"]) == 16  # 16 banks of 16KB
+		assert len(memory_map["prg_rom"]["banks"]) == 16	# 16 banks of 16KB
 
 class TestAssetExtractor:
 	"""Test asset extraction functionality"""
@@ -184,8 +184,8 @@ class TestAssetExtractor:
 		assert "sha1" in verification
 		assert "version" in verification
 		assert verification["size"] == 256 * 1024
-		assert len(verification["md5"]) == 32  # MD5 is 32 hex chars
-		assert len(verification["sha1"]) == 40  # SHA1 is 40 hex chars
+		assert len(verification["md5"]) == 32	# MD5 is 32 hex chars
+		assert len(verification["sha1"]) == 40	# SHA1 is 40 hex chars
 
 	def test_graphics_extraction(self, sample_rom):
 		"""Test graphics data extraction"""
@@ -254,7 +254,7 @@ class TestBuildSystem:
 		expected_ophis_dir = test_config.project_root / "Ophis"
 
 		# Test should pass if directory exists OR if we're in early development
-		assert True  # Placeholder - will be updated when Ophis is integrated
+		assert True	# Placeholder - will be updated when Ophis is integrated
 
 class TestGitHubIntegration:
 	"""Test GitHub integration functionality"""
@@ -338,7 +338,7 @@ class TestPerformance:
 		# Should handle analysis quickly
 		import time
 		start_time = time.time()
-		analyzer.analyze_data_patterns(0, 1024)  # Analyze first 1KB
+		analyzer.analyze_data_patterns(0, 1024)	# Analyze first 1KB
 		end_time = time.time()
 
 		# Should complete in under 1 second for 1KB
