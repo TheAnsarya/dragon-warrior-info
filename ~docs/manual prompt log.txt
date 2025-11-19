@@ -11,6 +11,41 @@ git comment each effort with descriptions and push; you hit an error `Sorry, the
 
 git comment and push; now, augment the asset exrtaction-edit-reinsert pipeline with json files for the dat structures (levels, stores, maps, monsters, etc) and graphics and palettes (into png files), and maps; create editors using the edit-level asset files for world map, town and dungeon maps, stores, monster stats, dialog, font, graphics, items, spells, etc.
 
+I noticed in `tools\extraction\data_extractor.py` it's using `sample data` I don't want sample data, I want all of this extracted from the rom; this applies to all of the editors and data structures and data extractors and asset extractors
+
+git comment and push; format all files using .editorconfig especially TABS NOT SPACE ALWAYS AND FOREVER; and continue cleanup and asset management
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
