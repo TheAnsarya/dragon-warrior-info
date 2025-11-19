@@ -82,6 +82,7 @@ dragon-warrior-info/
 ├── tools/
 │   ├── asset_pipeline.py             # Asset extraction orchestrator
 │   ├── asset_reinserter.py           # Assembly code generator
+│   ├── asset_validator.py            # Asset validation framework
 │   ├── extraction/
 │   │   ├── data_structures.py        # Game data definitions
 │   │   ├── data_extractor.py         # JSON data extraction
@@ -188,6 +189,18 @@ dragon-warrior-info/
 
 ## Advanced Usage
 
+### Asset Validation
+```bash
+# Validate all extracted assets
+python tools/asset_validator.py extracted_assets
+
+# Validate only JSON files
+python tools/asset_validator.py extracted_assets --json-only
+
+# Validate cross-references between files
+python tools/asset_validator.py extracted_assets --cross-refs
+```
+
 ### Command Line Tools
 ```bash
 # Extract specific asset type
@@ -202,6 +215,14 @@ python tools/asset_reinserter.py extracted_assets --output-dir build/generated
 # Build ROM with custom settings
 python dragon_warrior_build.py --source-dir custom_source --output-dir custom_output
 ```
+
+### Error Handling & Validation
+The asset pipeline includes comprehensive validation:
+- **ROM Validation**: Checks file format, size, and readability
+- **JSON Validation**: Validates structure and content of extracted data
+- **Cross-Reference Checking**: Ensures item IDs in shops exist in item database
+- **Data Integrity**: Validates game balance and logical constraints
+- **Graphics Validation**: Checks PNG file integrity and dimensions
 
 ### Custom Data Structures
 The system uses Python dataclasses for type safety and easy serialization:

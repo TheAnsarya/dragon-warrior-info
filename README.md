@@ -53,18 +53,26 @@ python tools/analysis/rom_analyzer.py strings dragon_warrior.nes --min-length 4
 python tools/analysis/rom_analyzer.py report dragon_warrior.nes
 ```
 
-### Asset Extraction
-```bash
-# Extract all assets
-python tools/extraction/extract_assets.py dragon_warrior.nes
+### Asset Extraction & Editing Pipeline
 
-# Extract specific asset types
-python tools/extraction/extract_assets.py dragon_warrior.nes --graphics
-python tools/extraction/extract_assets.py dragon_warrior.nes --text
-python tools/extraction/extract_assets.py dragon_warrior.nes --data
+```bash
+# Extract all assets using the complete pipeline
+python dragon_warrior_build.py --rom dragon_warrior.nes extract
+
+# Run the interactive asset pipeline
+python tools/asset_pipeline.py dragon_warrior.nes
+
+# Extract specific data types
+python tools/extraction/data_extractor.py dragon_warrior.nes
+python tools/extraction/graphics_extractor.py dragon_warrior.nes
+
+# Edit assets with interactive editors
+python tools/editors/monster_editor.py extracted_assets/json/monsters.json
+python tools/editors/item_editor.py extracted_assets/json/items.json
 ```
 
 ### Building ROM
+
 ```powershell
 # Basic build
 .\build.ps1
@@ -79,6 +87,7 @@ python tools/extraction/extract_assets.py dragon_warrior.nes --data
 ## 📊 Current Status
 
 ### ✅ Completed Foundation
+
 - **Project Structure** - Based on proven FFMQ patterns
 - **Build System** - PowerShell scripts with Ophis assembler integration
 - **Python Environment** - Virtual environment with comprehensive dependencies
@@ -89,6 +98,7 @@ python tools/extraction/extract_assets.py dragon_warrior.nes --data
 - **GitHub Integration** - Issues management and project automation
 
 ### 🔄 In Active Development
+
 - **Detailed ROM Mapping** - Complete memory layout documentation
 - **Graphics Tools** - CHR-ROM extraction and PNG conversion
 - **Text System** - Character encoding and dialog extraction
@@ -96,6 +106,7 @@ python tools/extraction/extract_assets.py dragon_warrior.nes --data
 - **Music Tools** - Audio extraction and analysis
 
 ### ⏳ Planned Features
+
 - **Visual Editors** - GUI tools for data modification
 - **Advanced Modding** - Complex ROM modifications
 - **Emulator Integration** - Testing and debugging support
@@ -103,7 +114,7 @@ python tools/extraction/extract_assets.py dragon_warrior.nes --data
 
 ## 📁 Project Structure
 
-```
+```text
 dragon-warrior-info/
 ├── docs/                    # Comprehensive documentation
 │   ├── guides/             # User and developer guides
@@ -126,18 +137,36 @@ dragon-warrior-info/
 
 ### Build System
 
-- **build.ps1** - PowerShell build pipeline with Ophis assembler integration
-- **asset_processor.py** - Extract assets from reference ROM and generate insertion code
-- **rom_comparator.py** - Compare built ROM against reference with detailed analysis
-- **build_reporter.py** - Generate comprehensive HTML/Markdown build reports
-- Complete asset extraction and insertion pipeline (not just db declarations)
-- Exact percentage matching with detailed difference reports
-- Visual HTML reports with match percentages and section analysis
+- **dragon_warrior_build.py** - Complete master build system
+- **tools/asset_pipeline.py** - Unified asset extraction, editing, and reinsertion
+- **tools/asset_reinserter.py** - Generate assembly code for ROM reintegration
+- Complete authentic ROM data extraction (not sample data)
+- Interactive visual editors for all asset types
+- Assembly generation with proper Dragon Warrior data structures
+
+### Asset Extraction & Editing
+
+- **data_extractor.py** - Extract authentic game data from ROM using real addresses
+- **graphics_extractor.py** - Extract CHR-ROM graphics and palettes to PNG
+- **data_structures.py** - Dragon Warrior game data definitions and validation
+- Monster stats, item properties, spell data, shop inventories
+- Authentic ROM addresses from Dragon Warrior assembly source analysis
+- JSON output with cross-referenced asset relationships
+
+### Interactive Editors
+
+- **monster_editor.py** - Visual monster stats and abilities editor
+- **item_editor.py** - Item properties, costs, and bonuses editor  
+- **spell_editor.py** - Spell system and magic costs editor
+- **shop_editor.py** - Shop inventories and inn pricing editor
+- **dialog_editor.py** - Text and dialog content editor
+- **map_editor.py** - Map terrain and layout editor
+- **graphics_editor.py** - Visual graphics and palette editor
+- Rich CLI interfaces with validation and real-time preview
 
 ### ROM Analysis
 
 - **rom_analyzer.py** - Comprehensive ROM inspection and analysis
-- **extract_assets.py** - Extract graphics, text, music, and data
 - Multi-format hex dumps with pattern analysis
 - Text string detection and encoding analysis
 - Data structure identification and mapping

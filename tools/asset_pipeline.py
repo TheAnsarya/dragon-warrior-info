@@ -27,9 +27,42 @@ class AssetPipeline:
 	"""Complete asset extraction, editing, and reinsertion pipeline"""
 
 	def __init__(self, rom_path: str, output_dir: str = "assets"):
+		# Validate ROM file exists and is readable
 		self.rom_path = Path(rom_path)
-		self.output_dir = Path(output_dir)
-		self.output_dir.mkdir(parents=True, exist_ok=True)
+		if not self.rom_path.exists():
+			raise FileNotFoundError(f"ROM file not found: {rom_path}")
+		
+		if not self.rom_path.is_file():
+			raise ValueError(f"ROM path is not a file: {rom_path}")
+		
+		# Validate ROM file size (Dragon Warrior should be around 256KB)
+		rom_size = self.rom_path.stat().st_size
+		if rom_size < 100_000:
+			console.print(f"[yellow]⚠️  Warning: ROM file seems too small ({rom_size} bytes)[/yellow]")
+		elif rom_size > 1_000_000:
+			console.print(f"[yellow]⚠️  Warning: ROM file seems too large ({rom_size} bytes)[/yellow]")
+		
+		try:
+			# Test ROM file readability
+			with open(self.rom_path, 'rb') as f:
+				header = f.read(16)
+				if len(header) >= 4 and header[:4] == b'NES\x1a':
+					console.print(f"[green]✅ Valid NES ROM detected: {self.rom_path.name}[/green]")
+				else:
+					console.print(f"[yellow]⚠️  Warning: ROM doesn't appear to be iNES format[/yellow]")
+		except PermissionError:
+			raise PermissionError(f"Cannot read ROM file (permission denied): {rom_path}")
+		except Exception as e:
+			raise IOError(f"Error reading ROM file: {e}")
+		
+		# Setup output directory with error handling
+		try:
+			self.output_dir = Path(output_dir)
+			self.output_dir.mkdir(parents=True, exist_ok=True)
+		except PermissionError:
+			raise PermissionError(f"Cannot create output directory (permission denied): {output_dir}")
+		except Exception as e:
+			raise IOError(f"Error creating output directory: {e}")
 
 		# Asset directories
 		self.json_dir = self.output_dir / "json"
@@ -38,100 +71,176 @@ class AssetPipeline:
 		self.palettes_dir = self.output_dir / "palettes"
 		self.asm_dir = self.output_dir / "assembly"
 
-		# Create all directories
+		# Create all directories with error handling
 		for dir_path in [self.json_dir, self.graphics_dir, self.maps_dir, self.palettes_dir, self.asm_dir]:
-			dir_path.mkdir(parents=True, exist_ok=True)
+			try:
+				dir_path.mkdir(parents=True, exist_ok=True)
+			except Exception as e:
+				raise IOError(f"Error creating directory {dir_path}: {e}")
 
 	def extract_all_assets(self):
 		"""Extract all assets from ROM"""
 		console.print("[bold blue]🎯 Dragon Warrior Asset Extraction Pipeline[/bold blue]\n")
 
-		with Progress(
-			SpinnerColumn(),
-			TextColumn("[progress.description]{task.description}"),
-			console=console
-		) as progress:
+		try:
+			with Progress(
+				SpinnerColumn(),
+				TextColumn("[progress.description]{task.description}"),
+				console=console
+			) as progress:
 
-			# Extract graphics and palettes
-			task = progress.add_task("Extracting graphics and palettes...", total=None)
-			self._run_graphics_extractor()
-			progress.update(task, completed=True)
+				# Extract graphics and palettes
+				task = progress.add_task("Extracting graphics and palettes...", total=None)
+				try:
+					self._run_graphics_extractor()
+					progress.update(task, completed=True)
+				except Exception as e:
+					console.print(f"[red]❌ Graphics extraction failed: {e}[/red]")
+					progress.update(task, description="Graphics extraction failed")
 
-			# Extract game data
-			task = progress.add_task("Extracting game data...", total=None)
-			self._run_data_extractor()
-			progress.update(task, completed=True)
+				# Extract game data
+				task = progress.add_task("Extracting game data...", total=None)
+				try:
+					self._run_data_extractor()
+					progress.update(task, completed=True)
+				except Exception as e:
+					console.print(f"[red]❌ Data extraction failed: {e}[/red]")
+					progress.update(task, description="Data extraction failed")
 
-			# Merge data files
-			task = progress.add_task("Merging data files...", total=None)
-			self._merge_data_files()
-			progress.update(task, completed=True)
+				# Merge data files
+				task = progress.add_task("Merging data files...", total=None)
+				try:
+					self._merge_data_files()
+					progress.update(task, completed=True)
+				except Exception as e:
+					console.print(f"[red]❌ Data merging failed: {e}[/red]")
+					progress.update(task, description="Data merging failed")
 
-		console.print("\n[green]✅ Asset extraction complete![/green]")
-		self._display_extraction_summary()
+			console.print("\n[green]✅ Asset extraction complete![/green]")
+			self._display_extraction_summary()
+			
+		except KeyboardInterrupt:
+			console.print("\n[yellow]⚠️  Extraction cancelled by user[/yellow]")
+			return False
+		except Exception as e:
+			console.print(f"\n[red]❌ Critical error during extraction: {e}[/red]")
+			return False
+			
+		return True
 
 	def _run_graphics_extractor(self):
 		"""Run the graphics extractor"""
 		extractor_path = Path(__file__).parent / "extraction" / "graphics_extractor.py"
 
-		if extractor_path.exists():
-			try:
-				result = subprocess.run([
-					sys.executable, str(extractor_path),
-					str(self.rom_path),
-					"--output-dir", str(self.output_dir)
-				], capture_output=True, text=True, check=True)
+		if not extractor_path.exists():
+			raise FileNotFoundError(f"Graphics extractor not found: {extractor_path}")
 
-			except subprocess.CalledProcessError as e:
-				console.print(f"[red]Graphics extraction failed: {e.stderr}[/red]")
-		else:
-			console.print(f"[yellow]Graphics extractor not found: {extractor_path}[/yellow]")
+		try:
+			result = subprocess.run([
+				sys.executable, str(extractor_path),
+				str(self.rom_path),
+				"--output-dir", str(self.output_dir)
+			], capture_output=True, text=True, check=True, timeout=300)  # 5 minute timeout
+			
+			if result.stdout:
+				console.print(f"[dim]Graphics extractor output: {result.stdout.strip()}[/dim]")
+			
+		except subprocess.TimeoutExpired:
+			raise RuntimeError("Graphics extraction timed out (exceeded 5 minutes)")
+		except subprocess.CalledProcessError as e:
+			error_msg = f"Graphics extraction failed (exit code {e.returncode})"
+			if e.stderr:
+				error_msg += f": {e.stderr.strip()}"
+			raise RuntimeError(error_msg)
+		except Exception as e:
+			raise RuntimeError(f"Unexpected error running graphics extractor: {e}")
 
 	def _run_data_extractor(self):
 		"""Run the data extractor"""
 		extractor_path = Path(__file__).parent / "extraction" / "data_extractor.py"
 
-		if extractor_path.exists():
-			try:
-				result = subprocess.run([
-					sys.executable, str(extractor_path),
-					str(self.rom_path),
-					"--output-dir", str(self.output_dir)
-				], capture_output=True, text=True, check=True)
+		if not extractor_path.exists():
+			raise FileNotFoundError(f"Data extractor not found: {extractor_path}")
 
-			except subprocess.CalledProcessError as e:
-				console.print(f"[red]Data extraction failed: {e.stderr}[/red]")
-		else:
-			console.print(f"[yellow]Data extractor not found: {extractor_path}[/yellow]")
+		try:
+			result = subprocess.run([
+				sys.executable, str(extractor_path),
+				str(self.rom_path),
+				"--output-dir", str(self.output_dir)
+			], capture_output=True, text=True, check=True, timeout=300)  # 5 minute timeout
+			
+			if result.stdout:
+				console.print(f"[dim]Data extractor output: {result.stdout.strip()}[/dim]")
+			
+		except subprocess.TimeoutExpired:
+			raise RuntimeError("Data extraction timed out (exceeded 5 minutes)")
+		except subprocess.CalledProcessError as e:
+			error_msg = f"Data extraction failed (exit code {e.returncode})"
+			if e.stderr:
+				error_msg += f": {e.stderr.strip()}"
+			raise RuntimeError(error_msg)
+		except Exception as e:
+			raise RuntimeError(f"Unexpected error running data extractor: {e}")
 
 	def _merge_data_files(self):
 		"""Merge all extracted data into complete game data"""
 		try:
-			# Load individual data files
+			# Load individual data files with validation
 			graphics_file = self.json_dir / "graphics_data.json"
 			complete_file = self.json_dir / "complete_game_data.json"
 
 			graphics_data = {}
 			complete_data = {}
 
+			# Load graphics data if available
 			if graphics_file.exists():
-				with open(graphics_file, 'r', encoding='utf-8') as f:
-					graphics_data = json.load(f)
+				try:
+					with open(graphics_file, 'r', encoding='utf-8') as f:
+						graphics_data = json.load(f)
+				except json.JSONDecodeError as e:
+					raise ValueError(f"Invalid JSON in graphics data file: {e}")
+				except Exception as e:
+					raise IOError(f"Error reading graphics data file: {e}")
 
+			# Load complete data if available
 			if complete_file.exists():
-				with open(complete_file, 'r', encoding='utf-8') as f:
-					complete_data = json.load(f)
+				try:
+					with open(complete_file, 'r', encoding='utf-8') as f:
+						complete_data = json.load(f)
+				except json.JSONDecodeError as e:
+					raise ValueError(f"Invalid JSON in complete data file: {e}")
+				except Exception as e:
+					raise IOError(f"Error reading complete data file: {e}")
 
-			# Merge data
-			merged_data = {**complete_data, **graphics_data}
+			# Validate data structure
+			if not isinstance(graphics_data, dict):
+				raise ValueError("Graphics data must be a dictionary")
+			if not isinstance(complete_data, dict):
+				raise ValueError("Complete data must be a dictionary")
 
-			# Save merged data
+			# Merge data (complete_data takes precedence)
+			merged_data = {**graphics_data, **complete_data}
+
+			# Save merged data with atomic write
 			merged_file = self.json_dir / "merged_game_data.json"
-			with open(merged_file, 'w', encoding='utf-8') as f:
-				json.dump(merged_data, f, indent=2, ensure_ascii=False)
+			temp_file = merged_file.with_suffix('.tmp')
+			
+			try:
+				with open(temp_file, 'w', encoding='utf-8') as f:
+					json.dump(merged_data, f, indent=2, ensure_ascii=False)
+				
+				# Atomic rename to final location
+				temp_file.replace(merged_file)
+				console.print(f"[dim]Merged {len(merged_data)} data sections[/dim]")
+				
+			except Exception as e:
+				# Clean up temp file if it exists
+				if temp_file.exists():
+					temp_file.unlink()
+				raise IOError(f"Error writing merged data file: {e}")
 
 		except Exception as e:
-			console.print(f"[yellow]Warning: Could not merge data files: {e}[/yellow]")
+			raise RuntimeError(f"Error merging data files: {e}")
 
 	def _display_extraction_summary(self):
 		"""Display summary of extracted assets"""
@@ -161,18 +270,20 @@ class AssetPipeline:
 			"map": "editors/map_editor.py",
 			"spell": "editors/spell_editor.py",
 			"dialog": "editors/dialog_editor.py",
-			"shop": "editors/shop_editor.py"
+			"shop": "editors/shop_editor.py",
+			"graphics": "editors/graphics_editor.py"
 		}
 
 		if editor_type not in editors:
-			console.print(f"[red]Unknown editor: {editor_type}[/red]")
-			return
+			console.print(f"[red]❌ Unknown editor: {editor_type}[/red]")
+			console.print(f"[dim]Available editors: {', '.join(editors.keys())}[/dim]")
+			return False
 
 		editor_path = Path(__file__).parent / editors[editor_type]
 
 		if not editor_path.exists():
-			console.print(f"[red]Editor not found: {editor_path}[/red]")
-			return
+			console.print(f"[red]❌ Editor not found: {editor_path}[/red]")
+			return False
 
 		# Determine data file based on editor type
 		data_files = {
@@ -181,25 +292,37 @@ class AssetPipeline:
 			"map": self.json_dir / "maps.json",
 			"spell": self.json_dir / "spells.json",
 			"dialog": self.json_dir / "dialogs.json",
-			"shop": self.json_dir / "shops.json"
+			"shop": self.json_dir / "shops.json",
+			"graphics": self.json_dir / "graphics.json"
 		}
 
-		data_file = data_files[editor_type]
+		data_file = data_files.get(editor_type)
+		
+		if data_file and not data_file.exists():
+			console.print(f"[red]❌ Data file not found: {data_file}[/red]")
+			console.print("[yellow]💡 Run extraction first to generate data files![/yellow]")
+			return False
 
-		if not data_file.exists():
-			console.print(f"[red]Data file not found: {data_file}[/red]")
-			console.print("[yellow]Run extraction first![/yellow]")
-			return
-
-		console.print(f"[cyan]Launching {editor_type} editor...[/cyan]")
+		console.print(f"[cyan]🚀 Launching {editor_type} editor...[/cyan]")
 
 		try:
 			# Launch editor in new process
-			subprocess.run([
-				sys.executable, str(editor_path), str(data_file)
-			], check=False)
+			args = [sys.executable, str(editor_path)]
+			if data_file:
+				args.append(str(data_file))
+				
+			result = subprocess.run(args, check=False)
+			
+			if result.returncode != 0:
+				console.print(f"[yellow]⚠️  Editor exited with code {result.returncode}[/yellow]")
+			return result.returncode == 0
+			
+		except FileNotFoundError:
+			console.print(f"[red]❌ Python interpreter not found: {sys.executable}[/red]")
+			return False
 		except Exception as e:
-			console.print(f"[red]Error launching editor: {e}[/red]")
+			console.print(f"[red]❌ Error launching editor: {e}[/red]")
+			return False
 
 	def generate_assembly_code(self):
 		"""Generate assembly insertion code from extracted data"""
@@ -376,17 +499,30 @@ class AssetPipeline:
 
 @click.command()
 @click.argument('rom_path', type=click.Path(exists=True))
-@click.option('--output-dir', '-o', default='assets', help='Output directory')
+@click.option('--output-dir', '-o', default='extracted_assets', help='Output directory')
 @click.option('--extract-only', is_flag=True, help='Extract assets only, no menu')
 def asset_pipeline(rom_path: str, output_dir: str, extract_only: bool):
 	"""Dragon Warrior Complete Asset Pipeline"""
+	try:
+		pipeline = AssetPipeline(rom_path, output_dir)
 
-	pipeline = AssetPipeline(rom_path, output_dir)
-
-	if extract_only:
-		pipeline.extract_all_assets()
-	else:
-		pipeline.run_pipeline()
+		if extract_only:
+			success = pipeline.extract_all_assets()
+			if not success:
+				console.print("[red]❌ Extraction failed[/red]")
+				sys.exit(1)
+		else:
+			pipeline.run_pipeline()
+			
+	except KeyboardInterrupt:
+		console.print("\n[yellow]⚠️  Operation cancelled by user[/yellow]")
+		sys.exit(130)
+	except (FileNotFoundError, ValueError, PermissionError, IOError) as e:
+		console.print(f"[red]❌ {e}[/red]")
+		sys.exit(1)
+	except Exception as e:
+		console.print(f"[red]❌ Unexpected error: {e}[/red]")
+		sys.exit(1)
 
 if __name__ == "__main__":
 	asset_pipeline()
