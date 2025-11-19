@@ -19,6 +19,7 @@ matplotlib>=3.7.0      # Plotting and data visualization
 construct>=2.10.0      # Binary data parsing
 bitstring>=4.0.0       # Bit manipulation
 hexdump>=3.3           # Hex dump utilities
+crcmod>=1.7            # CRC calculation for patches
 
 # GitHub API and automation
 PyGithub>=1.59.0       # GitHub API wrapper

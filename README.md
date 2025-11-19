@@ -28,17 +28,24 @@ cd dragon-warrior-info
 
 # Set up Python virtual environment
 python -m venv venv
-venv\Scripts\Activate.ps1  # Windows
-source venv/bin/activate   # Linux/Mac
+
+# Activate virtual environment
+# Windows PowerShell:
+venv\Scripts\Activate.ps1
+# Windows Command Prompt:
+venv\Scripts\activate.bat
+# Linux/Mac:
+source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Run initial ROM analysis
-python tools/analysis/rom_analyzer.py info your_rom.nes
+# Run the build system
+python dragon_warrior_build.py
 ```
 
 ### Basic ROM Analysis
+
 ```bash
 # Display ROM information
 python tools/analysis/rom_analyzer.py info dragon_warrior.nes

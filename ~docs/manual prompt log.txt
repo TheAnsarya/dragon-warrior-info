@@ -15,8 +15,13 @@ I noticed in `tools\extraction\data_extractor.py` it's using `sample data` I don
 
 git comment and push; format all files using .editorconfig especially TABS NOT SPACE ALWAYS AND FOREVER; and continue cleanup and asset management
 
+The `~roms` folder and `venv` folder should be in `.gitignore` and should not be affected by formatting; revert thos venv files you just changed and then continue formatting the main project
 
+asset files that are created like `graphics_data.asm` don't seem to be referenced anywhere, so how are they being using used in the build process? it seems like the original data is still used in the ROM build process; fix this
 
+don't have the build system modify the main source files, but rather use assembly includes of the asset files and move the data in the main assembly files into a default include folder of asset files or something;
+
+git comment and push; The `venv` python virtual environment is in gitignore, but make sure it is in the setup instructions and keep the `requirements.txt` file updated, and whatever else should be properly available for venv to make it easy to use; don't commit the built ROM to git, so add it to gitignore (without any edits it should compile to the original copyrighted rom, so we don't want itin the repos); then recheck the asset editors to make sure they are editing the extracted assets, not editing the source code or rom directly; if the built rom does not match the reference build rom, then create an `.ips` patch and `.bps` patch that is included in git so the differences can be tracked; build the rom from assets and such;
 
 
 

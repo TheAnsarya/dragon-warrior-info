@@ -31,17 +31,17 @@ class AssetPipeline:
 		self.rom_path = Path(rom_path)
 		if not self.rom_path.exists():
 			raise FileNotFoundError(f"ROM file not found: {rom_path}")
-		
+
 		if not self.rom_path.is_file():
 			raise ValueError(f"ROM path is not a file: {rom_path}")
-		
+
 		# Validate ROM file size (Dragon Warrior should be around 256KB)
 		rom_size = self.rom_path.stat().st_size
 		if rom_size < 100_000:
 			console.print(f"[yellow]⚠️  Warning: ROM file seems too small ({rom_size} bytes)[/yellow]")
 		elif rom_size > 1_000_000:
 			console.print(f"[yellow]⚠️  Warning: ROM file seems too large ({rom_size} bytes)[/yellow]")
-		
+
 		try:
 			# Test ROM file readability
 			with open(self.rom_path, 'rb') as f:
@@ -54,7 +54,7 @@ class AssetPipeline:
 			raise PermissionError(f"Cannot read ROM file (permission denied): {rom_path}")
 		except Exception as e:
 			raise IOError(f"Error reading ROM file: {e}")
-		
+
 		# Setup output directory with error handling
 		try:
 			self.output_dir = Path(output_dir)
@@ -118,14 +118,14 @@ class AssetPipeline:
 
 			console.print("\n[green]✅ Asset extraction complete![/green]")
 			self._display_extraction_summary()
-			
+
 		except KeyboardInterrupt:
 			console.print("\n[yellow]⚠️  Extraction cancelled by user[/yellow]")
 			return False
 		except Exception as e:
 			console.print(f"\n[red]❌ Critical error during extraction: {e}[/red]")
 			return False
-			
+
 		return True
 
 	def _run_graphics_extractor(self):
@@ -141,10 +141,10 @@ class AssetPipeline:
 				str(self.rom_path),
 				"--output-dir", str(self.output_dir)
 			], capture_output=True, text=True, check=True, timeout=300)  # 5 minute timeout
-			
+
 			if result.stdout:
 				console.print(f"[dim]Graphics extractor output: {result.stdout.strip()}[/dim]")
-			
+
 		except subprocess.TimeoutExpired:
 			raise RuntimeError("Graphics extraction timed out (exceeded 5 minutes)")
 		except subprocess.CalledProcessError as e:
@@ -168,10 +168,10 @@ class AssetPipeline:
 				str(self.rom_path),
 				"--output-dir", str(self.output_dir)
 			], capture_output=True, text=True, check=True, timeout=300)  # 5 minute timeout
-			
+
 			if result.stdout:
 				console.print(f"[dim]Data extractor output: {result.stdout.strip()}[/dim]")
-			
+
 		except subprocess.TimeoutExpired:
 			raise RuntimeError("Data extraction timed out (exceeded 5 minutes)")
 		except subprocess.CalledProcessError as e:
@@ -224,15 +224,15 @@ class AssetPipeline:
 			# Save merged data with atomic write
 			merged_file = self.json_dir / "merged_game_data.json"
 			temp_file = merged_file.with_suffix('.tmp')
-			
+
 			try:
 				with open(temp_file, 'w', encoding='utf-8') as f:
 					json.dump(merged_data, f, indent=2, ensure_ascii=False)
-				
+
 				# Atomic rename to final location
 				temp_file.replace(merged_file)
 				console.print(f"[dim]Merged {len(merged_data)} data sections[/dim]")
-				
+
 			except Exception as e:
 				# Clean up temp file if it exists
 				if temp_file.exists():
@@ -297,7 +297,7 @@ class AssetPipeline:
 		}
 
 		data_file = data_files.get(editor_type)
-		
+
 		if data_file and not data_file.exists():
 			console.print(f"[red]❌ Data file not found: {data_file}[/red]")
 			console.print("[yellow]💡 Run extraction first to generate data files![/yellow]")
@@ -310,13 +310,13 @@ class AssetPipeline:
 			args = [sys.executable, str(editor_path)]
 			if data_file:
 				args.append(str(data_file))
-				
+
 			result = subprocess.run(args, check=False)
-			
+
 			if result.returncode != 0:
 				console.print(f"[yellow]⚠️  Editor exited with code {result.returncode}[/yellow]")
 			return result.returncode == 0
-			
+
 		except FileNotFoundError:
 			console.print(f"[red]❌ Python interpreter not found: {sys.executable}[/red]")
 			return False
@@ -513,7 +513,7 @@ def asset_pipeline(rom_path: str, output_dir: str, extract_only: bool):
 				sys.exit(1)
 		else:
 			pipeline.run_pipeline()
-			
+
 	except KeyboardInterrupt:
 		console.print("\n[yellow]⚠️  Operation cancelled by user[/yellow]")
 		sys.exit(130)

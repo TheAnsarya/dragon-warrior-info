@@ -204,7 +204,7 @@ class DragonWarriorBuild:
 				sys.executable,
 				str(self.tools_dir / "asset_reinserter.py"),
 				str(self.assets_dir),
-				"--output-dir", str(self.build_dir / "generated")
+				"--extract-defaults"
 			], capture_output=True, text=True, check=True)
 
 			console.print("[green]✅ Assembly generation complete[/green]")
@@ -212,6 +212,110 @@ class DragonWarriorBuild:
 
 		except subprocess.CalledProcessError as e:
 			console.print(f"[red]❌ Assembly generation failed: {e}[/red]")
+			if e.stdout:
+				console.print(f"[dim]stdout: {e.stdout}[/dim]")
+			if e.stderr:
+				console.print(f"[dim]stderr: {e.stderr}[/dim]")
+			return False
+
+	def patch_source_files(self) -> bool:
+		"""Patch source files to use asset includes"""
+		console.print("\n[cyan]🔧 Patching source files to use asset includes...[/cyan]")
+
+		try:
+			result = subprocess.run([
+				sys.executable,
+				str(self.tools_dir / "source_patcher.py")
+			], capture_output=True, text=True, check=True)
+
+			console.print("[green]✅ Source file patching complete[/green]")
+			return True
+
+		except subprocess.CalledProcessError as e:
+			console.print(f"[red]❌ Source patching failed: {e}[/red]")
+			if e.stdout:
+				console.print(f"[dim]stdout: {e.stdout}[/dim]")
+			if e.stderr:
+				console.print(f"[dim]stderr: {e.stderr}[/dim]")
+			return False
+
+	def restore_source_files(self) -> bool:
+		"""Restore original source files"""
+		console.print("\n[cyan]🔄 Restoring original source files...[/cyan]")
+
+		try:
+			result = subprocess.run([
+				sys.executable,
+				str(self.tools_dir / "source_patcher.py"),
+				"--restore"
+			], capture_output=True, text=True, check=True)
+
+			console.print("[green]✅ Source files restored[/green]")
+			return True
+
+		except subprocess.CalledProcessError as e:
+			console.print(f"[red]❌ Source restoration failed: {e}[/red]")
+			if e.stdout:
+				console.print(f"[dim]stdout: {e.stdout}[/dim]")
+			if e.stderr:
+				console.print(f"[dim]stderr: {e.stderr}[/dim]")
+			return False
+
+	def generate_patches(self) -> bool:
+		"""Generate IPS and BPS patches if built ROM differs from reference"""
+		console.print("\n[cyan]🔧 Checking for ROM differences and generating patches...[/cyan]")
+
+		# Look for reference ROM
+		reference_rom = None
+		for rom_file in ["dragon_warrior.nes", "Dragon Warrior.nes", "dragon_warrior_original.nes"]:
+			if Path(rom_file).exists():
+				reference_rom = Path(rom_file)
+				break
+		
+		if not reference_rom:
+			console.print("[yellow]⚠️ No reference ROM found - skipping patch generation[/yellow]")
+			return True
+		
+		built_rom = self.output_dir / "dragon_warrior_modified.nes"
+		if not built_rom.exists():
+			console.print("[yellow]⚠️ No built ROM found - skipping patch generation[/yellow]")
+			return True
+
+		try:
+			result = subprocess.run([
+				sys.executable,
+				str(self.tools_dir / "patch_generator.py"),
+				str(reference_rom),
+				str(built_rom)
+			], capture_output=True, text=True, check=True)
+
+			console.print("[green]✅ Patch generation complete[/green]")
+			return True
+
+		except subprocess.CalledProcessError as e:
+			console.print(f"[red]❌ Patch generation failed: {e}[/red]")
+			if e.stdout:
+				console.print(f"[dim]stdout: {e.stdout}[/dim]")
+			if e.stderr:
+				console.print(f"[dim]stderr: {e.stderr}[/dim]")
+			return False
+
+	def validate_assets(self) -> bool:
+		"""Validate extracted assets"""
+		console.print("\n[cyan]🔍 Validating extracted assets...[/cyan]")
+
+		try:
+			result = subprocess.run([
+				sys.executable,
+				str(self.tools_dir / "asset_validator.py"),
+				str(self.assets_dir)
+			], capture_output=True, text=True, check=True)
+
+			console.print("[green]✅ Asset validation complete[/green]")
+			return True
+
+		except subprocess.CalledProcessError as e:
+			console.print(f"[red]❌ Asset validation failed: {e}[/red]")
 			if e.stdout:
 				console.print(f"[dim]stdout: {e.stdout}[/dim]")
 			if e.stderr:
@@ -333,12 +437,15 @@ class DragonWarriorBuild:
 			console.print("\n[bold green]🐉 Dragon Warrior Build System[/bold green]")
 			console.print("1. 📦 Extract assets from ROM")
 			console.print("2. 🎨 Launch asset editors")
-			console.print("3. 🔧 Generate assembly code")
-			console.print("4. 🏗️	Build modified ROM")
-			console.print("5. 📊 Show build status")
-			console.print("6. 🧹 Clean build")
-			console.print("7. 🚀 Full build pipeline")
-			console.print("8. 🚪 Exit")
+			console.print("3. 🔧 Generate assembly code & extract defaults")
+			console.print("4. 🔧 Patch source files for asset includes")
+			console.print("5. 🔄 Restore original source files")
+			console.print("6. 🏠 Build modified ROM")
+			console.print("7. 🔧 Generate patches (IPS/BPS)")
+			console.print("8. 📈 Show build status")
+			console.print("9. 🧩 Clean build")
+			console.print("10. 🚀 Full build pipeline")
+			console.print("11. 🚺 Exit")
 
 			choice = click.prompt("\nSelect option", type=str).strip()
 
@@ -352,25 +459,36 @@ class DragonWarriorBuild:
 				self.generate_assembly()
 
 			elif choice == "4":
-				self.build_rom()
+				self.patch_source_files()
 
 			elif choice == "5":
-				self.show_status()
+				self.restore_source_files()
 
 			elif choice == "6":
-				self.clean_build()
+				self.build_rom()
 
 			elif choice == "7":
+				self.generate_patches()
+
+			elif choice == "8":
+				self.show_status()
+
+			elif choice == "9":
+				self.clean_build()
+
+			elif choice == "10":
 				# Full pipeline
 				console.print("\n[bold cyan]🚀 Running full build pipeline...[/bold cyan]")
 				if (self.extract_assets() and
 					self.generate_assembly() and
-					self.build_rom()):
+					self.patch_source_files() and
+					self.build_rom() and
+					self.generate_patches()):
 					console.print("\n[bold green]✅ Full build pipeline completed successfully![/bold green]")
 				else:
 					console.print("\n[bold red]❌ Build pipeline failed at some stage[/bold red]")
 
-			elif choice == "8":
+			elif choice == "11":
 				console.print("\n[bold cyan]👋 Thanks for using Dragon Warrior Build System![/bold cyan]")
 				break
 
@@ -399,7 +517,9 @@ def build_system(source_dir: str, assets_dir: str, build_dir: str, output_dir: s
 		# Non-interactive mode - run full pipeline
 		if (builder.extract_assets() and
 			builder.generate_assembly() and
-			builder.build_rom()):
+			builder.patch_source_files() and
+			builder.build_rom() and
+			builder.generate_patches()):
 			console.print("\n[bold green]✅ Build completed successfully![/bold green]")
 		else:
 			console.print("\n[bold red]❌ Build failed[/bold red]")

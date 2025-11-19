@@ -33,10 +33,35 @@ class AssetReinserter:
 		self.palettes_dir = self.assets_dir / "palettes"
 		self.maps_dir = self.assets_dir / "maps"
 
-	def generate_all_assembly(self):
+	def generate_all_assembly(self, extract_defaults: bool = False):
 		"""Generate all assembly files for asset reinsertion"""
 		console.print("[blue]🔧 Generating assembly code for asset reinsertion...[/blue]\n")
 
+		generated_files = []
+
+		# Extract default assets if requested
+		if extract_defaults:
+			default_files = self.extract_default_assets()
+			generated_files.extend(default_files)
+
+		# Generate edited asset files
+		edited_files = self._generate_edited_assets()
+		generated_files.extend(edited_files)
+
+		# Generate master include file
+		has_edited_assets = len(edited_files) > 0
+		master_file = self._generate_master_include(edited_files, use_edited_assets=has_edited_assets)
+		if master_file:
+			generated_files.append(master_file)
+
+		console.print(f"[green]✅ Generated {len(generated_files)} assembly files:[/green]")
+		for file_path in generated_files:
+			console.print(f"	 📄 {file_path}")
+
+		return generated_files
+
+	def _generate_edited_assets(self) -> List[Path]:
+		"""Generate assembly files for edited assets"""
 		generated_files = []
 
 		# Generate monster data assembly
@@ -95,65 +120,47 @@ class AssetReinserter:
 			if asm_file:
 				generated_files.append(asm_file)
 
-		# Generate master include file
-		master_file = self._generate_master_include(generated_files)
-		if master_file:
-			generated_files.append(master_file)
-
-		console.print(f"[green]✅ Generated {len(generated_files)} assembly files:[/green]")
-		for file_path in generated_files:
-			console.print(f"	 📄 {file_path}")
-
 		return generated_files
 
 	def _generate_monster_assembly(self, json_file: Path) -> Optional[Path]:
-		"""Generate monster data assembly"""
+		"""Generate monster data assembly that replaces EnStatTbl"""
 		try:
 			with open(json_file, 'r', encoding='utf-8') as f:
 				monsters = json.load(f)
 
 			asm_lines = [
-				"; Dragon Warrior Monster Data",
+				"; Dragon Warrior Monster Data Replacement",
+				"; This file replaces the original EnStatTbl in Bank01.asm",
 				"; Generated from edited JSON data",
-				"; This replaces the original monster stats with edited values",
-				"",
-				".include \"Dragon_Warrior_Defines.asm\"",
-				"",
-				".segment \"MonsterData\"",
 				"",
 				"; Monster Statistics Table",
-				"; Format: HP(2), STR(1), AGI(1), DMG(1), DODGE(1), SLEEP_RES(1), HURT_RES(1), EXP(2), GOLD(2), TYPE(1), SPRITE(1)",
-				"MonsterStatsTable:"
+				"; Format matches original Dragon Warrior: Att(1), Def(1), HP(1), Spel(1), Agi(1), Mdef(1), Exp(1), Gld(1), + 8 unused bytes",
+				"EnStatTbl:"
 			]
 
+				# Generate monster entries in original Dragon Warrior format
 			for monster_id in sorted([int(k) for k in monsters.keys()]):
 				monster = monsters[str(monster_id)]
+
+				# Convert JSON data to Dragon Warrior format
+				att = min(255, monster.get('strength', 5))
+				def_val = min(255, monster.get('defense', 3))
+				hp = min(255, monster.get('hp', 3))
+				spel = min(255, monster.get('spell_power', 0))
+				agi = min(255, monster.get('agility', 15))
+				mdef = min(255, monster.get('magic_defense', 1))
+				exp = min(255, monster.get('experience', 1))
+				gld = min(255, monster.get('gold', 2))
+
+				# Calculate label address (0x9E4B is start of EnStatTbl)
+				label_addr = 0x9E4B + (monster_id * 16)
+
 				asm_lines.extend([
-					f"",
-					f"; {monster['name']} (ID: {monster_id})",
-					f"Monster_{monster_id:02d}_Stats:",
-					f"	.word ${monster['hp']:04X}			 ; HP: {monster['hp']}",
-					f"	.byte ${monster['strength']:02X}			 ; Strength: {monster['strength']}",
-					f"	.byte ${monster['agility']:02X}				; Agility: {monster['agility']}",
-					f"	.byte ${monster['max_damage']:02X}			 ; Max Damage: {monster['max_damage']}",
-					f"	.byte ${monster['dodge_rate']:02X}			 ; Dodge Rate: {monster['dodge_rate']}",
-					f"	.byte ${monster['sleep_resistance']:02X}	 ; Sleep Resistance: {monster['sleep_resistance']}",
-					f"	.byte ${monster['hurt_resistance']:02X}		; Hurt Resistance: {monster['hurt_resistance']}",
-					f"	.word ${monster['experience']:04X}			 ; Experience: {monster['experience']}",
-					f"	.word ${monster['gold']:04X}				 ; Gold: {monster['gold']}",
-					f"	.byte ${monster['monster_type']:02X}		 ; Monster Type: {monster['monster_type']}",
-					f"	.byte ${monster['sprite_id']:02X}			; Sprite ID: {monster['sprite_id']}"
+					f";",
+					f";Enemy ${monster_id:02X}-{monster['name']}.",
+					f";             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|",
+					f"L{label_addr:04X}:  .byte ${att:02X}, ${def_val:02X}, ${hp:02X}, ${spel:02X}, ${agi:02X}, ${mdef:02X}, ${exp:02X}, ${gld:02X}, $69, $40, $4A, $4D, $FA, $FA, $FA, $FA"
 				])
-
-			# Add pointer table
-			asm_lines.extend([
-				"",
-				"; Monster Stats Pointer Table",
-				"MonsterStatsPointers:"
-			])
-
-			for monster_id in sorted([int(k) for k in monsters.keys()]):
-				asm_lines.append(f"	.word Monster_{monster_id:02d}_Stats")
 
 			asm_content = "\n".join(asm_lines)
 
@@ -573,32 +580,123 @@ class AssetReinserter:
 			console.print(f"[red]❌ Error generating map assembly: {e}[/red]")
 			return None
 
-	def _generate_master_include(self, generated_files: List[Path]) -> Optional[Path]:
-		"""Generate master include file"""
+	def extract_default_assets(self, source_dir: str = "source_files", default_dir: str = "build/default_assets"):
+		"""Extract original data tables from source files into default asset includes"""
+		console.print("[blue]📎 Extracting default assets from source files...[/blue]\n")
+
+		default_path = Path(default_dir)
+		default_path.mkdir(parents=True, exist_ok=True)
+		source_path = Path(source_dir)
+
+		generated_defaults = []
+
+		# Extract monster data from Bank01.asm
+		bank01_file = source_path / "Bank01.asm"
+		if bank01_file.exists():
+			default_monster_file = self._extract_monster_defaults(bank01_file, default_path)
+			if default_monster_file:
+				generated_defaults.append(default_monster_file)
+
+		# Extract other data tables as needed
+		# TODO: Add item data, shop data, spell data extraction
+
+		console.print(f"[green]✅ Extracted {len(generated_defaults)} default asset files:[/green]")
+		for file_path in generated_defaults:
+			console.print(f"	 📄 {file_path}")
+
+		return generated_defaults
+
+	def _extract_monster_defaults(self, bank01_file: Path, default_dir: Path) -> Optional[Path]:
+		"""Extract original EnStatTbl from Bank01.asm"""
+		try:
+			with open(bank01_file, 'r', encoding='utf-8') as f:
+				content = f.read()
+
+			# Find the EnStatTbl section
+			lines = content.split('\n')
+			enstattbl_start = -1
+			enstattbl_end = -1
+
+			for i, line in enumerate(lines):
+				if 'EnStatTbl:' in line:
+					enstattbl_start = i + 1  # Start AFTER the label
+				elif enstattbl_start != -1 and line.strip().startswith(';----------------------------------------------------------------------------------------------------'):
+					# Found the separator line that marks end of monster table
+					enstattbl_end = i
+					break
+
+			if enstattbl_start == -1:
+				console.print("[yellow]⚠️  Could not find EnStatTbl in Bank01.asm[/yellow]")
+				return None
+
+			if enstattbl_end == -1:
+				console.print("[yellow]⚠️  Could not find end of monster table[/yellow]")
+				return None
+
+			# Extract the table content (excluding the label)
+			table_lines = lines[enstattbl_start:enstattbl_end]
+
+			# Create default monster data file
+			asm_lines = [
+				"; Dragon Warrior Default Monster Data",
+				"; Extracted from original Bank01.asm",
+				"; This is the original EnStatTbl data (without label)",
+				""
+			] + table_lines
+
+			asm_content = "\n".join(asm_lines)
+
+			default_file = default_dir / "default_monster_data.asm"
+			with open(default_file, 'w', encoding='utf-8') as f:
+				f.write(asm_content)
+
+			return default_file
+
+		except Exception as e:
+			console.print(f"[red]❌ Error extracting monster defaults: {e}[/red]")
+			return None
+
+	def _generate_master_include(self, generated_files: List[Path], use_edited_assets: bool = True) -> Optional[Path]:
+		"""Generate master include file with conditional asset loading"""
 		try:
 			asm_lines = [
-				"; Dragon Warrior Asset Reinsertion Master Include",
+				"; Dragon Warrior Asset System Master Include",
 				"; Generated by Asset Reinsertion System",
-				"; Include this file in your main assembly to use edited assets",
+				"; Conditionally includes edited or default assets",
 				"",
-				".ifndef ASSET_REINSERTION_INCLUDED",
-				".define ASSET_REINSERTION_INCLUDED",
+				".ifndef DRAGON_WARRIOR_ASSETS_INCLUDED",
+				".define DRAGON_WARRIOR_ASSETS_INCLUDED",
 				""
 			]
 
-			# Add includes for all generated files
-			for file_path in generated_files:
-				if file_path.name != "asset_reinsertion.asm":	# Don't include self
-					asm_lines.append(f".include \"{file_path.name}\"")
+			if use_edited_assets:
+				asm_lines.extend([
+					"; Using edited/modified assets",
+					".define USE_EDITED_ASSETS"
+				])
+
+				# Add includes for edited files
+				for file_path in generated_files:
+					if file_path.name != "dragon_warrior_assets.asm" and file_path.suffix == ".asm":
+						asm_lines.append(f".include \"{file_path.name}\"")
+			else:
+				asm_lines.extend([
+					"; Using default/original assets",
+					".include \"default_assets/default_monster_data.asm\"",
+					".include \"default_assets/default_item_data.asm\"",
+					".include \"default_assets/default_shop_data.asm\"",
+					".include \"default_assets/default_spell_data.asm\"",
+					".include \"default_assets/default_graphics_data.asm\""
+				])
 
 			asm_lines.extend([
 				"",
-				".endif ; ASSET_REINSERTION_INCLUDED"
+				".endif ; DRAGON_WARRIOR_ASSETS_INCLUDED"
 			])
 
 			asm_content = "\n".join(asm_lines)
 
-			output_file = self.output_dir / "asset_reinsertion.asm"
+			output_file = self.output_dir / "dragon_warrior_assets.asm"
 			with open(output_file, 'w', encoding='utf-8') as f:
 				f.write(asm_content)
 
@@ -611,14 +709,17 @@ class AssetReinserter:
 @click.command()
 @click.argument('assets_dir', type=click.Path(exists=True))
 @click.option('--output-dir', '-o', default='build/generated', help='Output directory for assembly')
-def reinsert_assets(assets_dir: str, output_dir: str):
+@click.option('--extract-defaults', is_flag=True, help='Extract default assets from source files')
+def reinsert_assets(assets_dir: str, output_dir: str, extract_defaults: bool):
 	"""Generate assembly code for reinserting edited assets"""
 
 	reinserter = AssetReinserter(assets_dir, output_dir)
-	generated_files = reinserter.generate_all_assembly()
+	generated_files = reinserter.generate_all_assembly(extract_defaults=extract_defaults)
 
 	console.print(f"\n[green]🎯 Asset reinsertion code generation complete![/green]")
-	console.print(f"[cyan]Include 'asset_reinsertion.asm' in your main assembly file.[/cyan]")
+	console.print(f"[cyan]Include 'dragon_warrior_assets.asm' in your main assembly file.[/cyan]")
+	if extract_defaults:
+		console.print(f"[yellow]Default assets extracted to build/default_assets/[/yellow]")
 
 if __name__ == "__main__":
 	reinsert_assets()

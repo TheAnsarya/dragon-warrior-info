@@ -4437,11 +4437,165 @@ EnStatTblPtr:                   ;Pointer to the table below.
 L9E49:  .word EnStatTbl
 
 EnStatTbl:
-.ifdef USE_EDITED_ASSETS
-	.include "build/generated/monster_data.asm"
-.else
-	.include "build/default_assets/default_monster_data.asm"
-.endif
+;Enemy $00-Slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9E4B:  .byte $05, $03, $03, $00, $0F, $01, $01, $02, $69, $40, $4A, $4D, $FA, $FA, $FA, $FA
+
+;Enemy $01-Red Slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9E5B:  .byte $07, $03, $04, $00, $0F, $01, $01, $03, $69, $40, $4A, $4D, $26, $F8, $69, $FA
+
+;Enemy $02-Drakee.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9E6B:  .byte $09, $06, $06, $00, $0F, $01, $02, $03, $42, $40, $6A, $4E, $FA, $FA, $FA, $FA
+
+;Enemy $03-Ghost.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9E7B:  .byte $0B, $08, $07, $00, $0F, $04, $03, $05, $45, $F8, $4E, $69, $6B, $FA, $FA, $FA
+
+;Enemy $04-Magician.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9E8B:  .byte $0B, $0C, $0D, $02, $00, $01, $04, $0C, $28, $27, $0C, $1B, $0F, $0B, $FA, $FA
+
+;Enemy $05-Magidrakee.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9E9B:  .byte $0E, $0E, $0F, $02, $00, $01, $05, $0C, $3F, $4A, $48, $F8, $42, $40, $6A, $4E
+
+;Enemy $06-Scorpion
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9EAB:  .byte $12, $10, $14, $00, $0F, $01, $06, $10, $0E, $0E, $14, $18, $31, $FA, $FA, $FA
+
+;Enemy $07-Druin.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9EBB:  .byte $14, $12, $16, $00, $0F, $02, $07, $10, $3F, $4E, $47, $F8, $FA, $FA, $FA, $FA
+
+;Enemy $08-Poltergeist
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9ECB:  .byte $12, $14, $17, $03, $00, $06, $08, $12, $3F, $6B, $41, $45, $F8, $4E, $69, $6B
+
+;Enemy $09-Droll.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9EDB:  .byte $18, $18, $19, $00, $0E, $02, $0A, $19, $42, $41, $43, $FA, $FA, $FA, $FA, $FA
+
+;Enemy $0A-Drakeema.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9EEB:  .byte $16, $1A, $14, $92, $20, $06, $0B, $14, $42, $40, $6A, $4E, $4B, $FA, $FA, $FA
+
+;Enemy $0B-Skeleton.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9EFB:  .byte $1C, $16, $1E, $00, $0F, $04, $0B, $1E, $0F, $F8, $0B, $13, $1B, $FA, $FA, $FA
+
+;Enemy $0C-Warlock.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F0B:  .byte $1C, $16, $1E, $12, $31, $02, $0D, $23, $28, $1D, $F8, $0C, $15, $FA, $FA, $FA
+
+;Enemy $0D-Metal Scorpion.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F1B:  .byte $24, $2A, $16, $00, $0F, $02, $0E, $28, $1C, $1B, $22, $14, $18, $31, $FA, $FA
+
+;Enemy $0E-Wolf.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F2B:  .byte $28, $1E, $22, $00, $1F, $02, $10, $32, $31, $4C, $46, $6B, $FA, $FA, $FA, $FA
+
+;Enemy $0F-Wraith.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F3B:  .byte $2C, $22, $24, $90, $70, $04, $11, $3C, $15, $31, $3B, $0C, $FA, $FA, $FA, $FA
+
+;Enemy $10-Metal slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F4B:  .byte $0A, $FF, $04, $03, $FF, $F1, $73, $06, $3F, $47, $43, $69, $40, $4A, $4D, $FA
+
+;Enemy $11-Specter.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F5B:  .byte $28, $26, $24, $13, $31, $04, $12, $46, $26, $43, $45, $F8, $4E, $69, $6B, $FA
+
+;Enemy $12-Wolflord.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F6B:  .byte $32, $24, $26, $60, $47, $02, $14, $50, $31, $4C, $46, $6B, $4B, $4D, $43, $FA
+
+;Enemy $13-Druinlord.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F7B:  .byte $2F, $28, $23, $B1, $F0, $04, $14, $55, $3F, $4E, $47, $F8, $41, $4E, $42, $FA
+
+;Enemy $14-Drollmagi.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F8B:  .byte $34, $32, $26, $60, $22, $01, $16, $5A, $42, $41, $43, $3F, $4A, $48, $F8, $FA
+
+;Enemy $15-Wyvern.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9F9B:  .byte $38, $30, $2A, $00, $4F, $02, $18, $64, $6A, $3F, $40, $FA, $FA, $FA, $FA, $FA
+
+;Enemy $16-Rouge Scorpion.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9FAB:  .byte $3C, $5A, $23, $00, $7F, $02, $1A, $6E, $15, $22, $14, $18, $31, $FA, $FA, $FA
+
+;Enemy $17-Wraith Knight.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9FBB:  .byte $44, $38, $2E, $B0, $50, $34, $1C, $78, $15, $31, $3B, $0C, $22, $10, $15, $FA
+
+;Enemy $18-Golem.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9FCB:  .byte $78, $3C, $46, $00, $FF, $F0, $05, $0A, $45, $F8, $4E, $44, $4D, $FA, $FA, $FA
+
+;Enemy $19-Goldman.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9FDB:  .byte $30, $28, $32, $00, $DF, $01, $06, $C8, $45, $F8, $4E, $43, $42, $4B, $46, $FA
+
+;Enemy $1A-Knight.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9FEB:  .byte $4C, $4E, $37, $60, $67, $01, $21, $82, $2F, $34, $0B, $22, $10, $15, $FA, $FA
+
+;Enemy $1B-Magiwyvern.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+L9FFB:  .byte $4E, $44, $3A, $20, $20, $02, $22, $8C, $3F, $4A, $48, $F8, $6A, $3F, $40, $FA
+
+;Enemy $1C-Demon Knight.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA00B:  .byte $4F, $40, $32, $00, $FF, $FF, $25, $96, $0F, $12, $F8, $22, $10, $15, $FA, $FA
+
+;Enemy $1D-Werewolf.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA01B:  .byte $56, $46, $3C, $00, $7F, $07, $28, $9B, $6A, $40, $4E, $31, $4C, $46, $6B, $FA
+
+;Enemy $1E-Green Dragon.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA02B:  .byte $58, $4A, $41, $09, $7F, $22, $2D, $A0, $42, $40, $45, $F8, $46, $FA, $FA, $FA
+
+;Enemy $1F-Starwyvern.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA03B:  .byte $56, $50, $41, $F9, $80, $12, $2B, $A0, $69, $47, $4E, $6A, $3F, $40, $FA, $FA
+
+;Enemy $20-Wizard.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA04B:  .byte $50, $46, $41, $06, $F7, $F2, $32, $A5, $19, $F8, $0B, $28, $1D, $F8, $0C, $FA
+
+;Enemy $21-Axe Knight.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA05B:  .byte $5E, $52, $46, $10, $F3, $11, $36, $A5, $0A, $11, $28, $22, $10, $15, $FA, $FA
+
+;Enemy $22-Blue Dragon.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA06B:  .byte $62, $54, $46, $09, $FF, $72, $3C, $96, $6A, $4E, $69, $42, $40, $45, $F8, $46
+
+;Enemy $23-Stoneman.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA07B:  .byte $64, $28, $A0, $00, $2F, $71, $41, $8C, $69, $6B, $4E, $46, $4B, $46, $FA, $FA
+
+;Enemy $24-Armored Knight.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA08B:  .byte $69, $56, $5A, $F5, $F7, $12, $46, $8C, $15, $1F, $0F, $F8, $29, $22, $10, $15
+
+;Enemy $25-Red Dragon.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA09B:  .byte $78, $5A, $64, $19, $F7, $F2, $64, $8C, $47, $F8, $4E, $69, $42, $40, $45, $F8
+
+;Enemy $26-Dragonlord.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA0AB:  .byte $5A, $4B, $64, $57, $FF, $F0, $00, $00, $31, $3A, $0C, $0E, $0C, $FA, $FA, $FA
+
+;Enemy $27-Dragonlord True Self.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|
+LA0BB:  .byte $8C, $C8, $82, $0E, $FF, $F0, $00, $00, $31, $3A, $0C, $0E, $0C, $FA, $FA, $FA
 
 ;----------------------------------------------------------------------------------------------------
 

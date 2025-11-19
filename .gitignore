@@ -7,6 +7,15 @@
 roms/
 *.rom
 
+# Build output (ROMs should not be committed)
+output/
+build/
+
+# Patch files (these ARE tracked)
+!*.ips
+!*.bps
+!patches/
+
 # Python virtual environment
 venv/
 .venv/
