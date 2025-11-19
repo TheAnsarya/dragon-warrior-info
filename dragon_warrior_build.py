@@ -327,7 +327,7 @@ class DragonWarriorBuild:
 		console.print("\n[cyan]🏗️ Building ROM with modified assets...[/cyan]")
 
 		# Check for assembler
-		assembler_path = Path("Ophis") / "bin" / "ophis.exe"
+		assembler_path = Path("Ophis") / "ophis.exe"
 		if not assembler_path.exists():
 			console.print(f"[red]❌ Assembler not found: {assembler_path}[/red]")
 			console.print("[yellow]Please ensure Ophis assembler is available[/yellow]")
@@ -341,8 +341,8 @@ class DragonWarriorBuild:
 ; Includes asset reinsertion from extracted/edited data
 
 ; Include original source files
-.include "{self.source_dir / 'Dragon_Warrior_Defines.asm'}"
-.include "{self.source_dir / 'Header.asm'}"
+.include "{str(self.source_dir / 'Dragon_Warrior_Defines.asm')}"
+.include "{str(self.source_dir / 'Header.asm')}"
 
 ; Include modified asset data (if generated)
 .ifdef INCLUDE_ASSET_REINSERTION
@@ -350,10 +350,10 @@ class DragonWarriorBuild:
 .endif
 
 ; Include remaining original banks
-.include "{self.source_dir / 'Bank00.asm'}"
-.include "{self.source_dir / 'Bank01.asm'}"
-.include "{self.source_dir / 'Bank02.asm'}"
-.include "{self.source_dir / 'Bank03.asm'}"
+.include "{str(self.source_dir / 'Bank00.asm')}"
+.include "{str(self.source_dir / 'Bank01.asm')}"
+.include "{str(self.source_dir / 'Bank02.asm')}"
+.include "{str(self.source_dir / 'Bank03.asm')}"
 """
 
 		try:
@@ -363,15 +363,12 @@ class DragonWarriorBuild:
 			# Build ROM
 			output_rom = self.output_dir / "dragon_warrior_modified.nes"
 
+			# Ophis uses simple syntax: ophis infile outfile
 			build_cmd = [
 				str(assembler_path),
 				str(main_asm),
-				"-o", str(output_rom)
+				str(output_rom)
 			]
-
-			# Include asset reinsertion if generated files exist
-			if (self.build_dir / "generated" / "asset_reinsertion.asm").exists():
-				build_cmd.extend(["-D", "INCLUDE_ASSET_REINSERTION"])
 
 			result = subprocess.run(build_cmd, capture_output=True, text=True, cwd=self.build_dir)
 
