@@ -39,19 +39,19 @@ class DragonWarriorBuild:
 	def show_banner(self):
 		"""Show build system banner"""
 		banner = Panel(
-			"[bold cyan]🐉 Dragon Warrior Complete Build System[/bold cyan]\n\n"
+			"[bold cyan]Dragon Warrior Complete Build System[/bold cyan]\n\n"
 			"[green]• Extract game assets to JSON/PNG files[/green]\n"
 			"[blue]• Edit assets using visual/interactive editors[/blue]\n"
 			"[yellow]• Generate assembly code for reinsertion[/yellow]\n"
 			"[magenta]• Build final ROM with modified assets[/magenta]",
-			title="🏗️ Build System",
+			title="Build System",
 			border_style="green"
 		)
 		console.print(banner)
 
 	def check_prerequisites(self) -> bool:
 		"""Check that all required tools exist"""
-		console.print("\n[cyan]🔍 Checking prerequisites...[/cyan]")
+		console.print("\n[cyan]Checking prerequisites...[/cyan]")
 
 		required_files = [
 			self.tools_dir / "asset_pipeline.py",
@@ -80,7 +80,7 @@ class DragonWarriorBuild:
 		Uses Dragon Warrior (U) (PRG1) [!].nes as the primary reference ROM.
 		PRG1 is the preferred version for modding and asset extraction.
 		"""
-		console.print("\n[cyan]📦 Extracting assets from ROM...[/cyan]")
+		console.print("\n[cyan]Extracting assets from ROM...[/cyan]")
 
 		# Primary reference ROM: Dragon Warrior (U) (PRG1) [!].nes
 		rom_file = Path("roms") / "Dragon Warrior (U) (PRG1) [!].nes"
@@ -169,17 +169,17 @@ class DragonWarriorBuild:
 
 	def launch_editor_menu(self):
 		"""Show editor selection menu"""
-		console.print("\n[bold cyan]🎨 Asset Editors[/bold cyan]")
+		console.print("\n[bold cyan]Asset Editors[/bold cyan]")
 
 		editors = [
-			("1", "🐲 Monster Editor", "monster"),
-			("2", "⚔️ Item Editor", "item"),
-			("3", "🗺️ Map Editor", "map"),
-			("4", "🪄 Spell Editor", "spell"),
-			("5", "💬 Dialog Editor", "dialog"),
-			("6", "🏪 Shop Editor", "shop"),
-			("7", "🎨 Graphics Editor", "graphics"),
-			("8", "🔙 Back to main menu", None)
+			("1", "Monster Editor", "monster"),
+			("2", "Item Editor", "item"),
+			("3", "Map Editor", "map"),
+			("4", "Spell Editor", "spell"),
+			("5", "Dialog Editor", "dialog"),
+			("6", "Shop Editor", "shop"),
+			("7", "Graphics Editor", "graphics"),
+			("8", "Back to main menu", None)
 		]
 
 		for num, name, _ in editors:
@@ -198,7 +198,7 @@ class DragonWarriorBuild:
 
 	def launch_editor(self, editor_type: str):
 		"""Launch specific editor"""
-		console.print(f"\n[cyan]🚀 Launching {editor_type} editor...[/cyan]")
+		console.print(f"\n[cyan]Launching {editor_type} editor...[/cyan]")
 
 		try:
 			subprocess.run([
@@ -212,7 +212,7 @@ class DragonWarriorBuild:
 
 	def generate_assembly(self) -> bool:
 		"""Generate assembly code for asset reinsertion"""
-		console.print("\n[cyan]🔧 Generating assembly code for asset reinsertion...[/cyan]")
+		console.print("\n[cyan]Generating assembly code for asset reinsertion...[/cyan]")
 
 		try:
 			result = subprocess.run([
@@ -235,7 +235,7 @@ class DragonWarriorBuild:
 
 	def patch_source_files(self) -> bool:
 		"""Patch source files to use asset includes"""
-		console.print("\n[cyan]🔧 Patching source files to use asset includes...[/cyan]")
+		console.print("\n[cyan]Patching source files to use asset includes...[/cyan]")
 
 		try:
 			result = subprocess.run([
@@ -256,7 +256,7 @@ class DragonWarriorBuild:
 
 	def restore_source_files(self) -> bool:
 		"""Restore original source files"""
-		console.print("\n[cyan]🔄 Restoring original source files...[/cyan]")
+		console.print("\n[cyan]Restoring original source files...[/cyan]")
 
 		try:
 			result = subprocess.run([
@@ -278,7 +278,7 @@ class DragonWarriorBuild:
 
 	def generate_patches(self) -> bool:
 		"""Generate IPS and BPS patches if built ROM differs from reference"""
-		console.print("\n[cyan]🔧 Checking for ROM differences and generating patches...[/cyan]")
+		console.print("\n[cyan]Checking for ROM differences and generating patches...[/cyan]")
 
 		# Look for reference ROM
 		reference_rom = None
@@ -317,7 +317,7 @@ class DragonWarriorBuild:
 
 	def validate_assets(self) -> bool:
 		"""Validate extracted assets"""
-		console.print("\n[cyan]🔍 Validating extracted assets...[/cyan]")
+		console.print("\n[cyan]Validating extracted assets...[/cyan]")
 
 		try:
 			result = subprocess.run([
@@ -339,7 +339,7 @@ class DragonWarriorBuild:
 
 	def build_rom(self) -> bool:
 		"""Build final ROM with asset reinsertion"""
-		console.print("\n[cyan]🏗️ Building ROM with modified assets...[/cyan]")
+		console.print("\n[cyan]Building ROM with modified assets...[/cyan]")
 
 		# Check for assembler
 		assembler_path = Path("Ophis") / "ophis.exe"
@@ -436,7 +436,7 @@ class DragonWarriorBuild:
 			patches_dir = Path("patches")
 			patches_dir.mkdir(exist_ok=True)
 
-			console.print("[dim]🔧 Generating automatic timestamped patches...[/dim]")
+			console.print("[dim]Generating automatic timestamped patches...[/dim]")
 
 			# Call patch generator with timestamped output
 			result = subprocess.run([
@@ -458,7 +458,7 @@ class DragonWarriorBuild:
 
 	def verify_rom(self) -> bool:
 		"""Verify built ROM against reference ROM with detailed analysis"""
-		console.print("\n[cyan]🔍 Verifying built ROM against reference...[/cyan]")
+		console.print("\n[cyan]Verifying built ROM against reference...[/cyan]")
 
 		# Primary reference ROM: Dragon Warrior (U) (PRG1) [!].nes
 		reference_rom = Path("roms") / "Dragon Warrior (U) (PRG1) [!].nes"
@@ -510,7 +510,7 @@ class DragonWarriorBuild:
 
 	def clean_build(self):
 		"""Clean build artifacts"""
-		console.print("\n[cyan]🧹 Cleaning build artifacts...[/cyan]")
+		console.print("\n[cyan]Cleaning build artifacts...[/cyan]")
 
 		import shutil
 
@@ -552,19 +552,19 @@ class DragonWarriorBuild:
 		"""Run the interactive build menu"""
 
 		while True:
-			console.print("\n[bold green]🐉 Dragon Warrior Build System[/bold green]")
-			console.print("1. 📦 Extract assets from ROM")
-			console.print("2. 🎨 Launch asset editors")
-			console.print("3. 🔧 Generate assembly code & extract defaults")
-			console.print("4. 🔧 Patch source files for asset includes")
-			console.print("5. 🔄 Restore original source files")
-			console.print("6. 🏠 Build modified ROM")
-			console.print("7. 🔧 Generate patches (IPS/BPS)")
-			console.print("8. 🔍 Verify ROM against reference")
-			console.print("9. 📈 Show build status")
-			console.print("10. 🧩 Clean build")
-			console.print("11. 🚀 Full build pipeline")
-			console.print("12. 🚺 Exit")
+			console.print("\n[bold green]Dragon Warrior Build System[/bold green]")
+			console.print("1. Extract assets from ROM")
+			console.print("2. Launch asset editors")
+			console.print("3. Generate assembly code & extract defaults")
+			console.print("4. Patch source files for asset includes")
+			console.print("5. Restore original source files")
+			console.print("6. Build modified ROM")
+			console.print("7. Generate patches (IPS/BPS)")
+			console.print("8. Verify ROM against reference")
+			console.print("9. Show build status")
+			console.print("10. Clean build")
+			console.print("11. Full build pipeline")
+			console.print("12. Exit")
 
 			choice = click.prompt("\nSelect option", type=str).strip()
 
@@ -606,7 +606,7 @@ class DragonWarriorBuild:
 
 			elif choice == "11":
 				# Full pipeline
-				console.print("\n[bold cyan]🚀 Running full build pipeline...[/bold cyan]")
+				console.print("\n[bold cyan]Running full build pipeline...[/bold cyan]")
 				if (self.extract_assets() and
 					self.generate_assembly() and
 					self.patch_source_files() and
@@ -616,7 +616,7 @@ class DragonWarriorBuild:
 					self.generate_patches()
 
 					# Verify ROM
-					console.print("\n[cyan]🔍 Verifying built ROM...[/cyan]")
+					console.print("\n[cyan]Verifying built ROM...[/cyan]")
 					self.verify_rom()  # Non-blocking verification
 
 					console.print("\n[bold green]✅ Full build pipeline completed successfully![/bold green]")
@@ -624,7 +624,7 @@ class DragonWarriorBuild:
 					console.print("\n[bold red]❌ Build pipeline failed at some stage[/bold red]")
 
 			elif choice == "12":
-				console.print("\n[bold cyan]👋 Thanks for using Dragon Warrior Build System![/bold cyan]")
+				console.print("\n[bold cyan]Thanks for using Dragon Warrior Build System![/bold cyan]")
 				break
 
 			else:

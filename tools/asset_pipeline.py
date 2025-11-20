@@ -38,18 +38,18 @@ class AssetPipeline:
 		# Validate ROM file size (Dragon Warrior should be around 256KB)
 		rom_size = self.rom_path.stat().st_size
 		if rom_size < 100_000:
-			console.print(f"[yellow]⚠️  Warning: ROM file seems too small ({rom_size} bytes)[/yellow]")
+			console.print(f"[yellow]Warning: ROM file seems too small ({rom_size} bytes)[/yellow]")
 		elif rom_size > 1_000_000:
-			console.print(f"[yellow]⚠️  Warning: ROM file seems too large ({rom_size} bytes)[/yellow]")
+			console.print(f"[yellow]Warning: ROM file seems too large ({rom_size} bytes)[/yellow]")
 
 		try:
 			# Test ROM file readability
 			with open(self.rom_path, 'rb') as f:
 				header = f.read(16)
 				if len(header) >= 4 and header[:4] == b'NES\x1a':
-					console.print(f"[green]✅ Valid NES ROM detected: {self.rom_path.name}[/green]")
+					console.print(f"[green]Valid NES ROM detected: {self.rom_path.name}[/green]")
 				else:
-					console.print(f"[yellow]⚠️  Warning: ROM doesn't appear to be iNES format[/yellow]")
+					console.print(f"[yellow]Warning: ROM doesn't appear to be iNES format[/yellow]")
 		except PermissionError:
 			raise PermissionError(f"Cannot read ROM file (permission denied): {rom_path}")
 		except Exception as e:
@@ -80,50 +80,44 @@ class AssetPipeline:
 
 	def extract_all_assets(self):
 		"""Extract all assets from ROM"""
-		console.print("[bold blue]🎯 Dragon Warrior Asset Extraction Pipeline[/bold blue]\n")
+		console.print("[bold blue]Dragon Warrior Asset Extraction Pipeline[/bold blue]\n")
 
 		try:
-			with Progress(
-				SpinnerColumn(),
-				TextColumn("[progress.description]{task.description}"),
-				console=console
-			) as progress:
+			# Extract graphics and palettes
+			console.print("[cyan]Extracting graphics and palettes...[/cyan]")
+			try:
+				self._run_graphics_extractor()
+				console.print("[green]Graphics extraction completed[/green]")
+			except Exception as e:
+				console.print(f"[red]Graphics extraction failed: {e}[/red]")
+				return False
 
-				# Extract graphics and palettes
-				task = progress.add_task("Extracting graphics and palettes...", total=None)
-				try:
-					self._run_graphics_extractor()
-					progress.update(task, completed=True)
-				except Exception as e:
-					console.print(f"[red]❌ Graphics extraction failed: {e}[/red]")
-					progress.update(task, description="Graphics extraction failed")
+			# Extract game data
+			console.print("[cyan]Extracting game data...[/cyan]")
+			try:
+				self._run_data_extractor()
+				console.print("[green]Data extraction completed[/green]")
+			except Exception as e:
+				console.print(f"[red]Data extraction failed: {e}[/red]")
+				return False
 
-				# Extract game data
-				task = progress.add_task("Extracting game data...", total=None)
-				try:
-					self._run_data_extractor()
-					progress.update(task, completed=True)
-				except Exception as e:
-					console.print(f"[red]❌ Data extraction failed: {e}[/red]")
-					progress.update(task, description="Data extraction failed")
+			# Merge data files
+			console.print("[cyan]Merging data files...[/cyan]")
+			try:
+				self._merge_data_files()
+				console.print("[green]Data merging completed[/green]")
+			except Exception as e:
+				console.print(f"[red]Data merging failed: {e}[/red]")
+				return False
 
-				# Merge data files
-				task = progress.add_task("Merging data files...", total=None)
-				try:
-					self._merge_data_files()
-					progress.update(task, completed=True)
-				except Exception as e:
-					console.print(f"[red]❌ Data merging failed: {e}[/red]")
-					progress.update(task, description="Data merging failed")
-
-			console.print("\n[green]✅ Asset extraction complete![/green]")
+			console.print("\n[green]Asset extraction complete![/green]")
 			self._display_extraction_summary()
 
 		except KeyboardInterrupt:
-			console.print("\n[yellow]⚠️  Extraction cancelled by user[/yellow]")
+			console.print("\n[yellow]Extraction cancelled by user[/yellow]")
 			return False
 		except Exception as e:
-			console.print(f"\n[red]❌ Critical error during extraction: {e}[/red]")
+			console.print(f"\n[red]Critical error during extraction: {e}[/red]")
 			return False
 
 		return True
@@ -275,14 +269,14 @@ class AssetPipeline:
 		}
 
 		if editor_type not in editors:
-			console.print(f"[red]❌ Unknown editor: {editor_type}[/red]")
+			console.print(f"[red]Unknown editor: {editor_type}[/red]")
 			console.print(f"[dim]Available editors: {', '.join(editors.keys())}[/dim]")
 			return False
 
 		editor_path = Path(__file__).parent / editors[editor_type]
 
 		if not editor_path.exists():
-			console.print(f"[red]❌ Editor not found: {editor_path}[/red]")
+			console.print(f"[red]Editor not found: {editor_path}[/red]")
 			return False
 
 		# Determine data file based on editor type
@@ -299,11 +293,11 @@ class AssetPipeline:
 		data_file = data_files.get(editor_type)
 
 		if data_file and not data_file.exists():
-			console.print(f"[red]❌ Data file not found: {data_file}[/red]")
+			console.print(f"[red]Data file not found: {data_file}[/red]")
 			console.print("[yellow]💡 Run extraction first to generate data files![/yellow]")
 			return False
 
-		console.print(f"[cyan]🚀 Launching {editor_type} editor...[/cyan]")
+		console.print(f"[cyan]Launching {editor_type} editor...[/cyan]")
 
 		try:
 			# Launch editor in new process
@@ -314,19 +308,19 @@ class AssetPipeline:
 			result = subprocess.run(args, check=False)
 
 			if result.returncode != 0:
-				console.print(f"[yellow]⚠️  Editor exited with code {result.returncode}[/yellow]")
+				console.print(f"[yellow]Editor exited with code {result.returncode}[/yellow]")
 			return result.returncode == 0
 
 		except FileNotFoundError:
-			console.print(f"[red]❌ Python interpreter not found: {sys.executable}[/red]")
+			console.print(f"[red]Python interpreter not found: {sys.executable}[/red]")
 			return False
 		except Exception as e:
-			console.print(f"[red]❌ Error launching editor: {e}[/red]")
+			console.print(f"[red]Error launching editor: {e}[/red]")
 			return False
 
 	def generate_assembly_code(self):
 		"""Generate assembly insertion code from extracted data"""
-		console.print("[blue]🔧 Generating assembly insertion code...[/blue]")
+		console.print("[blue]Generating assembly insertion code...[/blue]")
 
 		# Load merged game data
 		merged_file = self.json_dir / "merged_game_data.json"
@@ -364,7 +358,7 @@ class AssetPipeline:
 				f.write(shop_asm)
 			asm_files.append(shop_file)
 
-		console.print(f"[green]✅ Generated {len(asm_files)} assembly files:[/green]")
+		console.print(f"[green]Generated {len(asm_files)} assembly files:[/green]")
 		for asm_file in asm_files:
 			console.print(f"	 📄 {asm_file}")
 
@@ -509,19 +503,19 @@ def asset_pipeline(rom_path: str, output_dir: str, extract_only: bool):
 		if extract_only:
 			success = pipeline.extract_all_assets()
 			if not success:
-				console.print("[red]❌ Extraction failed[/red]")
+				console.print("[red]Extraction failed[/red]")
 				sys.exit(1)
 		else:
 			pipeline.run_pipeline()
 
 	except KeyboardInterrupt:
-		console.print("\n[yellow]⚠️  Operation cancelled by user[/yellow]")
+		console.print("\n[yellow]Operation cancelled by user[/yellow]")
 		sys.exit(130)
 	except (FileNotFoundError, ValueError, PermissionError, IOError) as e:
-		console.print(f"[red]❌ {e}[/red]")
+		console.print(f"[red]{e}[/red]")
 		sys.exit(1)
 	except Exception as e:
-		console.print(f"[red]❌ Unexpected error: {e}[/red]")
+		console.print(f"[red]Unexpected error: {e}[/red]")
 		sys.exit(1)
 
 if __name__ == "__main__":

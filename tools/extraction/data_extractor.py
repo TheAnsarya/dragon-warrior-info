@@ -393,26 +393,26 @@ class DragonWarriorDataExtractor:
 
 	def extract_all_data(self) -> GameData:
 		"""Extract all game data"""
-		console.print("[blue]📊 Extracting Dragon Warrior game data...[/blue]\n")
+		console.print("[blue]Extracting Dragon Warrior game data...[/blue]\n")
 
 		# Extract all data types
 		monsters = self.extract_monster_stats()
-		console.print(f"✅ Extracted {len(monsters)} monster stats")
+		console.print(f"Extracted {len(monsters)} monster stats")
 
 		items = self.extract_item_data()
-		console.print(f"✅ Extracted {len(items)} items")
+		console.print(f"Extracted {len(items)} items")
 
 		spells = self.extract_spell_data()
-		console.print(f"✅ Extracted {len(spells)} spells")
+		console.print(f"Extracted {len(spells)} spells")
 
 		shops = self.extract_shop_data()
-		console.print(f"✅ Extracted {len(shops)} shops")
+		console.print(f"Extracted {len(shops)} shops")
 
 		dialogs = self.extract_dialog_data()
-		console.print(f"✅ Extracted {len(dialogs)} dialog entries")
+		console.print(f"Extracted {len(dialogs)} dialog entries")
 
 		npcs = self.extract_npc_data()
-		console.print(f"✅ Extracted {len(npcs)} NPCs")
+		console.print(f"Extracted {len(npcs)} NPCs")
 
 		# Create complete game data
 		game_data = GameData(
@@ -433,8 +433,8 @@ class DragonWarriorDataExtractor:
 		# Save individual JSON files
 		self._save_individual_files(monsters, items, spells, shops, dialogs, npcs)
 
-		console.print(f"\n[green]✅ Data extraction complete![/green]")
-		console.print(f"	 📁 JSON files: {self.json_dir}")
+		console.print(f"\n[green]Data extraction complete![/green]")
+		console.print(f"	 JSON files: {self.json_dir}")
 
 		return game_data
 
@@ -484,7 +484,7 @@ def extract_data(rom_path: str, output_dir: str):
 		console.print("\n[green]🎯 Data extraction completed successfully![/green]")
 
 	except Exception as e:
-		console.print(f"[red]❌ Error: {e}[/red]")
+		console.print(f"[red]Error: {e}[/red]")
 		raise
 
 if __name__ == "__main__":

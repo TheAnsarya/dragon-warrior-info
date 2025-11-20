@@ -328,15 +328,15 @@ class DragonWarriorGraphicsExtractor:
 
 	def extract_all_graphics(self) -> GameData:
 		"""Extract all graphics and data"""
-		console.print("[blue]🎨 Extracting Dragon Warrior graphics...[/blue]\n")
+		console.print("[blue]Extracting Dragon Warrior graphics...[/blue]\n")
 
 		# Extract CHR-ROM tiles
 		tiles = self.extract_chr_rom()
-		console.print(f"✅ Extracted {len(tiles)} CHR-ROM tiles")
+		console.print(f"Extracted {len(tiles)} CHR-ROM tiles")
 
 		# Extract palettes
 		palettes = self.extract_palettes()
-		console.print(f"✅ Extracted {len(palettes)} palettes")
+		console.print(f"Extracted {len(palettes)} palettes")
 
 		# Save palette swatches
 		for palette_id, palette in palettes.items():
@@ -346,11 +346,11 @@ class DragonWarriorGraphicsExtractor:
 		# Extract sprite graphics
 		default_palette = list(palettes.values())[0] if palettes else Palette("default", [Color(255,255,255), Color(170,170,170), Color(85,85,85), Color(0,0,0)])
 		graphics = self.extract_sprite_graphics(tiles, palettes)
-		console.print(f"✅ Extracted {len(graphics)} sprite graphics")
+		console.print(f"Extracted {len(graphics)} sprite graphics")
 
 		# Extract maps
 		maps = self.extract_map_data()
-		console.print(f"✅ Extracted {len(maps)} maps")
+		console.print(f"Extracted {len(maps)} maps")
 
 		# Render maps to PNG
 		for map_id, map_data in maps.items():
@@ -376,11 +376,11 @@ class DragonWarriorGraphicsExtractor:
 		# Save individual JSON files
 		self._save_individual_json_files(palettes, graphics, maps)
 
-		console.print(f"\n[green]✅ Graphics extraction complete![/green]")
-		console.print(f"	 📁 Graphics: {self.graphics_dir}")
-		console.print(f"	 📁 Palettes: {self.palettes_dir}")
-		console.print(f"	 📁 Maps: {self.maps_dir}")
-		console.print(f"	 📁 JSON: {self.json_dir}")
+		console.print(f"\n[green]Graphics extraction complete![/green]")
+		console.print(f"	 Graphics: {self.graphics_dir}")
+		console.print(f"	 Palettes: {self.palettes_dir}")
+		console.print(f"	 Maps: {self.maps_dir}")
+		console.print(f"	 JSON: {self.json_dir}")
 
 		return game_data
 
@@ -412,10 +412,10 @@ def extract_graphics(rom_path: str, output_dir: str):
 		extractor = DragonWarriorGraphicsExtractor(rom_path, output_dir)
 		game_data = extractor.extract_all_graphics()
 
-		console.print("\n[green]🎯 Graphics extraction completed successfully![/green]")
+		console.print("\n[green]Graphics extraction completed successfully![/green]")
 
 	except Exception as e:
-		console.print(f"[red]❌ Error: {e}[/red]")
+		console.print(f"[red]Error: {e}[/red]")
 		raise
 
 if __name__ == "__main__":
