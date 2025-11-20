@@ -3,7 +3,6 @@
 *.bin
 
 # ROM files and folders
-~roms/
 roms/
 *.rom
 

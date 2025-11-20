@@ -23,11 +23,15 @@ don't have the build system modify the main source files, but rather use assembl
 
 git comment and push; The `venv` python virtual environment is in gitignore, but make sure it is in the setup instructions and keep the `requirements.txt` file updated, and whatever else should be properly available for venv to make it easy to use; don't commit the built ROM to git, so add it to gitignore (without any edits it should compile to the original copyrighted rom, so we don't want itin the repos); then recheck the asset editors to make sure they are editing the extracted assets, not editing the source code or rom directly; if the built rom does not match the reference build rom, then create an `.ips` patch and `.bps` patch that is included in git so the differences can be tracked; build the rom from assets and such;
 
+automatically create some timestamped patch files in `ips` and `bps` format during every ROM file build process
 
+The primary reference rom is `roms\Dragon Warrior (U) (PRG1) [!].nes` document this and use this
 
+verify that the built rom matches the reference roms and create reports that show the matching progress and what matches and what doesn't; 
 
+selecting options is by number only so `10` not `10. clean build`;
 
-
+git comment and push; `extract assets from rom` is failing; make that work and the other build pipeline options all work as expected; verification reports are using space instead of tabs, we only use tabs for indentation, never spaces, fix that;
 
 
 

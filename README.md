@@ -40,6 +40,9 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Place Dragon Warrior (U) (PRG1) [!].nes in roms/ directory
+# See ROM_REQUIREMENTS.md for detailed ROM setup instructions
+
 # Run the build system
 python dragon_warrior_build.py
 ```

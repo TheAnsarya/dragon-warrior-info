@@ -10,6 +10,7 @@ import sys
 import os
 from pathlib import Path
 from typing import Dict, List, Any, Optional
+from datetime import datetime
 import click
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -74,14 +75,28 @@ class DragonWarriorBuild:
 		return True
 
 	def extract_assets(self) -> bool:
-		"""Extract assets from ROM using asset pipeline"""
+		"""Extract assets from ROM using asset pipeline
+
+		Uses Dragon Warrior (U) (PRG1) [!].nes as the primary reference ROM.
+		PRG1 is the preferred version for modding and asset extraction.
+		"""
 		console.print("\n[cyan]📦 Extracting assets from ROM...[/cyan]")
+
+		# Primary reference ROM: Dragon Warrior (U) (PRG1) [!].nes
+		rom_file = Path("roms") / "Dragon Warrior (U) (PRG1) [!].nes"
+
+		if not rom_file.exists():
+			console.print(f"[red]❌ ROM file not found: {rom_file}[/red]")
+			console.print("[dim]Expected: Dragon Warrior (U) (PRG1) [!].nes in roms/ directory[/dim]")
+			return False
 
 		try:
 			result = subprocess.run([
 				sys.executable,
 				str(self.tools_dir / "asset_pipeline.py"),
-				"extract",
+				str(rom_file),
+				"--extract-only",
+				"--output-dir",
 				str(self.assets_dir)
 			], capture_output=True, text=True, check=True)
 
@@ -271,11 +286,11 @@ class DragonWarriorBuild:
 			if Path(rom_file).exists():
 				reference_rom = Path(rom_file)
 				break
-		
+
 		if not reference_rom:
 			console.print("[yellow]⚠️ No reference ROM found - skipping patch generation[/yellow]")
 			return True
-		
+
 		built_rom = self.output_dir / "dragon_warrior_modified.nes"
 		if not built_rom.exists():
 			console.print("[yellow]⚠️ No built ROM found - skipping patch generation[/yellow]")
@@ -374,6 +389,10 @@ class DragonWarriorBuild:
 
 			if result.returncode == 0:
 				console.print(f"[green]✅ ROM built successfully: {output_rom}[/green]")
+
+				# Automatically generate timestamped patches
+				self._generate_automatic_patches(output_rom)
+
 				return True
 			else:
 				console.print("[red]❌ ROM build failed[/red]")
@@ -385,6 +404,108 @@ class DragonWarriorBuild:
 
 		except Exception as e:
 			console.print(f"[red]❌ ROM build error: {e}[/red]")
+			return False
+
+	def _generate_automatic_patches(self, built_rom: Path) -> None:
+		"""Automatically generate timestamped patches after ROM build
+
+		Generates IPS and BPS patches comparing the built ROM against the
+		primary reference ROM: Dragon Warrior (U) (PRG1) [!].nes
+		"""
+		try:
+			# Primary reference ROM: Dragon Warrior (U) (PRG1) [!].nes
+			reference_rom = Path("roms") / "Dragon Warrior (U) (PRG1) [!].nes"
+
+			# Fallback ROM files for compatibility
+			if not reference_rom.exists():
+				for rom_file in ["dragon_warrior.nes", "Dragon Warrior.nes", "dragon_warrior_original.nes"]:
+					if Path(rom_file).exists():
+						reference_rom = Path(rom_file)
+						break
+				else:
+					reference_rom = None
+
+			if not reference_rom:
+				console.print("[dim]📝 No reference ROM found - skipping automatic patch generation[/dim]")
+				return
+
+			# Generate timestamp
+			timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+			# Create patches directory if it doesn't exist
+			patches_dir = Path("patches")
+			patches_dir.mkdir(exist_ok=True)
+
+			console.print("[dim]🔧 Generating automatic timestamped patches...[/dim]")
+
+			# Call patch generator with timestamped output
+			result = subprocess.run([
+				sys.executable,
+				str(self.tools_dir / "patch_generator.py"),
+				str(reference_rom),
+				str(built_rom),
+				"--patches-dir", str(patches_dir),
+				"--timestamp", timestamp
+			], capture_output=True, text=True)
+
+			if result.returncode == 0:
+				console.print("[dim]✅ Automatic patches generated[/dim]")
+			else:
+				console.print(f"[dim]⚠️  Patch generation skipped: {result.stderr.strip() if result.stderr else 'No differences found'}[/dim]")
+
+		except Exception as e:
+			console.print(f"[dim]⚠️  Error generating automatic patches: {e}[/dim]")
+
+	def verify_rom(self) -> bool:
+		"""Verify built ROM against reference ROM with detailed analysis"""
+		console.print("\n[cyan]🔍 Verifying built ROM against reference...[/cyan]")
+
+		# Primary reference ROM: Dragon Warrior (U) (PRG1) [!].nes
+		reference_rom = Path("roms") / "Dragon Warrior (U) (PRG1) [!].nes"
+
+		# Check for built ROM
+		built_rom = self.output_dir / "dragon_warrior_modified.nes"
+		if not built_rom.exists():
+			console.print("[yellow]⚠️ No built ROM found - run build first[/yellow]")
+			return False
+
+		# Fallback ROM files for compatibility
+		if not reference_rom.exists():
+			for rom_file in ["dragon_warrior.nes", "Dragon Warrior.nes", "dragon_warrior_original.nes"]:
+				if Path(rom_file).exists():
+					reference_rom = Path(rom_file)
+					break
+			else:
+				console.print("[red]❌ No reference ROM found[/red]")
+				console.print("[dim]Expected: Dragon Warrior (U) (PRG1) [!].nes in roms/ directory[/dim]")
+				return False
+
+		try:
+			result = subprocess.run([
+				sys.executable,
+				str(self.tools_dir / "rom_verifier.py"),
+				str(reference_rom),
+				str(built_rom),
+				"--output-dir", "verification_reports"
+			], capture_output=True, text=True)
+
+			if result.returncode == 0:
+				console.print("[green]✅ ROM verification complete - ROMs are identical[/green]")
+				return True
+			else:
+				console.print("[yellow]⚠️ ROM verification complete - differences found[/yellow]")
+				console.print("[dim]Check verification_reports/ for detailed analysis[/dim]")
+				return True  # Still successful verification, just not identical
+
+		except subprocess.CalledProcessError as e:
+			console.print(f"[red]❌ ROM verification failed: {e}[/red]")
+			if e.stdout:
+				console.print(f"[dim]stdout: {e.stdout}[/dim]")
+			if e.stderr:
+				console.print(f"[dim]stderr: {e.stderr}[/dim]")
+			return False
+		except Exception as e:
+			console.print(f"[red]❌ ROM verification error: {e}[/red]")
 			return False
 
 	def clean_build(self):
@@ -439,12 +560,19 @@ class DragonWarriorBuild:
 			console.print("5. 🔄 Restore original source files")
 			console.print("6. 🏠 Build modified ROM")
 			console.print("7. 🔧 Generate patches (IPS/BPS)")
-			console.print("8. 📈 Show build status")
-			console.print("9. 🧩 Clean build")
-			console.print("10. 🚀 Full build pipeline")
-			console.print("11. 🚺 Exit")
+			console.print("8. 🔍 Verify ROM against reference")
+			console.print("9. 📈 Show build status")
+			console.print("10. 🧩 Clean build")
+			console.print("11. 🚀 Full build pipeline")
+			console.print("12. 🚺 Exit")
 
 			choice = click.prompt("\nSelect option", type=str).strip()
+
+			# Extract just the number if user typed extra text
+			import re
+			number_match = re.match(r'^(\d+)', choice)
+			if number_match:
+				choice = number_match.group(1)
 
 			if choice == "1":
 				self.extract_assets()
@@ -468,28 +596,39 @@ class DragonWarriorBuild:
 				self.generate_patches()
 
 			elif choice == "8":
-				self.show_status()
+				self.verify_rom()
 
 			elif choice == "9":
-				self.clean_build()
+				self.show_status()
 
 			elif choice == "10":
+				self.clean_build()
+
+			elif choice == "11":
 				# Full pipeline
 				console.print("\n[bold cyan]🚀 Running full build pipeline...[/bold cyan]")
 				if (self.extract_assets() and
 					self.generate_assembly() and
 					self.patch_source_files() and
-					self.build_rom() and
-					self.generate_patches()):
+					self.build_rom()):
+
+					# Generate patches
+					self.generate_patches()
+
+					# Verify ROM
+					console.print("\n[cyan]🔍 Verifying built ROM...[/cyan]")
+					self.verify_rom()  # Non-blocking verification
+
 					console.print("\n[bold green]✅ Full build pipeline completed successfully![/bold green]")
 				else:
 					console.print("\n[bold red]❌ Build pipeline failed at some stage[/bold red]")
 
-			elif choice == "11":
+			elif choice == "12":
 				console.print("\n[bold cyan]👋 Thanks for using Dragon Warrior Build System![/bold cyan]")
 				break
 
 			else:
+				console.print(f"[red]Invalid choice: {choice}[/red]")
 				console.print(f"[red]Invalid choice: {choice}[/red]")
 
 @click.command()

@@ -1,0 +1,65 @@
+================================================================================
+Dragon Warrior ROM Verification Report
+================================================================================
+Generated: 2025-11-20T13:51:58.717715
+
+REFERENCE ROM:
+  File: Dragon Warrior (U) (PRG1) [!].nes
+  Size: 81,936 bytes
+  MD5:  25cf03eb7ac2dec4ef332425c151f373
+  SHA1: 1ecc63aaac50a9612eaa8b69143858c3e48dd0ae
+
+BUILT ROM:
+  File: dragon_warrior_modified.nes
+  Size: 81,936 bytes
+  MD5:  25cf03eb7ac2dec4ef332425c151f373
+  SHA1: 1ecc63aaac50a9612eaa8b69143858c3e48dd0ae
+
+COMPARISON RESULTS:
+  Identical: YES
+  Match Percentage: 100.00%
+  Size Difference: +0 bytes
+
+SEGMENT ANALYSIS:
+  nes_header:
+    Range: 0x0000-0x0010
+    Matches: YES
+    Differences: 0
+
+  trainer:
+    Range: 0x0010-0x0210
+    Matches: YES
+    Differences: 0
+
+  prg_rom_bank0:
+    Range: 0x8010-0xC000
+    Matches: YES
+    Differences: 0
+
+  prg_rom_bank1:
+    Range: 0xC000-0x10000
+    Matches: YES
+    Differences: 0
+
+  chr_rom:
+    Range: 0x10000-0x12000
+    Matches: YES
+    Differences: 0
+
+CRITICAL AREAS:
+  nes_header: PASS
+    NES header and ROM configuration
+    Range: 0x0000-0x0010
+
+  reset_vector: PASS
+    CPU reset vector
+    Range: 0xFFFC-0xFFFE
+
+  nmi_vector: PASS
+    NMI interrupt vector
+    Range: 0xFFFA-0xFFFC
+
+  irq_vector: PASS
+    IRQ interrupt vector
+    Range: 0xFFFE-0x10000
+
