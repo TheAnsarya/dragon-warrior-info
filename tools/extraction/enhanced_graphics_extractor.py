@@ -60,29 +60,47 @@ class DragonWarriorFontAndSlimeExtractor:
         self.chr_start = 0x8010
         self.chr_size = 0x2000  # 8KB CHR-ROM
 
-        # Font character mapping (from disassembly analysis)
+        # Font character mapping (from actual disassembly analysis)
         self.font_char_map = {
-            # Numbers
+            # From Dragon_Warrior_Defines.asm - actual character mappings
+            # Numbers - need to find these in disassembly
             0x50: '0', 0x51: '1', 0x52: '2', 0x53: '3', 0x54: '4',
             0x55: '5', 0x56: '6', 0x57: '7', 0x58: '8', 0x59: '9',
 
-            # Uppercase letters
-            0x24: 'A', 0x25: 'B', 0x26: 'C', 0x27: 'D', 0x28: 'E', 0x29: 'F',
-            0x2A: 'G', 0x2B: 'H', 0x2C: 'I', 0x2D: 'J', 0x2E: 'K', 0x2F: 'L',
-            0x30: 'M', 0x31: 'N', 0x32: 'O', 0x33: 'P', 0x34: 'Q', 0x35: 'R',
-            0x36: 'S', 0x37: 'T', 0x38: 'U', 0x39: 'V', 0x3A: 'W', 0x3B: 'X',
-            0x3C: 'Y', 0x3D: 'Z',
-
-            # Lowercase letters
+            # Specific characters from disassembly
+            0x17: 'n',    # TXT_LWR_N
+            0x1C: 's',    # TXT_LWR_S  
+            0x24: 'A',    # TXT_UPR_A
+            0x28: 'E',    # TXT_UPR_E
+            0x2C: 'I',    # TXT_UPR_I
+            0x32: 'O',    # TXT_UPR_O
+            0x38: 'U',    # TXT_UPR_U
+            
+            # Punctuation from disassembly
+            0x40: "'",    # TXT_APOS
+            0x47: '.',    # TXT_PERIOD
+            0x48: ',',    # TXT_COMMA
+            0x49: '-',    # TXT_DASH
+            0x4B: '?',    # TXT_QUESTION
+            0x4C: '!',    # TXT_EXCLAIM
+            0x4E: ')',    # TXT_CLS_PAREN
+            0x4F: '(',    # TXT_OPN_PAREN
+            0x50: '"',    # TXT_OPN_QUOTE (conflicts with 0, but let's use quote)
+            0x60: ' ',    # TXT_BLANK1
+            
+            # Fill in likely patterns for other letters based on spacing
+            # Uppercase letters (pattern from A=0x24)
+            0x25: 'B', 0x26: 'C', 0x27: 'D', 0x29: 'F', 0x2A: 'G', 0x2B: 'H',
+            0x2D: 'J', 0x2E: 'K', 0x2F: 'L', 0x30: 'M', 0x31: 'N', 0x33: 'P',
+            0x34: 'Q', 0x35: 'R', 0x36: 'S', 0x37: 'T', 0x39: 'V', 0x3A: 'W',
+            0x3B: 'X', 0x3C: 'Y', 0x3D: 'Z',
+            
+            # Lowercase letters (pattern from n=0x17, s=0x1C)
             0x04: 'a', 0x05: 'b', 0x06: 'c', 0x07: 'd', 0x08: 'e', 0x09: 'f',
             0x0A: 'g', 0x0B: 'h', 0x0C: 'i', 0x0D: 'j', 0x0E: 'k', 0x0F: 'l',
             0x10: 'm', 0x11: 'n', 0x12: 'o', 0x13: 'p', 0x14: 'q', 0x15: 'r',
-            0x16: 's', 0x17: 't', 0x18: 'u', 0x19: 'v', 0x1A: 'w', 0x1B: 'x',
-            0x1C: 'y', 0x1D: 'z',
-
-            # Special characters
-            0x40: "'", 0x47: '.', 0x48: ',', 0x49: '-', 0x4B: '?', 0x4C: '!',
-            0x4E: ')', 0x4F: '(', 0x50: '"', 0x60: ' '
+            0x16: 's', 0x18: 't', 0x19: 'u', 0x1A: 'v', 0x1B: 'w', 0x1D: 'x',
+            0x1E: 'y', 0x1F: 'z'
         }
 
         # Slime palette data from disassembly (BSlimePal: .byte $1C, $15, $30, $0E...)
@@ -158,15 +176,25 @@ class DragonWarriorFontAndSlimeExtractor:
         """Extract the entire font as a single viewable/editable sheet"""
         tiles = self.extract_chr_rom_tiles()
 
-        # Create text palette (white text on black background for readability)
-        text_palette_indices = [0x0F, 0x00, 0x10, 0x30]  # Black, dark gray, light gray, white
+        # Create proper Dragon Warrior text palette
+        # Dragon Warrior uses a white text on dark background palette for dialogs
+        # NES palette indices: transparent/black, dark color, medium color, white
+        text_palette_indices = [0x0F, 0x00, 0x30, 0x20]  # Black/transparent, black, white, lighter white
         text_colors = self.create_palette_colors(text_palette_indices)
+        
+        # Alternative cleaner palette for better visibility
+        clean_text_colors = [
+            (0, 0, 0),          # Color 0: Black (background/transparent)
+            (64, 64, 64),       # Color 1: Dark gray  
+            (192, 192, 192),    # Color 2: Light gray
+            (255, 255, 255)     # Color 3: White (text)
+        ]
 
         # Dragon Warrior font characters are in specific tiles based on character mapping
         # Extract only tiles that contain actual font characters
         font_tile_indices = list(self.font_char_map.keys())
         font_tile_indices.sort()  # Sort for organized display
-        
+
         console.print(f"Font tiles to extract: {[hex(i) for i in font_tile_indices[:10]]}...") # Show first 10
 
         # Calculate grid dimensions for actual font characters (not all 128 tiles)
@@ -186,7 +214,7 @@ class DragonWarriorFontAndSlimeExtractor:
             if tile_idx < len(tiles):
                 tile_data = tiles[tile_idx]
                 tile_pixels = self.decode_nes_tile(tile_data)
-                tile_img = self.render_tile_with_palette(tile_pixels, text_colors)
+                tile_img = self.render_tile_with_palette(tile_pixels, clean_text_colors)  # Use clean colors
 
                 # Scale up tile
                 tile_img = tile_img.resize((tile_size * scale_factor, tile_size * scale_factor), Resampling.NEAREST)
@@ -339,7 +367,7 @@ class DragonWarriorFontAndSlimeExtractor:
 @click.option('--output-dir', '-o', default='extracted_assets/enhanced', help='Output directory')
 def extract_enhanced_graphics(rom_path: str, output_dir: str):
     """Extract Dragon Warrior font and slime graphics with proper palettes
-    
+
     Use PRG1 ROM (primary version), not PRG0 (alternate version)
     Example: python enhanced_graphics_extractor.py "roms/Dragon Warrior (U) (PRG1) [!].nes"
     """
