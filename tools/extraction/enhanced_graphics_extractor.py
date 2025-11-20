@@ -11,6 +11,7 @@ from typing import List, Dict, Tuple, Optional, Any
 import json
 import click
 from PIL import Image, ImageDraw, ImageFont
+from PIL.Image import Resampling
 from rich.console import Console
 from rich.progress import track
 
@@ -161,12 +162,17 @@ class DragonWarriorFontAndSlimeExtractor:
         text_palette_indices = [0x0F, 0x00, 0x10, 0x30]  # Black, dark gray, light gray, white
         text_colors = self.create_palette_colors(text_palette_indices)
 
-        # Font characters are typically in first pattern table (tiles 0x00-0x7F)
-        font_tiles = tiles[:128]  # First 128 tiles contain font
+        # Dragon Warrior font characters are in specific tiles based on character mapping
+        # Extract only tiles that contain actual font characters
+        font_tile_indices = list(self.font_char_map.keys())
+        font_tile_indices.sort()  # Sort for organized display
+        
+        console.print(f"Font tiles to extract: {[hex(i) for i in font_tile_indices[:10]]}...") # Show first 10
 
-        # Calculate grid dimensions (16x8 for 128 characters)
-        grid_width = 16
-        grid_height = 8
+        # Calculate grid dimensions for actual font characters (not all 128 tiles)
+        num_chars = len(font_tile_indices)
+        grid_width = 16  # Keep 16 columns for readability
+        grid_height = (num_chars + grid_width - 1) // grid_width  # Calculate needed rows
         tile_size = 8
         scale_factor = 4  # Scale up for better visibility
 
@@ -176,27 +182,28 @@ class DragonWarriorFontAndSlimeExtractor:
         font_sheet = Image.new('RGB', (sheet_width, sheet_height), (64, 64, 64))
 
         # Render each font tile
-        for i, tile_data in enumerate(track(font_tiles, description="Extracting font characters")):
-            tile_pixels = self.decode_nes_tile(tile_data)
-            tile_img = self.render_tile_with_palette(tile_pixels, text_colors)
+        for grid_pos, tile_idx in enumerate(track(font_tile_indices, description="Extracting font characters")):
+            if tile_idx < len(tiles):
+                tile_data = tiles[tile_idx]
+                tile_pixels = self.decode_nes_tile(tile_data)
+                tile_img = self.render_tile_with_palette(tile_pixels, text_colors)
 
-            # Scale up tile
-            tile_img = tile_img.resize((tile_size * scale_factor, tile_size * scale_factor), Image.NEAREST)
+                # Scale up tile
+                tile_img = tile_img.resize((tile_size * scale_factor, tile_size * scale_factor), Resampling.NEAREST)
 
-            # Calculate position in grid
-            grid_x = i % grid_width
-            grid_y = i // grid_width
+                # Calculate position in grid based on grid_pos, not tile_idx
+                grid_x = grid_pos % grid_width
+                grid_y = grid_pos // grid_width
 
-            paste_x = grid_x * tile_size * scale_factor
-            paste_y = grid_y * tile_size * scale_factor
+                paste_x = grid_x * tile_size * scale_factor
+                paste_y = grid_y * tile_size * scale_factor
 
-            font_sheet.paste(tile_img, (paste_x, paste_y))
+                font_sheet.paste(tile_img, (paste_x, paste_y))
 
-            # Save individual character if it maps to a known character
-            if i in self.font_char_map:
-                char = self.font_char_map[i]
+                # Save individual character
+                char = self.font_char_map[tile_idx]
                 safe_char = char.replace('/', '_').replace('\\', '_').replace('?', 'question').replace('"', 'quote').replace("'", 'apostrophe').replace('!', 'exclamation').replace('(', 'openparen').replace(')', 'closeparen').replace(' ', 'space')
-                char_path = self.output_dir / f"font_char_{i:02X}_{safe_char}.png"
+                char_path = self.output_dir / f"font_char_{tile_idx:02X}_{safe_char}.png"
                 tile_img.save(char_path)
 
         # Save complete font sheet
@@ -242,7 +249,7 @@ class DragonWarriorFontAndSlimeExtractor:
 
                 # Create slime with blue palette
                 slime_img = self.render_tile_with_palette(tile_pixels, blue_slime_colors)
-                slime_img = slime_img.resize((8 * scale_factor, 8 * scale_factor), Image.NEAREST)
+                slime_img = slime_img.resize((8 * scale_factor, 8 * scale_factor), Resampling.NEAREST)
 
                 slime_path = self.output_dir / f"slime_blue_frame_{i:02d}_tile_{tile_idx:02X}.png"
                 slime_img.save(slime_path)
@@ -250,12 +257,12 @@ class DragonWarriorFontAndSlimeExtractor:
 
                 # Also create red and metal versions
                 red_slime_img = self.render_tile_with_palette(tile_pixels, red_slime_colors)
-                red_slime_img = red_slime_img.resize((8 * scale_factor, 8 * scale_factor), Image.NEAREST)
+                red_slime_img = red_slime_img.resize((8 * scale_factor, 8 * scale_factor), Resampling.NEAREST)
                 red_path = self.output_dir / f"slime_red_frame_{i:02d}_tile_{tile_idx:02X}.png"
                 red_slime_img.save(red_path)
 
                 metal_slime_img = self.render_tile_with_palette(tile_pixels, metal_slime_colors)
-                metal_slime_img = metal_slime_img.resize((8 * scale_factor, 8 * scale_factor), Image.NEAREST)
+                metal_slime_img = metal_slime_img.resize((8 * scale_factor, 8 * scale_factor), Resampling.NEAREST)
                 metal_path = self.output_dir / f"slime_metal_frame_{i:02d}_tile_{tile_idx:02X}.png"
                 metal_slime_img.save(metal_path)
 
