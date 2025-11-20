@@ -6,6 +6,7 @@ Comprehensive validation tools for extracted assets and data integrity
 
 import json
 from pathlib import Path
+import sys
 from typing import Dict, List, Any, Tuple, Optional, Set
 import click
 from rich.console import Console

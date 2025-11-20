@@ -104,32 +104,38 @@ class DragonWarriorGraphicsExtractor:
 		"""Extract game palettes"""
 		palettes = {}
 
-		# Dragon Warrior palette data locations (approximate)
-		palette_locations = [
-			(0x5000, "Overworld"),
-			(0x5004, "Dungeon"),
-			(0x5008, "Town"),
-			(0x500C, "Battle"),
-			(0x5010, "Menu"),
-			(0x5014, "Character"),
-			(0x5018, "Monster"),
-			(0x501C, "Dialog")
+		# Dragon Warrior typical palette assignments (based on game analysis)
+		# These are representative palettes used in Dragon Warrior
+		palette_definitions = [
+			# Overworld palette
+			("Overworld", [0x0F, 0x30, 0x10, 0x00]),  # Black, white, light gray, dark gray
+			# Dungeon palette
+			("Dungeon", [0x0F, 0x00, 0x10, 0x30]),    # Black, dark gray, light gray, white
+			# Town palette
+			("Town", [0x0F, 0x16, 0x27, 0x30]),       # Black, brown, orange, white
+			# Battle palette
+			("Battle", [0x0F, 0x00, 0x10, 0x30]),     # Black, dark gray, light gray, white
+			# Menu palette
+			("Menu", [0x0F, 0x00, 0x10, 0x30]),       # Black, dark gray, light gray, white
+			# Character palette
+			("Character", [0x0F, 0x16, 0x27, 0x30]),  # Black, brown, orange, white
+			# Monster palette
+			("Monster", [0x0F, 0x05, 0x15, 0x30]),    # Black, purple, pink, white
+			# Dialog palette
+			("Dialog", [0x0F, 0x00, 0x10, 0x30])      # Black, dark gray, light gray, white
 		]
 
-		for i, (offset, name) in enumerate(palette_locations):
-			if offset + 4 <= len(self.rom_data):
-				palette_bytes = self.rom_data[offset:offset + 4]
-				colors = []
+		for i, (name, nes_colors) in enumerate(palette_definitions):
+			colors = []
+			for nes_color_index in nes_colors:
+				if nes_color_index < len(self.nes_palette.COLORS):
+					r, g, b = self.nes_palette.COLORS[nes_color_index]
+					colors.append(Color(r, g, b))
+				else:
+					colors.append(Color(0, 0, 0))	# Default black
 
-				for byte_val in palette_bytes:
-					if byte_val < len(self.nes_palette.COLORS):
-						r, g, b = self.nes_palette.COLORS[byte_val]
-						colors.append(Color(r, g, b))
-					else:
-						colors.append(Color(0, 0, 0))	# Default black
-
-				palette = Palette(name=name, colors=colors)
-				palettes[i] = palette
+			palette = Palette(name=name, colors=colors)
+			palettes[i] = palette
 
 		return palettes
 
@@ -181,7 +187,15 @@ class DragonWarriorGraphicsExtractor:
 	def extract_sprite_graphics(self, tiles: List[bytes], palettes: Dict[int, Palette]) -> Dict[int, GraphicsData]:
 		"""Extract sprite graphics (characters, monsters, items)"""
 		graphics = {}
-		default_palette = list(palettes.values())[0] if palettes else Palette("default", [Color(0,0,0)] * 4)
+
+		# Sprite type to palette mapping based on Dragon Warrior graphics organization
+		sprite_palette_map = {
+			"hero": 5,        # Character palette
+			"monsters": 6,    # Monster palette
+			"npcs": 5,        # Character palette (same as hero)
+			"items": 4,       # Menu palette
+			"ui": 4           # Menu palette
+		}
 
 		# Character sprites (approximate tile ranges)
 		sprite_ranges = {
@@ -194,6 +208,22 @@ class DragonWarriorGraphicsExtractor:
 
 		sprite_id = 0
 		for sprite_type, (start_tile, end_tile) in sprite_ranges.items():
+			# Get appropriate palette for this sprite type
+			palette_id = sprite_palette_map.get(sprite_type, 0)
+			palette = palettes.get(palette_id)
+
+			# Fallback to first available palette if specified palette not found
+			if palette is None and palettes:
+				palette = list(palettes.values())[0]
+			elif palette is None:
+				# Create a default grayscale palette if no palettes available
+				palette = Palette("default", [
+					Color(0, 0, 0),      # Black
+					Color(85, 85, 85),   # Dark gray
+					Color(170, 170, 170), # Light gray
+					Color(255, 255, 255)  # White
+				])
+
 			for tile_idx in range(start_tile, min(end_tile, len(tiles))):
 				if tile_idx < len(tiles):
 					tile_data = tiles[tile_idx]
@@ -205,13 +235,13 @@ class DragonWarriorGraphicsExtractor:
 						width=8,
 						height=8,
 						tile_data=list(tile_data),
-						palette_id=0
+						palette_id=palette_id
 					)
 
 					graphics[sprite_id] = graphics_data
 
-					# Render sprite
-					img = self.render_tile_to_image(tile_pixels, default_palette)
+					# Render sprite with appropriate palette
+					img = self.render_tile_to_image(tile_pixels, palette)
 					img = img.resize((64, 64), Image.NEAREST)
 
 					png_path = self.graphics_dir / f"{sprite_type}_{tile_idx:03d}.png"

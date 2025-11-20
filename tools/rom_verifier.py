@@ -351,24 +351,24 @@ class ROMVerifier:
 			f.write("Dragon Warrior ROM Verification Report\n")
 			f.write("="*80 + "\n")
 			f.write(f"Generated: {results['timestamp']}\n\n")
-			
+
 			f.write("REFERENCE ROM:\n")
 			f.write(f"\tFile: {results['reference_rom']['filename']}\n")
 			f.write(f"\tSize: {results['reference_rom']['size']:,} bytes\n")
 			f.write(f"\tMD5:  {results['reference_rom']['md5']}\n")
 			f.write(f"\tSHA1: {results['reference_rom']['sha1']}\n\n")
-			
+
 			f.write("BUILT ROM:\n")
 			f.write(f"\tFile: {results['built_rom']['filename']}\n")
 			f.write(f"\tSize: {results['built_rom']['size']:,} bytes\n")
 			f.write(f"\tMD5:  {results['built_rom']['md5']}\n")
 			f.write(f"\tSHA1: {results['built_rom']['sha1']}\n\n")
-			
+
 			f.write("COMPARISON RESULTS:\n")
 			f.write(f"\tIdentical: {'YES' if results['comparison']['identical'] else 'NO'}\n")
 			f.write(f"\tMatch Percentage: {results['match_percentage']:.2f}%\n")
 			f.write(f"\tSize Difference: {results['comparison']['size_difference']:+d} bytes\n\n")
-			
+
 			f.write("SEGMENT ANALYSIS:\n")
 			for segment_name, segment_info in results["segment_analysis"].items():
 				f.write(f"\t{segment_name}:\n")
@@ -379,7 +379,7 @@ class ROMVerifier:
 					fd = segment_info['first_difference']
 					f.write(f"\t\tFirst Diff: {fd['offset']} ({fd['reference']} -> {fd['built']})\n")
 				f.write("\n")
-			
+
 			f.write("CRITICAL AREAS:\n")
 			for area_name, area_info in results["critical_areas"].items():
 				f.write(f"\t{area_name}: {'PASS' if area_info['matches'] else 'FAIL'}\n")
@@ -389,7 +389,7 @@ class ROMVerifier:
 					f.write(f"\t\tReference: {area_info['reference_hex']}\n")
 					f.write(f"\t\tBuilt:     {area_info['built_hex']}\n")
 				f.write("\n")
-			
+
 			if results["differences"]:
 				f.write("DETAILED DIFFERENCES:\n")
 				for i, diff in enumerate(results["differences"], 1):

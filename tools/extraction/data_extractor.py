@@ -297,20 +297,31 @@ class DragonWarriorDataExtractor:
 
 		for shop_id, name, location, items_offset, inn_price in shop_definitions:
 			# Read item list from ROM (terminated by 0xFD)
-			items = []
+			all_items = []
 			offset = items_offset
 			while offset < len(self.rom_data):
 				item_byte = self.rom_data[offset]
 				if item_byte == 0xFD:	# End marker
 					break
-				items.append(item_byte)
+				all_items.append(item_byte)
 				offset += 1
+
+			# Categorize items based on Dragon Warrior item classification
+			# Items 0-6: Weapons (Bamboo pole, Club, Copper sword, Hand axe, Broad sword, Flame sword, Erdrick's sword)
+			# Items 7-13: Armor (Clothes, Leather armor, Chain mail, Half plate, Full plate, Magic armor, Erdrick's armor)
+			# Items 14-16: Shields (Small shield, Large shield, Silver shield)
+			# Items 17+: Tools/Items (Herb, Magic key, Torch, etc.)
+			weapons = [item for item in all_items if 0 <= item <= 6]
+			armor = [item for item in all_items if 7 <= item <= 16]  # Includes shields
+			items = [item for item in all_items if item >= 17]  # Tools and consumables
 
 			shop = ShopData(
 				id=shop_id,
 				name=name,
 				location=location,
-				items=items,
+				items=items,		# Tools/consumables
+				weapons=weapons,	# Weapons
+				armor=armor,		# Armor and shields
 				inn_price=inn_price if inn_price > 0 else None
 			)
 			shops[shop_id] = shop

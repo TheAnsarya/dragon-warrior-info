@@ -33,21 +33,13 @@ selecting options is by number only so `10` not `10. clean build`;
 
 git comment and push; `extract assets from rom` is failing; make that work and the other build pipeline options all work as expected; verification reports are using space instead of tabs, we only use tabs for indentation, never spaces, fix that;
 
+Don't forget to use my documentation on Dragon Warrior in our github repos at `https://github.com/TheAnsarya/GameInfo/tree/main/Dragon%20Warrior%20(NES)`; and verify the asset extraction/reinsertion pipeline
 
+I added the `GameInfo` project to the workspace; please update the wikitext files for Dragon Warrior 1 and add structure and more files in the milieu of FFMQ for `Dragon Warrior 1 (NES)` based on the disassembly and doumentation; all of the extyracted asset `png` files are blank empty black squares, use the palettes that are applied to each monster/player/npc/background-tile has colors it actually uses in the png file exraction/reinsertion process;
 
+Add a link to `https://hexed.it/` (`HexEd.it`) (and add a desctiption) to the referenece documentation as a resource for editing hex files directly; git comment and push, all projects with descriptions, do it in batches of reklated files;
 
-
-
-
-
-
-
-
-
-
-
-
-
+git comment and push everything that is uncommited!; the png asset extraction is still garbage; concentrate on extracting the text font (in aggregate) as a valid png file that I can view and edit as it displays on screen during play; then maybe work on extracting the slime monster graphics as displayed for easy editing, so use the palettes used by that enemy (blue/white/red) during extraction/insertion so we can use this as an example;
 
 
 

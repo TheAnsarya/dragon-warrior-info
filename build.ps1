@@ -80,7 +80,7 @@ function Test-Prerequisites {
 	Write-BuildLog "Checking build prerequisites..."
 
 	# Check for Ophis assembler
-	$ophisPath = Join-Path $BuildRoot "Ophis\Ophis.py"
+	$ophisPath = Join-Path $BuildRoot "Ophis\ophis.exe"
 	if (-not (Test-Path $ophisPath)) {
 		Write-BuildLog "Ophis assembler not found at $ophisPath" "ERROR"
 		return $false
@@ -142,27 +142,20 @@ function Invoke-AssemblyBuild {
 	$outputROM = Join-Path $BuildDir $Output
 
 	# Ophis assembler command
-	$ophisPath = Join-Path $BuildRoot "Ophis\Ophis.py"
+	$ophisPath = Join-Path $BuildRoot "Ophis\ophis.exe"
 	$buildArgs = @(
-		$ophisPath,
 		$mainAsmFile,
-		"-o", $outputROM
+		$outputROM
 	)
 
-	if ($Symbols) {
-		$symbolFile = $outputROM -replace '\.nes$', '.sym'
-		$buildArgs += @("-l", $symbolFile)
-		Write-BuildLog "Symbol file will be generated: $symbolFile"
-	}
-
 	if ($Verbose) {
-		$buildArgs += "-v"
+		$buildArgs = @("-v", "2") + $buildArgs
 	}
 
-	Write-BuildLog "Executing: python $($buildArgs -join ' ')"
+	Write-BuildLog "Executing: $ophisPath $($buildArgs -join ' ')"
 
 	try {
-		$result = & python $buildArgs 2>&1
+		$result = & $ophisPath $buildArgs 2>&1
 
 		if ($LASTEXITCODE -eq 0) {
 			Write-BuildLog "Assembly build completed successfully" "SUCCESS"

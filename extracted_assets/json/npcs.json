@@ -1,0 +1,132 @@
+{
+  "0": {
+    "id": 0,
+    "name": "King Lorik",
+    "map_id": 1,
+    "position": {
+      "x": 10,
+      "y": 8
+    },
+    "sprite_id": 0,
+    "dialog_id": 0,
+    "shop_id": null,
+    "gives_item": null
+  },
+  "1": {
+    "id": 1,
+    "name": "Castle Guard",
+    "map_id": 1,
+    "position": {
+      "x": 12,
+      "y": 10
+    },
+    "sprite_id": 1,
+    "dialog_id": 1,
+    "shop_id": null,
+    "gives_item": null
+  },
+  "2": {
+    "id": 2,
+    "name": "Weapon Shopkeeper",
+    "map_id": 2,
+    "position": {
+      "x": 5,
+      "y": 3
+    },
+    "sprite_id": 2,
+    "dialog_id": 2,
+    "shop_id": 0,
+    "gives_item": null
+  },
+  "3": {
+    "id": 3,
+    "name": "Armor Shopkeeper",
+    "map_id": 2,
+    "position": {
+      "x": 7,
+      "y": 3
+    },
+    "sprite_id": 3,
+    "dialog_id": 3,
+    "shop_id": 1,
+    "gives_item": null
+  },
+  "4": {
+    "id": 4,
+    "name": "Inn Keeper",
+    "map_id": 2,
+    "position": {
+      "x": 9,
+      "y": 5
+    },
+    "sprite_id": 4,
+    "dialog_id": 4,
+    "shop_id": 2,
+    "gives_item": null
+  },
+  "5": {
+    "id": 5,
+    "name": "Old Man",
+    "map_id": 8,
+    "position": {
+      "x": 8,
+      "y": 4
+    },
+    "sprite_id": 5,
+    "dialog_id": 5,
+    "shop_id": null,
+    "gives_item": null
+  },
+  "6": {
+    "id": 6,
+    "name": "Merchant",
+    "map_id": 7,
+    "position": {
+      "x": 4,
+      "y": 6
+    },
+    "sprite_id": 6,
+    "dialog_id": 6,
+    "shop_id": null,
+    "gives_item": null
+  },
+  "7": {
+    "id": 7,
+    "name": "Wise Man",
+    "map_id": 6,
+    "position": {
+      "x": 12,
+      "y": 8
+    },
+    "sprite_id": 7,
+    "dialog_id": 7,
+    "shop_id": null,
+    "gives_item": null
+  },
+  "8": {
+    "id": 8,
+    "name": "Cantlin Citizen",
+    "map_id": 5,
+    "position": {
+      "x": 15,
+      "y": 12
+    },
+    "sprite_id": 8,
+    "dialog_id": 8,
+    "shop_id": null,
+    "gives_item": null
+  },
+  "9": {
+    "id": 9,
+    "name": "Princess Laura",
+    "map_id": 3,
+    "position": {
+      "x": 8,
+      "y": 8
+    },
+    "sprite_id": 9,
+    "dialog_id": 9,
+    "shop_id": null,
+    "gives_item": null
+  }
+}

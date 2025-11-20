@@ -1,0 +1,82 @@
+{
+  "0": {
+    "id": 0,
+    "npc_name": "King Lorik",
+    "location": "Tantegel Castle",
+    "text": "I am Lorik, King of Alefgard. It is said that in ages past Erdrick came to this land...",
+    "pointer": 32768,
+    "compressed": true
+  },
+  "1": {
+    "id": 1,
+    "npc_name": "Castle Guard",
+    "location": "Tantegel Castle",
+    "text": "Welcome to Tantegel Castle. You need Gwaelin's Love to get to the Dragonlord.",
+    "pointer": 32818,
+    "compressed": true
+  },
+  "2": {
+    "id": 2,
+    "npc_name": "Weapon Shop",
+    "location": "Brecconary",
+    "text": "We deal in weapons and armor. Dost thou wish to buy anything?",
+    "pointer": 32868,
+    "compressed": true
+  },
+  "3": {
+    "id": 3,
+    "npc_name": "Armor Shop",
+    "location": "Brecconary",
+    "text": "Welcome! We have the finest armor. What dost thou want?",
+    "pointer": 32918,
+    "compressed": true
+  },
+  "4": {
+    "id": 4,
+    "npc_name": "Inn Keeper",
+    "location": "Brecconary",
+    "text": "Welcome to our inn. Room and board is 6 gold coins. Dost thou want a room?",
+    "pointer": 32968,
+    "compressed": true
+  },
+  "5": {
+    "id": 5,
+    "npc_name": "Old Man",
+    "location": "Garinham",
+    "text": "There is a town where a flute is needed. Those rich people don't know the value of dreams.",
+    "pointer": 33018,
+    "compressed": true
+  },
+  "6": {
+    "id": 6,
+    "npc_name": "Villager",
+    "location": "Kol",
+    "text": "A witch named Lia lives in a cave near here and will make you a Flame Sword if you bring her a Dragon's Scale.",
+    "pointer": 33068,
+    "compressed": true
+  },
+  "7": {
+    "id": 7,
+    "npc_name": "Merchant",
+    "location": "Rimuldar",
+    "text": "Magic armor is hidden in the town of Cantlin. Search the ground there.",
+    "pointer": 33118,
+    "compressed": true
+  },
+  "8": {
+    "id": 8,
+    "npc_name": "Cantlin Citizen",
+    "location": "Cantlin",
+    "text": "Watch out! A Red Dragon guards the Erdrick's Armor here.",
+    "pointer": 33168,
+    "compressed": true
+  },
+  "9": {
+    "id": 9,
+    "npc_name": "Princess Laura",
+    "location": "Charlock Castle",
+    "text": "I am Princess Laura. If thou dost save me, I will give thee a token of my love.",
+    "pointer": 33218,
+    "compressed": true
+  }
+}
