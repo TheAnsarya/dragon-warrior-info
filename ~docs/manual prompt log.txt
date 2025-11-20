@@ -41,6 +41,10 @@ Add a link to `https://hexed.it/` (`HexEd.it`) (and add a desctiption) to the re
 
 git comment and push everything that is uncommited!; the png asset extraction is still garbage; concentrate on extracting the text font (in aggregate) as a valid png file that I can view and edit as it displays on screen during play; then maybe work on extracting the slime monster graphics as displayed for easy editing, so use the palettes used by that enemy (blue/white/red) during extraction/insertion so we can use this as an example;
 
+show me the dialog font json files and png files
+
+extract all of that now! (`dragon_warrior_font_complete.png` doesn't exist)
+PRG1, not PRG0! PRG0 is the alternate not the primary
 
 
 
