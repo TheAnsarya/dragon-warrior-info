@@ -69,52 +69,52 @@ class Stats:
 	defense: int
 	agility: int
 	level: int = 1
-	
+
 	# Equipment bonuses
 	weapon_attack: int = 0
 	armor_defense: int = 0
 	shield_defense: int = 0
-	
+
 	# Status
 	status: StatusEffect = StatusEffect.NONE
 	status_duration: int = 0
-	
+
 	def get_total_attack(self) -> int:
 		"""Get total attack including equipment."""
 		return self.attack + self.weapon_attack
-	
+
 	def get_total_defense(self) -> int:
 		"""Get total defense including equipment."""
 		return self.defense + self.armor_defense + self.shield_defense
-	
+
 	def apply_damage(self, damage: int) -> int:
 		"""Apply damage and return actual damage dealt."""
 		actual = min(damage, self.hp)
 		self.hp -= actual
 		return actual
-	
+
 	def heal(self, amount: int) -> int:
 		"""Heal and return actual HP restored."""
 		before = self.hp
 		self.hp = min(self.hp + amount, self.max_hp)
 		return self.hp - before
-	
+
 	def is_alive(self) -> bool:
 		"""Check if character is alive."""
 		return self.hp > 0
-	
+
 	def apply_status(self, status: StatusEffect, duration: int = 3) -> None:
 		"""Apply status effect."""
 		self.status = status
 		self.status_duration = duration
-	
+
 	def tick_status(self) -> None:
 		"""Tick status duration."""
 		if self.status_duration > 0:
 			self.status_duration -= 1
 			if self.status_duration == 0:
 				self.status = StatusEffect.NONE
-	
+
 	def copy(self) -> 'Stats':
 		"""Create a copy of these stats."""
 		return Stats(
@@ -142,16 +142,16 @@ class Monster:
 	stats: Stats
 	xp: int
 	gold: int
-	
+
 	# AI behavior
 	spell_chance: float = 0.0		# Probability of casting spell per turn
 	run_chance: float = 0.0			# Probability of fleeing
-	
+
 	# Resistances
 	resist_sleep: bool = False
 	resist_stopspell: bool = False
 	resist_hurt: bool = False
-	
+
 	# Spell abilities
 	has_heal: bool = False
 	has_sleep: bool = False
@@ -205,37 +205,37 @@ MONSTER_DATABASE = {
 
 class DamageCalculator:
 	"""Calculate damage using Dragon Warrior formulas."""
-	
+
 	@staticmethod
 	def calculate_physical_damage(attacker: Stats, defender: Stats) -> int:
 		"""
 		Calculate physical attack damage.
-		
+
 		Dragon Warrior formula (approximate):
 		damage = (attack / 2) - (defense / 4) + variance
-		
+
 		variance = ±(attack / 8)
 		"""
 		attack = attacker.get_total_attack()
 		defense = defender.get_total_defense()
-		
+
 		# Base damage
 		base = max(0, (attack // 2) - (defense // 4))
-		
+
 		# Variance
 		variance = attack // 8
 		damage = base + random.randint(-variance, variance)
-		
+
 		# Minimum damage (can always deal at least 1)
 		damage = max(1, damage)
-		
+
 		return damage
-	
+
 	@staticmethod
 	def calculate_spell_damage(spell_power: int, defender: Stats) -> int:
 		"""
 		Calculate spell damage.
-		
+
 		HURT: 10-17 damage
 		HURTMORE: 35-65 damage
 		"""
@@ -247,20 +247,20 @@ class DamageCalculator:
 			# HURTMORE
 			base = 35
 			variance = 30
-		
+
 		damage = base + random.randint(0, variance)
-		
+
 		# Resistance reduces damage
 		# (Note: Dragon Warrior doesn't have spell resistance reduction,
 		#  resistant monsters are immune)
-		
+
 		return damage
-	
+
 	@staticmethod
 	def calculate_heal_amount(spell_power: int) -> int:
 		"""
 		Calculate heal amount.
-		
+
 		HEAL: 10-17 HP
 		HEALMORE: 85-100 HP (approximate)
 		"""
@@ -270,23 +270,23 @@ class DamageCalculator:
 		else:
 			# HEALMORE
 			return 85 + random.randint(0, 15)
-	
+
 	@staticmethod
 	def calculate_agility_order(stats1: Stats, stats2: Stats) -> Tuple[Stats, Stats]:
 		"""
 		Determine turn order based on agility.
-		
+
 		Returns (first, second) tuple.
 		"""
 		# Add randomness to agility check
 		agi1 = stats1.agility + random.randint(-2, 2)
 		agi2 = stats2.agility + random.randint(-2, 2)
-		
+
 		if agi1 >= agi2:
 			return (stats1, stats2)
 		else:
 			return (stats2, stats1)
-	
+
 	@staticmethod
 	def can_run(player: Stats, monster: Stats) -> bool:
 		"""Check if player can run from battle."""
@@ -294,17 +294,17 @@ class DamageCalculator:
 		# Formula: (player_agility / monster_agility) > random(0, 1)
 		if monster.agility == 0:
 			return True
-		
+
 		escape_chance = player.agility / (monster.agility * 1.5)
 		return random.random() < escape_chance
 
 
 class BattleSimulator:
 	"""Simulate battles between player and monsters."""
-	
+
 	def __init__(self):
 		self.calculator = DamageCalculator()
-	
+
 	def simulate_battle(
 		self,
 		player_stats: Stats,
@@ -313,7 +313,7 @@ class BattleSimulator:
 	) -> Dict:
 		"""
 		Simulate a single battle.
-		
+
 		Returns dict with battle results:
 		- winner: 'player' or 'monster'
 		- rounds: number of rounds
@@ -324,31 +324,31 @@ class BattleSimulator:
 		# Make copies to not modify originals
 		player = player_stats.copy()
 		enemy_stats = monster.stats.copy()
-		
+
 		round_num = 0
 		player_total_damage = 0
 		monster_total_damage = 0
-		
+
 		if verbose:
 			print(f"\nBattle: Player (Lv{player.level}) vs {monster.name}")
 			print(f"Player: HP {player.hp}/{player.max_hp}, ATK {player.get_total_attack()}, DEF {player.get_total_defense()}")
 			print(f"Enemy:  HP {enemy_stats.hp}/{enemy_stats.max_hp}, ATK {enemy_stats.attack}, DEF {enemy_stats.defense}")
 			print()
-		
+
 		while player.is_alive() and enemy_stats.is_alive():
 			round_num += 1
-			
+
 			if verbose:
 				print(f"Round {round_num}:")
-			
+
 			# Determine turn order
 			first, second = self.calculator.calculate_agility_order(player, enemy_stats)
-			
+
 			# Process turns
 			for attacker, defender in [(first, second), (second, first)]:
 				if not attacker.is_alive() or not defender.is_alive():
 					break
-				
+
 				# Check status effects
 				if attacker.status == StatusEffect.SLEEP:
 					if verbose:
@@ -356,7 +356,7 @@ class BattleSimulator:
 						print(f"  {name} is asleep!")
 					attacker.tick_status()
 					continue
-				
+
 				# Determine action
 				if attacker == enemy_stats:
 					# Monster AI
@@ -364,54 +364,54 @@ class BattleSimulator:
 				else:
 					# Player always attacks in simulation
 					action = 'attack'
-				
+
 				# Execute action
 				if action == 'attack':
 					damage = self.calculator.calculate_physical_damage(attacker, defender)
 					actual = defender.apply_damage(damage)
-					
+
 					if attacker == player:
 						player_total_damage += actual
 					else:
 						monster_total_damage += actual
-					
+
 					if verbose:
 						name = "Player" if attacker == player else monster.name
 						target = monster.name if attacker == player else "Player"
 						print(f"  {name} attacks {target} for {actual} damage! ({defender.hp}/{defender.max_hp} HP)")
-				
+
 				elif action == 'hurt':
 					damage = self.calculator.calculate_spell_damage(10, defender)
 					actual = defender.apply_damage(damage)
-					
+
 					if attacker == enemy_stats:
 						monster_total_damage += actual
-					
+
 					if verbose:
 						print(f"  {monster.name} casts HURT! {actual} damage! ({defender.hp}/{defender.max_hp} HP)")
-				
+
 				elif action == 'heal':
 					amount = self.calculator.calculate_heal_amount(10)
 					healed = attacker.heal(amount)
-					
+
 					if verbose:
 						print(f"  {monster.name} casts HEAL! Restored {healed} HP! ({attacker.hp}/{attacker.max_hp} HP)")
-				
+
 				elif action == 'sleep':
 					if not player.status == StatusEffect.SLEEP:
 						player.apply_status(StatusEffect.SLEEP, 3)
 						if verbose:
 							print(f"  {monster.name} casts SLEEP! Player fell asleep!")
-				
+
 				# Tick status
 				attacker.tick_status()
-			
+
 			if verbose:
 				print()
-		
+
 		# Determine winner
 		winner = 'player' if player.is_alive() else 'monster'
-		
+
 		return {
 			'winner': winner,
 			'rounds': round_num,
@@ -419,32 +419,32 @@ class BattleSimulator:
 			'monster_damage_dealt': monster_total_damage,
 			'player_final_hp': player.hp,
 		}
-	
+
 	def _monster_ai_action(self, monster: Monster, enemy_stats: Stats, player: Stats) -> str:
 		"""Determine monster AI action."""
 		# Spell casting chance
 		if random.random() < monster.spell_chance:
 			# Choose spell
 			available_spells = []
-			
+
 			if monster.has_heal and enemy_stats.hp < enemy_stats.max_hp * 0.5:
 				available_spells.append('heal')
-			
+
 			if monster.has_hurt and not monster.resist_hurt:
 				available_spells.append('hurt')
-			
+
 			if monster.has_sleep and player.status != StatusEffect.SLEEP:
 				available_spells.append('sleep')
-			
+
 			if monster.has_stopspell and player.status != StatusEffect.STOPSPELL:
 				available_spells.append('stopspell')
-			
+
 			if available_spells:
 				return random.choice(available_spells)
-		
+
 		# Default to attack
 		return 'attack'
-	
+
 	def simulate_multiple_battles(
 		self,
 		player_stats: Stats,
@@ -454,7 +454,7 @@ class BattleSimulator:
 	) -> Dict:
 		"""
 		Simulate multiple battles and return statistics.
-		
+
 		Returns:
 		- win_rate: player win percentage
 		- avg_rounds: average battle length
@@ -465,26 +465,26 @@ class BattleSimulator:
 		- max_rounds: maximum rounds in any battle
 		"""
 		results = []
-		
+
 		for i in range(num_battles):
 			result = self.simulate_battle(player_stats, monster, verbose=verbose and i == 0)
 			results.append(result)
-		
+
 		# Calculate statistics
 		wins = sum(1 for r in results if r['winner'] == 'player')
 		win_rate = wins / num_battles
-		
+
 		avg_rounds = statistics.mean(r['rounds'] for r in results)
 		avg_player_damage = statistics.mean(r['player_damage_dealt'] for r in results)
 		avg_monster_damage = statistics.mean(r['monster_damage_dealt'] for r in results)
-		
+
 		# Only victories
 		victories = [r for r in results if r['winner'] == 'player']
 		avg_final_hp = statistics.mean(r['player_final_hp'] for r in victories) if victories else 0
-		
+
 		min_rounds = min(r['rounds'] for r in results)
 		max_rounds = max(r['rounds'] for r in results)
-		
+
 		return {
 			'num_battles': num_battles,
 			'win_rate': win_rate,
@@ -499,11 +499,11 @@ class BattleSimulator:
 
 class InteractiveDamageCalculator:
 	"""Interactive damage calculator and battle simulator."""
-	
+
 	def __init__(self):
 		self.simulator = BattleSimulator()
 		self.calculator = DamageCalculator()
-		
+
 		# Default player stats (level 10, copper sword, leather armor)
 		self.player = Stats(
 			hp=45, max_hp=45,
@@ -514,25 +514,25 @@ class InteractiveDamageCalculator:
 			armor_defense=4,		# Leather Armor
 			shield_defense=4		# Small Shield
 		)
-	
+
 	def run(self) -> None:
 		"""Run interactive calculator."""
 		print("Dragon Warrior Damage Calculator and Battle Simulator")
 		print("=" * 60)
 		print("Commands: stats, monster, damage, battle, simulate, equip, help, quit")
 		print()
-		
+
 		while True:
 			try:
 				cmd = input("calculator> ").strip().lower()
-				
+
 				if not cmd:
 					continue
-				
+
 				parts = cmd.split()
 				command = parts[0]
 				args = parts[1:] if len(parts) > 1 else []
-				
+
 				if command == 'quit' or command == 'exit':
 					break
 				elif command == 'help':
@@ -553,12 +553,12 @@ class InteractiveDamageCalculator:
 					self._set_level(args)
 				else:
 					print(f"Unknown command: {command}")
-			
+
 			except KeyboardInterrupt:
 				print("\nUse 'quit' to exit.")
 			except Exception as e:
 				print(f"Error: {e}")
-	
+
 	def _show_help(self) -> None:
 		"""Show help text."""
 		print("""
@@ -583,7 +583,7 @@ Examples:
 	equip 10 4 4
 	level 15
 """)
-	
+
 	def _show_player_stats(self) -> None:
 		"""Show player stats."""
 		print(f"\nPlayer Stats (Level {self.player.level}):")
@@ -592,7 +592,7 @@ Examples:
 		print(f"  Attack: {self.player.attack} + {self.player.weapon_attack} (weapon) = {self.player.get_total_attack()}")
 		print(f"  Defense: {self.player.defense} + {self.player.armor_defense} (armor) + {self.player.shield_defense} (shield) = {self.player.get_total_defense()}")
 		print(f"  Agility: {self.player.agility}")
-	
+
 	def _show_monster_info(self, args: List[str]) -> None:
 		"""Show monster information."""
 		if not args:
@@ -603,19 +603,19 @@ Examples:
 				print(f"  {mid:2d}: {monster.name}")
 			print("  ... (and more)")
 			return
-		
+
 		try:
 			monster_id = int(args[0])
 		except ValueError:
 			print(f"Invalid monster ID: {args[0]}")
 			return
-		
+
 		if monster_id not in MONSTER_DATABASE:
 			print(f"Monster {monster_id} not found")
 			return
-		
+
 		monster = MONSTER_DATABASE[monster_id]
-		
+
 		print(f"\n{monster.name} (ID: {monster.id}):")
 		print(f"  HP: {monster.stats.max_hp}")
 		print(f"  Attack: {monster.stats.attack}")
@@ -623,7 +623,7 @@ Examples:
 		print(f"  Agility: {monster.stats.agility}")
 		print(f"  XP: {monster.xp}")
 		print(f"  Gold: {monster.gold}")
-		
+
 		if monster.spell_chance > 0:
 			print(f"  Spell Chance: {monster.spell_chance * 100:.0f}%")
 			spells = []
@@ -637,86 +637,86 @@ Examples:
 				spells.append("STOPSPELL")
 			if spells:
 				print(f"  Spells: {', '.join(spells)}")
-	
+
 	def _calculate_damage(self, args: List[str]) -> None:
 		"""Calculate damage against monster."""
 		if not args:
 			print("Usage: damage <monster_id>")
 			return
-		
+
 		try:
 			monster_id = int(args[0])
 		except ValueError:
 			print(f"Invalid monster ID: {args[0]}")
 			return
-		
+
 		if monster_id not in MONSTER_DATABASE:
 			print(f"Monster {monster_id} not found")
 			return
-		
+
 		monster = MONSTER_DATABASE[monster_id]
-		
+
 		print(f"\nDamage Calculation: Player vs {monster.name}")
 		print("=" * 60)
-		
+
 		# Player damage to monster
 		player_damages = [
 			self.calculator.calculate_physical_damage(self.player, monster.stats)
 			for _ in range(100)
 		]
-		
+
 		# Monster damage to player
 		monster_damages = [
 			self.calculator.calculate_physical_damage(monster.stats, self.player)
 			for _ in range(100)
 		]
-		
+
 		print(f"\nPlayer Attack:")
 		print(f"  Min: {min(player_damages)}")
 		print(f"  Max: {max(player_damages)}")
 		print(f"  Avg: {statistics.mean(player_damages):.1f}")
-		
+
 		print(f"\n{monster.name} Attack:")
 		print(f"  Min: {min(monster_damages)}")
 		print(f"  Max: {max(monster_damages)}")
 		print(f"  Avg: {statistics.mean(monster_damages):.1f}")
-		
+
 		# Rounds to kill
 		avg_player_damage = statistics.mean(player_damages)
 		avg_monster_damage = statistics.mean(monster_damages)
-		
+
 		rounds_to_kill = monster.stats.max_hp / avg_player_damage if avg_player_damage > 0 else 999
 		player_survival_rounds = self.player.max_hp / avg_monster_damage if avg_monster_damage > 0 else 999
-		
+
 		print(f"\nEstimated Rounds:")
 		print(f"  To kill {monster.name}: {rounds_to_kill:.1f} rounds")
 		print(f"  Player survives: {player_survival_rounds:.1f} rounds")
-		
+
 		if rounds_to_kill < player_survival_rounds:
 			print(f"  Outcome: Likely VICTORY")
 		else:
 			print(f"  Outcome: Likely DEFEAT")
-	
+
 	def _simulate_single_battle(self, args: List[str]) -> None:
 		"""Simulate a single battle with verbose output."""
 		if not args:
 			print("Usage: battle <monster_id>")
 			return
-		
+
 		try:
 			monster_id = int(args[0])
 		except ValueError:
 			print(f"Invalid monster ID: {args[0]}")
 			return
-		
+
 		if monster_id not in MONSTER_DATABASE:
 			print(f"Monster {monster_id} not found")
 			return
-		
+
 		monster = MONSTER_DATABASE[monster_id]
-		
+
 		result = self.simulator.simulate_battle(self.player, monster, verbose=True)
-		
+
 		print(f"\nBattle Result:")
 		print(f"  Winner: {result['winner'].upper()}")
 		print(f"  Rounds: {result['rounds']}")
@@ -724,30 +724,30 @@ Examples:
 		print(f"  Monster Damage Dealt: {result['monster_damage_dealt']}")
 		if result['winner'] == 'player':
 			print(f"  Player Final HP: {result['player_final_hp']}/{self.player.max_hp}")
-	
+
 	def _simulate_multiple_battles(self, args: List[str]) -> None:
 		"""Simulate multiple battles."""
 		if not args:
 			print("Usage: simulate <monster_id> [num_battles]")
 			return
-		
+
 		try:
 			monster_id = int(args[0])
 			num_battles = int(args[1]) if len(args) > 1 else 1000
 		except ValueError:
 			print("Invalid parameters")
 			return
-		
+
 		if monster_id not in MONSTER_DATABASE:
 			print(f"Monster {monster_id} not found")
 			return
-		
+
 		monster = MONSTER_DATABASE[monster_id]
-		
+
 		print(f"\nSimulating {num_battles} battles: Player (Lv{self.player.level}) vs {monster.name}...")
-		
+
 		stats = self.simulator.simulate_multiple_battles(self.player, monster, num_battles)
-		
+
 		print(f"\nSimulation Results:")
 		print(f"  Battles: {stats['num_battles']}")
 		print(f"  Win Rate: {stats['win_rate'] * 100:.1f}%")
@@ -756,13 +756,13 @@ Examples:
 		print(f"  Avg Monster Damage: {stats['avg_monster_damage']:.1f}")
 		print(f"  Avg Final HP (victories): {stats['avg_final_hp']:.1f}/{self.player.max_hp}")
 		print(f"  Min/Max Rounds: {stats['min_rounds']}/{stats['max_rounds']}")
-	
+
 	def _equip_item(self, args: List[str]) -> None:
 		"""Set equipment bonuses."""
 		if len(args) < 3:
 			print("Usage: equip <weapon_atk> <armor_def> <shield_def>")
 			return
-		
+
 		try:
 			self.player.weapon_attack = int(args[0])
 			self.player.armor_defense = int(args[1])
@@ -770,23 +770,23 @@ Examples:
 		except ValueError:
 			print("Invalid equipment values")
 			return
-		
+
 		print(f"Equipment updated:")
 		print(f"  Total Attack: {self.player.get_total_attack()}")
 		print(f"  Total Defense: {self.player.get_total_defense()}")
-	
+
 	def _set_level(self, args: List[str]) -> None:
 		"""Set player level (and scale stats)."""
 		if not args:
 			print("Usage: level <level>")
 			return
-		
+
 		try:
 			level = int(args[0])
 		except ValueError:
 			print(f"Invalid level: {args[0]}")
 			return
-		
+
 		# Scale stats based on level (rough approximation)
 		self.player.level = level
 		self.player.max_hp = 15 + (level * 3)
@@ -796,7 +796,7 @@ Examples:
 		self.player.attack = 5 + level
 		self.player.defense = 4 + level
 		self.player.agility = 10 + level
-		
+
 		print(f"Player level set to {level}")
 		self._show_player_stats()
 
@@ -821,21 +821,21 @@ def main():
 		type=int,
 		help='Number of battles to simulate'
 	)
-	
+
 	args = parser.parse_args()
-	
+
 	calculator = InteractiveDamageCalculator()
-	
+
 	if args.player_level:
 		calculator._set_level([str(args.player_level)])
-	
+
 	if args.monster_id is not None:
 		if args.simulate:
 			calculator._simulate_multiple_battles([str(args.monster_id), str(args.simulate)])
 		else:
 			calculator._calculate_damage([str(args.monster_id)])
 			return
-	
+
 	calculator.run()
 
 
