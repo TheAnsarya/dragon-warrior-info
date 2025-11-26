@@ -564,7 +564,7 @@ class AssetCatalogGenerator:
 		"""Generate HTML card for an item"""
 		name = item.get('name', 'Unknown')
 		price = item.get('price', 0)
-		attack = item.get('attack_bonus', 0)
+		attack = item.get('attack_power', item.get('attack_bonus', 0))  # Support both field names
 		defense = item.get('defense_bonus', 0)
 
 		return f'''

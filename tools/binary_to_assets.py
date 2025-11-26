@@ -335,7 +335,7 @@ class AssetTransformer:
 				"name": ITEM_NAMES[i],
 				"buy_price": buy_price,
 				"sell_price": sell_price,
-				"attack_bonus": attack_bonus,
+				"attack_power": attack_bonus,  # Field renamed from attack_bonus for accuracy
 				"defense_bonus": defense_bonus,
 				"type": item_type,
 				"flags": {

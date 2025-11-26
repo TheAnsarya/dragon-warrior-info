@@ -197,17 +197,17 @@ class AssetReinserter:
 				item = items[str(item_id)]
 				flags = (int(item['equippable']) | (int(item['useable']) << 1))
 
-				asm_lines.extend([
-					f"",
-					f"; {item['name']} (ID: {item_id})",
-					f"Item_{item_id:02d}_Stats:",
-					f"	.byte ${item['attack_bonus']:02X}			; Attack Bonus: {item['attack_bonus']}",
-					f"	.byte ${item['defense_bonus']:02X}			 ; Defense Bonus: {item['defense_bonus']}",
-					f"	.word ${item['buy_price']:04X}				 ; Buy Price: {item['buy_price']}",
-					f"	.word ${item['sell_price']:04X}				; Sell Price: {item['sell_price']}",
-					f"	.byte ${flags:02X}							 ; Flags: Equip={item['equippable']}, Use={item['useable']}",
-					f"	.byte ${item['item_type']:02X}				 ; Item Type: {item['item_type']}",
-					f"	.byte ${item['sprite_id']:02X}				 ; Sprite ID: {item['sprite_id']}"
+			asm_lines.extend([
+				f"",
+				f"; {item['name']} (ID: {item_id})",
+				f"Item_{item_id:02d}_Stats:",
+				f"	.byte ${item.get('attack_power', item.get('attack_bonus', 0)):02X}			; Attack Power: {item.get('attack_power', item.get('attack_bonus', 0))}",
+				f"	.byte ${item.get('defense_power', item.get('defense_bonus', 0)):02X}			 ; Defense Power: {item.get('defense_power', item.get('defense_bonus', 0))}",
+				f"	.word ${item['buy_price']:04X}				 ; Buy Price: {item['buy_price']}",
+				f"	.word ${item['sell_price']:04X}				; Sell Price: {item['sell_price']}",
+				f"	.byte ${flags:02X}							 ; Flags: Equip={item['equippable']}, Use={item['useable']}",
+				f"	.byte ${item['item_type']:02X}				 ; Item Type: {item['item_type']}",
+				f"	.byte ${item['sprite_id']:02X}				 ; Sprite ID: {item['sprite_id']}"
 				])
 
 			# Add pointer table

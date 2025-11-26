@@ -403,16 +403,16 @@ class AssetPipeline:
 			"ItemStats:"
 		]
 
-		for item_id, item in sorted(items.items()):
-			asm_lines.extend([
-				f"Item_{item_id:02d}:",
-				f"	.byte {item['attack_bonus']}	; Attack Bonus",
-				f"	.byte {item['defense_bonus']} ; Defense Bonus",
-				f"	.word {item['buy_price']}	 ; Buy Price",
-				f"	.word {item['sell_price']}	; Sell Price",
-				f"	.byte {int(item['equippable']) | (int(item['useable']) << 1)} ; Flags",
-				f"	.byte {item['item_type']}	 ; Item Type",
-				f"	.byte {item['sprite_id']}	 ; Sprite ID",
+	for item_id, item in sorted(items.items()):
+		asm_lines.extend([
+			f"Item_{item_id:02d}:",
+			f"	.byte {item.get('attack_power', item.get('attack_bonus', 0))}	; Attack Power",
+			f"	.byte {item.get('defense_power', item.get('defense_bonus', 0))} ; Defense Power",
+			f"	.word {item['buy_price']}	 ; Buy Price",
+			f"	.word {item['sell_price']}	; Sell Price",
+			f"	.byte {int(item['equippable']) | (int(item['useable']) << 1)} ; Flags",
+			f"	.byte {item['item_type']}	 ; Item Type",
+			f"	.byte {item['sprite_id']}	 ; Sprite ID",
 				""
 			])
 

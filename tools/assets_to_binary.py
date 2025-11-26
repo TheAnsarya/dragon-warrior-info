@@ -156,7 +156,7 @@ class AssetValidator:
 
 		for i, item in enumerate(items):
 			# Required fields
-			required = ['id', 'name', 'buy_price', 'sell_price', 'attack_bonus', 'defense_bonus', 'type', 'flags']
+			required = ['id', 'name', 'buy_price', 'sell_price', 'type', 'flags']  # attack_power/defense_power now optional for compatibility
 			for field in required:
 				if field not in item:
 					raise ValidationError(f"Item {i}: Missing field '{field}'")
@@ -172,7 +172,8 @@ class AssetValidator:
 					raise ValidationError(f"Item {i}: {field} must be 0-65535, got {value}")
 
 			# Validate bonuses (-128 to 127)
-			for field in ['attack_bonus', 'defense_bonus']:
+			# Support both old (attack_bonus) and new (attack_power) field names for compatibility
+			for field in ['attack_power', 'defense_power', 'attack_bonus', 'defense_bonus']:
 				value = item[field]
 				if not (-128 <= value <= 127):
 					raise ValidationError(f"Item {i}: {field} must be -128 to 127, got {value}")
@@ -405,7 +406,7 @@ class BinaryPackager:
 
 			struct.pack_into('<H', binary_data, offset + 0, item['buy_price'])
 			struct.pack_into('<H', binary_data, offset + 2, item['sell_price'])
-			struct.pack_into('<b', binary_data, offset + 4, item['attack_bonus'])
+			struct.pack_into('<b', binary_data, offset + 4, item.get('attack_power', item.get('attack_bonus', 0)))
 			struct.pack_into('<b', binary_data, offset + 5, item['defense_bonus'])
 
 			binary_data[offset + 6] = item['type']
