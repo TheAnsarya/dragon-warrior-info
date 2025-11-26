@@ -1,0 +1,146 @@
+[
+  {
+    "id": 0,
+    "sprite": 23,
+    "x": 14,
+    "y": 0,
+    "direction": 3,
+    "control": 95,
+    "rom_offset": "$A3D0"
+  },
+  {
+    "id": 1,
+    "sprite": 40,
+    "x": 11,
+    "y": 1,
+    "direction": 1,
+    "control": 13,
+    "rom_offset": "$A3D3"
+  },
+  {
+    "id": 2,
+    "sprite": 27,
+    "x": 2,
+    "y": 1,
+    "direction": 0,
+    "control": 12,
+    "rom_offset": "$A3D6"
+  },
+  {
+    "id": 3,
+    "sprite": 20,
+    "x": 15,
+    "y": 5,
+    "direction": 1,
+    "control": 25,
+    "rom_offset": "$A3D9"
+  },
+  {
+    "id": 4,
+    "sprite": 27,
+    "x": 14,
+    "y": 0,
+    "direction": 1,
+    "control": 13,
+    "rom_offset": "$A3DC"
+  },
+  {
+    "id": 5,
+    "sprite": 18,
+    "x": 12,
+    "y": 0,
+    "direction": 1,
+    "control": 29,
+    "rom_offset": "$A3DF"
+  },
+  {
+    "id": 6,
+    "sprite": 14,
+    "x": 13,
+    "y": 0,
+    "direction": 3,
+    "control": 95,
+    "rom_offset": "$A3E2"
+  },
+  {
+    "id": 7,
+    "sprite": 32,
+    "x": 8,
+    "y": 1,
+    "direction": 2,
+    "control": 30,
+    "rom_offset": "$A3E5"
+  },
+  {
+    "id": 8,
+    "sprite": 21,
+    "x": 13,
+    "y": 0,
+    "direction": 3,
+    "control": 95,
+    "rom_offset": "$A3E8"
+  },
+  {
+    "id": 9,
+    "sprite": 28,
+    "x": 10,
+    "y": 0,
+    "direction": 3,
+    "control": 31,
+    "rom_offset": "$A3EB"
+  },
+  {
+    "id": 10,
+    "sprite": 14,
+    "x": 15,
+    "y": 5,
+    "direction": 2,
+    "control": 30,
+    "rom_offset": "$A3EE"
+  },
+  {
+    "id": 11,
+    "sprite": 28,
+    "x": 2,
+    "y": 5,
+    "direction": 3,
+    "control": 251,
+    "rom_offset": "$A3F1"
+  },
+  {
+    "id": 12,
+    "sprite": 253,
+    "x": 0,
+    "y": 5,
+    "direction": 2,
+    "control": 42,
+    "rom_offset": "$A3F4"
+  },
+  {
+    "id": 13,
+    "sprite": 24,
+    "x": 15,
+    "y": 5,
+    "direction": 3,
+    "control": 23,
+    "rom_offset": "$A3F7"
+  },
+  {
+    "id": 14,
+    "sprite": 24,
+    "x": 0,
+    "y": 2,
+    "direction": 0,
+    "control": 76,
+    "rom_offset": "$A3FA"
+  },
+  {
+    "id": 15,
+    "sprite": 64,
+    "x": 12,
+    "y": 15,
+    "direction": 0,
+    "control": 80,
+    "rom_offset": "$A3FD"
+  }
+]
