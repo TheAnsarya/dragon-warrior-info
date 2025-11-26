@@ -1,0 +1,29 @@
+id,name,type,attack,defense,price,cursed,usable_battle,usable_field
+0,Torch,tool,0,0,0,False,False,True
+1,Fairy Water,tool,0,0,0,False,False,True
+2,Wings,tool,0,0,0,False,False,True
+3,Dragon's Scale,tool,0,0,0,False,False,True
+4,Fairy Flute,tool,0,0,0,False,False,True
+5,Fighter's Ring,tool,0,0,0,False,False,True
+6,Erdrick's Token,tool,0,0,0,False,False,True
+7,Gwaelin's Love,tool,0,0,0,False,False,True
+8,Cursed Belt,tool,0,0,0,False,False,True
+9,Silver Harp,tool,0,0,0,False,False,True
+10,Death Necklace,tool,0,0,0,False,False,True
+11,Stones of Sunlight,tool,0,0,0,False,False,True
+12,Staff of Rain,tool,0,0,0,False,False,True
+13,Rainbow Drop,tool,0,0,0,False,False,True
+14,Herb,tool,0,0,0,False,False,True
+15,Club,weapon,0,0,0,False,False,True
+16,Copper Sword,weapon,0,0,0,False,False,True
+17,Hand Axe,weapon,0,0,0,False,False,True
+18,Broad Sword,weapon,0,0,0,False,False,True
+19,Flame Sword,weapon,0,0,0,False,False,True
+20,Erdrick's Sword,weapon,0,0,0,False,False,True
+21,Clothes,armor,0,0,0,False,False,True
+22,Leather Armor,armor,0,0,0,False,False,True
+23,Chain Mail,armor,0,0,0,False,False,True
+24,Half Plate,armor,0,0,0,False,False,True
+25,Full Plate,armor,0,0,0,False,False,True
+26,Magic Armor,armor,0,0,0,False,False,True
+27,Erdrick's Armor,armor,0,0,0,False,False,True

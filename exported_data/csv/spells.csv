@@ -1,0 +1,11 @@
+id,name,mp_cost,battle_only,field_only,power
+0,Heal,4,False,True,0
+1,Hurt,2,True,False,0
+2,Sleep,2,True,False,0
+3,Radiant,3,False,True,0
+4,Stopspell,2,True,False,0
+5,Outside,6,False,True,0
+6,Return,8,False,True,0
+7,Repel,2,False,True,0
+8,Healmore,10,False,True,0
+9,Hurtmore,5,True,False,0

@@ -1,0 +1,82 @@
+[
+  {
+    "id": 0,
+    "name": "Heal",
+    "mp_cost": 4,
+    "battle_only": false,
+    "field_only": true,
+    "power": 0
+  },
+  {
+    "id": 1,
+    "name": "Hurt",
+    "mp_cost": 2,
+    "battle_only": true,
+    "field_only": false,
+    "power": 0
+  },
+  {
+    "id": 2,
+    "name": "Sleep",
+    "mp_cost": 2,
+    "battle_only": true,
+    "field_only": false,
+    "power": 0
+  },
+  {
+    "id": 3,
+    "name": "Radiant",
+    "mp_cost": 3,
+    "battle_only": false,
+    "field_only": true,
+    "power": 0
+  },
+  {
+    "id": 4,
+    "name": "Stopspell",
+    "mp_cost": 2,
+    "battle_only": true,
+    "field_only": false,
+    "power": 0
+  },
+  {
+    "id": 5,
+    "name": "Outside",
+    "mp_cost": 6,
+    "battle_only": false,
+    "field_only": true,
+    "power": 0
+  },
+  {
+    "id": 6,
+    "name": "Return",
+    "mp_cost": 8,
+    "battle_only": false,
+    "field_only": true,
+    "power": 0
+  },
+  {
+    "id": 7,
+    "name": "Repel",
+    "mp_cost": 2,
+    "battle_only": false,
+    "field_only": true,
+    "power": 0
+  },
+  {
+    "id": 8,
+    "name": "Healmore",
+    "mp_cost": 10,
+    "battle_only": false,
+    "field_only": true,
+    "power": 0
+  },
+  {
+    "id": 9,
+    "name": "Hurtmore",
+    "mp_cost": 5,
+    "battle_only": true,
+    "field_only": false,
+    "power": 0
+  }
+]

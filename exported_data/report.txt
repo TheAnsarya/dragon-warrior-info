@@ -1,0 +1,96 @@
+================================================================================
+DRAGON WARRIOR DATA EXPORT
+Generated: 2025-11-26 12:32:23
+================================================================================
+
+MONSTER STATISTICS
+--------------------------------------------------------------------------------
+ID   Name                     HP  STR  AGI  ATK  DEF     XP   Gold
+--------------------------------------------------------------------------------
+0    Slime                  1504  208  249  169  250  44949  43466
+1    Red Slime              8255  244  193  165   64  44949  42442
+2    Drakee                 6248  105    1  133   62  26984  34048
+3    Ghost                 45312   62    0   16   23  42336  53325
+4    Magician              61695    7  201  254  240  19459  50996
+5    Magidrakee            26144  173  160    0  169  37375  51353
+6    Scorpion              37320  153   96  165   75  25866   6160
+7    Druin                 16005   32  240  193  165  34112  34110
+8    Poltergeist           10511   63  133   60  133   8264  50602
+9    Droll                 36896  198  200  177  153   2181  36896
+10   Drakeema               2693  144    2  230   11   8352  39345
+11   Skeleton              39345  133    8   32  144  42438  34120
+12   Warlock               45312  153  201  193  176  43268  61440
+13   Metal Scorpion        53249   10  201  222  176  43268  53250
+14   Wolf                  49158  165   11   24  105  34080   8203
+15   Wraith                34048   61  240   31  169  34049  53309
+16   Metal Slime           26904    1  133   62  104    105  16261
+17   Specter               16049  133   60  165   60  15782   4608
+18   Wolflord              42300  152   24  105   44  58680  34108
+19   Druinlord             49648  165   64  133   62  42312   2634
+20   Drollmagi             14352  229   60  133   60  40480  42437
+21   Wyvern                26637  133   62  165   74  34058  42300
+22   Rogue Scorpion        34108   60   32  158  197   2725  17029
+23   Wraith Knight         34143    8   32  245  196  36940  43462
+24   Golem                 36940  198  169  255  133   8271  65396
+25   Goldman                2080  198  104  240   11  20389   3881
+26   Knight                42441   71   41    1  240   8220  51273
+27   Magiwyvern              169  133  215  165  217  25880  34263
+28   Demon Knight          55205   96  165   71   41  61442   8205
+29   Werewolf              43287  255  133  215   96  18341   4137
+30   Green Dragon           7664  165  217  208    3  43340  50889
+31   Starwyvern            51608  254  240    3   76  51621   7337
+32   Wizard                53465    3   76  169  201    169  55685
+33   Axe Knight            59704    2  201  254  208  43266  34076
+34   Blue Dragon            8233  240   70  165  216   1481   8688
+35   Stoneman               1488  198  217   76  169  59081  59032
+36   Armored Knight        19459  165  201  169    0  39045  42316
+37   Red Dragon            19459  169  201  133  217  40357  38789
+38   Dragonlord            53278    2  169    0  133  19608  51621
+
+================================================================================
+
+ITEMS
+--------------------------------------------------------------------------------
+ 0. Torch                          Type: tool
+ 1. Fairy Water                    Type: tool
+ 2. Wings                          Type: tool
+ 3. Dragon's Scale                 Type: tool
+ 4. Fairy Flute                    Type: tool
+ 5. Fighter's Ring                 Type: tool
+ 6. Erdrick's Token                Type: tool
+ 7. Gwaelin's Love                 Type: tool
+ 8. Cursed Belt                    Type: tool
+ 9. Silver Harp                    Type: tool
+10. Death Necklace                 Type: tool
+11. Stones of Sunlight             Type: tool
+12. Staff of Rain                  Type: tool
+13. Rainbow Drop                   Type: tool
+14. Herb                           Type: tool
+15. Club                           Type: weapon
+16. Copper Sword                   Type: weapon
+17. Hand Axe                       Type: weapon
+18. Broad Sword                    Type: weapon
+19. Flame Sword                    Type: weapon
+20. Erdrick's Sword                Type: weapon
+21. Clothes                        Type: armor
+22. Leather Armor                  Type: armor
+23. Chain Mail                     Type: armor
+24. Half Plate                     Type: armor
+25. Full Plate                     Type: armor
+26. Magic Armor                    Type: armor
+27. Erdrick's Armor                Type: armor
+
+================================================================================
+
+SPELLS
+--------------------------------------------------------------------------------
+ 0. Heal            MP:  4  Field
+ 1. Hurt            MP:  2  Battle
+ 2. Sleep           MP:  2  Battle
+ 3. Radiant         MP:  3  Field
+ 4. Stopspell       MP:  2  Battle
+ 5. Outside         MP:  6  Field
+ 6. Return          MP:  8  Field
+ 7. Repel           MP:  2  Field
+ 8. Healmore        MP: 10  Field
+ 9. Hurtmore        MP:  5  Battle
