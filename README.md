@@ -409,6 +409,166 @@ This project builds upon excellent existing work:
 - ⏳ Community mod sharing platform
 - ⏳ Complete documentation publication
 
+## 📚 Manual & Reference Documentation
+
+### Build Process Documentation
+- **[Build Process Files](docs/build/BUILD_PROCESS_FILES.md)** - Complete list of all files used in the build system
+  - Build scripts (PowerShell & Python)
+  - Data extraction tools
+  - Asset processing tools
+  - ASM source files
+  - Asset files (JSON & graphics)
+  - Configuration files
+
+- **[Assets Not Used in Build](docs/build/ASSETS_NOT_USED_IN_BUILD.md)** - Analysis of asset files not currently integrated
+  - JSON files vs. ASM sources
+  - Graphics extraction vs. reinsertion
+  - Editor integration gaps
+  - Recommendations for future integration
+
+### Testing Procedures
+
+#### Testing the ROM Build
+1. **Verify Prerequisites**:
+   ```powershell
+   python --version  # Verify Python 3.x
+   Test-Path "Ophis/ophis.exe"  # Verify assembler
+   Test-Path "roms/Dragon Warrior (U) (PRG1) [!].nes"  # Verify reference ROM
+   ```
+
+2. **Run Build**:
+   ```powershell
+   .\build_rom.ps1  # Basic ROM assembly
+   # Expected: dragon_warrior_rebuilt.nes (81,936 bytes)
+   ```
+
+3. **Verify Build Output**:
+   - Check `build/dragon_warrior_rebuilt.nes` exists
+   - Verify size: 81,936 bytes (80.02 KB)
+   - Test ROM in emulator (FCEUX, Mesen, Nestopia)
+
+4. **Compare Against Reference**:
+   ```powershell
+   # Use build_rom.ps1's automatic comparison feature
+   # Expected: Byte-identical or documented differences
+   ```
+
+#### Testing the Asset Editors
+
+1. **Item Editor** (`tools/editors/item_editor_standalone.py`):
+   ```powershell
+   # Install Rich library if needed
+   pip install rich
+   
+   # Run item editor
+   python tools/editors/item_editor_standalone.py
+   
+   # Test workflow:
+   # 1. List all items (menu option 1)
+   # 2. View item details (menu option 2, select item 1 - Club)
+   # 3. Edit item (menu option 3, change attack power)
+   # 4. Save changes (menu option 6)
+   # 5. Verify backup created in assets/backups/
+   ```
+
+2. **AssetManager** (`tools/asset_manager.py`):
+   ```powershell
+   # Run AssetManager demonstration
+   python demo_asset_manager.py
+   
+   # Expected output:
+   # ✓ Demo 1: Load assets (items, monsters)
+   # ✓ Demo 2: Modify and save with backup
+   # ✓ Demo 3: Validation (catch errors)
+   # ✓ Demo 4: Metadata display
+   # ✓ Demo 5: Complete workflow
+   ```
+
+3. **Asset Extraction**:
+   ```powershell
+   # Extract items from ROM
+   python tools/extraction/data_extractor.py
+   
+   # Expected: assets/json/items.json created with 29 items
+   # Verify: Club (ID 1) has attack_power: 1
+   ```
+
+#### Testing ROM Changes
+
+1. **Modify Assets**:
+   ```powershell
+   # Edit assets/json/items_corrected.json
+   # Example: Change Club attack_power to 5
+   ```
+
+2. **Regenerate ASM** (when integrated):
+   ```powershell
+   # Future: Automatic JSON → ASM generation
+   python tools/asset_reinserter.py --input assets/json/items_corrected.json --output source_files/items.asm
+   ```
+
+3. **Rebuild ROM**:
+   ```powershell
+   .\build_rom.ps1
+   ```
+
+4. **Test in Emulator**:
+   - Load `build/dragon_warrior_rebuilt.nes`
+   - Start new game
+   - Buy Club from weapon shop
+   - Verify attack power changed
+   - Test in battle to confirm
+
+### Manual Workflows
+
+#### Complete Asset-to-ROM Pipeline
+```
+1. Extract Assets
+   ├─ Run: python tools/extraction/data_extractor.py
+   └─ Output: assets/json/*.json
+
+2. Edit Assets
+   ├─ Method A: Use item_editor_standalone.py (CLI)
+   ├─ Method B: Edit JSON files directly
+   └─ AssetManager validates changes
+
+3. Generate ASM (FUTURE - Not yet integrated)
+   ├─ Run: python tools/asset_reinserter.py
+   └─ Output: Updated Bank00-03.asm files
+
+4. Build ROM
+   ├─ Run: .\build_rom.ps1
+   └─ Output: build/dragon_warrior_rebuilt.nes
+
+5. Test ROM
+   ├─ Load in emulator
+   └─ Verify changes in-game
+```
+
+#### Current Limitations
+⚠️ **JSON edits DO NOT automatically affect ROM builds**
+- Current build uses ASM source files (`Bank00-03.asm`)
+- JSON files are for editing/reference only
+- Must manually update ASM to see changes in ROM
+
+**To make JSON changes active**:
+1. Edit JSON files using editors
+2. Run `tools/asset_reinserter.py` to generate ASM *(when integrated)*
+3. Replace sections in `Bank00-03.asm` with generated ASM
+4. Rebuild ROM with `build_rom.ps1`
+
+### Documentation Structure
+
+All documentation has been reorganized into `docs/` with subdirectories:
+
+- **`docs/session-logs/`** - Development session summaries and logs
+- **`docs/build/`** - Build system documentation
+- **`docs/implementation/`** - Implementation details and bug fixes
+- **`docs/project/`** - Project status, contributing guidelines
+- **`docs/guides/`** - User guides and reference materials
+
+See [docs/INDEX.md](docs/INDEX.md) for complete documentation index.
+
 ## 📋 License
 
 This project respects all original copyrights and is intended for educational and preservation purposes. You must own a legal copy of Dragon Warrior to use these tools.
