@@ -1,0 +1,185 @@
+{
+  "tools": [
+    {
+      "name": "Torch",
+      "type": "tool",
+      "price": 8,
+      "effect": "Lights dark areas"
+    },
+    {
+      "name": "Fairy Water",
+      "type": "tool",
+      "price": 38,
+      "effect": "Repels weak monsters"
+    },
+    {
+      "name": "Wings",
+      "type": "tool",
+      "price": 70,
+      "effect": "Return to castle"
+    },
+    {
+      "name": "Dragon's Scale",
+      "type": "key",
+      "price": 0,
+      "effect": "Protects from swamp damage"
+    },
+    {
+      "name": "Fairy Flute",
+      "type": "key",
+      "price": 0,
+      "effect": "Puts Golem to sleep"
+    },
+    {
+      "name": "Fighter's Ring",
+      "type": "key",
+      "price": 0,
+      "effect": "Unknown power"
+    },
+    {
+      "name": "Erdrick's Token",
+      "type": "key",
+      "price": 0,
+      "effect": "Proof of heritage"
+    },
+    {
+      "name": "Gwaelin's Love",
+      "type": "key",
+      "price": 0,
+      "effect": "Shows distance to castle"
+    },
+    {
+      "name": "Cursed Belt",
+      "type": "cursed",
+      "price": 0,
+      "effect": "Reduces agility"
+    },
+    {
+      "name": "Silver Harp",
+      "type": "key",
+      "price": 0,
+      "effect": "Unknown power"
+    },
+    {
+      "name": "Death Necklace",
+      "type": "cursed",
+      "price": 0,
+      "effect": "Reduces HP"
+    },
+    {
+      "name": "Stones of Sunlight",
+      "type": "quest",
+      "price": 0,
+      "effect": "Part of Rainbow Drop"
+    },
+    {
+      "name": "Staff of Rain",
+      "type": "quest",
+      "price": 0,
+      "effect": "Part of Rainbow Drop"
+    },
+    {
+      "name": "Rainbow Drop",
+      "type": "quest",
+      "price": 0,
+      "effect": "Creates bridge to Charlock"
+    },
+    {
+      "name": "Herb",
+      "type": "consumable",
+      "price": 24,
+      "effect": "Restores ~25 HP"
+    }
+  ],
+  "weapons": [
+    {
+      "name": "Bamboo Pole",
+      "attack": 29,
+      "price": 10
+    },
+    {
+      "name": "Club",
+      "attack": 17,
+      "price": 60
+    },
+    {
+      "name": "Copper Sword",
+      "attack": 255,
+      "price": 180
+    },
+    {
+      "name": "Hand Axe",
+      "attack": 48,
+      "price": 560
+    },
+    {
+      "name": "Broad Sword",
+      "attack": 14,
+      "price": 1500
+    },
+    {
+      "name": "Flame Sword",
+      "attack": 29,
+      "price": 9800
+    },
+    {
+      "name": "Erdrick's Sword",
+      "attack": 10,
+      "price": 0
+    }
+  ],
+  "armor": [
+    {
+      "name": "Clothes",
+      "defense": 255,
+      "price": 20
+    },
+    {
+      "name": "Leather Armor",
+      "defense": 58,
+      "price": 70
+    },
+    {
+      "name": "Chain Mail",
+      "defense": 24,
+      "price": 300
+    },
+    {
+      "name": "Half Plate",
+      "defense": 21,
+      "price": 1000
+    },
+    {
+      "name": "Full Plate",
+      "defense": 15,
+      "price": 3000
+    },
+    {
+      "name": "Magic Armor",
+      "defense": 21,
+      "price": 7700
+    },
+    {
+      "name": "Erdrick's Armor",
+      "defense": 24,
+      "price": 0
+    }
+  ],
+  "shields": [
+    {
+      "name": "Small Shield",
+      "defense": 13,
+      "price": 90
+    },
+    {
+      "name": "Large Shield",
+      "defense": 255,
+      "price": 800
+    },
+    {
+      "name": "Silver Shield",
+      "defense": 39,
+      "price": 14800
+    }
+  ]
+}

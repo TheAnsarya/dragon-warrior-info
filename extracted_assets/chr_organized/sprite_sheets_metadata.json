@@ -1,0 +1,332 @@
+{
+  "rom": "C:\\Users\\me\\source\\repos\\dragon-warrior-info\\roms\\Dragon Warrior (U) (PRG1) [!].nes",
+  "chr_offset": "0x10010",
+  "chr_size": 16384,
+  "total_tiles": 1024,
+  "sprite_sheets": [
+    {
+      "name": "hero_sprites",
+      "description": "Hero character sprites: 4 directions \u00d7 2 frames \u00d7 2 weapon states",
+      "palette": "character",
+      "tile_count": 16,
+      "tile_ranges": [
+        [
+          0,
+          15
+        ]
+      ],
+      "dimensions": {
+        "width": 256,
+        "height": 64
+      },
+      "tiles_per_row": 8,
+      "scale": 4
+    },
+    {
+      "name": "monster_sprites",
+      "description": "All enemy monster sprites (64 different monsters)",
+      "palette": "monster",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          16,
+          79
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "npc_sprites",
+      "description": "NPCs: townspeople, guards, king, princess, merchants",
+      "palette": "character",
+      "tile_count": 32,
+      "tile_ranges": [
+        [
+          80,
+          111
+        ]
+      ],
+      "dimensions": {
+        "width": 256,
+        "height": 128
+      },
+      "tiles_per_row": 8,
+      "scale": 4
+    },
+    {
+      "name": "items_equipment",
+      "description": "Weapons, armor, items, treasure chests",
+      "palette": "menu",
+      "tile_count": 16,
+      "tile_ranges": [
+        [
+          112,
+          127
+        ]
+      ],
+      "dimensions": {
+        "width": 256,
+        "height": 64
+      },
+      "tiles_per_row": 8,
+      "scale": 4
+    },
+    {
+      "name": "ui_elements",
+      "description": "Menu cursors, borders, text boxes, UI decorations",
+      "palette": "menu",
+      "tile_count": 16,
+      "tile_ranges": [
+        [
+          128,
+          143
+        ]
+      ],
+      "dimensions": {
+        "width": 256,
+        "height": 64
+      },
+      "tiles_per_row": 8,
+      "scale": 4
+    },
+    {
+      "name": "font_text",
+      "description": "Text characters, numbers, symbols, punctuation",
+      "palette": "dialog",
+      "tile_count": 112,
+      "tile_ranges": [
+        [
+          144,
+          255
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 168
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "overworld_terrain",
+      "description": "Overworld: grass, trees, mountains, water, bridges",
+      "palette": "overworld",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          256,
+          319
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "town_buildings",
+      "description": "Town tiles: buildings, roads, doors, roofs, walls",
+      "palette": "town",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          320,
+          383
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "dungeon_tiles",
+      "description": "Dungeon: stone walls, floors, stairs, cave features",
+      "palette": "dungeon",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          384,
+          447
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "castle_interior",
+      "description": "Castle interiors, throne room, special areas",
+      "palette": "battle",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          448,
+          511
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "battle_background_1",
+      "description": "Battle backgrounds: grass/field patterns",
+      "palette": "battle",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          512,
+          575
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "battle_background_2",
+      "description": "Battle backgrounds: dungeon/cave patterns",
+      "palette": "battle",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          576,
+          639
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "battle_background_3",
+      "description": "Battle backgrounds: castle/throne room patterns",
+      "palette": "battle",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          640,
+          703
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "battle_background_4",
+      "description": "Battle backgrounds: special area patterns",
+      "palette": "battle",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          704,
+          767
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "extended_graphics_1",
+      "description": "Extended graphics: additional UI and special elements",
+      "palette": "menu",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          768,
+          831
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "extended_graphics_2",
+      "description": "Extended graphics: title screen and credits",
+      "palette": "menu",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          832,
+          895
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "extended_graphics_3",
+      "description": "Extended graphics: special effects and animations",
+      "palette": "menu",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          896,
+          959
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    },
+    {
+      "name": "extended_graphics_4",
+      "description": "Extended graphics: miscellaneous tiles",
+      "palette": "menu",
+      "tile_count": 64,
+      "tile_ranges": [
+        [
+          960,
+          1023
+        ]
+      ],
+      "dimensions": {
+        "width": 384,
+        "height": 96
+      },
+      "tiles_per_row": 16,
+      "scale": 3
+    }
+  ]
+}
