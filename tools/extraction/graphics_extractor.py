@@ -64,9 +64,10 @@ class DragonWarriorGraphicsExtractor:
 
 	def extract_chr_rom(self) -> List[bytes]:
 		"""Extract CHR-ROM data (graphics)"""
-		# Dragon Warrior CHR-ROM starts at 0x8010 (after PRG-ROM)
-		chr_start = 0x8010
-		chr_size = 0x2000	# 8KB CHR-ROM
+		# Dragon Warrior uses MMC1 mapper with 4x16KB PRG-ROM banks + 2x8KB CHR-ROM banks
+		# CHR-ROM starts at file offset 0x10010 (16 byte header + 64KB PRG-ROM)
+		chr_start = 0x10010
+		chr_size = 0x4000	# 16KB CHR-ROM (2 banks)
 
 		if chr_start + chr_size <= len(self.rom_data):
 			chr_data = self.rom_data[chr_start:chr_start + chr_size]
@@ -101,28 +102,24 @@ class DragonWarriorGraphicsExtractor:
 		return pixels
 
 	def extract_palettes(self) -> Dict[int, Palette]:
-		"""Extract game palettes"""
+		"""Extract game palettes from disassembly data"""
 		palettes = {}
 
-		# Dragon Warrior typical palette assignments (based on game analysis)
-		# These are representative palettes used in Dragon Warrior
+		# Dragon Warrior palette data extracted from Bank00.asm (EnSPPals section)
+		# Format: palette_name: [color0, color1, color2, color3] (NES palette indices)
 		palette_definitions = [
-			# Overworld palette
-			("Overworld", [0x0F, 0x30, 0x10, 0x00]),  # Black, white, light gray, dark gray
-			# Dungeon palette
-			("Dungeon", [0x0F, 0x00, 0x10, 0x30]),    # Black, dark gray, light gray, white
-			# Town palette
-			("Town", [0x0F, 0x16, 0x27, 0x30]),       # Black, brown, orange, white
-			# Battle palette
-			("Battle", [0x0F, 0x00, 0x10, 0x30]),     # Black, dark gray, light gray, white
-			# Menu palette
-			("Menu", [0x0F, 0x00, 0x10, 0x30]),       # Black, dark gray, light gray, white
-			# Character palette
-			("Character", [0x0F, 0x16, 0x27, 0x30]),  # Black, brown, orange, white
-			# Monster palette
-			("Monster", [0x0F, 0x05, 0x15, 0x30]),    # Black, purple, pink, white
-			# Dialog palette
-			("Dialog", [0x0F, 0x00, 0x10, 0x30])      # Black, dark gray, light gray, white
+			# Sprite palettes from EnSPPals (0x9AAF onwards)
+			("BlueSlime", [0x1C, 0x15, 0x30, 0x0E]),      # BSlimePal - blue slime colors
+			("RedSlime", [0x16, 0x0D, 0x30, 0x0E]),       # RSlimePal - red slime colors
+			("Drakee", [0x01, 0x15, 0x30, 0x0E]),         # DrakeePal - blue/white
+			("Ghost", [0x13, 0x15, 0x0C, 0x26]),          # GhostPal (uses 4 unique colors)
+			("Magician", [0x00, 0x36, 0x0F, 0x00]),       # MagicianPal
+			("MetalDrakee", [0x15, 0x0E, 0x30, 0x0E]),    # MDrakeePal - metal colors
+			("Scorpion", [0x26, 0x13, 0x1E, 0x0E]),       # ScorpionPal
+			("Druin", [0x26, 0x03, 0x30, 0x15]),          # DruinPal
+			# Standard palettes for UI and text
+			("Text", [0x0F, 0x00, 0x10, 0x30]),           # Black bg, white text
+			("Menu", [0x0F, 0x00, 0x10, 0x30]),           # Menu colors
 		]
 
 		for i, (name, nes_colors) in enumerate(palette_definitions):

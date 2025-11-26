@@ -53,57 +53,16 @@ class DragonWarriorFontAndSlimeExtractor:
         with open(self.rom_path, 'rb') as f:
             self.rom_data = f.read()
 
-        self.nes_palette = NESPalette()
+		self.nes_palette = NESPalette()
 
-        # Dragon Warrior specific graphics locations (analyzed from disassembly)
-        # CHR-ROM starts at 0x8010, contains both pattern tables
-        self.chr_start = 0x8010
-        self.chr_size = 0x2000  # 8KB CHR-ROM
-
-        # Font character mapping (from actual disassembly analysis)
-        self.font_char_map = {
-            # From Dragon_Warrior_Defines.asm - actual character mappings
-            # Numbers - need to find these in disassembly
-            0x50: '0', 0x51: '1', 0x52: '2', 0x53: '3', 0x54: '4',
-            0x55: '5', 0x56: '6', 0x57: '7', 0x58: '8', 0x59: '9',
-
-            # Specific characters from disassembly
-            0x17: 'n',    # TXT_LWR_N
-            0x1C: 's',    # TXT_LWR_S  
-            0x24: 'A',    # TXT_UPR_A
-            0x28: 'E',    # TXT_UPR_E
-            0x2C: 'I',    # TXT_UPR_I
-            0x32: 'O',    # TXT_UPR_O
-            0x38: 'U',    # TXT_UPR_U
-            
-            # Punctuation from disassembly
-            0x40: "'",    # TXT_APOS
-            0x47: '.',    # TXT_PERIOD
-            0x48: ',',    # TXT_COMMA
-            0x49: '-',    # TXT_DASH
-            0x4B: '?',    # TXT_QUESTION
-            0x4C: '!',    # TXT_EXCLAIM
-            0x4E: ')',    # TXT_CLS_PAREN
-            0x4F: '(',    # TXT_OPN_PAREN
-            0x50: '"',    # TXT_OPN_QUOTE (conflicts with 0, but let's use quote)
-            0x60: ' ',    # TXT_BLANK1
-            
-            # Fill in likely patterns for other letters based on spacing
-            # Uppercase letters (pattern from A=0x24)
-            0x25: 'B', 0x26: 'C', 0x27: 'D', 0x29: 'F', 0x2A: 'G', 0x2B: 'H',
-            0x2D: 'J', 0x2E: 'K', 0x2F: 'L', 0x30: 'M', 0x31: 'N', 0x33: 'P',
-            0x34: 'Q', 0x35: 'R', 0x36: 'S', 0x37: 'T', 0x39: 'V', 0x3A: 'W',
-            0x3B: 'X', 0x3C: 'Y', 0x3D: 'Z',
-            
-            # Lowercase letters (pattern from n=0x17, s=0x1C)
-            0x04: 'a', 0x05: 'b', 0x06: 'c', 0x07: 'd', 0x08: 'e', 0x09: 'f',
-            0x0A: 'g', 0x0B: 'h', 0x0C: 'i', 0x0D: 'j', 0x0E: 'k', 0x0F: 'l',
-            0x10: 'm', 0x11: 'n', 0x12: 'o', 0x13: 'p', 0x14: 'q', 0x15: 'r',
-            0x16: 's', 0x18: 't', 0x19: 'u', 0x1A: 'v', 0x1B: 'w', 0x1D: 'x',
-            0x1E: 'y', 0x1F: 'z'
-        }
-
-        # Slime palette data from disassembly (BSlimePal: .byte $1C, $15, $30, $0E...)
+		# Dragon Warrior specific graphics locations (from ROM analysis)
+		# CHR-ROM starts at 0x10010 (16 byte header + 64KB PRG-ROM)
+		# Contains 2 banks of 8KB each = 16KB total CHR-ROM
+		self.chr_start = 0x10010
+		self.chr_size = 0x4000  # 16KB CHR-ROM (2x8KB banks)        # Dragon Warrior font is actually in Pattern Table 1 ($80-$FF)
+        # The character mapping system uses different indices than tile positions
+        # For now, extract the raw font tiles for manual identification
+        self.font_char_map = {}        # Slime palette data from disassembly (BSlimePal: .byte $1C, $15, $30, $0E...)
         # These are NES palette indices that create the blue/white color scheme
         self.slime_palette_indices = [0x1C, 0x15, 0x30, 0x0E]  # Blue slime colors
         self.red_slime_palette_indices = [0x16, 0x0D, 0x30, 0x0E]  # Red slime colors
@@ -176,50 +135,41 @@ class DragonWarriorFontAndSlimeExtractor:
         """Extract the entire font as a single viewable/editable sheet"""
         tiles = self.extract_chr_rom_tiles()
 
-        # Create proper Dragon Warrior text palette
-        # Dragon Warrior uses a white text on dark background palette for dialogs
-        # NES palette indices: transparent/black, dark color, medium color, white
-        text_palette_indices = [0x0F, 0x00, 0x30, 0x20]  # Black/transparent, black, white, lighter white
-        text_colors = self.create_palette_colors(text_palette_indices)
-        
-        # Alternative cleaner palette for better visibility
-        clean_text_colors = [
-            (0, 0, 0),          # Color 0: Black (background/transparent)
-            (64, 64, 64),       # Color 1: Dark gray  
+        # Dragon Warrior text palette - WHITE ON BLACK as it actually appears in game
+        # Text is white characters on black background, NOT blue!
+        dragon_warrior_text_colors = [
+            (0, 0, 0),          # Color 0: Black background
+            (64, 64, 64),       # Color 1: Dark gray
             (192, 192, 192),    # Color 2: Light gray
-            (255, 255, 255)     # Color 3: White (text)
+            (255, 255, 255)     # Color 3: White text characters
         ]
 
-        # Dragon Warrior font characters are in specific tiles based on character mapping
-        # Extract only tiles that contain actual font characters
-        font_tile_indices = list(self.font_char_map.keys())
-        font_tile_indices.sort()  # Sort for organized display
-
-        console.print(f"Font tiles to extract: {[hex(i) for i in font_tile_indices[:10]]}...") # Show first 10
-
-        # Calculate grid dimensions for actual font characters (not all 128 tiles)
-        num_chars = len(font_tile_indices)
-        grid_width = 16  # Keep 16 columns for readability
-        grid_height = (num_chars + grid_width - 1) // grid_width  # Calculate needed rows
+        # Create complete Dragon Warrior text table display ($100-$1FF range)
+        # Dragon Warrior font is in the SECOND half of Pattern Table 1!
         tile_size = 8
-        scale_factor = 4  # Scale up for better visibility
+        scale_factor = 6  # Larger scale for better visibility
+        grid_width = 16  # Standard 16-column layout
+        grid_height = 16  # Covers $100-$1FF range (16 rows)
 
-        # Create large image for font sheet
+        # Create font sheet with BLACK background (Dragon Warrior text style)
         sheet_width = grid_width * tile_size * scale_factor
         sheet_height = grid_height * tile_size * scale_factor
-        font_sheet = Image.new('RGB', (sheet_width, sheet_height), (64, 64, 64))
+        font_sheet = Image.new('RGB', (sheet_width, sheet_height), (0, 0, 0))  # BLACK background
 
-        # Render each font tile
-        for grid_pos, tile_idx in enumerate(track(font_tile_indices, description="Extracting font characters")):
+        console.print(f"Creating Dragon Warrior text table: ${0x100:03X}-${0x1FF:03X} ({grid_width}x{grid_height} grid)")
+
+        # Extract all tiles in CORRECT font table order ($100-$1FF)
+        for tile_idx in track(range(0x100, 0x200), description="Extracting REAL Dragon Warrior font"):
             if tile_idx < len(tiles):
                 tile_data = tiles[tile_idx]
                 tile_pixels = self.decode_nes_tile(tile_data)
-                tile_img = self.render_tile_with_palette(tile_pixels, clean_text_colors)  # Use clean colors
+                tile_img = self.render_tile_with_palette(tile_pixels, dragon_warrior_text_colors)
 
                 # Scale up tile
                 tile_img = tile_img.resize((tile_size * scale_factor, tile_size * scale_factor), Resampling.NEAREST)
 
-                # Calculate position in grid based on grid_pos, not tile_idx
+                # Calculate grid position based on tile index (subtract 0x100 for grid positioning)
+                grid_pos = tile_idx - 0x100
                 grid_x = grid_pos % grid_width
                 grid_y = grid_pos // grid_width
 
@@ -228,10 +178,8 @@ class DragonWarriorFontAndSlimeExtractor:
 
                 font_sheet.paste(tile_img, (paste_x, paste_y))
 
-                # Save individual character
-                char = self.font_char_map[tile_idx]
-                safe_char = char.replace('/', '_').replace('\\', '_').replace('?', 'question').replace('"', 'quote').replace("'", 'apostrophe').replace('!', 'exclamation').replace('(', 'openparen').replace(')', 'closeparen').replace(' ', 'space')
-                char_path = self.output_dir / f"font_char_{tile_idx:02X}_{safe_char}.png"
+                # Save individual character tiles (all of them since they're the real font)
+                char_path = self.output_dir / f"font_tile_{tile_idx:03X}.png"
                 tile_img.save(char_path)
 
         # Save complete font sheet

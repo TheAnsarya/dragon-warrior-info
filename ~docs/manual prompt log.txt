@@ -45,6 +45,25 @@ show me the dialog font json files and png files
 
 extract all of that now! (`dragon_warrior_font_complete.png` doesn't exist)
 PRG1, not PRG0! PRG0 is the alternate not the primary
+text graphics as they should be are in `C:\Users\me\source\repos\GameInfo\Dragon Warrior (NES)\Wiki\Images` fix the font extraction so it matches something like this
+no, DW text is white on black, I don't know what you're looking at, font is like `C:\Users\me\source\repos\GameInfo\Dragon Warrior (NES)\Wiki\Images\Dragon Warrior (NES) - Text Table in RAM - 2.png` this extracted font is garbage; stop giving me nonsense, fix it, damnit!;
+t give a shit about the colors, the font DOES 
+NOT MATCH; fix the font fix the font fix the font;
+No you did not, what shit, you're talking about addresses that are one byte long, that's insane, gove me an extracted font png and json that actually uses the real font from the actual rom
+
+All of the extracted graphics are incorrect, please find the correct extraction addresses (remember, NES addresses are different from file addresses) and create png files that actually look like the graphics used in the game
+
+The disassembly shows where graphics are and we have a graphics extraction pipeline, fix that and run it; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+
+
+
+
+
+
+
+
+
+
 
 
 
