@@ -19,7 +19,7 @@ print("Searching for weapon price sequence [8, 60, 180, 560, 1200, 9800]...")
 for i in range(len(data) - len(weapon_prices_bytes)):
     if data[i:i+len(weapon_prices_bytes)] == weapon_prices_bytes:
         print(f"  FOUND at ROM offset: 0x{i:05X}")
-        
+
         # Print surrounding data
         print(f"\n  Full item price table starting at 0x{i:05X}:")
         for j in range(29):
@@ -40,7 +40,7 @@ print("\n\nSearching for weapon price sequence WITHOUT Torch [60, 180, 560, 1200
 for i in range(len(data) - len(weapon_prices_no_torch)):
     if data[i:i+len(weapon_prices_no_torch)] == weapon_prices_no_torch:
         print(f"  FOUND at ROM offset: 0x{i:05X}")
-        
+
         # Check what's before this
         if i >= 2:
             price_before = struct.unpack('<H', data[i-2:i])[0]

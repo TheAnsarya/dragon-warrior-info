@@ -17,7 +17,7 @@
     "id": 1,
     "name": "Club",
     "item_type": "0",
-    "attack_power": 4,
+    "attack_power": 1,
     "defense_power": 0,
     "buy_price": 60,
     "sell_price": 30,

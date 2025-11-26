@@ -14,7 +14,7 @@ data = open('roms/Dragon Warrior (U) (PRG1) [!].nes', 'rb').read()
 
 # Let me search for known weapon prices instead
 # Club = 60 gold = 0x3C00 in little-endian
-# Copper Sword = 180 gold = 0xB400 
+# Copper Sword = 180 gold = 0xB400
 # Hand Axe = 560 gold = 0x3002
 
 print("Searching for Club price (60 = 0x3C)...")

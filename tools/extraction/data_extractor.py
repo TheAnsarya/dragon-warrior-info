@@ -97,12 +97,12 @@ class DragonWarriorDataExtractor:
 
 	def extract_item_data(self) -> Dict[int, ItemData]:
 		"""Extract item statistics and properties from ROM data tables
-		
+
 		CORRECTED ROM OFFSETS (verified 2025-11-26):
 		- Weapon attack power at 0x019E0 (NOT 0x19CF which had wrong data)
 		- Armor defense at 0x019E7
 		- Shield defense at 0x019EF
-		
+
 		NOTE: Item prices are NOT stored in a simple sequential table.
 		Using known values from Dragon Warrior game data until price table structure is decoded.
 		"""

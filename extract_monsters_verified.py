@@ -13,16 +13,16 @@ from data_extractor import DragonWarriorDataExtractor
 
 def main():
     """Extract and verify all monster data from ROM"""
-    
+
     print("="*80)
     print("DRAGON WARRIOR MONSTER EXTRACTION - COMPREHENSIVE VERIFICATION")
     print("="*80)
     print()
-    
+
     # Initialize extractor
     rom_path = "roms/Dragon Warrior (U) (PRG1) [!].nes"
     output_dir = "assets"
-    
+
     try:
         extractor = DragonWarriorDataExtractor(rom_path, output_dir)
         print(f"✓ Loaded ROM: {rom_path}")
@@ -31,13 +31,13 @@ def main():
         print(f"❌ ERROR: ROM file not found: {rom_path}")
         print("   Please ensure the ROM is in the roms/ directory")
         return 1
-    
+
     # Extract monsters
     print("Extracting monster data from ROM...")
     monsters = extractor.extract_monster_stats()
     print(f"✓ Extracted {len(monsters)} monsters")
     print()
-    
+
     # Known Dragon Warrior monster data for verification
     # Source: Dragon Warrior strategy guides and ROM hacking community
     # Note: ROM stores base values, game calculates actual ranges at runtime
@@ -55,26 +55,26 @@ def main():
         10: {"name": "Drakeema", "hp": 24, "strength": 26, "agility": 28, "gold": 35, "exp": 25},
         # More monsters - will verify as many as possible
     }
-    
+
     # Verify extracted data
     print("MONSTER VERIFICATION REPORT")
     print("="*80)
     print(f"{'ID':>3} | {'Name':20} | {'HP':>3} | {'Str':>3} | {'Agi':>3} | {'Gold':>4} | {'Exp':>4} | Status")
     print("-"*80)
-    
+
     verification_count = 0
     mismatch_count = 0
-    
+
     for monster_id in sorted(monsters.keys()):
         monster = monsters[monster_id]
-        
+
         status = "✓"
-        
+
         # Verify against known data if available
         if monster_id in KNOWN_MONSTERS:
             known = KNOWN_MONSTERS[monster_id]
             verification_count += 1
-            
+
             # Check if all stats match
             matches = (
                 monster.name == known["name"] and
@@ -84,7 +84,7 @@ def main():
                 monster.gold == known["gold"] and
                 monster.experience == known["exp"]
             )
-            
+
             if not matches:
                 status = "❌ MISMATCH"
                 mismatch_count += 1
@@ -92,14 +92,14 @@ def main():
                 print(f"     Expected: {known['name']:20} | {known['hp']:3d} | {known['strength']:3d} | {known['agility']:3d} | {known['gold']:4d} | {known['exp']:4d}")
             else:
                 status = "✓ OK"
-        
+
         # Display row
         if status == "✓ OK" or monster_id not in KNOWN_MONSTERS:
             print(f"{monster_id:3d} | {monster.name:20} | {monster.hp:3d} | {monster.strength:3d} | {monster.agility:3d} | {monster.gold:4d} | {monster.experience:4d} | {status}")
-    
+
     print("-"*80)
     print()
-    
+
     # Summary
     print("VERIFICATION SUMMARY")
     print("="*80)
@@ -108,7 +108,7 @@ def main():
     print(f"Verifications passed: {verification_count - mismatch_count}")
     print(f"Mismatches found: {mismatch_count}")
     print()
-    
+
     if mismatch_count > 0:
         print("⚠️  WARNING: Some monsters have mismatched data!")
         print("   This may indicate ROM offset issues or data corruption.")
@@ -116,11 +116,11 @@ def main():
     else:
         print("✓ All verified monsters match expected values!")
     print()
-    
+
     # Save to JSON
     output_file = Path("assets/json/monsters_verified.json")
     output_data = {}
-    
+
     for monster_id, monster in monsters.items():
         output_data[str(monster_id)] = {
             "id": monster.id,
@@ -137,39 +137,39 @@ def main():
             "monster_type": str(monster.monster_type),
             "sprite_id": monster.sprite_id
         }
-    
+
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with open(output_file, 'w') as f:
         json.dump(output_data, f, indent=2)
-    
+
     print(f"✓ Saved verified monster data to: {output_file}")
     print()
-    
+
     # Display some interesting stats
     print("MONSTER STATISTICS")
     print("="*80)
-    
+
     max_hp = max(m.hp for m in monsters.values())
     max_hp_monster = [m for m in monsters.values() if m.hp == max_hp][0]
     print(f"Highest HP: {max_hp_monster.name} ({max_hp} HP)")
-    
+
     max_str = max(m.strength for m in monsters.values())
     max_str_monster = [m for m in monsters.values() if m.strength == max_str][0]
     print(f"Highest Strength: {max_str_monster.name} ({max_str})")
-    
+
     max_gold = max(m.gold for m in monsters.values())
     max_gold_monster = [m for m in monsters.values() if m.gold == max_gold][0]
     print(f"Most Gold: {max_gold_monster.name} ({max_gold} gold)")
-    
+
     max_exp = max(m.experience for m in monsters.values())
     max_exp_monster = [m for m in monsters.values() if m.experience == max_exp][0]
     print(f"Most Experience: {max_exp_monster.name} ({max_exp} EXP)")
-    
+
     print()
     print("="*80)
     print("EXTRACTION COMPLETE")
     print("="*80)
-    
+
     return 0 if mismatch_count == 0 else 1
 
 if __name__ == "__main__":
