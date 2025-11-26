@@ -65,6 +65,7 @@ git comment and push everything that is uncommited!; update and make your todo-i
 
 git comment and push everything that is uncommited!; You said `monster_sprites - 64 tiles - All enemy monster sprites (64 different monsters)` but there are (also according to you) there are 39 monsters and they use way more than 64 sprites? this all seems suspect; fix it; also create a big todo-list/steps for manual checking of all the data and graphics and editors, etc, and places/instructions for me to place screen shots of the game to help verify extraction and re-insertion; create a plan for a complete single editor (with tabs), so extraction of data with correct addresses into binary data files, which are the transformed to editable assets (json, png, etc) and then editors (a single editor ui/script) for those assets, then re-tranformation into new different binary data files, then included in the code during the build pipeline process; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+git comment and push everything that is uncommited!; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
 
 

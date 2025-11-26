@@ -95,41 +95,41 @@ NES_PALETTE = [
 
 class BinaryReader:
     """Read and validate .dwdata binary files"""
-    
+
     def __init__(self, path: str):
         """
         Initialize reader with .dwdata file
-        
+
         Args:
             path: Path to .dwdata file
         """
         self.path = path
         self.data = None
         self.header = {}
-        
+
     def load(self) -> bool:
         """
         Load and validate .dwdata file
-        
+
         Returns:
             True if valid file loaded
         """
         if not os.path.exists(self.path):
             print(f"  ❌ File not found: {self.path}")
             return False
-        
+
         with open(self.path, 'rb') as f:
             self.data = f.read()
-        
+
         # Validate header
         if len(self.data) < 32:
             print(f"  ❌ File too small: {len(self.data)} bytes")
             return False
-        
+
         if self.data[0:4] != MAGIC:
             print(f"  ❌ Invalid magic: {self.data[0:4]}")
             return False
-        
+
         # Parse header
         self.header = {
             'magic': self.data[0:4].decode('ascii'),
@@ -142,17 +142,17 @@ class BinaryReader:
             'crc32': struct.unpack_from('<I', self.data, 0x10)[0],
             'timestamp': struct.unpack_from('<I', self.data, 0x14)[0]
         }
-        
+
         # Verify checksum
         data_section = self.data[32:32 + self.header['data_size']]
         calc_crc = zlib.crc32(data_section) & 0xFFFFFFFF
-        
+
         if calc_crc != self.header['crc32']:
             print(f"  ❌ CRC mismatch: {calc_crc:08X} != {self.header['crc32']:08X}")
             return False
-        
+
         return True
-    
+
     def get_data_section(self) -> bytes:
         """Get data section (after 32-byte header)"""
         return self.data[32:32 + self.header['data_size']]
@@ -160,11 +160,11 @@ class BinaryReader:
 
 class AssetTransformer:
     """Transform .dwdata binary to JSON/PNG assets"""
-    
+
     def __init__(self, binary_dir: str, json_dir: str, graphics_dir: str):
         """
         Initialize transformer
-        
+
         Args:
             binary_dir: Directory containing .dwdata files
             json_dir: Output directory for JSON files
@@ -173,29 +173,29 @@ class AssetTransformer:
         self.binary_dir = binary_dir
         self.json_dir = json_dir
         self.graphics_dir = graphics_dir
-        
+
     def transform_monsters(self) -> bool:
         """
         Transform monsters.dwdata → monsters.json
-        
+
         Returns:
             True if successful
         """
         print("\n--- Transforming Monster Data ---")
-        
+
         # Load binary file
         reader = BinaryReader(os.path.join(self.binary_dir, 'monsters.dwdata'))
         if not reader.load():
             return False
-        
+
         data = reader.get_data_section()
-        
+
         # Parse monsters
         monsters = []
         for i in range(39):
             offset = i * 16
             entry = data[offset:offset + 16]
-            
+
             monster = {
                 "id": i,
                 "name": MONSTER_NAMES[i],
@@ -209,7 +209,7 @@ class AssetTransformer:
                 "gold": struct.unpack_from('<H', entry, 8)[0]
             }
             monsters.append(monster)
-        
+
         # Build output JSON
         output = {
             "format_version": "1.0",
@@ -219,41 +219,41 @@ class AssetTransformer:
             "description": "Monster stats for 39 enemies in Dragon Warrior",
             "monsters": monsters
         }
-        
+
         # Write JSON
         output_path = os.path.join(self.json_dir, 'monsters.json')
         os.makedirs(self.json_dir, exist_ok=True)
-        
+
         with open(output_path, 'w') as f:
             json.dump(output, f, indent=2)
-        
+
         print(f"  ✓ Transformed {len(monsters)} monsters")
         print(f"  ✓ Wrote: {output_path}")
-        
+
         return True
-    
+
     def transform_spells(self) -> bool:
         """
         Transform spells.dwdata → spells.json
-        
+
         Returns:
             True if successful
         """
         print("\n--- Transforming Spell Data ---")
-        
+
         # Load binary file
         reader = BinaryReader(os.path.join(self.binary_dir, 'spells.dwdata'))
         if not reader.load():
             return False
-        
+
         data = reader.get_data_section()
-        
+
         # Parse spells
         spells = []
         for i in range(10):
             offset = i * 8
             entry = data[offset:offset + 8]
-            
+
             spell = {
                 "id": i,
                 "name": SPELL_NAMES[i],
@@ -264,7 +264,7 @@ class AssetTransformer:
                 "animation": entry[4]
             }
             spells.append(spell)
-        
+
         # Build output JSON
         output = {
             "format_version": "1.0",
@@ -287,41 +287,41 @@ class AssetTransformer:
             },
             "spells": spells
         }
-        
+
         # Write JSON
         output_path = os.path.join(self.json_dir, 'spells.json')
         os.makedirs(self.json_dir, exist_ok=True)
-        
+
         with open(output_path, 'w') as f:
             json.dump(output, f, indent=2)
-        
+
         print(f"  ✓ Transformed {len(spells)} spells")
         print(f"  ✓ Wrote: {output_path}")
-        
+
         return True
-    
+
     def transform_items(self) -> bool:
         """
         Transform items.dwdata → items.json
-        
+
         Returns:
             True if successful
         """
         print("\n--- Transforming Item Data ---")
-        
+
         # Load binary file
         reader = BinaryReader(os.path.join(self.binary_dir, 'items.dwdata'))
         if not reader.load():
             return False
-        
+
         data = reader.get_data_section()
-        
+
         # Parse items
         items = []
         for i in range(32):
             offset = i * 8
             entry = data[offset:offset + 8]
-            
+
             # Parse values
             buy_price = struct.unpack_from('<H', entry, 0)[0]
             sell_price = struct.unpack_from('<H', entry, 2)[0]
@@ -329,7 +329,7 @@ class AssetTransformer:
             defense_bonus = struct.unpack_from('<b', entry, 5)[0]  # signed
             item_type = entry[6]
             flags = entry[7]
-            
+
             item = {
                 "id": i,
                 "name": ITEM_NAMES[i],
@@ -346,7 +346,7 @@ class AssetTransformer:
                 }
             }
             items.append(item)
-        
+
         # Build output JSON
         output = {
             "format_version": "1.0",
@@ -363,64 +363,64 @@ class AssetTransformer:
             },
             "items": items
         }
-        
+
         # Write JSON
         output_path = os.path.join(self.json_dir, 'items.json')
         os.makedirs(self.json_dir, exist_ok=True)
-        
+
         with open(output_path, 'w') as f:
             json.dump(output, f, indent=2)
-        
+
         print(f"  ✓ Transformed {len(items)} items")
         print(f"  ✓ Wrote: {output_path}")
-        
+
         return True
-    
+
     def transform_graphics(self) -> bool:
         """
         Transform graphics.dwdata → CHR tiles PNG + JSON
-        
+
         Returns:
             True if successful
         """
         print("\n--- Transforming Graphics Data ---")
-        
+
         if Image is None:
             print("  ⚠ PIL not available, skipping graphics export")
             return False
-        
+
         # Load binary file
         reader = BinaryReader(os.path.join(self.binary_dir, 'graphics.dwdata'))
         if not reader.load():
             return False
-        
+
         data = reader.get_data_section()
-        
+
         # Decode CHR tiles
         tiles = []
         tile_count = len(data) // 16
-        
+
         for i in range(tile_count):
             offset = i * 16
             tile_data = data[offset:offset + 16]
-            
+
             # Decode 2bpp NES tile
             tile_pixels = self._decode_chr_tile(tile_data)
             tiles.append(tile_pixels)
-        
+
         # Create tile sheet image (32 tiles wide)
         tiles_wide = 32
         tiles_high = (tile_count + tiles_wide - 1) // tiles_wide
-        
+
         img_width = tiles_wide * 8
         img_height = tiles_high * 8
-        
+
         img = Image.new('RGB', (img_width, img_height))
-        
+
         for tile_idx, tile_pixels in enumerate(tiles):
             tile_x = (tile_idx % tiles_wide) * 8
             tile_y = (tile_idx // tiles_wide) * 8
-            
+
             for y in range(8):
                 for x in range(8):
                     pixel_value = tile_pixels[y * 8 + x]
@@ -428,12 +428,12 @@ class AssetTransformer:
                     color_value = pixel_value * 85  # 0, 85, 170, 255
                     color = (color_value, color_value, color_value)
                     img.putpixel((tile_x + x, tile_y + y), color)
-        
+
         # Save PNG
         output_path = os.path.join(self.graphics_dir, 'chr_tiles.png')
         os.makedirs(self.graphics_dir, exist_ok=True)
         img.save(output_path)
-        
+
         # Save metadata JSON
         metadata = {
             "format_version": "1.0",
@@ -446,55 +446,55 @@ class AssetTransformer:
             "tiles_per_row": tiles_wide,
             "description": "CHR-ROM tiles (1024 tiles, 8x8 each, 2bpp NES format)"
         }
-        
+
         metadata_path = os.path.join(self.graphics_dir, 'chr_tiles.json')
         with open(metadata_path, 'w') as f:
             json.dump(metadata, f, indent=2)
-        
+
         print(f"  ✓ Decoded {tile_count} CHR tiles")
         print(f"  ✓ Wrote: {output_path}")
         print(f"  ✓ Wrote: {metadata_path}")
-        
+
         return True
-    
+
     def _decode_chr_tile(self, tile_data: bytes) -> List[int]:
         """
         Decode NES 2bpp CHR tile to pixel values
-        
+
         Args:
             tile_data: 16 bytes (8 low + 8 high bitplanes)
-            
+
         Returns:
             List of 64 pixel values (0-3)
         """
         pixels = []
-        
+
         for y in range(8):
             low_byte = tile_data[y]
             high_byte = tile_data[y + 8]
-            
+
             for x in range(7, -1, -1):  # MSB first
                 low_bit = (low_byte >> x) & 1
                 high_bit = (high_byte >> x) & 1
                 pixel_value = (high_bit << 1) | low_bit
                 pixels.append(pixel_value)
-        
+
         return pixels
-    
+
     def transform_all(self) -> Dict[str, bool]:
         """
         Transform all .dwdata files to JSON/PNG
-        
+
         Returns:
             Dict mapping filenames to success status
         """
         results = {}
-        
+
         results['monsters.json'] = self.transform_monsters()
         results['spells.json'] = self.transform_spells()
         results['items.json'] = self.transform_items()
         results['chr_tiles.png'] = self.transform_graphics()
-        
+
         return results
 
 
@@ -510,48 +510,48 @@ Examples:
   python binary_to_assets.py --output-dir custom/output/
         """
     )
-    
+
     parser.add_argument(
         '--binary-dir',
         default=DEFAULT_BINARY_DIR,
         help=f'Directory with .dwdata files (default: {DEFAULT_BINARY_DIR})'
     )
-    
+
     parser.add_argument(
         '--json-dir',
         default=DEFAULT_JSON_DIR,
         help=f'Output directory for JSON (default: {DEFAULT_JSON_DIR})'
     )
-    
+
     parser.add_argument(
         '--graphics-dir',
         default=DEFAULT_GRAPHICS_DIR,
         help=f'Output directory for PNG (default: {DEFAULT_GRAPHICS_DIR})'
     )
-    
+
     args = parser.parse_args()
-    
+
     print("=" * 60)
     print("Binary → JSON/PNG Transformation")
     print("=" * 60)
-    
+
     transformer = AssetTransformer(args.binary_dir, args.json_dir, args.graphics_dir)
     results = transformer.transform_all()
-    
+
     # Summary
     print("\n" + "=" * 60)
     print("Transformation Summary")
     print("=" * 60)
-    
+
     success_count = sum(1 for v in results.values() if v)
     total_count = len(results)
-    
+
     for filename, success in results.items():
         status = "✓" if success else "✗"
         print(f"  {status} {filename}")
-    
+
     print(f"\nCompleted: {success_count}/{total_count} files")
-    
+
     if success_count == total_count:
         print("\n✅ All transformations successful!")
         print(f"\nNext step: Edit JSON/PNG files, then run:")

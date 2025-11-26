@@ -103,27 +103,27 @@ SPRITE_TILE_COUNTS = {
 def analyze_sprite_sharing() -> Dict[str, List[Tuple[int, str]]]:
     """
     Analyzes which monsters share sprite definitions.
-    
+
     Returns:
         Dict mapping sprite_name to list of (monster_id, monster_name) tuples
     """
     sharing_map: Dict[str, List[Tuple[int, str]]] = {}
-    
+
     for monster_id, sprite_name, rom_addr, in_bank0 in SPRITE_POINTER_TABLE:
         monster_name = MONSTER_NAMES[monster_id]
-        
+
         if sprite_name not in sharing_map:
             sharing_map[sprite_name] = []
-        
+
         sharing_map[sprite_name].append((monster_id, monster_name))
-    
+
     return sharing_map
 
 
 def calculate_total_unique_tiles() -> int:
     """
     Calculates total unique sprite tiles across all monster sprite definitions.
-    
+
     Returns:
         Total count of unique tiles used for monster sprites
     """
@@ -133,18 +133,18 @@ def calculate_total_unique_tiles() -> int:
 def generate_sprite_report() -> Dict:
     """
     Generates comprehensive sprite allocation report.
-    
+
     Returns:
         Report dictionary with detailed sprite analysis
     """
     sharing_map = analyze_sprite_sharing()
     total_unique_tiles = calculate_total_unique_tiles()
-    
+
     sprite_details = []
     for sprite_name in sorted(SPRITE_TILE_COUNTS.keys()):
         tile_count = SPRITE_TILE_COUNTS[sprite_name]
         monsters_using = sharing_map.get(sprite_name, [])
-        
+
         sprite_details.append({
             "sprite_name": sprite_name,
             "tile_count": tile_count,
@@ -154,7 +154,7 @@ def generate_sprite_report() -> Dict:
                 for mid, mname in sorted(monsters_using)
             ]
         })
-    
+
     report = {
         "summary": {
             "total_monsters": len(MONSTER_NAMES),
@@ -172,22 +172,22 @@ def generate_sprite_report() -> Dict:
             "SlimeSprts (8 tiles) is shared by Slime, Red Slime, and Metal Slime."
         )
     }
-    
+
     return report
 
 
 def generate_markdown_report(report: Dict) -> str:
     """
     Generates human-readable markdown report.
-    
+
     Args:
         report: Report dictionary from generate_sprite_report()
-    
+
     Returns:
         Formatted markdown string
     """
     md = "# Dragon Warrior Monster Sprite Allocation Report\n\n"
-    
+
     md += "## Summary\n\n"
     md += f"- **Total Monsters:** {report['summary']['total_monsters']}\n"
     md += f"- **Unique Sprite Definitions:** {report['summary']['unique_sprite_definitions']}\n"
@@ -195,20 +195,20 @@ def generate_markdown_report(report: Dict) -> str:
     md += f"- **Average Tiles per Sprite:** {report['summary']['average_tiles_per_sprite']}\n"
     md += f"- **Max Monsters Sharing One Sprite:** {report['summary']['max_sharing']}\n"
     md += f"- **Sprite Reuse:** {report['summary']['sprite_reuse_efficiency']}\n\n"
-    
+
     md += "## Correction Note\n\n"
     md += f"{report['correction_note']}\n\n"
-    
+
     md += "## Sprite Definitions\n\n"
     md += "| Sprite Name | Tile Count | Monsters Using | Monster Names |\n"
     md += "|-------------|------------|----------------|---------------|\n"
-    
+
     for sprite in report['sprite_definitions']:
         monster_names = ", ".join([m['name'] for m in sprite['monsters']])
         md += f"| {sprite['sprite_name']} | {sprite['tile_count']} | {sprite['monster_count']} | {monster_names} |\n"
-    
+
     md += "\n## Sprite Sharing Details\n\n"
-    
+
     # Group by sharing patterns
     sharing_groups = {}
     for sprite in report['sprite_definitions']:
@@ -216,7 +216,7 @@ def generate_markdown_report(report: Dict) -> str:
         if count not in sharing_groups:
             sharing_groups[count] = []
         sharing_groups[count].append(sprite)
-    
+
     for share_count in sorted(sharing_groups.keys(), reverse=True):
         sprites = sharing_groups[share_count]
         if share_count > 1:
@@ -229,7 +229,7 @@ def generate_markdown_report(report: Dict) -> str:
             for sprite in sprites:
                 monster_name = sprite['monsters'][0]['name']
                 md += f"- **{sprite['sprite_name']}** ({sprite['tile_count']} tiles): {monster_name}\n"
-    
+
     return md
 
 
@@ -237,23 +237,23 @@ def main():
     """Main execution function."""
     output_dir = Path(__file__).parent.parent / "extracted_assets" / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Generate report
     report = generate_sprite_report()
-    
+
     # Save JSON report
     json_path = output_dir / "monster_sprite_allocation.json"
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(report, f, indent=2, ensure_ascii=False)
     print(f"✓ JSON report saved: {json_path}")
-    
+
     # Save Markdown report
     md_report = generate_markdown_report(report)
     md_path = output_dir / "monster_sprite_allocation.md"
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write(md_report)
     print(f"✓ Markdown report saved: {md_path}")
-    
+
     # Print summary
     print(f"\n{'='*70}")
     print("MONSTER SPRITE ALLOCATION SUMMARY")
