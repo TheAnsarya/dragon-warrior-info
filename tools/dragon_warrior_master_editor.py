@@ -51,6 +51,19 @@ except ImportError:
 	print("ERROR: PIL and numpy required. Install with: pip install pillow numpy")
 	sys.exit(1)
 
+# Import editor tabs
+try:
+	from dialogue_editor_tab import DialogueEditorTab
+	from music_editor_tab import MusicEditorTab
+	from shop_editor_tab import ShopEditorTab
+	ADVANCED_EDITORS_AVAILABLE = True
+except ImportError:
+	print("WARNING: Advanced editor tabs not found. Some features will be disabled.")
+	ADVANCED_EDITORS_AVAILABLE = False
+	DialogueEditorTab = None
+	MusicEditorTab = None
+	ShopEditorTab = None
+
 
 # ============================================================================
 # CONSTANTS & ROM OFFSETS
@@ -63,41 +76,41 @@ ROM_OFFSETS = {
 	'TANTEGEL_CASTLE': 0xF5B0,
 	'THRONE_ROOM': 0xF610,
 	'CHARLOCK_CASTLE': 0xF670,
-	
+
 	# Graphics
 	'CHR_ROM': 0x10010,  # 16KB CHR-ROM
 	'PATTERN_TABLE_0': 0x10010,  # 0-255 (backgrounds)
 	'PATTERN_TABLE_1': 0x11010,  # 256-511 (sprites)
 	'PATTERN_TABLE_2': 0x12010,  # 512-767 (monsters)
 	'PATTERN_TABLE_3': 0x13010,  # 768-1023
-	
+
 	# Sprites
 	'MONSTER_SPRITE_TABLE': 0x59F4,  # 39 monsters
 	'HERO_SPRITE_TABLE': 0x5A96,
 	'NPC_SPRITE_TABLE': 0x5AC0,
-	
+
 	# Text & Dialogue
 	'TEXT_POINTERS': 0xB0A0,  # Dialogue pointer table
 	'TEXT_DATA': 0xB100,  # Compressed dialogue
 	'ITEM_NAMES': 0xDDB8,
 	'MONSTER_NAMES': 0xDDB8 + 0x100,
 	'SPELL_NAMES': 0xDDB8 + 0x200,
-	
+
 	# Stats & Data
 	'MONSTER_STATS': 0xC6E0,  # 39 monsters × 16 bytes
 	'ITEM_DATA': 0xCF50,  # Item properties
 	'SPELL_DATA': 0xD000,  # Spell properties
 	'SHOP_DATA': 0xD200,  # Shop inventory
 	'LEVEL_XP_TABLE': 0xC050,  # Experience curve
-	
+
 	# Encounters
 	'ENCOUNTER_ZONES': 0x0CF3,  # 9 zones
 	'ENCOUNTER_GROUPS': 0xF5F0,  # Enemy group definitions
-	
+
 	# Palettes
 	'BG_PALETTE': 0x19E92,  # Background palettes
 	'SPRITE_PALETTE': 0x19EA2,  # Sprite palettes
-	
+
 	# Music & Sound
 	'MUSIC_TABLE': 0x1E000,  # Music data
 	'SFX_TABLE': 0x1F000,  # Sound effects
@@ -231,7 +244,7 @@ class ROMManager:
 		self.rom_path = rom_path
 		with open(rom_path, 'rb') as f:
 			self.rom = bytearray(f.read())
-		
+
 		self.modified = False
 		self.undo_stack = []
 		self.redo_stack = []
@@ -270,7 +283,7 @@ class ROMManager:
 		"""Undo last change."""
 		if not self.undo_stack:
 			return False
-		
+
 		action = self.undo_stack.pop()
 		if action[0] == 'byte':
 			_, offset, old_value = action
@@ -284,7 +297,7 @@ class ROMManager:
 		"""Redo last undone change."""
 		if not self.redo_stack:
 			return False
-		
+
 		action = self.redo_stack.pop()
 		if action[0] == 'byte':
 			_, offset, new_value = action
@@ -305,7 +318,7 @@ class ROMManager:
 		"""Extract 8×8 CHR tile as pixel array."""
 		offset = ROM_OFFSETS['CHR_ROM'] + (tile_id * 16)
 		tile_data = self.rom[offset:offset + 16]
-		
+
 		pixels = np.zeros((8, 8), dtype=np.uint8)
 		for y in range(8):
 			lo = tile_data[y]
@@ -315,7 +328,7 @@ class ROMManager:
 				lo_bit = (lo >> bit) & 1
 				hi_bit = (hi >> bit) & 1
 				pixels[y, x] = (hi_bit << 1) | lo_bit
-		
+
 		return pixels
 
 	def extract_pattern_table(self, table_id: int) -> List[np.ndarray]:
@@ -325,7 +338,7 @@ class ROMManager:
 		for i in range(256):
 			tile_offset = offset + (i * 16)
 			tile_data = self.rom[tile_offset:tile_offset + 16]
-			
+
 			pixels = np.zeros((8, 8), dtype=np.uint8)
 			for y in range(8):
 				lo = tile_data[y]
@@ -335,16 +348,16 @@ class ROMManager:
 					lo_bit = (lo >> bit) & 1
 					hi_bit = (hi >> bit) & 1
 					pixels[y, x] = (hi_bit << 1) | lo_bit
-			
+
 			tiles.append(pixels)
-		
+
 		return tiles
 
 	def extract_monster_stats(self, monster_id: int) -> MonsterStats:
 		"""Extract monster statistics."""
 		offset = ROM_OFFSETS['MONSTER_STATS'] + (monster_id * 16)
 		data = self.rom[offset:offset + 16]
-		
+
 		return MonsterStats(
 			id=monster_id,
 			name=MONSTER_NAMES[monster_id] if monster_id < len(MONSTER_NAMES) else f"Monster {monster_id}",
@@ -493,7 +506,7 @@ class MapEditorTab(ttk.Frame):
 			btn.grid(row=0, column=i, padx=2, pady=2)
 
 		# Draw placeholder
-		self.canvas.create_text(300, 300, text="Map editing functionality\n(Full implementation available)", 
+		self.canvas.create_text(300, 300, text="Map editing functionality\n(Full implementation available)",
 							   fill='white', font=('Arial', 14))
 
 
@@ -877,24 +890,36 @@ class MasterEditorGUI:
 		self.notebook.add(self.spell_tab, text="✨ Spells")
 
 		# Tab 6: Dialogue Editor
-		dialogue_tab = ttk.Frame(self.notebook)
-		ttk.Label(dialogue_tab, text="Dialogue Editor Coming Soon", font=('Arial', 16)).pack(pady=50)
-		self.notebook.add(dialogue_tab, text="💬 Dialogue")
+		if ADVANCED_EDITORS_AVAILABLE and DialogueEditorTab:
+			self.dialogue_tab = DialogueEditorTab(self.notebook, self.rom_manager)
+			self.notebook.add(self.dialogue_tab, text="💬 Dialogue")
+		else:
+			dialogue_tab = ttk.Frame(self.notebook)
+			ttk.Label(dialogue_tab, text="Dialogue Editor - Module not loaded", font=('Arial', 16)).pack(pady=50)
+			self.notebook.add(dialogue_tab, text="💬 Dialogue")
 
 		# Tab 7: Graphics Editor
 		graphics_tab = ttk.Frame(self.notebook)
-		ttk.Label(graphics_tab, text="Graphics Editor Coming Soon", font=('Arial', 16)).pack(pady=50)
+		ttk.Label(graphics_tab, text="Graphics Editor - Use visual_graphics_editor.py", font=('Arial', 16)).pack(pady=50)
 		self.notebook.add(graphics_tab, text="🎨 Graphics")
 
 		# Tab 8: Music Editor
-		music_tab = ttk.Frame(self.notebook)
-		ttk.Label(music_tab, text="Music Editor Coming Soon", font=('Arial', 16)).pack(pady=50)
-		self.notebook.add(music_tab, text="🎵 Music")
+		if ADVANCED_EDITORS_AVAILABLE and MusicEditorTab:
+			self.music_tab = MusicEditorTab(self.notebook, self.rom_manager)
+			self.notebook.add(self.music_tab, text="🎵 Music")
+		else:
+			music_tab = ttk.Frame(self.notebook)
+			ttk.Label(music_tab, text="Music Editor - Module not loaded", font=('Arial', 16)).pack(pady=50)
+			self.notebook.add(music_tab, text="🎵 Music")
 
 		# Tab 9: Shop Editor
-		shop_tab = ttk.Frame(self.notebook)
-		ttk.Label(shop_tab, text="Shop Editor Coming Soon", font=('Arial', 16)).pack(pady=50)
-		self.notebook.add(shop_tab, text="🏪 Shops")
+		if ADVANCED_EDITORS_AVAILABLE and ShopEditorTab:
+			self.shop_tab = ShopEditorTab(self.notebook, self.rom_manager)
+			self.notebook.add(self.shop_tab, text="🏪 Shops")
+		else:
+			shop_tab = ttk.Frame(self.notebook)
+			ttk.Label(shop_tab, text="Shop Editor - Module not loaded", font=('Arial', 16)).pack(pady=50)
+			self.notebook.add(shop_tab, text="🏪 Shops")
 
 		# Tab 10: Statistics
 		self.stats_tab = StatisticsTab(self.notebook, self.rom_manager)
@@ -944,7 +969,7 @@ class MasterEditorGUI:
 	def validate_rom(self):
 		"""Validate ROM data."""
 		errors = []
-		
+
 		# Check ROM size
 		if len(self.rom_manager.rom) != 262144:  # 256KB
 			errors.append(f"Invalid ROM size: {len(self.rom_manager.rom)} (expected 262144)")
@@ -968,7 +993,7 @@ class MasterEditorGUI:
 
 	def show_docs(self):
 		"""Show documentation."""
-		messagebox.showinfo("Documentation", 
+		messagebox.showinfo("Documentation",
 			"Dragon Warrior Master ROM Editor\n\n"
 			"This comprehensive editor allows you to modify all aspects of Dragon Warrior:\n\n"
 			"• Maps: Edit overworld and dungeon layouts\n"
