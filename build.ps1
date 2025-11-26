@@ -132,7 +132,7 @@ function Invoke-AssemblyBuild {
 	Write-BuildLog "Starting assembly build process..."
 
 	# Main assembly file
-	$mainAsmFile = Join-Path $SourceDir "Header.asm"
+	$mainAsmFile = Join-Path $SourceDir "DragonWarrior.asm"
 	if (-not (Test-Path $mainAsmFile)) {
 		Write-BuildLog "Main assembly file not found: $mainAsmFile" "ERROR"
 		return $false
