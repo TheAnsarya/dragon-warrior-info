@@ -324,15 +324,49 @@ class MonsterDataExtractor:
 		data = self.monsters_json[monster_id]
 
 		# Parse OAM entries from sprite_data
+		# JSON has: tile, attr, x but NOT y
+		# We need to calculate Y based on typical sprite layout
 		oam_entries = []
+		x_positions = []
+
 		for entry_data in data.get('sprite_data', []):
 			tile = entry_data['tile']
 			attr = entry_data['attr']
 			x = entry_data['x']
-			y = attr  # Y position is stored in attr field in the JSON
+			x_positions.append(x)
+
+			# Calculate Y position:
+			# NES sprites use Y for vertical positioning
+			# For battle sprites, they're typically centered around Y=100
+			# We'll arrange tiles in rows based on X position patterns
+			y = 100  # Default baseline
 
 			entry = OAMEntry(y=y, tile=tile, attr=attr, x=x)
 			oam_entries.append(entry)
+
+		# Adjust Y positions based on X clustering (group into rows)
+		if oam_entries:
+			# Find unique X positions to determine columns
+			unique_x = sorted(set(x_positions))
+
+			# Group tiles by proximity in X
+			row_height = 8  # 8 pixels per tile
+			current_row = 0
+			last_x = -100
+
+			for i, entry in enumerate(oam_entries):
+				# If X jumped significantly, might be next row
+				if entry.x > last_x + 32:  # New column cluster
+					# Keep in same row
+					pass
+
+				# Simple vertical arrangement: tiles at similar X go vertically
+				# Calculate row based on position in list and X grouping
+				x_index = unique_x.index(x_positions[i]) if x_positions[i] in unique_x else 0
+				row_offset = (i % 3) * row_height  # Stack up to 3 tiles per column
+
+				entry.y = 100 + row_offset
+				last_x = entry.x
 
 		# Parse palette
 		palette = data.get('palette_nes', [0x0F, 0x00, 0x10, 0x30])

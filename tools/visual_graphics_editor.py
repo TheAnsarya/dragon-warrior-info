@@ -90,7 +90,7 @@ class ROMGraphics:
 	def decode_chr_tile(self, tile_id: int) -> np.ndarray:
 		"""Decode 8×8 CHR tile to pixel array (values 0-3)."""
 		offset = 0x10010 + (tile_id * 16)
-		
+
 		if offset + 16 > len(self.rom):
 			return np.zeros((8, 8), dtype=np.uint8)
 
@@ -148,7 +148,7 @@ class ROMGraphics:
 
 		for i, color in enumerate(colors[:4]):
 			self.rom[offset + i] = color & 0x3F
-		
+
 		self.modified = True
 
 	def save(self, output_path: Optional[str] = None):
@@ -453,13 +453,13 @@ class GraphicsEditorGUI:
 		if 0 <= tile_id < 1024:
 			self.current_tile = tile_id
 			self.tile_var.set(tile_id)
-			
+
 			tile_data = self.rom_graphics.decode_chr_tile(tile_id)
 			self.tile_editor.set_tile(tile_data)
-			
+
 			palette = self.rom_graphics.get_palette(self.current_palette, self.is_sprite_palette)
 			self.tile_editor.set_palette(palette)
-			
+
 			self.status_var.set(f"Loaded tile {tile_id} (0x{tile_id:03X})")
 
 	def save_current_tile(self):

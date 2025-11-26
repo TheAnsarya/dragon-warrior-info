@@ -488,7 +488,7 @@ class MapEditorGUI:
 		ttk.Label(table_frame, text="Encounter Table:").pack(side=tk.LEFT, padx=5)
 		self.encounter_table_var = tk.IntVar(value=0)
 		encounter_combo = ttk.Combobox(table_frame, textvariable=self.encounter_table_var, width=30)
-		encounter_combo['values'] = [f"Table {i}: {self.world_map.encounter_zones[i].name}" 
+		encounter_combo['values'] = [f"Table {i}: {self.world_map.encounter_zones[i].name}"
 									 for i in range(len(self.world_map.encounter_zones))]
 		encounter_combo.pack(side=tk.LEFT, padx=5)
 

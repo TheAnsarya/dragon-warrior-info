@@ -71,11 +71,19 @@ git comment and push everything that is uncommited, commit at the beginning and 
 
 git comment and push everything that is uncommited, commit at the beginning and ending of each session/whenever a logical block of code changes is done; format all of the files, especially focusing on using tabs instead of spaces, python scripts first, then json files, md, asm, then the rest; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+git comment and push everything that is uncommited; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+the monster graphics extractions are still wrong (it looks like text?) please fix them
 
+---- The `sprites.png` files in the folder `extracted_assets\graphics_comprehensive\monsters` are wrong, the palettes seem right, but the graphics are still wrong (although not text anymore); are the monster display structures wrong or something? correctly extract the slime moster graphics and animations and then tell me where the extracted/generated files are (and get rid of past poorly extracted filed)
 
+git comment and push everything that is uncommited; You mentioned a `World Map & Encounter Editor` but skipped it because there is a world map editor, update the world map editor with more functionality and add enemy encounter editor (again, shove all the editors into one editor with a tab interface and menus to pick which editor and a quicklaunch tab for accessing all the editors; The `sprites.png` files in the folder `extracted_assets\graphics_comprehensive\monsters` are wrong, the palettes seem right, but the graphics are still wrong (although not text anymore); are the monster display structures wrong or something? correctly extract the slime moster graphics and animations and then tell me where the extracted/generated files are (and get rid of past poorly extracted filed); continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+we do have a rom for reference, its just not in git for legal reasons, stop forgetting that, `roms\Dragon Warrior (U) (PRG1) [!].nes`; continue
 
+Implement remaining editor features (dialogue, music, shops); Create automated testing suite
+
+first, update chat and session logs then git comment and push everything that is uncommited; Create a big list of every file that is used in the build process; Which data extract files are used? Which code files are used? Run the build process, see what files are used; Open the build script in the editor so I can see it; make a list of asset files that are not used in the build process (should be be used?); make sure the editors are using the asset files, not editing the rom directly; item asset extraction is nonsense too, the `club` does not have an `attack_bonus": 253` and also it's not called `attack bonus` it's `atack power` and why does the torch have one instead of a link to its effect when used?; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
 
 
