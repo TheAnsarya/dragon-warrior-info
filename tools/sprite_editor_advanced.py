@@ -354,28 +354,48 @@ class SpriteRenderer:
 class SpriteExtractor:
 	"""Extract sprites from ROM."""
 
-	# Known Dragon Warrior sprite definitions
+	# Known Dragon Warrior sprite definitions (based on actual ROM data)
+	# Tile indices match CHR-ROM pattern table locations
+	# Data extracted from extracted_assets/graphics_comprehensive/monsters/monsters_database.json
 	MONSTER_SPRITES = [
-		# (sprite_id, name, tile_start, tile_count, width, height)
-		(0, "Slime", 0x00, 4, 16, 16),
-		(1, "Red Slime", 0x04, 4, 16, 16),
-		(2, "Drakee", 0x08, 4, 16, 16),
-		(3, "Ghost", 0x0C, 4, 16, 16),
-		(4, "Magician", 0x10, 4, 16, 16),
-		# ... more sprites
+		# (sprite_id, name, tile_indices, width, height)
+		# Slime family (tiles: 83, 84, 85, 254, 255)
+		(0, "Slime", [85, 83, 84, 83, 84, 255, 254], 16, 16),
+		(1, "Red Slime", [85, 83, 84, 83, 84, 255, 254], 16, 16),
+		
+		# Drakee family (tiles: 59, 60, 61, 62, 63, 252, 253)
+		(2, "Drakee", [59, 60, 61, 62, 59, 61, 253, 252, 255], 16, 16),
+		
+		# Ghost family (tiles: 67, 68, 69, 70, 71, 72, 73, 74, 75, 250, 251, 254, 255)
+		(3, "Ghost", [67, 68, 69, 70, 71, 72, 73, 74, 75, 250, 251, 254, 255], 24, 24),
+		
+		# Magician (tiles: 81, 82)
+		(4, "Magician", [81, 82, 81, 82], 16, 16),
+		
+		# Scorpion family (tiles: 40-56)
+		(5, "Scorpion", [40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56], 32, 32),
+		
+		# Wolf family (tiles: 0-29)
+		(6, "Wolf", list(range(0, 30)), 32, 32),
+		
+		# Skeleton family (tiles: 30-43)
+		(7, "Skeleton", list(range(30, 44)), 24, 24),
+		
+		# Warlock/Wizard (tiles: 77-80)
+		(8, "Warlock", [77, 78, 79, 80], 16, 16),
+		
+		# Knight (tiles: 186-216)
+		(9, "Knight", list(range(186, 217)), 32, 32),
 	]
 
 	def __init__(self, tiles: List[Tile]):
 		self.tiles = tiles
 
 	def extract_monster_sprites(self) -> List[Sprite]:
-		"""Extract known monster sprites."""
+		"""Extract known monster sprites using actual tile indices from ROM."""
 		sprites = []
 
-		for sprite_id, name, tile_start, tile_count, width, height in self.MONSTER_SPRITES:
-			# Build tile list
-			tiles = list(range(tile_start, tile_start + tile_count))
-
+		for sprite_id, name, tile_indices, width, height in self.MONSTER_SPRITES:
 			# Determine size
 			if width == 16 and height == 16:
 				size = SpriteSize.SIZE_16x16
@@ -383,13 +403,15 @@ class SpriteExtractor:
 				size = SpriteSize.SIZE_16x32
 			elif width == 32 and height == 32:
 				size = SpriteSize.SIZE_32x32
+			elif width == 24 and height == 24:
+				size = SpriteSize((24, 24))  # Custom size
 			else:
 				size = SpriteSize.SIZE_8x8
 
 			sprite = Sprite(
 				id=sprite_id,
 				name=name,
-				tiles=tiles,
+				tiles=tile_indices,
 				size=size,
 				palette_id=0
 			)
@@ -560,9 +582,10 @@ def main():
 		print(f"Error loading ROM: {e}")
 		return 1
 
-	# Extract CHR-ROM (8KB at offset 0x20010 for Dragon Warrior)
-	chr_offset = 0x20010
-	chr_size = 0x2000
+	# Extract CHR-ROM (16KB at offset 0x10010 for Dragon Warrior)
+	# CHR-ROM location: 0x10 (header) + 0x10000 (64KB PRG-ROM) = 0x10010
+	chr_offset = 0x10010
+	chr_size = 0x4000  # 16KB (1024 tiles × 16 bytes)
 	chr_data = rom_data[chr_offset:chr_offset + chr_size]
 
 	# Decode tiles
