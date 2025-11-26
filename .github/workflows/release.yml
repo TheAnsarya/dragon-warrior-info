@@ -1,0 +1,187 @@
+name: Release - Build and Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Release Artifacts
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.11']
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Build GUI executable (PyInstaller)
+      run: |
+        pyinstaller --name DragonWarriorEditor \
+                    --windowed \
+                    --onefile \
+                    --add-data "docs:docs" \
+                    tools/gui/main_window.py
+      shell: bash
+    
+    - name: Create release archive
+      run: |
+        mkdir release
+        cp -r tools release/
+        cp -r docs release/
+        cp README.md release/
+        cp requirements.txt release/
+      shell: bash
+    
+    - name: Archive release (Unix)
+      if: runner.os != 'Windows'
+      run: |
+        tar -czf dragon-warrior-toolkit-${{ runner.os }}.tar.gz release/
+    
+    - name: Archive release (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        Compress-Archive -Path release/* -DestinationPath dragon-warrior-toolkit-Windows.zip
+      shell: pwsh
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dragon-warrior-toolkit-${{ runner.os }}
+        path: |
+          dragon-warrior-toolkit-*.tar.gz
+          dragon-warrior-toolkit-*.zip
+          dist/DragonWarriorEditor*
+
+  create-release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+    
+    - name: Create release notes
+      run: |
+        cat > release_notes.md << 'EOF'
+        # Dragon Warrior ROM Hacking Toolkit Release
+        
+        ## Features
+        
+        ### Tools
+        - **Binary Pipeline**: Complete ROM data extraction and insertion
+        - **Map Editor**: Interactive map editing with visualization
+        - **Text Editor**: Dialog editing with compression analysis
+        - **GUI Editor**: PyQt5-based visual editor for monsters, spells, items
+        - **Sprite Animator**: Generate animated sprites and sprite sheets
+        - **Benchmark Tool**: Performance profiling for ROM operations
+        - **Palette Analyzer**: Graphics optimization and palette analysis
+        
+        ### Documentation
+        - Binary Pipeline Tutorial (50 pages)
+        - Troubleshooting Guide (35 pages)
+        - Optimization Techniques Guide (comprehensive)
+        - ROM Hacking Guide
+        - Asset Catalog
+        
+        ### Downloads
+        - **Windows**: `dragon-warrior-toolkit-Windows.zip`
+        - **Linux**: `dragon-warrior-toolkit-Linux.tar.gz`
+        - **macOS**: `dragon-warrior-toolkit-macOS.tar.gz`
+        
+        ### Requirements
+        - Python 3.8+
+        - Pillow (image processing)
+        - PyQt5 (GUI editor only)
+        
+        ### Installation
+        ```bash
+        pip install -r requirements.txt
+        ```
+        
+        ### Quick Start
+        ```bash
+        # Extract ROM data
+        python tools/extract_binary.py --rom dragon_warrior.nes
+        
+        # Edit monsters visually
+        python tools/gui/main_window.py
+        
+        # Create map
+        python tools/map_editor.py --interactive
+        ```
+        
+        ## Changelog
+        See commit history for detailed changes.
+        
+        ---
+        
+        **Full Documentation**: See `docs/` directory
+        **Support**: Open an issue on GitHub
+        EOF
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        body_path: release_notes.md
+        files: |
+          artifacts/**/*.tar.gz
+          artifacts/**/*.zip
+          artifacts/**/DragonWarriorEditor*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install build tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: |
+        python -m build
+    
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      run: |
+        python -m twine upload dist/*
