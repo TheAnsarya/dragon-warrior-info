@@ -50,11 +50,11 @@ class BattleSimulation:
 	avg_damage_dealt: float
 	avg_damage_taken: float
 	avg_hp_remaining: float
-	
+
 	def win_rate(self) -> float:
 		"""Calculate win rate."""
 		return (self.player_wins / self.total_battles * 100) if self.total_battles > 0 else 0
-	
+
 	def to_dict(self) -> dict:
 		return {
 			'player_level': self.player_level,
@@ -78,7 +78,7 @@ class EconomyMetrics:
 	battles_for_equipment: Dict[str, int]
 	total_equipment_cost: int
 	recommended_gold: int
-	
+
 	def to_dict(self) -> dict:
 		return {
 			'level': self.level,
@@ -98,7 +98,7 @@ class ProgressionMetrics:
 	battles_needed: int
 	estimated_time_minutes: int
 	stat_growth: Dict[str, int]
-	
+
 	def to_dict(self) -> dict:
 		return {
 			'level': self.level,
@@ -130,15 +130,15 @@ class Enemy:
 	exp: int
 	encounter_weight: int = 1
 	zone_level: int = 1  # What level zone they appear in
-	
+
 	def avg_gold_per_kill(self) -> float:
 		"""Average gold per kill."""
 		return float(self.gold)
-	
+
 	def avg_exp_per_kill(self) -> float:
 		"""Average exp per kill."""
 		return float(self.exp)
-	
+
 	def efficiency_score(self) -> float:
 		"""Calculate enemy efficiency (exp + gold per difficulty)."""
 		difficulty = (self.hp + self.attack + self.defense) / 3
@@ -181,39 +181,39 @@ ENEMIES = [
 
 class BattleAnalyzer:
 	"""Analyze battle system mechanics."""
-	
+
 	def __init__(self):
 		self.rng = random.Random(42)  # Fixed seed for reproducibility
-	
+
 	def calculate_damage(self, attack: int, defense: int, variance: bool = True) -> int:
 		"""Calculate damage using DW formula."""
 		# Dragon Warrior damage formula: (Attack - Defense/2) with variance
 		base_damage = attack - (defense // 2)
-		
+
 		if base_damage <= 0:
 			return 0
-		
+
 		if variance:
 			# Add random variance (±25%)
 			variance_amount = int(base_damage * 0.25)
 			damage = base_damage + self.rng.randint(-variance_amount, variance_amount)
 		else:
 			damage = base_damage
-		
+
 		return max(0, damage)
-	
+
 	def calculate_hit_chance(self, attacker_agi: int, defender_agi: int) -> float:
 		"""Calculate hit chance based on agility."""
 		# Simplified hit formula
 		agi_diff = attacker_agi - defender_agi
 		base_chance = 0.75  # 75% base hit rate
-		
+
 		# Adjust based on agility difference
 		modifier = agi_diff * 0.01  # 1% per agility point
-		
+
 		hit_chance = base_chance + modifier
 		return max(0.1, min(0.95, hit_chance))  # Clamp between 10% and 95%
-	
+
 	def simulate_battle(self, player_level: int, player_attack: int, player_defense: int,
 	                     player_agi: int, player_hp: int, enemy: Enemy,
 	                     num_simulations: int = 1000) -> BattleSimulation:
@@ -224,45 +224,45 @@ class BattleAnalyzer:
 		total_damage_dealt = 0
 		total_damage_taken = 0
 		total_hp_remaining = 0
-		
+
 		for _ in range(num_simulations):
 			p_hp = player_hp
 			e_hp = enemy.hp
 			turns = 0
 			damage_dealt = 0
 			damage_taken = 0
-			
+
 			while p_hp > 0 and e_hp > 0:
 				turns += 1
-				
+
 				# Player attacks
 				if self.rng.random() < self.calculate_hit_chance(player_agi, enemy.agility):
 					dmg = self.calculate_damage(player_attack, enemy.defense)
 					e_hp -= dmg
 					damage_dealt += dmg
-				
+
 				if e_hp <= 0:
 					break
-				
+
 				# Enemy attacks
 				if self.rng.random() < self.calculate_hit_chance(enemy.agility, player_agi):
 					dmg = self.calculate_damage(enemy.attack, player_defense)
 					p_hp -= dmg
 					damage_taken += dmg
-			
+
 			# Record results
 			total_turns += turns
 			total_damage_dealt += damage_dealt
 			total_damage_taken += damage_taken
-			
+
 			if p_hp > 0:
 				player_wins += 1
 				total_hp_remaining += p_hp
 			else:
 				enemy_wins += 1
-		
+
 		avg_hp_remaining = (total_hp_remaining / player_wins) if player_wins > 0 else 0
-		
+
 		return BattleSimulation(
 			player_level=player_level,
 			enemy_name=enemy.name,
@@ -274,14 +274,14 @@ class BattleAnalyzer:
 			avg_damage_taken=total_damage_taken / num_simulations,
 			avg_hp_remaining=avg_hp_remaining
 		)
-	
+
 	def analyze_damage_formula(self) -> Dict:
 		"""Analyze damage formula characteristics."""
 		results = {
 			'formula': 'Damage = Attack - (Defense / 2) ± 25%',
 			'samples': []
 		}
-		
+
 		# Test various attack/defense combinations
 		test_cases = [
 			(10, 0, "Low Attack, No Defense"),
@@ -290,10 +290,10 @@ class BattleAnalyzer:
 			(100, 50, "Very High Attack, High Defense"),
 			(30, 60, "Attack < Defense"),
 		]
-		
+
 		for attack, defense, description in test_cases:
 			damages = [self.calculate_damage(attack, defense) for _ in range(100)]
-			
+
 			results['samples'].append({
 				'description': description,
 				'attack': attack,
@@ -302,13 +302,13 @@ class BattleAnalyzer:
 				'max_damage': max(damages),
 				'avg_damage': sum(damages) / len(damages)
 			})
-		
+
 		return results
 
 
 class EconomyAnalyzer:
 	"""Analyze game economy and gold progression."""
-	
+
 	def __init__(self):
 		self.equipment_costs = {
 			# Weapons
@@ -318,7 +318,7 @@ class EconomyAnalyzer:
 			"Hand Axe": 560,
 			"Broad Sword": 1500,
 			"Flame Sword": 9800,
-			
+
 			# Armor
 			"Clothes": 20,
 			"Leather Armor": 70,
@@ -326,12 +326,12 @@ class EconomyAnalyzer:
 			"Half Plate": 1000,
 			"Full Plate": 3000,
 			"Magic Armor": 7700,
-			
+
 			# Shields
 			"Small Shield": 90,
 			"Large Shield": 800,
 			"Silver Shield": 14800,
-			
+
 			# Items
 			"Herb": 24,
 			"Torch": 8,
@@ -339,7 +339,7 @@ class EconomyAnalyzer:
 			"Fairy Water": 38,
 			"Wings": 70,
 		}
-		
+
 		self.equipment_progression = {
 			3: ["Club", "Leather Armor"],
 			5: ["Copper Sword", "Chain Mail", "Small Shield"],
@@ -349,19 +349,19 @@ class EconomyAnalyzer:
 			17: ["Flame Sword", "Silver Shield"],
 			20: ["Magic Armor"],
 		}
-	
+
 	def calculate_gold_per_hour(self, level: int, zone_enemies: List[Enemy]) -> float:
 		"""Calculate expected gold per hour at a level."""
 		# Assume 10 battles per hour (conservative)
 		battles_per_hour = 10
-		
+
 		# Calculate average gold per battle
 		total_gold = sum(e.gold * e.encounter_weight for e in zone_enemies)
 		total_weight = sum(e.encounter_weight for e in zone_enemies)
 		avg_gold = total_gold / total_weight
-		
+
 		return avg_gold * battles_per_hour
-	
+
 	def analyze_equipment_costs(self, level: int) -> EconomyMetrics:
 		"""Analyze equipment costs for a level."""
 		# Get recommended equipment
@@ -369,24 +369,24 @@ class EconomyAnalyzer:
 		for lvl, items in sorted(self.equipment_progression.items()):
 			if lvl <= level:
 				recommended = items
-		
+
 		# Calculate total cost
 		total_cost = sum(self.equipment_costs.get(item, 0) for item in recommended)
-		
+
 		# Estimate gold per battle at this level
 		zone_enemies = [e for e in ENEMIES if abs(e.zone_level - level) <= 2]
 		if not zone_enemies:
 			zone_enemies = ENEMIES[:5]  # Default to early enemies
-		
+
 		avg_gold = sum(e.gold for e in zone_enemies) / len(zone_enemies)
-		
+
 		# Calculate battles needed for each item
 		battles_needed = {}
 		for item in recommended:
 			cost = self.equipment_costs.get(item, 0)
 			battles = int(math.ceil(cost / avg_gold)) if avg_gold > 0 else 0
 			battles_needed[item] = battles
-		
+
 		return EconomyMetrics(
 			level=level,
 			gold_per_battle=avg_gold,
@@ -398,17 +398,17 @@ class EconomyAnalyzer:
 
 class ProgressionAnalyzer:
 	"""Analyze character progression and leveling."""
-	
+
 	def analyze_exp_curve(self) -> List[ProgressionMetrics]:
 		"""Analyze experience requirements and growth."""
 		metrics = []
-		
+
 		for level in range(2, 31):
 			idx = level - 1
-			
+
 			exp_required = EXP_TABLE[idx]
 			exp_from_prev = exp_required - EXP_TABLE[idx - 1]
-			
+
 			# Calculate stat growth
 			stat_growth = {
 				'hp': HP_TABLE[idx] - HP_TABLE[idx - 1] if idx > 0 else HP_TABLE[idx],
@@ -416,14 +416,14 @@ class ProgressionAnalyzer:
 				'str': STR_TABLE[idx] - STR_TABLE[idx - 1] if idx > 0 else STR_TABLE[idx],
 				'agi': AGI_TABLE[idx] - AGI_TABLE[idx - 1] if idx > 0 else AGI_TABLE[idx],
 			}
-			
+
 			# Estimate battles needed (assume avg 25 exp per battle)
 			avg_exp = 25
 			battles_needed = int(math.ceil(exp_from_prev / avg_exp))
-			
+
 			# Estimate time (assume 1 minute per battle)
 			estimated_time = battles_needed
-			
+
 			metrics.append(ProgressionMetrics(
 				level=level,
 				exp_required=exp_required,
@@ -432,21 +432,21 @@ class ProgressionAnalyzer:
 				estimated_time_minutes=estimated_time,
 				stat_growth=stat_growth
 			))
-		
+
 		return metrics
-	
+
 	def identify_grinding_hotspots(self) -> List[Dict]:
 		"""Identify levels that require significant grinding."""
 		hotspots = []
-		
+
 		progression = self.analyze_exp_curve()
-		
+
 		for i, metrics in enumerate(progression):
 			if i == 0:
 				continue
-			
+
 			prev_metrics = progression[i - 1]
-			
+
 			# Check if exp requirement jumped significantly
 			if metrics.exp_from_prev > prev_metrics.exp_from_prev * 1.5:
 				hotspots.append({
@@ -455,47 +455,47 @@ class ProgressionAnalyzer:
 					'battles_needed': metrics.battles_needed,
 					'reason': 'Large exp requirement jump'
 				})
-		
+
 		return hotspots
 
 
 class DataAnalyzer:
 	"""Main data analysis coordinator."""
-	
+
 	def __init__(self):
 		self.battle_analyzer = BattleAnalyzer()
 		self.economy_analyzer = EconomyAnalyzer()
 		self.progression_analyzer = ProgressionAnalyzer()
-	
+
 	def generate_comprehensive_report(self, output_path: Path) -> None:
 		"""Generate comprehensive analysis report."""
 		lines = []
-		
+
 		lines.append("="*70)
 		lines.append("DRAGON WARRIOR COMPREHENSIVE DATA ANALYSIS")
 		lines.append("="*70)
 		lines.append("")
-		
+
 		# Battle System Analysis
 		lines.append("="*70)
 		lines.append("BATTLE SYSTEM ANALYSIS")
 		lines.append("="*70)
 		lines.append("")
-		
+
 		damage_analysis = self.battle_analyzer.analyze_damage_formula()
 		lines.append(f"Damage Formula: {damage_analysis['formula']}")
 		lines.append("")
-		
+
 		for sample in damage_analysis['samples']:
 			lines.append(f"{sample['description']}:")
 			lines.append(f"  Attack: {sample['attack']}, Defense: {sample['defense']}")
 			lines.append(f"  Min: {sample['min_damage']}, Max: {sample['max_damage']}, Avg: {sample['avg_damage']:.1f}")
 			lines.append("")
-		
+
 		# Simulate battles at key levels
 		lines.append("Battle Simulations (1000 trials each):")
 		lines.append("-"*70)
-		
+
 		test_levels = [5, 10, 15, 20]
 		for level in test_levels:
 			idx = level - 1
@@ -503,54 +503,54 @@ class DataAnalyzer:
 			player_defense = AGI_TABLE[idx] // 2 + 15  # Assume armor bonus
 			player_agi = AGI_TABLE[idx]
 			player_hp = HP_TABLE[idx]
-			
+
 			# Test against appropriate enemies
 			suitable_enemies = [e for e in ENEMIES if abs(e.zone_level - level) <= 2][:3]
-			
+
 			lines.append(f"\nLevel {level} (HP: {player_hp}, ATK: {player_attack}, DEF: {player_defense}, AGI: {player_agi}):")
-			
+
 			for enemy in suitable_enemies:
 				sim = self.battle_analyzer.simulate_battle(
 					level, player_attack, player_defense, player_agi, player_hp, enemy, 1000
 				)
 				lines.append(f"  vs {enemy.name}: {sim.win_rate():.1f}% win rate, "
 				           f"{sim.avg_turns:.1f} turns, {sim.avg_hp_remaining:.0f} HP remaining")
-		
+
 		lines.append("")
-		
+
 		# Economy Analysis
 		lines.append("="*70)
 		lines.append("ECONOMY ANALYSIS")
 		lines.append("="*70)
 		lines.append("")
-		
+
 		for level in [3, 5, 7, 10, 13, 17, 20]:
 			metrics = self.economy_analyzer.analyze_equipment_costs(level)
 			lines.append(f"\nLevel {level}:")
 			lines.append(f"  Gold per battle: {metrics.gold_per_battle:.1f}G")
 			lines.append(f"  Total equipment cost: {metrics.total_equipment_cost}G")
 			lines.append(f"  Recommended gold: {metrics.recommended_gold}G")
-			
+
 			if metrics.battles_for_equipment:
 				lines.append("  Battles needed for equipment:")
 				for item, battles in metrics.battles_for_equipment.items():
 					lines.append(f"    {item}: {battles} battles")
-		
+
 		lines.append("")
-		
+
 		# Progression Analysis
 		lines.append("="*70)
 		lines.append("PROGRESSION ANALYSIS")
 		lines.append("="*70)
 		lines.append("")
-		
+
 		progression = self.progression_analyzer.analyze_exp_curve()
-		
+
 		lines.append("Experience Requirements by Level:")
 		lines.append("-"*70)
 		lines.append(f"{'Level':<6} {'Total EXP':<10} {'From Prev':<10} {'Battles':<8} {'Time':<10} {'HP':<4} {'MP':<4} {'STR':<4} {'AGI':<4}")
 		lines.append("-"*70)
-		
+
 		for metrics in progression[::2]:  # Every other level
 			lines.append(
 				f"{metrics.level:<6} {metrics.exp_required:<10} {metrics.exp_from_prev:<10} "
@@ -558,9 +558,9 @@ class DataAnalyzer:
 				f"+{metrics.stat_growth['hp']:<3} +{metrics.stat_growth['mp']:<3} "
 				f"+{metrics.stat_growth['str']:<3} +{metrics.stat_growth['agi']:<3}"
 			)
-		
+
 		lines.append("")
-		
+
 		# Grinding hotspots
 		hotspots = self.progression_analyzer.identify_grinding_hotspots()
 		if hotspots:
@@ -568,36 +568,36 @@ class DataAnalyzer:
 			for hotspot in hotspots:
 				lines.append(f"  Level {hotspot['level']}: {hotspot['reason']}")
 				lines.append(f"    Battles needed: {hotspot['battles_needed']}")
-		
+
 		lines.append("")
-		
+
 		# Enemy efficiency ratings
 		lines.append("="*70)
 		lines.append("ENEMY EFFICIENCY RATINGS")
 		lines.append("="*70)
 		lines.append("")
-		
+
 		lines.append(f"{'Enemy':<20} {'HP':<5} {'Gold':<6} {'EXP':<6} {'Efficiency':<10}")
 		lines.append("-"*70)
-		
+
 		sorted_enemies = sorted(ENEMIES, key=lambda e: e.efficiency_score(), reverse=True)
-		
+
 		for enemy in sorted_enemies[:15]:  # Top 15
 			lines.append(
 				f"{enemy.name:<20} {enemy.hp:<5} {enemy.gold:<6} {enemy.exp:<6} {enemy.efficiency_score():<10.2f}"
 			)
-		
+
 		lines.append("")
 		lines.append("="*70)
 		lines.append("END OF ANALYSIS")
 		lines.append("="*70)
-		
+
 		# Write report
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		output_path.write_text('\n'.join(lines))
-		
+
 		print(f"✓ Generated analysis report: {output_path}")
-	
+
 	def export_json_analysis(self, output_path: Path) -> None:
 		"""Export analysis data as JSON."""
 		data = {
@@ -619,11 +619,11 @@ class DataAnalyzer:
 				for e in sorted(ENEMIES, key=lambda e: e.efficiency_score(), reverse=True)
 			]
 		}
-		
+
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		with output_path.open('w') as f:
 			json.dump(data, f, indent='\t')
-		
+
 		print(f"✓ Exported JSON analysis: {output_path}")
 
 
@@ -632,59 +632,59 @@ def main():
 	parser = argparse.ArgumentParser(
 		description='Dragon Warrior Data Analysis Tool'
 	)
-	
+
 	parser.add_argument(
 		'--report',
 		type=Path,
 		metavar='OUTPUT',
 		help='Generate comprehensive text report'
 	)
-	
+
 	parser.add_argument(
 		'--json',
 		type=Path,
 		metavar='OUTPUT',
 		help='Export analysis data as JSON'
 	)
-	
+
 	parser.add_argument(
 		'--battle',
 		type=int,
 		metavar='LEVEL',
 		help='Run battle simulations for specific level'
 	)
-	
+
 	parser.add_argument(
 		'--economy',
 		type=int,
 		metavar='LEVEL',
 		help='Analyze economy for specific level'
 	)
-	
+
 	args = parser.parse_args()
-	
+
 	analyzer = DataAnalyzer()
-	
+
 	if args.report:
 		analyzer.generate_comprehensive_report(args.report)
-	
+
 	if args.json:
 		analyzer.export_json_analysis(args.json)
-	
+
 	if args.battle:
 		level = args.battle
 		idx = level - 1
-		
+
 		print(f"\nBattle Analysis for Level {level}")
 		print("="*70)
-		
+
 		player_attack = STR_TABLE[idx] + 10
 		player_defense = AGI_TABLE[idx] // 2 + 15
 		player_agi = AGI_TABLE[idx]
 		player_hp = HP_TABLE[idx]
-		
+
 		suitable_enemies = [e for e in ENEMIES if abs(e.zone_level - level) <= 3]
-		
+
 		for enemy in suitable_enemies:
 			sim = analyzer.battle_analyzer.simulate_battle(
 				level, player_attack, player_defense, player_agi, player_hp, enemy, 1000
@@ -695,11 +695,11 @@ def main():
 			print(f"  Avg damage dealt: {sim.avg_damage_dealt:.1f}")
 			print(f"  Avg damage taken: {sim.avg_damage_taken:.1f}")
 			print(f"  Avg HP remaining: {sim.avg_hp_remaining:.1f}")
-	
+
 	if args.economy:
 		level = args.economy
 		metrics = analyzer.economy_analyzer.analyze_equipment_costs(level)
-		
+
 		print(f"\nEconomy Analysis for Level {level}")
 		print("="*70)
 		print(f"Gold per battle: {metrics.gold_per_battle:.1f}G")
@@ -709,13 +709,13 @@ def main():
 		for item, battles in metrics.battles_for_equipment.items():
 			cost = analyzer.economy_analyzer.equipment_costs[item]
 			print(f"  {item} ({cost}G): {battles} battles")
-	
+
 	if not any([args.report, args.json, args.battle, args.economy]):
 		# Default: generate both reports
 		output_dir = Path("output/analysis")
 		analyzer.generate_comprehensive_report(output_dir / "data_analysis.txt")
 		analyzer.export_json_analysis(output_dir / "analysis_data.json")
-	
+
 	return 0
 
 

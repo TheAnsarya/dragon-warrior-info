@@ -74,7 +74,7 @@ class EnemyData:
 	hurt_resist: bool
 	gold_drop: int
 	exp_drop: int
-	
+
 	def randomize(self, difficulty: RandomizerDifficulty, rng: random.Random) -> None:
 		"""Randomize enemy stats."""
 		variance = {
@@ -84,25 +84,25 @@ class EnemyData:
 			RandomizerDifficulty.EXTREME: 1.2,
 			RandomizerDifficulty.CHAOS: 2.0
 		}[difficulty]
-		
+
 		# Randomize HP (keep within reasonable bounds)
 		hp_mult = rng.uniform(1.0 - variance, 1.0 + variance)
 		self.hp = max(1, int(self.hp * hp_mult))
-		
+
 		# Randomize stats
 		str_mult = rng.uniform(1.0 - variance, 1.0 + variance)
 		self.strength = max(1, int(self.strength * str_mult))
-		
+
 		agi_mult = rng.uniform(1.0 - variance, 1.0 + variance)
 		self.agility = max(1, int(self.agility * agi_mult))
-		
+
 		# Randomize rewards
 		gold_mult = rng.uniform(0.5, 1.5 + variance)
 		self.gold_drop = max(0, int(self.gold_drop * gold_mult))
-		
+
 		exp_mult = rng.uniform(0.5, 1.5 + variance)
 		self.exp_drop = max(1, int(self.exp_drop * exp_mult))
-		
+
 		# Randomly toggle resistances (chaos mode)
 		if difficulty >= RandomizerDifficulty.EXTREME:
 			if rng.random() < 0.3:
@@ -122,7 +122,7 @@ class ItemLocation:
 	chest_id: int
 	item_id: int
 	is_required: bool = False  # Required for progression
-	
+
 	def randomize(self, available_items: List[int], required_pool: List[int], rng: random.Random) -> None:
 		"""Randomize item at this location."""
 		if self.is_required and required_pool:
@@ -142,13 +142,13 @@ class ShopData:
 	shop_type: str  # weapon, armor, item, magic_key
 	inventory: List[int]
 	prices: Dict[int, int]
-	
+
 	def randomize(self, item_pool: List[int], difficulty: RandomizerDifficulty, rng: random.Random) -> None:
 		"""Randomize shop inventory and prices."""
 		# Randomize inventory
 		num_items = len(self.inventory)
 		self.inventory = rng.sample(item_pool, min(num_items, len(item_pool)))
-		
+
 		# Randomize prices
 		variance = {
 			RandomizerDifficulty.EASY: 0.5,
@@ -157,7 +157,7 @@ class ShopData:
 			RandomizerDifficulty.EXTREME: 1.5,
 			RandomizerDifficulty.CHAOS: 2.0
 		}[difficulty]
-		
+
 		for item_id in self.inventory:
 			base_price = self.prices.get(item_id, 100)
 			price_mult = rng.uniform(1.0 - variance, 1.0 + variance)
@@ -171,7 +171,7 @@ class SpellLearning:
 	spell_name: str
 	learn_level: int
 	mp_cost: int
-	
+
 	def randomize(self, difficulty: RandomizerDifficulty, rng: random.Random) -> None:
 		"""Randomize spell learning level."""
 		if difficulty == RandomizerDifficulty.CHAOS:
@@ -185,7 +185,7 @@ class SpellLearning:
 				RandomizerDifficulty.HARD: 5,
 				RandomizerDifficulty.EXTREME: 7
 			}[difficulty]
-			
+
 			delta = rng.randint(-variance, variance)
 			self.learn_level = max(1, min(20, self.learn_level + delta))
 
@@ -198,7 +198,7 @@ class GrowthRate:
 	mp_gain: int
 	str_gain: int
 	agi_gain: int
-	
+
 	def randomize(self, difficulty: RandomizerDifficulty, rng: random.Random) -> None:
 		"""Randomize stat gains."""
 		variance = {
@@ -208,7 +208,7 @@ class GrowthRate:
 			RandomizerDifficulty.EXTREME: 0.8,
 			RandomizerDifficulty.CHAOS: 1.5
 		}[difficulty]
-		
+
 		# Keep minimum gains to ensure progress
 		self.hp_gain = max(1, int(self.hp_gain * rng.uniform(1.0 - variance, 1.0 + variance)))
 		self.mp_gain = max(0, int(self.mp_gain * rng.uniform(1.0 - variance, 1.0 + variance)))
@@ -222,32 +222,32 @@ class RandomizerConfig:
 	seed: Optional[int] = None
 	difficulty: RandomizerDifficulty = RandomizerDifficulty.NORMAL
 	modes: int = RandomizerMode.ALL
-	
+
 	# Enemy randomization
 	randomize_enemy_stats: bool = True
 	randomize_enemy_drops: bool = True
 	randomize_enemy_locations: bool = True
-	
+
 	# Item randomization
 	randomize_chest_items: bool = True
 	randomize_shop_inventory: bool = True
 	randomize_shop_prices: bool = True
-	
+
 	# Spell randomization
 	randomize_spell_levels: bool = True
 	randomize_spell_costs: bool = False
-	
+
 	# World randomization
 	randomize_town_connections: bool = False  # Advanced feature
 	randomize_overworld: bool = False          # Very advanced
-	
+
 	# Growth randomization
 	randomize_stat_growth: bool = True
-	
+
 	# Logic settings
 	ensure_completable: bool = True
 	guarantee_key_items: bool = True
-	
+
 	def to_dict(self) -> dict:
 		return {
 			'seed': self.seed,
@@ -326,78 +326,78 @@ KEY_ITEMS = [
 
 class RandomizerEngine:
 	"""Main randomizer engine."""
-	
+
 	def __init__(self, config: RandomizerConfig):
 		self.config = config
-		
+
 		# Initialize RNG with seed
 		if config.seed is None:
 			config.seed = random.randint(0, 2**32 - 1)
-		
+
 		self.rng = random.Random(config.seed)
-		
+
 		# Game data
 		self.enemies = deepcopy(DW_ENEMIES)
 		self.item_locations: List[ItemLocation] = []
 		self.shops: List[ShopData] = []
 		self.spells: List[SpellLearning] = []
 		self.growth_rates: List[GrowthRate] = []
-		
+
 		# Spoiler log
 		self.spoiler_log: List[str] = []
-	
+
 	def randomize_all(self) -> None:
 		"""Perform all randomization."""
 		self.spoiler_log = []
 		self.spoiler_log.append(f"Dragon Warrior Randomizer - Seed: {self.config.seed}")
 		self.spoiler_log.append(f"Difficulty: {RandomizerDifficulty(self.config.difficulty).name}")
 		self.spoiler_log.append("")
-		
+
 		if self.config.randomize_enemy_stats or self.config.randomize_enemy_drops:
 			self._randomize_enemies()
-		
+
 		if self.config.randomize_chest_items:
 			self._randomize_items()
-		
+
 		if self.config.randomize_shop_inventory or self.config.randomize_shop_prices:
 			self._randomize_shops()
-		
+
 		if self.config.randomize_spell_levels:
 			self._randomize_spells()
-		
+
 		if self.config.randomize_stat_growth:
 			self._randomize_growth()
-		
+
 		if self.config.ensure_completable:
 			self._validate_logic()
-	
+
 	def _randomize_enemies(self) -> None:
 		"""Randomize enemy data."""
 		self.spoiler_log.append("="*70)
 		self.spoiler_log.append("ENEMY RANDOMIZATION")
 		self.spoiler_log.append("="*70)
-		
+
 		for enemy in self.enemies:
 			original_hp = enemy.hp
 			original_gold = enemy.gold_drop
 			original_exp = enemy.exp_drop
-			
+
 			enemy.randomize(self.config.difficulty, self.rng)
-			
+
 			self.spoiler_log.append(f"\n{enemy.name}:")
 			self.spoiler_log.append(f"  HP: {original_hp} -> {enemy.hp}")
 			self.spoiler_log.append(f"  STR: {enemy.strength}, AGI: {enemy.agility}")
 			self.spoiler_log.append(f"  Gold: {original_gold} -> {enemy.gold_drop}")
 			self.spoiler_log.append(f"  EXP: {original_exp} -> {enemy.exp_drop}")
-		
+
 		self.spoiler_log.append("")
-	
+
 	def _randomize_items(self) -> None:
 		"""Randomize item locations."""
 		self.spoiler_log.append("="*70)
 		self.spoiler_log.append("ITEM RANDOMIZATION")
 		self.spoiler_log.append("="*70)
-		
+
 		# Create mock item locations (would be loaded from ROM)
 		self.item_locations = [
 			ItemLocation(0, "Tantegel Throne Room", 1, 0, 0x21, True),  # Magic Key
@@ -410,7 +410,7 @@ class RandomizerEngine:
 			ItemLocation(7, "Rimuldar", 9, 0, 0x17),                    # Fairy Flute
 			ItemLocation(8, "Garinham", 6, 1, 0x18),                    # Fighter's Ring
 		]
-		
+
 		if self.config.guarantee_key_items:
 			# Keep key items in reasonable locations
 			self.spoiler_log.append("\nKey items preserved for progression:")
@@ -421,52 +421,52 @@ class RandomizerEngine:
 			# Shuffle all items including key items
 			all_items = [loc.item_id for loc in self.item_locations]
 			self.rng.shuffle(all_items)
-			
+
 			self.spoiler_log.append("\nRandomized item locations:")
 			for i, loc in enumerate(self.item_locations):
 				old_item = loc.item_id
 				loc.item_id = all_items[i]
 				self.spoiler_log.append(f"  {loc.location_name}: 0x{old_item:02X} -> 0x{loc.item_id:02X}")
-		
+
 		self.spoiler_log.append("")
-	
+
 	def _randomize_shops(self) -> None:
 		"""Randomize shop inventories and prices."""
 		self.spoiler_log.append("="*70)
 		self.spoiler_log.append("SHOP RANDOMIZATION")
 		self.spoiler_log.append("="*70)
-		
+
 		# Create mock shops (would be loaded from ROM)
 		weapon_pool = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06]  # Weapons
 		armor_pool = [0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D]   # Armor
-		
+
 		self.shops = [
 			ShopData(0, "Brecconary", "weapon", [0x01, 0x02], {0x01: 10, 0x02: 100}),
 			ShopData(1, "Garinham", "weapon", [0x03, 0x04], {0x03: 180, 0x04: 560}),
 		]
-		
+
 		for shop in self.shops:
 			self.spoiler_log.append(f"\n{shop.town_name} - {shop.shop_type}:")
-			
+
 			if self.config.randomize_shop_inventory:
 				old_inv = shop.inventory.copy()
 				pool = weapon_pool if shop.shop_type == "weapon" else armor_pool
 				shop.randomize(pool, self.config.difficulty, self.rng)
-				
+
 				self.spoiler_log.append(f"  Inventory: {old_inv} -> {shop.inventory}")
-			
+
 			if self.config.randomize_shop_prices:
 				for item_id in shop.inventory:
 					self.spoiler_log.append(f"    Item 0x{item_id:02X}: {shop.prices.get(item_id, 0)}G")
-		
+
 		self.spoiler_log.append("")
-	
+
 	def _randomize_spells(self) -> None:
 		"""Randomize spell learning levels."""
 		self.spoiler_log.append("="*70)
 		self.spoiler_log.append("SPELL RANDOMIZATION")
 		self.spoiler_log.append("="*70)
-		
+
 		# Dragon Warrior spell data
 		self.spells = [
 			SpellLearning(1, "HEAL", 3, 4),
@@ -480,79 +480,79 @@ class RandomizerEngine:
 			SpellLearning(9, "HEALMORE", 17, 10),
 			SpellLearning(10, "HURTMORE", 19, 5),
 		]
-		
+
 		self.spoiler_log.append("\nSpell learning levels:")
 		for spell in self.spells:
 			original_level = spell.learn_level
 			spell.randomize(self.config.difficulty, self.rng)
-			
+
 			self.spoiler_log.append(f"  {spell.spell_name}: Level {original_level} -> {spell.learn_level}")
-		
+
 		self.spoiler_log.append("")
-	
+
 	def _randomize_growth(self) -> None:
 		"""Randomize stat growth rates."""
 		self.spoiler_log.append("="*70)
 		self.spoiler_log.append("STAT GROWTH RANDOMIZATION")
 		self.spoiler_log.append("="*70)
-		
+
 		# Create growth rate data for levels 2-30
 		self.growth_rates = []
-		
+
 		for level in range(2, 31):
 			# Base growth rates (approximate)
 			hp_gain = 7 + self.rng.randint(-2, 5)
 			mp_gain = 3 + self.rng.randint(-1, 3)
 			str_gain = 2 + self.rng.randint(-1, 2)
 			agi_gain = 2 + self.rng.randint(-1, 2)
-			
+
 			growth = GrowthRate(level, hp_gain, mp_gain, str_gain, agi_gain)
 			growth.randomize(self.config.difficulty, self.rng)
-			
+
 			self.growth_rates.append(growth)
-			
+
 			if level % 5 == 0:  # Log every 5 levels
 				self.spoiler_log.append(f"\nLevel {level}:")
 				self.spoiler_log.append(f"  HP +{growth.hp_gain}, MP +{growth.mp_gain}")
 				self.spoiler_log.append(f"  STR +{growth.str_gain}, AGI +{growth.agi_gain}")
-		
+
 		self.spoiler_log.append("")
-	
+
 	def _validate_logic(self) -> None:
 		"""Validate that the game is completable."""
 		self.spoiler_log.append("="*70)
 		self.spoiler_log.append("LOGIC VALIDATION")
 		self.spoiler_log.append("="*70)
-		
+
 		# Check for key items
 		found_items = set()
 		for loc in self.item_locations:
 			found_items.add(loc.item_id)
-		
+
 		missing_items = []
 		for key_item in KEY_ITEMS:
 			if key_item not in found_items:
 				missing_items.append(f"0x{key_item:02X}")
-		
+
 		if missing_items:
 			self.spoiler_log.append(f"\n⚠ WARNING: Missing key items: {', '.join(missing_items)}")
 		else:
 			self.spoiler_log.append("\n✓ All key items present")
-		
+
 		# Check spell availability
 		heal_level = next((s.learn_level for s in self.spells if s.spell_name == "HEAL"), None)
 		if heal_level and heal_level > 10:
 			self.spoiler_log.append(f"⚠ WARNING: HEAL learned late (Level {heal_level})")
-		
+
 		self.spoiler_log.append("\n✓ Logic validation complete")
 		self.spoiler_log.append("")
-	
+
 	def export_spoiler_log(self, output_path: Path) -> None:
 		"""Export spoiler log to file."""
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		output_path.write_text('\n'.join(self.spoiler_log))
 		print(f"✓ Spoiler log: {output_path}")
-	
+
 	def export_json_data(self, output_path: Path) -> None:
 		"""Export randomized data as JSON."""
 		data = {
@@ -586,20 +586,20 @@ class RandomizerEngine:
 				for s in self.spells
 			]
 		}
-		
+
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		with output_path.open('w') as f:
 			json.dump(data, f, indent='\t')
-		
+
 		print(f"✓ JSON data: {output_path}")
-	
+
 	def apply_to_rom(self, rom_path: Path, output_path: Path) -> None:
 		"""Apply randomization to ROM file."""
 		if not rom_path.exists():
 			raise FileNotFoundError(f"ROM not found: {rom_path}")
-		
+
 		rom_data = bytearray(rom_path.read_bytes())
-		
+
 		# Apply enemy changes (offsets would need to be determined)
 		# This is a placeholder - actual ROM offsets would be required
 		self.spoiler_log.append("="*70)
@@ -610,30 +610,30 @@ class RandomizerEngine:
 		self.spoiler_log.append("✓ Shop data patched")
 		self.spoiler_log.append("✓ Spell data patched")
 		self.spoiler_log.append("")
-		
+
 		# Write modified ROM
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		output_path.write_bytes(rom_data)
-		
+
 		print(f"✓ Randomized ROM: {output_path}")
 
 
 class InteractiveRandomizer:
 	"""Interactive randomizer interface."""
-	
+
 	def __init__(self):
 		self.config = RandomizerConfig()
-	
+
 	def run(self) -> None:
 		"""Run interactive randomizer."""
 		print("\n" + "="*70)
 		print("Dragon Warrior Randomizer")
 		print("="*70)
-		
+
 		while True:
 			self._print_menu()
 			choice = input("\nEnter choice: ").strip()
-			
+
 			if choice == '1':
 				self._configure_difficulty()
 			elif choice == '2':
@@ -648,7 +648,7 @@ class InteractiveRandomizer:
 				break
 			else:
 				print("Invalid choice")
-	
+
 	def _print_menu(self) -> None:
 		"""Print main menu."""
 		print("\n" + "-"*70)
@@ -659,19 +659,19 @@ class InteractiveRandomizer:
 		print("  4. View configuration")
 		print("  5. Generate randomized ROM")
 		print("  q. Quit")
-		
+
 		if self.config.seed:
 			print(f"\nCurrent seed: {self.config.seed}")
 		print(f"Difficulty: {RandomizerDifficulty(self.config.difficulty).name}")
-	
+
 	def _configure_difficulty(self) -> None:
 		"""Configure difficulty."""
 		print("\nDifficulty levels:")
 		for diff in RandomizerDifficulty:
 			print(f"  {diff.value}. {diff.name}")
-		
+
 		choice = input("Select difficulty (0-4): ").strip()
-		
+
 		try:
 			diff = int(choice)
 			if 0 <= diff <= 4:
@@ -681,7 +681,7 @@ class InteractiveRandomizer:
 				print("Invalid choice")
 		except ValueError:
 			print("Invalid input")
-	
+
 	def _configure_modes(self) -> None:
 		"""Configure randomization modes."""
 		print("\nRandomization options:")
@@ -691,9 +691,9 @@ class InteractiveRandomizer:
 		print("  4. Spell learning")
 		print("  5. Stat growth")
 		print("  a. All")
-		
+
 		choices = input("Select options (comma-separated) or 'a' for all: ").strip()
-		
+
 		if choices.lower() == 'a':
 			self.config.randomize_enemy_stats = True
 			self.config.randomize_chest_items = True
@@ -715,13 +715,13 @@ class InteractiveRandomizer:
 					self.config.randomize_spell_levels = not self.config.randomize_spell_levels
 				elif choice == '5':
 					self.config.randomize_stat_growth = not self.config.randomize_stat_growth
-			
+
 			print("✓ Configuration updated")
-	
+
 	def _set_seed(self) -> None:
 		"""Set randomization seed."""
 		seed = input("Enter seed (or blank for random): ").strip()
-		
+
 		if seed:
 			try:
 				self.config.seed = int(seed)
@@ -731,46 +731,46 @@ class InteractiveRandomizer:
 		else:
 			self.config.seed = None
 			print("✓ Will use random seed")
-	
+
 	def _view_config(self) -> None:
 		"""View current configuration."""
 		print("\n" + "="*70)
 		print("Current Configuration")
 		print("="*70)
-		
+
 		print(f"\nSeed: {self.config.seed if self.config.seed else 'Random'}")
 		print(f"Difficulty: {RandomizerDifficulty(self.config.difficulty).name}")
-		
+
 		print("\nRandomization modes:")
 		print(f"  Enemy stats: {self.config.randomize_enemy_stats}")
 		print(f"  Item locations: {self.config.randomize_chest_items}")
 		print(f"  Shop inventory: {self.config.randomize_shop_inventory}")
 		print(f"  Spell learning: {self.config.randomize_spell_levels}")
 		print(f"  Stat growth: {self.config.randomize_stat_growth}")
-		
+
 		print("\nLogic settings:")
 		print(f"  Ensure completable: {self.config.ensure_completable}")
 		print(f"  Guarantee key items: {self.config.guarantee_key_items}")
-	
+
 	def _randomize(self) -> None:
 		"""Generate randomized ROM."""
 		rom_path = input("Input ROM path: ").strip()
 		output_path = input("Output ROM path: ").strip()
-		
+
 		if not rom_path or not output_path:
 			print("Both paths required")
 			return
-		
+
 		try:
 			engine = RandomizerEngine(self.config)
 			engine.randomize_all()
-			
+
 			# Export files
 			output_dir = Path(output_path).parent
 			engine.export_spoiler_log(output_dir / f"spoiler_log_{self.config.seed}.txt")
 			engine.export_json_data(output_dir / f"randomizer_data_{self.config.seed}.json")
 			engine.apply_to_rom(Path(rom_path), Path(output_path))
-			
+
 			print(f"\n✓ Randomization complete!")
 			print(f"   Seed: {self.config.seed}")
 			print(f"   ROM: {output_path}")
@@ -783,34 +783,34 @@ def main():
 	parser = argparse.ArgumentParser(
 		description='Dragon Warrior Randomizer'
 	)
-	
+
 	parser.add_argument(
 		'-i', '--interactive',
 		action='store_true',
 		help='Run interactive randomizer'
 	)
-	
+
 	parser.add_argument(
 		'--rom',
 		type=Path,
 		metavar='INPUT',
 		help='Input ROM file'
 	)
-	
+
 	parser.add_argument(
 		'--output',
 		type=Path,
 		metavar='OUTPUT',
 		help='Output ROM file'
 	)
-	
+
 	parser.add_argument(
 		'--seed',
 		type=int,
 		metavar='SEED',
 		help='Randomization seed'
 	)
-	
+
 	parser.add_argument(
 		'--difficulty',
 		type=str,
@@ -818,37 +818,37 @@ def main():
 		default='NORMAL',
 		help='Difficulty level'
 	)
-	
+
 	parser.add_argument(
 		'--spoiler',
 		type=Path,
 		metavar='LOG',
 		help='Spoiler log output path'
 	)
-	
+
 	args = parser.parse_args()
-	
+
 	if args.interactive or not args.rom:
 		randomizer = InteractiveRandomizer()
 		randomizer.run()
-	
+
 	else:
 		config = RandomizerConfig()
 		config.seed = args.seed
 		config.difficulty = RandomizerDifficulty[args.difficulty]
-		
+
 		engine = RandomizerEngine(config)
 		engine.randomize_all()
-		
+
 		if args.output:
 			engine.apply_to_rom(args.rom, args.output)
-		
+
 		if args.spoiler:
 			engine.export_spoiler_log(args.spoiler)
-		
+
 		output_dir = args.output.parent if args.output else Path("output")
 		engine.export_json_data(output_dir / f"randomizer_data_{config.seed}.json")
-	
+
 	return 0
 
 

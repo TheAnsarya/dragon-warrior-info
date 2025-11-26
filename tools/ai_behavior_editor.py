@@ -71,56 +71,56 @@ class AIBehaviorRule:
 	action_probability: float  # 0.0-1.0 probability of taking action if condition met
 	mp_cost: int = 0
 	description: str = ""
-	
+
 	def check_condition(self, battle_state: 'BattleState', monster: 'MonsterAI') -> bool:
 		"""Check if conditions are met for this rule."""
 		if AICondition.ALWAYS in self.condition:
 			return True
-		
+
 		conditions_met = True
-		
+
 		# HP conditions
 		hp_percent = monster.current_hp / monster.max_hp if monster.max_hp > 0 else 0
-		
+
 		if AICondition.HP_HIGH in self.condition:
 			conditions_met &= hp_percent > 0.75
 		if AICondition.HP_MEDIUM in self.condition:
 			conditions_met &= 0.25 <= hp_percent <= 0.75
 		if AICondition.HP_LOW in self.condition:
 			conditions_met &= hp_percent < 0.25
-		
+
 		# Player HP conditions
 		player_hp_percent = battle_state.player_hp / battle_state.player_max_hp if battle_state.player_max_hp > 0 else 0
-		
+
 		if AICondition.PLAYER_HP_HIGH in self.condition:
 			conditions_met &= player_hp_percent > 0.75
 		if AICondition.PLAYER_HP_LOW in self.condition:
 			conditions_met &= player_hp_percent < 0.25
-		
+
 		# Status conditions
 		if AICondition.PLAYER_ASLEEP in self.condition:
 			conditions_met &= battle_state.player_asleep
 		if AICondition.PLAYER_STOPSPELLED in self.condition:
 			conditions_met &= battle_state.player_stopspelled
-		
+
 		# Turn conditions
 		if AICondition.TURN_FIRST in self.condition:
 			conditions_met &= battle_state.turn_count == 1
 		if AICondition.TURN_LATE in self.condition:
 			conditions_met &= battle_state.turn_count >= 5
-		
+
 		# MP condition
 		if AICondition.MP_AVAILABLE in self.condition:
 			conditions_met &= monster.current_mp >= self.mp_cost
-		
+
 		# Group conditions
 		if AICondition.ALONE in self.condition:
 			conditions_met &= battle_state.enemy_count == 1
 		if AICondition.GROUP in self.condition:
 			conditions_met &= battle_state.enemy_count > 1
-		
+
 		return conditions_met
-	
+
 	def to_dict(self) -> dict:
 		return {
 			'priority': self.priority,
@@ -159,12 +159,12 @@ class MonsterAI:
 	base_attack: int = 10
 	agility: int = 10
 	behavior_rules: List[AIBehaviorRule] = field(default_factory=list)
-	
+
 	def choose_action(self, battle_state: BattleState) -> Tuple[AIAction, str]:
 		"""Choose an action based on AI rules and battle state."""
 		# Sort rules by priority
 		sorted_rules = sorted(self.behavior_rules, key=lambda r: r.priority, reverse=True)
-		
+
 		for rule in sorted_rules:
 			if rule.check_condition(battle_state, self):
 				# Check probability
@@ -172,10 +172,10 @@ class MonsterAI:
 					# Check MP cost
 					if rule.mp_cost <= self.current_mp or rule.mp_cost == 0:
 						return rule.action, rule.description
-		
+
 		# Default: normal attack
 		return AIAction.ATTACK, "Default attack"
-	
+
 	def simulate_action(self, action: AIAction, battle_state: BattleState) -> Dict:
 		"""Simulate the result of an action."""
 		result = {
@@ -185,24 +185,24 @@ class MonsterAI:
 			'effect': '',
 			'mp_cost': 0
 		}
-		
+
 		if action == AIAction.ATTACK:
 			# Simple damage formula: (attack / 2) - (defense / 4) + variance
 			base_damage = max(1, (self.base_attack // 2) - (battle_state.player_defense // 4))
 			variance = random.randint(-base_damage // 4, base_damage // 4)
 			damage = max(0, base_damage + variance)
-			
+
 			result['damage'] = damage
 			result['effect'] = f"{self.monster_name} attacks for {damage} damage"
-		
+
 		elif action == AIAction.STRONG_ATTACK:
 			base_damage = max(1, self.base_attack - (battle_state.player_defense // 4))
 			variance = random.randint(-base_damage // 4, base_damage // 4)
 			damage = max(0, base_damage + variance)
-			
+
 			result['damage'] = damage
 			result['effect'] = f"{self.monster_name} unleashes a powerful attack for {damage} damage!"
-		
+
 		elif action == AIAction.SLEEP_SPELL:
 			result['mp_cost'] = 2
 			if self.current_mp >= 2:
@@ -216,7 +216,7 @@ class MonsterAI:
 			else:
 				result['success'] = False
 				result['effect'] = f"{self.monster_name} tried to cast Sleep, but has no MP!"
-		
+
 		elif action == AIAction.STOPSPELL_SPELL:
 			result['mp_cost'] = 2
 			if self.current_mp >= 2:
@@ -229,7 +229,7 @@ class MonsterAI:
 			else:
 				result['success'] = False
 				result['effect'] = f"{self.monster_name} tried to cast Stopspell, but has no MP!"
-		
+
 		elif action == AIAction.HURT_SPELL:
 			result['mp_cost'] = 2
 			if self.current_mp >= 2:
@@ -240,7 +240,7 @@ class MonsterAI:
 			else:
 				result['success'] = False
 				result['effect'] = f"{self.monster_name} tried to cast Hurt, but has no MP!"
-		
+
 		elif action == AIAction.HURTMORE_SPELL:
 			result['mp_cost'] = 5
 			if self.current_mp >= 5:
@@ -251,13 +251,13 @@ class MonsterAI:
 			else:
 				result['success'] = False
 				result['effect'] = f"{self.monster_name} tried to cast Hurtmore, but has no MP!"
-		
+
 		elif action == AIAction.FIRE_BREATH:
 			damage = random.randint(16, 23)
 			# Fire breath can be reduced by Dragon's Scale
 			result['damage'] = damage
 			result['effect'] = f"{self.monster_name} breathes fire for {damage} damage!"
-		
+
 		elif action == AIAction.HEAL_SPELL:
 			result['mp_cost'] = 4
 			if self.current_mp >= 4:
@@ -268,15 +268,15 @@ class MonsterAI:
 			else:
 				result['success'] = False
 				result['effect'] = f"{self.monster_name} tried to cast Heal, but has no MP!"
-		
+
 		elif action == AIAction.RUN_AWAY:
 			result['effect'] = f"{self.monster_name} attempts to flee!"
-		
+
 		elif action == AIAction.DEFEND:
 			result['effect'] = f"{self.monster_name} takes a defensive stance!"
-		
+
 		return result
-	
+
 	def to_dict(self) -> dict:
 		return {
 			'id': self.monster_id,
@@ -293,28 +293,28 @@ class MonsterAI:
 def create_default_monster_ai() -> List[MonsterAI]:
 	"""Create default AI configurations for all monsters."""
 	monsters = []
-	
+
 	# Slime (0) - Basic attack only
 	slime = MonsterAI(0, "Slime", 2, 2, 0, 0, 5, 3)
 	slime.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(slime)
-	
+
 	# Red Slime (1) - Basic attack only
 	red_slime = MonsterAI(1, "Red Slime", 3, 3, 0, 0, 7, 3)
 	red_slime.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(red_slime)
-	
+
 	# Drakee (2) - Basic attack only
 	drakee = MonsterAI(2, "Drakee", 6, 6, 0, 0, 9, 6)
 	drakee.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(drakee)
-	
+
 	# Ghost (3) - Can use Hurt spell
 	ghost = MonsterAI(3, "Ghost", 7, 7, 3, 3, 11, 8)
 	ghost.behavior_rules = [
@@ -322,7 +322,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(ghost)
-	
+
 	# Magician (4) - Can use Hurt and Sleep
 	magician = MonsterAI(4, "Magician", 13, 13, 15, 15, 11, 12)
 	magician.behavior_rules = [
@@ -331,7 +331,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(magician)
-	
+
 	# Magidrakee (5) - Uses Hurt frequently
 	magidrakee = MonsterAI(5, "Magidrakee", 15, 15, 8, 8, 14, 14)
 	magidrakee.behavior_rules = [
@@ -339,21 +339,21 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(magidrakee)
-	
+
 	# Scorpion (6) - Basic attack
 	scorpion = MonsterAI(6, "Scorpion", 20, 20, 0, 0, 18, 16)
 	scorpion.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(scorpion)
-	
+
 	# Druin (7) - Basic attack
 	druin = MonsterAI(7, "Druin", 22, 22, 0, 0, 20, 18)
 	druin.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(druin)
-	
+
 	# Poltergeist (8) - Uses Hurt
 	poltergeist = MonsterAI(8, "Poltergeist", 23, 23, 12, 12, 18, 20)
 	poltergeist.behavior_rules = [
@@ -361,7 +361,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(poltergeist)
-	
+
 	# Droll (9) - Uses Sleep
 	droll = MonsterAI(9, "Droll", 25, 25, 6, 6, 24, 24)
 	droll.behavior_rules = [
@@ -369,7 +369,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(droll)
-	
+
 	# Drakeema (10) - Uses Stopspell
 	drakeema = MonsterAI(10, "Drakeema", 20, 20, 8, 8, 22, 26)
 	drakeema.behavior_rules = [
@@ -377,14 +377,14 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(drakeema)
-	
+
 	# Skeleton (11) - Basic attack
 	skeleton = MonsterAI(11, "Skeleton", 30, 30, 0, 0, 28, 22)
 	skeleton.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(skeleton)
-	
+
 	# Warlock (12) - Uses Hurt and Sleep
 	warlock = MonsterAI(12, "Warlock", 30, 30, 15, 15, 28, 22)
 	warlock.behavior_rules = [
@@ -393,7 +393,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(warlock)
-	
+
 	# Metal Scorpion (13) - Strong attack, fire breath
 	metal_scorpion = MonsterAI(13, "Metal Scorpion", 22, 22, 0, 0, 36, 42)
 	metal_scorpion.behavior_rules = [
@@ -402,14 +402,14 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(metal_scorpion)
-	
+
 	# Wolf (14) - Fast, basic attack
 	wolf = MonsterAI(14, "Wolf", 34, 34, 0, 0, 34, 40)
 	wolf.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(wolf)
-	
+
 	# Wraith (15) - Uses Hurt
 	wraith = MonsterAI(15, "Wraith", 36, 36, 10, 10, 34, 34)
 	wraith.behavior_rules = [
@@ -417,7 +417,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(wraith)
-	
+
 	# Metal Slime (16) - High defense, tries to flee
 	metal_slime = MonsterAI(16, "Metal Slime", 4, 4, 0, 0, 10, 255)
 	metal_slime.behavior_rules = [
@@ -425,7 +425,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Rarely attacks")
 	]
 	monsters.append(metal_slime)
-	
+
 	# Specter (17) - Uses Stopspell
 	specter = MonsterAI(17, "Specter", 36, 36, 8, 8, 40, 38)
 	specter.behavior_rules = [
@@ -433,7 +433,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(specter)
-	
+
 	# Wolflord (18) - Strong attacks
 	wolflord = MonsterAI(18, "Wolflord", 50, 50, 0, 0, 50, 50)
 	wolflord.behavior_rules = [
@@ -441,14 +441,14 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(wolflord)
-	
+
 	# Druinlord (19) - Basic attack
 	druinlord = MonsterAI(19, "Druinlord", 47, 47, 0, 0, 52, 50)
 	druinlord.behavior_rules = [
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Always attack")
 	]
 	monsters.append(druinlord)
-	
+
 	# Drollmagi (20) - Uses Sleep and Stopspell
 	drollmagi = MonsterAI(20, "Drollmagi", 38, 38, 20, 20, 52, 50)
 	drollmagi.behavior_rules = [
@@ -457,7 +457,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(drollmagi)
-	
+
 	# Wyvern (21) - Fire breath
 	wyvern = MonsterAI(21, "Wyvern", 56, 56, 0, 0, 56, 48)
 	wyvern.behavior_rules = [
@@ -465,7 +465,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(wyvern)
-	
+
 	# Rogue Scorpion (22) - Fire breath and strong attacks
 	rogue_scorpion = MonsterAI(22, "Rogue Scorpion", 35, 35, 0, 0, 60, 90)
 	rogue_scorpion.behavior_rules = [
@@ -474,7 +474,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(rogue_scorpion)
-	
+
 	# Wraith Knight (23) - Hurt and strong attacks
 	wraith_knight = MonsterAI(23, "Wraith Knight", 68, 68, 16, 16, 68, 58)
 	wraith_knight.behavior_rules = [
@@ -483,7 +483,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(wraith_knight)
-	
+
 	# Golem (24) - Very strong, basic attack (sleeps with Silver Harp)
 	golem = MonsterAI(24, "Golem", 153, 153, 0, 0, 120, 60)
 	golem.behavior_rules = [
@@ -491,7 +491,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(golem)
-	
+
 	# Goldman (25) - Strong attacks
 	goldman = MonsterAI(25, "Goldman", 60, 60, 0, 0, 80, 70)
 	goldman.behavior_rules = [
@@ -499,7 +499,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(goldman)
-	
+
 	# Knight (26) - Strong attacks
 	knight = MonsterAI(26, "Knight", 76, 76, 0, 0, 78, 68)
 	knight.behavior_rules = [
@@ -507,7 +507,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(knight)
-	
+
 	# Magiwyvern (27) - Fire breath and Stopspell
 	magiwyvern = MonsterAI(27, "Magiwyvern", 78, 78, 12, 12, 78, 70)
 	magiwyvern.behavior_rules = [
@@ -516,7 +516,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(magiwyvern)
-	
+
 	# Demon Knight (28) - Sleep and strong attacks
 	demon_knight = MonsterAI(28, "Demon Knight", 80, 80, 10, 10, 82, 75)
 	demon_knight.behavior_rules = [
@@ -525,7 +525,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(demon_knight)
-	
+
 	# Werewolf (29) - Fast, strong attacks
 	werewolf = MonsterAI(29, "Werewolf", 86, 86, 0, 0, 86, 90)
 	werewolf.behavior_rules = [
@@ -533,7 +533,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(werewolf)
-	
+
 	# Green Dragon (30) - Fire breath frequently
 	green_dragon = MonsterAI(30, "Green Dragon", 88, 88, 0, 0, 88, 58)
 	green_dragon.behavior_rules = [
@@ -541,7 +541,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(green_dragon)
-	
+
 	# Starwyvern (31) - Fire breath and Stopspell
 	starwyvern = MonsterAI(31, "Starwyvern", 86, 86, 16, 16, 90, 80)
 	starwyvern.behavior_rules = [
@@ -550,7 +550,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(starwyvern)
-	
+
 	# Wizard (32) - Hurtmore and other spells
 	wizard = MonsterAI(32, "Wizard", 80, 80, 30, 30, 80, 70)
 	wizard.behavior_rules = [
@@ -560,7 +560,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(wizard)
-	
+
 	# Axe Knight (33) - Very strong attacks
 	axe_knight = MonsterAI(33, "Axe Knight", 94, 94, 0, 0, 94, 78)
 	axe_knight.behavior_rules = [
@@ -568,7 +568,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(axe_knight)
-	
+
 	# Blue Dragon (34) - Fire breath and strong attacks
 	blue_dragon = MonsterAI(34, "Blue Dragon", 98, 98, 0, 0, 98, 84)
 	blue_dragon.behavior_rules = [
@@ -577,7 +577,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(blue_dragon)
-	
+
 	# Stoneman (35) - Very tough, strong attacks
 	stoneman = MonsterAI(35, "Stoneman", 106, 106, 0, 0, 100, 53)
 	stoneman.behavior_rules = [
@@ -585,7 +585,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(stoneman)
-	
+
 	# Armored Knight (36) - Strongest regular enemy
 	armored_knight = MonsterAI(36, "Armored Knight", 105, 105, 0, 0, 105, 86)
 	armored_knight.behavior_rules = [
@@ -593,7 +593,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(armored_knight)
-	
+
 	# Red Dragon (37) - Fire breath master
 	red_dragon = MonsterAI(37, "Red Dragon", 120, 120, 0, 0, 120, 90)
 	red_dragon.behavior_rules = [
@@ -602,7 +602,7 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(red_dragon)
-	
+
 	# Dragonlord Form 1 (38) - Boss with multiple spells
 	dragonlord_1 = MonsterAI(38, "Dragonlord", 100, 100, 50, 50, 90, 75)
 	dragonlord_1.behavior_rules = [
@@ -614,23 +614,23 @@ def create_default_monster_ai() -> List[MonsterAI]:
 		AIBehaviorRule(10, AICondition.ALWAYS, AIAction.ATTACK, 1.0, description="Default attack")
 	]
 	monsters.append(dragonlord_1)
-	
+
 	return monsters
 
 
 class AISimulator:
 	"""Simulate AI behavior in battles."""
-	
+
 	def __init__(self):
 		self.monsters = create_default_monster_ai()
-	
+
 	def simulate_battle(self, monster_id: int, player_level: int = 10, num_turns: int = 10) -> List[Dict]:
 		"""Simulate a battle with a monster."""
 		if monster_id >= len(self.monsters):
 			raise ValueError(f"Invalid monster ID: {monster_id}")
-		
+
 		monster = self.monsters[monster_id]
-		
+
 		# Create battle state
 		battle_state = BattleState(
 			player_hp=100,
@@ -640,22 +640,22 @@ class AISimulator:
 			player_attack=player_level * 2,
 			player_defense=player_level * 2
 		)
-		
+
 		# Reset monster HP/MP
 		monster.current_hp = monster.max_hp
 		monster.current_mp = monster.max_mp
-		
+
 		battle_log = []
-		
+
 		for turn in range(1, num_turns + 1):
 			battle_state.turn_count = turn
-			
+
 			# Monster chooses action
 			action, reason = monster.choose_action(battle_state)
-			
+
 			# Simulate action
 			result = monster.simulate_action(action, battle_state)
-			
+
 			battle_log.append({
 				'turn': turn,
 				'monster_hp': f"{monster.current_hp}/{monster.max_hp}",
@@ -666,37 +666,37 @@ class AISimulator:
 				'damage': result['damage'],
 				'success': result['success']
 			})
-			
+
 			# Apply damage to player
 			battle_state.player_hp -= result['damage']
-			
+
 			if battle_state.player_hp <= 0:
 				battle_log.append({'event': 'Player defeated!'})
 				break
-		
+
 		return battle_log
 
 
 class InteractiveAIEditor:
 	"""Interactive AI editor interface."""
-	
+
 	def __init__(self, rom_path: Path):
 		self.rom_path = rom_path
 		self.monsters = create_default_monster_ai()
 		self.simulator = AISimulator()
 		self.current_monster: Optional[MonsterAI] = None
 		self.modified = False
-	
+
 	def run(self) -> None:
 		"""Run interactive editor."""
 		print("\n" + "="*70)
 		print("Dragon Warrior Enemy AI Editor")
 		print("="*70)
-		
+
 		while True:
 			self._print_menu()
 			choice = input("\nEnter choice: ").strip()
-			
+
 			if choice == '1':
 				self._list_monsters()
 			elif choice == '2':
@@ -717,7 +717,7 @@ class InteractiveAIEditor:
 				break
 			else:
 				print("Invalid choice")
-	
+
 	def _print_menu(self) -> None:
 		"""Print main menu."""
 		print("\n" + "-"*70)
@@ -731,23 +731,23 @@ class InteractiveAIEditor:
 		print("  7. Simulate battle")
 		print("  8. Export all AI to JSON")
 		print("  q. Quit")
-		
+
 		if self.current_monster:
 			print(f"\nCurrent Monster: {self.current_monster.monster_name}")
-	
+
 	def _list_monsters(self) -> None:
 		"""List all monsters."""
 		print("\n" + "="*70)
 		print("All Monsters")
 		print("="*70)
-		
+
 		for monster in self.monsters:
 			print(f"{monster.monster_id:2d}. {monster.monster_name:20s} (HP: {monster.max_hp:3d}, ATK: {monster.base_attack:3d}, Rules: {len(monster.behavior_rules)})")
-	
+
 	def _load_monster(self) -> None:
 		"""Load a monster's AI."""
 		monster_id = input("Enter monster ID (0-38): ").strip()
-		
+
 		try:
 			monster_id = int(monster_id)
 			if 0 <= monster_id < len(self.monsters):
@@ -757,17 +757,17 @@ class InteractiveAIEditor:
 				print("Invalid monster ID")
 		except ValueError:
 			print("Invalid input")
-	
+
 	def _display_ai(self) -> None:
 		"""Display current monster's AI rules."""
 		if not self.current_monster:
 			print("No monster loaded")
 			return
-		
+
 		print(f"\n{'='*70}")
 		print(f"AI Rules for {self.current_monster.monster_name}")
 		print(f"{'='*70}")
-		
+
 		for i, rule in enumerate(self.current_monster.behavior_rules):
 			print(f"\nRule {i}:")
 			print(f"  Priority: {rule.priority}")
@@ -776,26 +776,26 @@ class InteractiveAIEditor:
 			print(f"  Probability: {rule.action_probability * 100:.0f}%")
 			print(f"  MP Cost: {rule.mp_cost}")
 			print(f"  Description: {rule.description}")
-	
+
 	def _edit_rule(self) -> None:
 		"""Edit an existing AI rule."""
 		if not self.current_monster:
 			print("No monster loaded")
 			return
-		
+
 		self._display_ai()
-		
+
 		rule_idx = input("\nEnter rule number to edit: ").strip()
-		
+
 		try:
 			rule_idx = int(rule_idx)
 			if 0 <= rule_idx < len(self.current_monster.behavior_rules):
 				rule = self.current_monster.behavior_rules[rule_idx]
-				
+
 				print("\nCurrent rule:")
 				print(f"  Action: {AIAction(rule.action).name}")
 				print(f"  Probability: {rule.action_probability * 100:.0f}%")
-				
+
 				new_prob = input("Enter new probability (0-100): ").strip()
 				if new_prob:
 					try:
@@ -808,24 +808,24 @@ class InteractiveAIEditor:
 				print("Invalid rule number")
 		except ValueError:
 			print("Invalid input")
-	
+
 	def _add_rule(self) -> None:
 		"""Add a new AI rule."""
 		if not self.current_monster:
 			print("No monster loaded")
 			return
-		
+
 		print("\nAdd New AI Rule")
 		print("Actions:", ", ".join(f"{i}={a.name}" for i, a in enumerate(AIAction)))
-		
+
 		# Simplified rule creation
 		action_id = input("Enter action ID: ").strip()
 		probability = input("Enter probability (0-100): ").strip()
-		
+
 		try:
 			action = AIAction(int(action_id))
 			prob = float(probability) / 100.0
-			
+
 			new_rule = AIBehaviorRule(
 				priority=50,
 				condition=AICondition.ALWAYS,
@@ -833,23 +833,23 @@ class InteractiveAIEditor:
 				action_probability=prob,
 				description=f"Custom {action.name} rule"
 			)
-			
+
 			self.current_monster.behavior_rules.append(new_rule)
 			self.modified = True
 			print("Rule added")
 		except (ValueError, KeyError):
 			print("Invalid input")
-	
+
 	def _remove_rule(self) -> None:
 		"""Remove an AI rule."""
 		if not self.current_monster:
 			print("No monster loaded")
 			return
-		
+
 		self._display_ai()
-		
+
 		rule_idx = input("\nEnter rule number to remove: ").strip()
-		
+
 		try:
 			rule_idx = int(rule_idx)
 			if 0 <= rule_idx < len(self.current_monster.behavior_rules):
@@ -860,17 +860,17 @@ class InteractiveAIEditor:
 				print("Invalid rule number")
 		except ValueError:
 			print("Invalid input")
-	
+
 	def _simulate_battle(self) -> None:
 		"""Simulate a battle with current monster."""
 		if not self.current_monster:
 			print("No monster loaded")
 			return
-		
+
 		print(f"\nSimulating battle with {self.current_monster.monster_name}...")
-		
+
 		battle_log = self.simulator.simulate_battle(self.current_monster.monster_id, player_level=15, num_turns=10)
-		
+
 		print("\nBattle Log:")
 		for entry in battle_log:
 			if 'turn' in entry:
@@ -880,20 +880,20 @@ class InteractiveAIEditor:
 				print(f"  Result: {entry['result']}")
 			elif 'event' in entry:
 				print(f"\n{entry['event']}")
-	
+
 	def _export_all(self) -> None:
 		"""Export all monster AI to JSON."""
 		output_path = Path("output/monster_ai.json")
 		output_path.parent.mkdir(exist_ok=True, parents=True)
-		
+
 		data = {
 			'version': '1.0',
 			'monsters': [monster.to_dict() for monster in self.monsters]
 		}
-		
+
 		with output_path.open('w') as f:
 			json.dump(data, f, indent='\t')
-		
+
 		print(f"Exported AI data to {output_path}")
 		self.modified = False
 
@@ -903,65 +903,65 @@ def main():
 	parser = argparse.ArgumentParser(
 		description='Dragon Warrior Enemy AI Behavior Editor'
 	)
-	
+
 	parser.add_argument(
 		'rom_path',
 		type=Path,
 		nargs='?',
 		help='Path to Dragon Warrior ROM file'
 	)
-	
+
 	parser.add_argument(
 		'-i', '--interactive',
 		action='store_true',
 		help='Run interactive editor'
 	)
-	
+
 	parser.add_argument(
 		'--simulate',
 		type=int,
 		metavar='MONSTER_ID',
 		help='Simulate battle with monster ID'
 	)
-	
+
 	parser.add_argument(
 		'--export',
 		type=Path,
 		metavar='OUTPUT',
 		help='Export all AI to JSON file'
 	)
-	
+
 	args = parser.parse_args()
-	
+
 	if args.interactive or (args.rom_path and not args.simulate and not args.export):
 		if not args.rom_path:
 			parser.error("ROM path required for interactive mode")
-		
+
 		editor = InteractiveAIEditor(args.rom_path)
 		editor.run()
-	
+
 	elif args.simulate is not None:
 		simulator = AISimulator()
 		battle_log = simulator.simulate_battle(args.simulate, player_level=15, num_turns=10)
-		
+
 		print(json.dumps(battle_log, indent=2))
-	
+
 	elif args.export:
 		monsters = create_default_monster_ai()
 		data = {
 			'version': '1.0',
 			'monsters': [monster.to_dict() for monster in monsters]
 		}
-		
+
 		args.export.parent.mkdir(exist_ok=True, parents=True)
 		with args.export.open('w') as f:
 			json.dump(data, f, indent='\t')
-		
+
 		print(f"Exported AI data to {args.export}")
-	
+
 	else:
 		parser.print_help()
-	
+
 	return 0
 
 

@@ -46,18 +46,18 @@ class FunctionDoc:
 	parameters: List[Tuple[str, str, str]]  # name, type, description
 	returns: Optional[str]
 	examples: List[str] = field(default_factory=list)
-	
+
 	def to_markdown(self) -> str:
 		"""Convert to markdown."""
 		lines = []
-		
+
 		lines.append(f"### `{self.name}()`")
 		lines.append("")
-		
+
 		if self.docstring:
 			lines.append(self.docstring)
 			lines.append("")
-		
+
 		if self.parameters:
 			lines.append("**Parameters:**")
 			lines.append("")
@@ -65,13 +65,13 @@ class FunctionDoc:
 				type_str = f" (`{param_type}`)" if param_type else ""
 				lines.append(f"- `{name}`{type_str}: {desc}")
 			lines.append("")
-		
+
 		if self.returns:
 			lines.append("**Returns:**")
 			lines.append("")
 			lines.append(f"- {self.returns}")
 			lines.append("")
-		
+
 		if self.examples:
 			lines.append("**Examples:**")
 			lines.append("")
@@ -80,7 +80,7 @@ class FunctionDoc:
 				lines.append(example)
 				lines.append("```")
 				lines.append("")
-		
+
 		return '\n'.join(lines)
 
 
@@ -91,18 +91,18 @@ class ClassDoc:
 	docstring: str
 	methods: List[FunctionDoc] = field(default_factory=list)
 	attributes: List[Tuple[str, str, str]] = field(default_factory=list)
-	
+
 	def to_markdown(self) -> str:
 		"""Convert to markdown."""
 		lines = []
-		
+
 		lines.append(f"## Class: `{self.name}`")
 		lines.append("")
-		
+
 		if self.docstring:
 			lines.append(self.docstring)
 			lines.append("")
-		
+
 		if self.attributes:
 			lines.append("### Attributes")
 			lines.append("")
@@ -110,13 +110,13 @@ class ClassDoc:
 				type_str = f" (`{attr_type}`)" if attr_type else ""
 				lines.append(f"- `{name}`{type_str}: {desc}")
 			lines.append("")
-		
+
 		if self.methods:
 			lines.append("### Methods")
 			lines.append("")
 			for method in self.methods:
 				lines.append(method.to_markdown())
-		
+
 		return '\n'.join(lines)
 
 
@@ -127,60 +127,60 @@ class ModuleDoc:
 	description: str
 	classes: List[ClassDoc] = field(default_factory=list)
 	functions: List[FunctionDoc] = field(default_factory=list)
-	
+
 	def to_markdown(self) -> str:
 		"""Convert to markdown."""
 		lines = []
-		
+
 		lines.append(f"# Module: {self.name}")
 		lines.append("")
-		
+
 		if self.description:
 			lines.append(self.description)
 			lines.append("")
-		
+
 		if self.classes:
 			lines.append("## Classes")
 			lines.append("")
 			for cls in self.classes:
 				lines.append(cls.to_markdown())
 				lines.append("")
-		
+
 		if self.functions:
 			lines.append("## Functions")
 			lines.append("")
 			for func in self.functions:
 				lines.append(func.to_markdown())
 				lines.append("")
-		
+
 		return '\n'.join(lines)
 
 
 class CodeDocExtractor:
 	"""Extract documentation from Python code."""
-	
+
 	def extract_module_doc(self, file_path: Path) -> Optional[ModuleDoc]:
 		"""Extract documentation from a Python file."""
 		if not file_path.exists() or file_path.suffix != '.py':
 			return None
-		
+
 		try:
 			source = file_path.read_text(encoding='utf-8')
 			tree = ast.parse(source)
-			
+
 			# Get module docstring
 			module_doc = ast.get_docstring(tree) or ""
-			
+
 			# Extract classes and functions
 			classes = []
 			functions = []
-			
+
 			for node in ast.walk(tree):
 				if isinstance(node, ast.ClassDef):
 					cls_doc = self._extract_class(node)
 					if cls_doc:
 						classes.append(cls_doc)
-				
+
 				elif isinstance(node, ast.FunctionDef):
 					# Only top-level functions (not in classes)
 					if isinstance(node, ast.FunctionDef) and not any(
@@ -190,58 +190,58 @@ class CodeDocExtractor:
 						func_doc = self._extract_function(node)
 						if func_doc:
 							functions.append(func_doc)
-			
+
 			return ModuleDoc(
 				name=file_path.stem,
 				description=module_doc,
 				classes=classes,
 				functions=functions
 			)
-		
+
 		except Exception as e:
 			print(f"Warning: Could not parse {file_path}: {e}")
 			return None
-	
+
 	def _extract_class(self, node: ast.ClassDef) -> ClassDoc:
 		"""Extract class documentation."""
 		docstring = ast.get_docstring(node) or ""
-		
+
 		methods = []
 		for item in node.body:
 			if isinstance(item, ast.FunctionDef):
 				method_doc = self._extract_function(item)
 				if method_doc and not method_doc.name.startswith('_'):
 					methods.append(method_doc)
-		
+
 		return ClassDoc(
 			name=node.name,
 			docstring=docstring,
 			methods=methods
 		)
-	
+
 	def _extract_function(self, node: ast.FunctionDef) -> FunctionDoc:
 		"""Extract function documentation."""
 		docstring = ast.get_docstring(node) or ""
-		
+
 		# Get function signature
 		args = []
 		for arg in node.args.args:
 			args.append(arg.arg)
-		
+
 		signature = f"{node.name}({', '.join(args)})"
-		
+
 		# Parse parameters from docstring (simplified)
 		parameters = []
 		returns = None
-		
+
 		# Simple docstring parsing
 		lines = docstring.split('\n')
 		in_params = False
 		in_returns = False
-		
+
 		for line in lines:
 			line = line.strip()
-			
+
 			if 'Parameters:' in line or 'Args:' in line:
 				in_params = True
 				in_returns = False
@@ -250,17 +250,17 @@ class CodeDocExtractor:
 				in_params = False
 				in_returns = True
 				continue
-			
+
 			if in_params and line.startswith('-') or line.startswith('*'):
 				# Try to parse parameter line
 				match = re.match(r'[-*]\s*(\w+)(?:\s*\(([^)]+)\))?\s*:\s*(.+)', line)
 				if match:
 					param_name, param_type, param_desc = match.groups()
 					parameters.append((param_name, param_type or '', param_desc))
-			
+
 			elif in_returns and line:
 				returns = line
-		
+
 		return FunctionDoc(
 			name=node.name,
 			signature=signature,
@@ -272,69 +272,69 @@ class CodeDocExtractor:
 
 class DocumentationGenerator:
 	"""Main documentation generator."""
-	
+
 	def __init__(self):
 		self.extractor = CodeDocExtractor()
-	
+
 	def generate_api_docs(self, tools_dir: Path, output_dir: Path) -> None:
 		"""Generate API documentation for all tools."""
 		output_dir.mkdir(parents=True, exist_ok=True)
-		
+
 		print("Generating API documentation...")
-		
+
 		# Find all Python files
 		py_files = list(tools_dir.glob("*.py"))
-		
+
 		# Generate table of contents
 		toc_lines = []
 		toc_lines.append("# Dragon Warrior Toolkit - API Documentation")
 		toc_lines.append("")
 		toc_lines.append("## Table of Contents")
 		toc_lines.append("")
-		
+
 		module_docs = []
-		
+
 		for py_file in sorted(py_files):
 			if py_file.name.startswith('_'):
 				continue
-			
+
 			module_doc = self.extractor.extract_module_doc(py_file)
 			if module_doc:
 				module_docs.append(module_doc)
 				toc_lines.append(f"- [{module_doc.name}]({module_doc.name}.md)")
-		
+
 		# Write table of contents
 		toc_path = output_dir / "README.md"
 		toc_path.write_text('\n'.join(toc_lines))
-		
+
 		# Write individual module docs
 		for module_doc in module_docs:
 			doc_path = output_dir / f"{module_doc.name}.md"
 			doc_path.write_text(module_doc.to_markdown())
 			print(f"  ✓ {module_doc.name}.md")
-		
+
 		print(f"✓ Generated API docs in {output_dir}")
-	
+
 	def generate_quick_reference(self, output_path: Path) -> None:
 		"""Generate quick reference card."""
 		lines = []
-		
+
 		lines.append("# Dragon Warrior Quick Reference")
 		lines.append("")
 		lines.append("## Stats by Level")
 		lines.append("")
 		lines.append("| Level | HP  | MP  | STR | AGI | EXP Required |")
 		lines.append("|-------|-----|-----|-----|-----|--------------|")
-		
+
 		from save_editor import HP_TABLE, MP_TABLE, STR_TABLE, AGI_TABLE, EXP_TABLE
-		
+
 		for level in range(1, 31):
 			idx = level - 1
 			lines.append(
 				f"| {level:2d}    | {HP_TABLE[idx]:3d} | {MP_TABLE[idx]:3d} | "
 				f"{STR_TABLE[idx]:3d} | {AGI_TABLE[idx]:3d} | {EXP_TABLE[idx]:12d} |"
 			)
-		
+
 		lines.append("")
 		lines.append("## Spells")
 		lines.append("")
@@ -350,7 +350,7 @@ class DocumentationGenerator:
 		lines.append("| REPEL      | 15    | 2   | Prevent weak encounters       |")
 		lines.append("| HEALMORE   | 17    | 10  | Restore more HP               |")
 		lines.append("| HURTMORE   | 19    | 5   | Damage enemy (stronger)       |")
-		
+
 		lines.append("")
 		lines.append("## Key Items")
 		lines.append("")
@@ -365,7 +365,7 @@ class DocumentationGenerator:
 		lines.append("| Rainbow Drop      | Rimuldar      | Create Rainbow Bridge    |")
 		lines.append("| Erdrick's Armor   | Swamp Cave    | Best armor               |")
 		lines.append("| Erdrick's Sword   | Charlock      | Best weapon              |")
-		
+
 		lines.append("")
 		lines.append("## Equipment Progression")
 		lines.append("")
@@ -380,7 +380,7 @@ class DocumentationGenerator:
 		lines.append("| Broad Sword  | +20    | 1500   | Cantlin     |")
 		lines.append("| Flame Sword  | +28    | 9800   | Cantlin     |")
 		lines.append("| Erdrick's Sword| +40  | -      | Charlock    |")
-		
+
 		lines.append("")
 		lines.append("### Armor")
 		lines.append("")
@@ -393,14 +393,14 @@ class DocumentationGenerator:
 		lines.append("| Full Plate   | +24     | 3000   | Cantlin     |")
 		lines.append("| Magic Armor  | +24     | 7700   | Cantlin     |")
 		lines.append("| Erdrick's    | +28     | -      | Swamp Cave  |")
-		
+
 		lines.append("")
 		lines.append("## Damage Formula")
 		lines.append("")
 		lines.append("```")
 		lines.append("Damage = (Attack - Defense / 2) ± 25% variance")
 		lines.append("```")
-		
+
 		lines.append("")
 		lines.append("## Enemy Weaknesses")
 		lines.append("")
@@ -410,16 +410,16 @@ class DocumentationGenerator:
 		lines.append("| Magicians     | Physical     | STOPSPELL    |")
 		lines.append("| Metal enemies | Magic        | Physical     |")
 		lines.append("| Dragons       | Strong attacks| -           |")
-		
+
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		output_path.write_text('\n'.join(lines))
-		
+
 		print(f"✓ Generated quick reference: {output_path}")
-	
+
 	def generate_tutorial(self, output_path: Path) -> None:
 		"""Generate getting started tutorial."""
 		lines = []
-		
+
 		lines.append("# Dragon Warrior Toolkit - Getting Started")
 		lines.append("")
 		lines.append("## Installation")
@@ -554,16 +554,16 @@ class DocumentationGenerator:
 		lines.append("```")
 		lines.append("")
 		lines.append("Check the API documentation in `docs/api/` for detailed module information.")
-		
+
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		output_path.write_text('\n'.join(lines))
-		
+
 		print(f"✓ Generated tutorial: {output_path}")
-	
+
 	def generate_rom_format_docs(self, output_path: Path) -> None:
 		"""Generate ROM format documentation."""
 		lines = []
-		
+
 		lines.append("# Dragon Warrior ROM Format Reference")
 		lines.append("")
 		lines.append("## ROM Header")
@@ -702,10 +702,10 @@ class DocumentationGenerator:
 		lines.append("    }")
 		lines.append("}")
 		lines.append("```")
-		
+
 		output_path.parent.mkdir(parents=True, exist_ok=True)
 		output_path.write_text('\n'.join(lines))
-		
+
 		print(f"✓ Generated ROM format docs: {output_path}")
 
 
@@ -714,65 +714,65 @@ def main():
 	parser = argparse.ArgumentParser(
 		description='Dragon Warrior Documentation Generator'
 	)
-	
+
 	parser.add_argument(
 		'--api',
 		action='store_true',
 		help='Generate API documentation'
 	)
-	
+
 	parser.add_argument(
 		'--quick-ref',
 		action='store_true',
 		help='Generate quick reference'
 	)
-	
+
 	parser.add_argument(
 		'--tutorial',
 		action='store_true',
 		help='Generate tutorial'
 	)
-	
+
 	parser.add_argument(
 		'--rom-format',
 		action='store_true',
 		help='Generate ROM format documentation'
 	)
-	
+
 	parser.add_argument(
 		'--all',
 		action='store_true',
 		help='Generate all documentation'
 	)
-	
+
 	parser.add_argument(
 		'--output',
 		type=Path,
 		default=Path("docs"),
 		help='Output directory'
 	)
-	
+
 	args = parser.parse_args()
-	
+
 	generator = DocumentationGenerator()
-	
+
 	if args.all or args.api:
 		tools_dir = Path("tools")
 		api_output = args.output / "api"
 		generator.generate_api_docs(tools_dir, api_output)
-	
+
 	if args.all or args.quick_ref:
 		ref_output = args.output / "quick_reference.md"
 		generator.generate_quick_reference(ref_output)
-	
+
 	if args.all or args.tutorial:
 		tutorial_output = args.output / "GETTING_STARTED.md"
 		generator.generate_tutorial(tutorial_output)
-	
+
 	if args.all or args.rom_format:
 		format_output = args.output / "ROM_FORMAT.md"
 		generator.generate_rom_format_docs(format_output)
-	
+
 	if not any([args.api, args.quick_ref, args.tutorial, args.rom_format, args.all]):
 		# Default: generate all
 		tools_dir = Path("tools")
@@ -780,9 +780,9 @@ def main():
 		generator.generate_quick_reference(args.output / "quick_reference.md")
 		generator.generate_tutorial(args.output / "GETTING_STARTED.md")
 		generator.generate_rom_format_docs(args.output / "ROM_FORMAT.md")
-	
+
 	print("\n✓ Documentation generation complete!")
-	
+
 	return 0
 
 
