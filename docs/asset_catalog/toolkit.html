@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Warrior Complete Toolkit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #a0cfff;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 4px solid #4a90e2;
+        }
+        
+        h2 {
+            color: #ffd700;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { background: rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 20px; transition: transform 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4); }
+        .card-title { color: #ffd700; font-size: 1.2em; margin-bottom: 10px; font-weight: bold; }
+        .card-description { color: #ccc; line-height: 1.6; margin-bottom: 15px; }
+        .stat-badge { background: rgba(74, 144, 226, 0.3); padding: 5px 10px; border-radius: 5px; font-size: 0.9em; color: #fff; margin-right: 5px; display: inline-block; margin-bottom: 5px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background: rgba(74, 144, 226, 0.3); padding: 12px; text-align: left; color: #ffd700; border-bottom: 2px solid #4a90e2; }
+        td { padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: #ccc; }
+        tr:hover { background: rgba(255, 255, 255, 0.05); }
+        
+        .highlight { background: rgba(255, 215, 0, 0.2); padding: 2px 6px; border-radius: 3px; color: #ffd700; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 2px 6px; border-radius: 3px; color: #0f0; font-family: 'Courier New', monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐉 Dragon Warrior Complete Toolkit 🐉</h1>
+        <p class="subtitle">ROM Data Extraction, Modification & Reinsertion System</p>
+        
+        <div class="section">
+            <h2>📦 Extracted Assets</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">Graphics (18 Sprite Sheets)</div>
+                    <div class="card-description">1024 tiles organized by purpose with NES palettes</div>
+                    <span class="stat-badge">Heroes</span>
+                    <span class="stat-badge">Monsters</span>
+                    <span class="stat-badge">NPCs</span>
+                    <span class="stat-badge">Items/UI</span>
+                    <span class="stat-badge">Fonts</span>
+                    <span class="stat-badge">Terrain</span>
+                    <span class="stat-badge">Buildings</span>
+                    <span class="stat-badge">Dungeons</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Monster Data (39 Monsters)</div>
+                    <div class="card-description">All stats verified byte-perfect against ROM</div>
+                    <span class="stat-badge">Attack</span>
+                    <span class="stat-badge">Defense</span>
+                    <span class="stat-badge">HP</span>
+                    <span class="stat-badge">Agility</span>
+                    <span class="stat-badge">Magic Defense</span>
+                    <span class="stat-badge">EXP</span>
+                    <span class="stat-badge">Gold</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Spells (10 Total)</div>
+                    <div class="card-description">MP costs, effects, formulas, targets</div>
+                    <span class="stat-badge">HEAL</span>
+                    <span class="stat-badge">HURT</span>
+                    <span class="stat-badge">SLEEP</span>
+                    <span class="stat-badge">RADIANT</span>
+                    <span class="stat-badge">HEALMORE</span>
+                    <span class="stat-badge">+5 more</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Equipment (32 Items)</div>
+                    <div class="card-description">Tools, weapons, armor, shields with stats</div>
+                    <span class="stat-badge">15 Tools</span>
+                    <span class="stat-badge">7 Weapons</span>
+                    <span class="stat-badge">7 Armor</span>
+                    <span class="stat-badge">3 Shields</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Maps (22 Locations)</div>
+                    <div class="card-description">Towns, castles, caves with tile data</div>
+                    <span class="stat-badge">Tantegel</span>
+                    <span class="stat-badge">Brecconary</span>
+                    <span class="stat-badge">Charlock</span>
+                    <span class="stat-badge">Erdrick's Cave</span>
+                    <span class="stat-badge">+18 more</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Text Encoding</div>
+                    <div class="card-description">Complete character map, compression, control codes</div>
+                    <span class="stat-badge">72 Characters</span>
+                    <span class="stat-badge">16 Word Subs</span>
+                    <span class="stat-badge">10 Control Codes</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 Tools Available</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Purpose</th>
+                        <th>Output</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>organize_chr_tiles.py</code></td>
+                        <td>Extract & organize all CHR tiles into sprite sheets</td>
+                        <td><span class="highlight">extracted_assets/chr_organized/</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>extract_all_data.py</code></td>
+                        <td>Extract monsters, spells, items with verification</td>
+                        <td><span class="highlight">extracted_assets/data/</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>extract_maps_npcs.py</code></td>
+                        <td>Extract interior maps, NPCs, treasure chests</td>
+                        <td><span class="highlight">extracted_assets/maps/</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>extract_text_dialogs.py</code></td>
+                        <td>Document text encoding & extract dialogs</td>
+                        <td><span class="highlight">extracted_assets/text/</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>reinsert_assets.py</code></td>
+                        <td>Modify ROM with edited JSON data</td>
+                        <td><span class="highlight">output/dragon_warrior_modified.nes</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>📊 ROM Offset Reference</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>ROM Offset</th>
+                        <th>Format</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monster Stats</td>
+                        <td><code>$5E5B</code></td>
+                        <td>16 bytes (8 stats + 8 unused)</td>
+                        <td>39</td>
+                    </tr>
+                    <tr>
+                        <td>Spell MP Costs</td>
+                        <td><code>$7CFD</code></td>
+                        <td>1 byte per spell</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>Weapons</td>
+                        <td><code>$7CF5</code></td>
+                        <td>1 byte attack</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>Armor</td>
+                        <td><code>$7D05</code></td>
+                        <td>1 byte defense</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>Shields</td>
+                        <td><code>$7D0D</code></td>
+                        <td>1 byte defense</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Map Table</td>
+                        <td><code>$801A</code></td>
+                        <td>5 bytes (ptr, width, height, boundary)</td>
+                        <td>24</td>
+                    </tr>
+                    <tr>
+                        <td>CHR Tiles</td>
+                        <td><code>$10010</code></td>
+                        <td>16 bytes per tile (NES 2bpp)</td>
+                        <td>1024</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>🚀 Quick Start</h2>
+            <h3 style="color: #a0cfff; margin-top: 20px;">1. Extract Everything</h3>
+            <p style="margin: 10px 0; color: #ccc;">Run all extraction tools:</p>
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                <code style="display: block; color: #0f0;">python tools/organize_chr_tiles.py</code>
+                <code style="display: block; color: #0f0;">python tools/extract_all_data.py</code>
+                <code style="display: block; color: #0f0;">python tools/extract_maps_npcs.py</code>
+                <code style="display: block; color: #0f0;">python tools/extract_text_dialogs.py</code>
+            </div>
+            
+            <h3 style="color: #a0cfff; margin-top: 20px;">2. Edit JSON Files</h3>
+            <p style="margin: 10px 0; color: #ccc;">Modify extracted data in <span class="highlight">extracted_assets/data/</span>:</p>
+            <ul style="margin-left: 20px; color: #ccc;">
+                <li><code>monsters.json</code> - Change HP, attack, defense, etc.</li>
+                <li><code>spells.json</code> - Modify MP costs</li>
+                <li><code>items_equipment.json</code> - Edit weapon/armor stats</li>
+            </ul>
+            
+            <h3 style="color: #a0cfff; margin-top: 20px;">3. Reinsert Changes</h3>
+            <p style="margin: 10px 0; color: #ccc;">Use reinsertion tool to create modified ROM:</p>
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">
+                <code style="display: block; color: #0f0;">from tools.reinsert_assets import DragonWarriorROMModifier</code><br>
+                <code style="display: block; color: #0f0;">modifier = DragonWarriorROMModifier("roms/Dragon Warrior (U) (PRG1) [!].nes", "output/modified.nes")</code><br>
+                <code style="display: block; color: #0f0;">modifier.create_backup()</code><br>
+                <code style="display: block; color: #0f0;">modifier.modify_monster_stats("extracted_assets/data/monsters.json")</code><br>
+                <code style="display: block; color: #0f0;">modifier.save_modified_rom()</code>
+            </div>
+            
+            <h3 style="color: #a0cfff; margin-top: 20px;">4. Test in Emulator</h3>
+            <p style="margin: 10px 0; color: #ccc;">Load <span class="highlight">output/dragon_warrior_modified.nes</span> in your NES emulator and enjoy!</p>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #4a90e2; color: #a0cfff;">
+            <p>Dragon Warrior (U) PRG1 - Complete Asset Extraction & Modification Toolkit</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">All data extracted byte-perfect • Verified against ROM • Ready for modding</p>
+        </footer>
+    </div>
+</body>
+</html>
