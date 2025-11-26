@@ -67,6 +67,10 @@ git comment and push everything that is uncommited!; You said `monster_sprites -
 
 git comment and push everything that is uncommited!; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+git comment and push everything that is uncommited, commit at the beginning and ending of each session/whenever a logical block of code changes is done; format all of the files, especially focusing on using tabs instead of spaces, python scripts first, then json files, then the rest; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+
+
+
 
 
 

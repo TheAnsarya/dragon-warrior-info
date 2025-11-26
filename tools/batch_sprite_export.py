@@ -114,11 +114,11 @@ SPRITE_FAMILIES = {
 
 class BatchSpriteExporter:
     """Export monster sprites in batch"""
-    
+
     def __init__(self, assets_dir: str, output_dir: str):
         """
         Initialize exporter
-        
+
         Args:
             assets_dir: Assets directory
             output_dir: Output directory for exported sprites
@@ -127,36 +127,36 @@ class BatchSpriteExporter:
         self.output_dir = Path(output_dir)
         self.graphics_dir = self.assets_dir / "graphics"
         self.json_dir = self.assets_dir / "json"
-        
+
     def load_monsters(self) -> List[Dict]:
         """Load monster data"""
         monsters_file = self.json_dir / "monsters.json"
-        
+
         if not monsters_file.exists():
             print(f"❌ Monsters file not found: {monsters_file}")
             return []
-        
+
         with open(monsters_file, 'r') as f:
             return json.load(f)
-    
+
     def load_sprite_sheet(self, sheet_name: str) -> Image.Image:
         """
         Load sprite sheet image
-        
+
         Args:
             sheet_name: Name of sprite sheet
-            
+
         Returns:
             PIL Image or None
         """
         sheet_path = self.graphics_dir / f"{sheet_name}.png"
-        
+
         if not sheet_path.exists():
             print(f"⚠ Sprite sheet not found: {sheet_path}")
             return None
-        
+
         return Image.open(sheet_path).convert('RGBA')
-    
+
     def export_sprite(
         self,
         monster_id: int,
@@ -166,49 +166,49 @@ class BatchSpriteExporter:
     ) -> bool:
         """
         Export individual monster sprite
-        
+
         Args:
             monster_id: Monster ID
             monster_name: Monster name
             sprite_family: Sprite family name
             palette_index: NES palette index
-            
+
         Returns:
             True if successful
         """
         # Create output directory
         family_dir = self.output_dir / sprite_family
         family_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Load sprite sheet (placeholder - actual implementation would extract from CHR data)
         # For now, create a placeholder sprite
         sprite_img = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
-        
+
         # Draw placeholder (checkerboard pattern)
         draw = ImageDraw.Draw(sprite_img)
-        
+
         # Use NES palette colors
         color1 = NES_PALETTE[palette_index * 4 + 1]
         color2 = NES_PALETTE[palette_index * 4 + 2]
-        
+
         for y in range(0, 32, 8):
             for x in range(0, 32, 8):
                 color = color1 if (x//8 + y//8) % 2 == 0 else color2
                 draw.rectangle([x, y, x+7, y+7], fill=color + (255,))
-        
+
         # Add monster ID text
         draw.text((2, 2), f"#{monster_id}", fill=(255, 255, 255, 255))
-        
+
         # Save sprite
         output_file = family_dir / f"{monster_id:02d}_{monster_name.replace(' ', '_')}.png"
         sprite_img.save(output_file)
-        
+
         return True
-    
+
     def generate_metadata(self, monsters: List[Dict]):
         """
         Generate sprite metadata JSON
-        
+
         Args:
             monsters: List of monster dicts
         """
@@ -218,7 +218,7 @@ class BatchSpriteExporter:
             'sprite_families': {},
             'monsters': []
         }
-        
+
         # Organize by sprite family
         for family, members in SPRITE_FAMILIES.items():
             metadata['sprite_families'][family] = {
@@ -226,7 +226,7 @@ class BatchSpriteExporter:
                 'members': members,
                 'count': len(members)
             }
-        
+
         # Add monster data
         for monster in monsters:
             metadata['monsters'].append({
@@ -235,34 +235,34 @@ class BatchSpriteExporter:
                 'sprite_family': self.get_sprite_family(monster['name']),
                 'file': f"{monster['id']:02d}_{monster['name'].replace(' ', '_')}.png"
             })
-        
+
         # Save metadata
         metadata_file = self.output_dir / "sprite_metadata.json"
         with open(metadata_file, 'w') as f:
             json.dump(metadata, f, indent=2)
-        
+
         print(f"✓ Metadata saved to: {metadata_file}")
-    
+
     def get_sprite_family(self, monster_name: str) -> str:
         """
         Get sprite family for monster
-        
+
         Args:
             monster_name: Monster name
-            
+
         Returns:
             Sprite family name or 'Unknown'
         """
         for family, members in SPRITE_FAMILIES.items():
             if monster_name in members:
                 return family
-        
+
         return 'Unknown'
-    
+
     def generate_index_html(self, monsters: List[Dict]):
         """
         Generate HTML index of all sprites
-        
+
         Args:
             monsters: List of monster dicts
         """
@@ -284,12 +284,12 @@ class BatchSpriteExporter:
         html.append('<body>')
         html.append('  <h1>Dragon Warrior Monster Sprites</h1>')
         html.append('  <p>Complete sprite collection organized by sprite family</p>')
-        
+
         # Group by sprite family
         for family, members in SPRITE_FAMILIES.items():
             html.append(f'  <h2>{family}</h2>')
             html.append('  <div class="sprite-grid">')
-            
+
             for monster in monsters:
                 if monster['name'] in members:
                     sprite_file = f"{family}/{monster['id']:02d}_{monster['name'].replace(' ', '_')}.png"
@@ -298,47 +298,47 @@ class BatchSpriteExporter:
                     html.append(f'      <h3>{monster["name"]}</h3>')
                     html.append(f'      <p>ID: {monster["id"]} | HP: {monster["hp"]}</p>')
                     html.append('    </div>')
-            
+
             html.append('  </div>')
-        
+
         html.append('</body>')
         html.append('</html>')
-        
+
         # Save HTML
         index_file = self.output_dir / "index.html"
         with open(index_file, 'w') as f:
             f.write('\n'.join(html))
-        
+
         print(f"✓ Index HTML saved to: {index_file}")
-    
+
     def export_all(self, palette_index: int = 0):
         """
         Export all monster sprites
-        
+
         Args:
             palette_index: NES palette index to use
         """
         print("=" * 70)
         print("Dragon Warrior - Batch Sprite Exporter")
         print("=" * 70)
-        
+
         # Load monsters
         print("\n📚 Loading monster data...")
         monsters = self.load_monsters()
-        
+
         if not monsters:
             print("❌ Failed to load monsters")
             return False
-        
+
         print(f"✓ Loaded {len(monsters)} monsters")
-        
+
         # Export each sprite
         print(f"\n🎨 Exporting sprites to {self.output_dir}...")
-        
+
         exported = 0
         for monster in monsters:
             sprite_family = self.get_sprite_family(monster['name'])
-            
+
             if self.export_sprite(
                 monster['id'],
                 monster['name'],
@@ -347,17 +347,17 @@ class BatchSpriteExporter:
             ):
                 exported += 1
                 print(f"  [{exported}/{len(monsters)}] {monster['name']:20} → {sprite_family}")
-        
+
         print(f"\n✓ Exported {exported} sprites")
-        
+
         # Generate metadata
         print("\n📄 Generating metadata...")
         self.generate_metadata(monsters)
-        
+
         # Generate HTML index
         print("\n🌐 Generating HTML index...")
         self.generate_index_html(monsters)
-        
+
         print("\n" + "=" * 70)
         print("Export Complete!")
         print("=" * 70)
@@ -366,7 +366,7 @@ class BatchSpriteExporter:
         print(f"Sprite families: {len(SPRITE_FAMILIES)}")
         print(f"\nView index: {self.output_dir / 'index.html'}")
         print("=" * 70)
-        
+
         return True
 
 
@@ -379,42 +379,42 @@ def main():
 Examples:
   # Export all sprites
   python tools/batch_sprite_export.py
-  
+
   # Export with custom output directory
   python tools/batch_sprite_export.py --output my_sprites
-  
+
   # Use different NES palette
   python tools/batch_sprite_export.py --palette 1
         """
     )
-    
+
     parser.add_argument(
         '--assets',
         default=DEFAULT_ASSETS,
         help=f'Assets directory (default: {DEFAULT_ASSETS})'
     )
-    
+
     parser.add_argument(
         '--output',
         default=DEFAULT_OUTPUT,
         help=f'Output directory (default: {DEFAULT_OUTPUT})'
     )
-    
+
     parser.add_argument(
         '--palette',
         type=int,
         default=0,
         help='NES palette index (0-7, default: 0)'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Initialize exporter
     exporter = BatchSpriteExporter(args.assets, args.output)
-    
+
     # Export all sprites
     success = exporter.export_all(args.palette)
-    
+
     return 0 if success else 1
 
 
