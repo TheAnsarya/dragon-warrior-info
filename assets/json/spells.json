@@ -1,92 +1,92 @@
 {
-  "0": {
-    "id": 0,
-    "name": "Heal",
-    "spell_type": 2,
-    "mp_cost": 205,
-    "power": 10,
-    "learn_level": 3,
-    "description": "Restores HP to the caster."
-  },
-  "1": {
-    "id": 1,
-    "name": "Hurt",
-    "spell_type": 0,
-    "mp_cost": 213,
-    "power": 8,
-    "learn_level": 4,
-    "description": "Inflicts damage on a single enemy."
-  },
-  "2": {
-    "id": 2,
-    "name": "Sleep",
-    "spell_type": 3,
-    "mp_cost": 216,
-    "power": 0,
-    "learn_level": 7,
-    "description": "Puts enemies to sleep."
-  },
-  "3": {
-    "id": 3,
-    "name": "Radiant",
-    "spell_type": 3,
-    "mp_cost": 218,
-    "power": 0,
-    "learn_level": 9,
-    "description": "Creates a bright light in dungeons."
-  },
-  "4": {
-    "id": 4,
-    "name": "Stopspell",
-    "spell_type": 3,
-    "mp_cost": 218,
-    "power": 0,
-    "learn_level": 10,
-    "description": "Prevents enemies from casting spells."
-  },
-  "5": {
-    "id": 5,
-    "name": "Outside",
-    "spell_type": 3,
-    "mp_cost": 218,
-    "power": 0,
-    "learn_level": 12,
-    "description": "Transports the caster outside of caves and castles."
-  },
-  "6": {
-    "id": 6,
-    "name": "Return",
-    "spell_type": 3,
-    "mp_cost": 218,
-    "power": 0,
-    "learn_level": 13,
-    "description": "Transports the caster to Tantegel Castle."
-  },
-  "7": {
-    "id": 7,
-    "name": "Repel",
-    "spell_type": 3,
-    "mp_cost": 218,
-    "power": 0,
-    "learn_level": 15,
-    "description": "Repels weak monsters in the field."
-  },
-  "8": {
-    "id": 8,
-    "name": "Healmore",
-    "spell_type": 2,
-    "mp_cost": 218,
-    "power": 85,
-    "learn_level": 17,
-    "description": "Restores more HP to the caster."
-  },
-  "9": {
-    "id": 9,
-    "name": "Hurtmore",
-    "spell_type": 0,
-    "mp_cost": 218,
-    "power": 65,
-    "learn_level": 19,
-    "description": "Inflicts more damage on enemies."
-  }
+	"0": {
+		"id": 0,
+		"name": "Heal",
+		"spell_type": 2,
+		"mp_cost": 205,
+		"power": 10,
+		"learn_level": 3,
+		"description": "Restores HP to the caster."
+	},
+	"1": {
+		"id": 1,
+		"name": "Hurt",
+		"spell_type": 0,
+		"mp_cost": 213,
+		"power": 8,
+		"learn_level": 4,
+		"description": "Inflicts damage on a single enemy."
+	},
+	"2": {
+		"id": 2,
+		"name": "Sleep",
+		"spell_type": 3,
+		"mp_cost": 216,
+		"power": 0,
+		"learn_level": 7,
+		"description": "Puts enemies to sleep."
+	},
+	"3": {
+		"id": 3,
+		"name": "Radiant",
+		"spell_type": 3,
+		"mp_cost": 218,
+		"power": 0,
+		"learn_level": 9,
+		"description": "Creates a bright light in dungeons."
+	},
+	"4": {
+		"id": 4,
+		"name": "Stopspell",
+		"spell_type": 3,
+		"mp_cost": 218,
+		"power": 0,
+		"learn_level": 10,
+		"description": "Prevents enemies from casting spells."
+	},
+	"5": {
+		"id": 5,
+		"name": "Outside",
+		"spell_type": 3,
+		"mp_cost": 218,
+		"power": 0,
+		"learn_level": 12,
+		"description": "Transports the caster outside of caves and castles."
+	},
+	"6": {
+		"id": 6,
+		"name": "Return",
+		"spell_type": 3,
+		"mp_cost": 218,
+		"power": 0,
+		"learn_level": 13,
+		"description": "Transports the caster to Tantegel Castle."
+	},
+	"7": {
+		"id": 7,
+		"name": "Repel",
+		"spell_type": 3,
+		"mp_cost": 218,
+		"power": 0,
+		"learn_level": 15,
+		"description": "Repels weak monsters in the field."
+	},
+	"8": {
+		"id": 8,
+		"name": "Healmore",
+		"spell_type": 2,
+		"mp_cost": 218,
+		"power": 85,
+		"learn_level": 17,
+		"description": "Restores more HP to the caster."
+	},
+	"9": {
+		"id": 9,
+		"name": "Hurtmore",
+		"spell_type": 0,
+		"mp_cost": 218,
+		"power": 65,
+		"learn_level": 19,
+		"description": "Inflicts more damage on enemies."
+	}
 }

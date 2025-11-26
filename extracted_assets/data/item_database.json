@@ -1,918 +1,918 @@
 {
-  "metadata": {
-    "game": "Dragon Warrior (NES)",
-    "version": "PRG0",
-    "total_items": 35,
-    "total_spells": 10,
-    "total_shops": 11
-  },
-  "items": {
-    "Bamboo Pole": {
-      "id": 0,
-      "name": "Bamboo Pole",
-      "type": "weapon",
-      "cost": 10,
-      "attack_bonus": 2
-    },
-    "Club": {
-      "id": 1,
-      "name": "Club",
-      "type": "weapon",
-      "cost": 60,
-      "attack_bonus": 4
-    },
-    "Copper Sword": {
-      "id": 2,
-      "name": "Copper Sword",
-      "type": "weapon",
-      "cost": 180,
-      "attack_bonus": 10
-    },
-    "Hand Axe": {
-      "id": 3,
-      "name": "Hand Axe",
-      "type": "weapon",
-      "cost": 560,
-      "attack_bonus": 15
-    },
-    "Broad Sword": {
-      "id": 4,
-      "name": "Broad Sword",
-      "type": "weapon",
-      "cost": 1500,
-      "attack_bonus": 20
-    },
-    "Flame Sword": {
-      "id": 5,
-      "name": "Flame Sword",
-      "type": "weapon",
-      "cost": 9800,
-      "attack_bonus": 28
-    },
-    "Erdrick's Sword": {
-      "id": 6,
-      "name": "Erdrick's Sword",
-      "type": "weapon",
-      "cost": 2,
-      "attack_bonus": 40,
-      "note": "Quest item"
-    },
-    "Clothes": {
-      "id": 7,
-      "name": "Clothes",
-      "type": "armor",
-      "cost": 20,
-      "defense_bonus": 2
-    },
-    "Leather Armor": {
-      "id": 8,
-      "name": "Leather Armor",
-      "type": "armor",
-      "cost": 70,
-      "defense_bonus": 4
-    },
-    "Chain Mail": {
-      "id": 9,
-      "name": "Chain Mail",
-      "type": "armor",
-      "cost": 300,
-      "defense_bonus": 10
-    },
-    "Half Plate": {
-      "id": 10,
-      "name": "Half Plate",
-      "type": "armor",
-      "cost": 1000,
-      "defense_bonus": 16
-    },
-    "Full Plate": {
-      "id": 11,
-      "name": "Full Plate",
-      "type": "armor",
-      "cost": 3000,
-      "defense_bonus": 24
-    },
-    "Magic Armor": {
-      "id": 12,
-      "name": "Magic Armor",
-      "type": "armor",
-      "cost": 7700,
-      "defense_bonus": 24,
-      "note": "Regenerates HP while walking"
-    },
-    "Erdrick's Armor": {
-      "id": 13,
-      "name": "Erdrick's Armor",
-      "type": "armor",
-      "cost": 2,
-      "defense_bonus": 28,
-      "note": "Quest item, resists damage floors"
-    },
-    "Small Shield": {
-      "id": 14,
-      "name": "Small Shield",
-      "type": "shield",
-      "cost": 90,
-      "defense_bonus": 4
-    },
-    "Large Shield": {
-      "id": 15,
-      "name": "Large Shield",
-      "type": "shield",
-      "cost": 800,
-      "defense_bonus": 10
-    },
-    "Silver Shield": {
-      "id": 16,
-      "name": "Silver Shield",
-      "type": "shield",
-      "cost": 14800,
-      "defense_bonus": 20
-    },
-    "Herb": {
-      "id": 17,
-      "name": "Herb",
-      "type": "consumable",
-      "cost": 24,
-      "effect": "Restores 30-40 HP"
-    },
-    "Torch": {
-      "id": 18,
-      "name": "Torch",
-      "type": "consumable",
-      "cost": 8,
-      "effect": "Lights dungeon"
-    },
-    "Dragon's Scale": {
-      "id": 19,
-      "name": "Dragon's Scale",
-      "type": "consumable",
-      "cost": 20,
-      "effect": "Reduces dragon breath damage (single use)"
-    },
-    "Wings": {
-      "id": 20,
-      "name": "Wings",
-      "type": "consumable",
-      "cost": 70,
-      "effect": "Return to Tantegel Castle"
-    },
-    "Magic Key": {
-      "id": 21,
-      "name": "Magic Key",
-      "type": "consumable",
-      "cost": 53,
-      "effect": "Opens one locked door"
-    },
-    "Fairy Water": {
-      "id": 22,
-      "name": "Fairy Water",
-      "type": "consumable",
-      "cost": 38,
-      "effect": "Prevents enemy encounters (like Repel spell)"
-    },
-    "Ball of Light": {
-      "id": 23,
-      "name": "Ball of Light",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Quest item for Princess Gwaelin"
-    },
-    "Tablet": {
-      "id": 24,
-      "name": "Tablet",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Quest item"
-    },
-    "Fairy Flute": {
-      "id": 25,
-      "name": "Fairy Flute",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Quest item, puts Golem to sleep"
-    },
-    "Silver Harp": {
-      "id": 26,
-      "name": "Silver Harp",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Quest item"
-    },
-    "Staff of Rain": {
-      "id": 27,
-      "name": "Staff of Rain",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Quest item, creates Rainbow Bridge"
-    },
-    "Stones of Sunlight": {
-      "id": 30,
-      "name": "Stones of Sunlight",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Duplicate entry in ROM"
-    },
-    "Gwaelin's Love": {
-      "id": 29,
-      "name": "Gwaelin's Love",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Shows distance/direction to Tantegel"
-    },
-    "Cursed Belt": {
-      "id": 31,
-      "name": "Cursed Belt",
-      "type": "cursed",
-      "cost": 360,
-      "note": "Cursed item, cannot be removed except by priest"
-    },
-    "Death Necklace": {
-      "id": 32,
-      "name": "Death Necklace",
-      "type": "cursed",
-      "cost": 2400,
-      "note": "Cursed item, cannot be removed except by priest"
-    },
-    "Fighter's Ring": {
-      "id": 33,
-      "name": "Fighter's Ring",
-      "type": "accessory",
-      "cost": 30,
-      "note": "Unknown effect"
-    },
-    "Erdrick's Token": {
-      "id": 34,
-      "name": "Erdrick's Token",
-      "type": "key_item",
-      "cost": 0,
-      "note": "Quest item, proves royal lineage"
-    }
-  },
-  "items_by_type": {
-    "weapon": [
-      {
-        "id": 0,
-        "name": "Bamboo Pole",
-        "type": "weapon",
-        "cost": 10,
-        "attack_bonus": 2
-      },
-      {
-        "id": 1,
-        "name": "Club",
-        "type": "weapon",
-        "cost": 60,
-        "attack_bonus": 4
-      },
-      {
-        "id": 2,
-        "name": "Copper Sword",
-        "type": "weapon",
-        "cost": 180,
-        "attack_bonus": 10
-      },
-      {
-        "id": 3,
-        "name": "Hand Axe",
-        "type": "weapon",
-        "cost": 560,
-        "attack_bonus": 15
-      },
-      {
-        "id": 4,
-        "name": "Broad Sword",
-        "type": "weapon",
-        "cost": 1500,
-        "attack_bonus": 20
-      },
-      {
-        "id": 5,
-        "name": "Flame Sword",
-        "type": "weapon",
-        "cost": 9800,
-        "attack_bonus": 28
-      },
-      {
-        "id": 6,
-        "name": "Erdrick's Sword",
-        "type": "weapon",
-        "cost": 2,
-        "attack_bonus": 40,
-        "note": "Quest item"
-      }
-    ],
-    "armor": [
-      {
-        "id": 7,
-        "name": "Clothes",
-        "type": "armor",
-        "cost": 20,
-        "defense_bonus": 2
-      },
-      {
-        "id": 8,
-        "name": "Leather Armor",
-        "type": "armor",
-        "cost": 70,
-        "defense_bonus": 4
-      },
-      {
-        "id": 9,
-        "name": "Chain Mail",
-        "type": "armor",
-        "cost": 300,
-        "defense_bonus": 10
-      },
-      {
-        "id": 10,
-        "name": "Half Plate",
-        "type": "armor",
-        "cost": 1000,
-        "defense_bonus": 16
-      },
-      {
-        "id": 11,
-        "name": "Full Plate",
-        "type": "armor",
-        "cost": 3000,
-        "defense_bonus": 24
-      },
-      {
-        "id": 12,
-        "name": "Magic Armor",
-        "type": "armor",
-        "cost": 7700,
-        "defense_bonus": 24,
-        "note": "Regenerates HP while walking"
-      },
-      {
-        "id": 13,
-        "name": "Erdrick's Armor",
-        "type": "armor",
-        "cost": 2,
-        "defense_bonus": 28,
-        "note": "Quest item, resists damage floors"
-      }
-    ],
-    "shield": [
-      {
-        "id": 14,
-        "name": "Small Shield",
-        "type": "shield",
-        "cost": 90,
-        "defense_bonus": 4
-      },
-      {
-        "id": 15,
-        "name": "Large Shield",
-        "type": "shield",
-        "cost": 800,
-        "defense_bonus": 10
-      },
-      {
-        "id": 16,
-        "name": "Silver Shield",
-        "type": "shield",
-        "cost": 14800,
-        "defense_bonus": 20
-      }
-    ],
-    "consumable": [
-      {
-        "id": 17,
-        "name": "Herb",
-        "type": "consumable",
-        "cost": 24,
-        "effect": "Restores 30-40 HP"
-      },
-      {
-        "id": 18,
-        "name": "Torch",
-        "type": "consumable",
-        "cost": 8,
-        "effect": "Lights dungeon"
-      },
-      {
-        "id": 19,
-        "name": "Dragon's Scale",
-        "type": "consumable",
-        "cost": 20,
-        "effect": "Reduces dragon breath damage (single use)"
-      },
-      {
-        "id": 20,
-        "name": "Wings",
-        "type": "consumable",
-        "cost": 70,
-        "effect": "Return to Tantegel Castle"
-      },
-      {
-        "id": 21,
-        "name": "Magic Key",
-        "type": "consumable",
-        "cost": 53,
-        "effect": "Opens one locked door"
-      },
-      {
-        "id": 22,
-        "name": "Fairy Water",
-        "type": "consumable",
-        "cost": 38,
-        "effect": "Prevents enemy encounters (like Repel spell)"
-      }
-    ],
-    "key_item": [
-      {
-        "id": 23,
-        "name": "Ball of Light",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Quest item for Princess Gwaelin"
-      },
-      {
-        "id": 24,
-        "name": "Tablet",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Quest item"
-      },
-      {
-        "id": 25,
-        "name": "Fairy Flute",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Quest item, puts Golem to sleep"
-      },
-      {
-        "id": 26,
-        "name": "Silver Harp",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Quest item"
-      },
-      {
-        "id": 27,
-        "name": "Staff of Rain",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Quest item, creates Rainbow Bridge"
-      },
-      {
-        "id": 28,
-        "name": "Stones of Sunlight",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Quest item"
-      },
-      {
-        "id": 29,
-        "name": "Gwaelin's Love",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Shows distance/direction to Tantegel"
-      },
-      {
-        "id": 30,
-        "name": "Stones of Sunlight",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Duplicate entry in ROM"
-      },
-      {
-        "id": 34,
-        "name": "Erdrick's Token",
-        "type": "key_item",
-        "cost": 0,
-        "note": "Quest item, proves royal lineage"
-      }
-    ],
-    "cursed": [
-      {
-        "id": 31,
-        "name": "Cursed Belt",
-        "type": "cursed",
-        "cost": 360,
-        "note": "Cursed item, cannot be removed except by priest"
-      },
-      {
-        "id": 32,
-        "name": "Death Necklace",
-        "type": "cursed",
-        "cost": 2400,
-        "note": "Cursed item, cannot be removed except by priest"
-      }
-    ],
-    "accessory": [
-      {
-        "id": 33,
-        "name": "Fighter's Ring",
-        "type": "accessory",
-        "cost": 30,
-        "note": "Unknown effect"
-      }
-    ]
-  },
-  "spells": [
-    {
-      "id": 0,
-      "name": "HEAL",
-      "mp_cost": 4,
-      "level": 3,
-      "effect": "Restores 10-17 HP"
-    },
-    {
-      "id": 1,
-      "name": "HURT",
-      "mp_cost": 2,
-      "level": 4,
-      "effect": "Deals 5-12 damage to enemy"
-    },
-    {
-      "id": 2,
-      "name": "SLEEP",
-      "mp_cost": 2,
-      "level": 7,
-      "effect": "Puts enemy to sleep"
-    },
-    {
-      "id": 3,
-      "name": "RADIANT",
-      "mp_cost": 3,
-      "level": 9,
-      "effect": "Lights up dark areas"
-    },
-    {
-      "id": 4,
-      "name": "STOPSPELL",
-      "mp_cost": 2,
-      "level": 10,
-      "effect": "Prevents enemy from casting spells"
-    },
-    {
-      "id": 5,
-      "name": "OUTSIDE",
-      "mp_cost": 6,
-      "level": 12,
-      "effect": "Exit dungeon instantly"
-    },
-    {
-      "id": 6,
-      "name": "RETURN",
-      "mp_cost": 8,
-      "level": 13,
-      "effect": "Warp to last save point (Tantegel throne)"
-    },
-    {
-      "id": 7,
-      "name": "REPEL",
-      "mp_cost": 2,
-      "level": 15,
-      "effect": "Prevents weak enemy encounters"
-    },
-    {
-      "id": 8,
-      "name": "HEALMORE",
-      "mp_cost": 10,
-      "level": 17,
-      "effect": "Restores 85-100 HP"
-    },
-    {
-      "id": 9,
-      "name": "HURTMORE",
-      "mp_cost": 5,
-      "level": 19,
-      "effect": "Deals 58-65 damage to enemy"
-    }
-  ],
-  "shops": [
-    {
-      "name": "Kol Weapons & Armor",
-      "location": "Kol",
-      "type": "weapons_armor",
-      "inventory": [
-        {
-          "id": 2,
-          "name": "Copper Sword",
-          "cost": 180
-        },
-        {
-          "id": 3,
-          "name": "Hand Axe",
-          "cost": 560
-        },
-        {
-          "id": 10,
-          "name": "Half Plate",
-          "cost": 1000
-        },
-        {
-          "id": 11,
-          "name": "Full Plate",
-          "cost": 3000
-        },
-        {
-          "id": 14,
-          "name": "Small Shield",
-          "cost": 90
-        }
-      ],
-      "total_items": 5
-    },
-    {
-      "name": "Brecconary Weapons & Armor",
-      "location": "Brecconary",
-      "type": "weapons_armor",
-      "inventory": [
-        {
-          "id": 0,
-          "name": "Bamboo Pole",
-          "cost": 10
-        },
-        {
-          "id": 1,
-          "name": "Club",
-          "cost": 60
-        },
-        {
-          "id": 2,
-          "name": "Copper Sword",
-          "cost": 180
-        },
-        {
-          "id": 7,
-          "name": "Clothes",
-          "cost": 20
-        },
-        {
-          "id": 8,
-          "name": "Leather Armor",
-          "cost": 70
-        },
-        {
-          "id": 14,
-          "name": "Small Shield",
-          "cost": 90
-        }
-      ],
-      "total_items": 6
-    },
-    {
-      "name": "Garinham Weapons & Armor",
-      "location": "Garinham",
-      "type": "weapons_armor",
-      "inventory": [
-        {
-          "id": 1,
-          "name": "Club",
-          "cost": 60
-        },
-        {
-          "id": 2,
-          "name": "Copper Sword",
-          "cost": 180
-        },
-        {
-          "id": 3,
-          "name": "Hand Axe",
-          "cost": 560
-        },
-        {
-          "id": 8,
-          "name": "Leather Armor",
-          "cost": 70
-        },
-        {
-          "id": 9,
-          "name": "Chain Mail",
-          "cost": 300
-        },
-        {
-          "id": 10,
-          "name": "Half Plate",
-          "cost": 1000
-        },
-        {
-          "id": 15,
-          "name": "Large Shield",
-          "cost": 800
-        }
-      ],
-      "total_items": 7
-    },
-    {
-      "name": "Cantlin Weapons & Armor 1",
-      "location": "Cantlin",
-      "type": "weapons_armor",
-      "inventory": [
-        {
-          "id": 0,
-          "name": "Bamboo Pole",
-          "cost": 10
-        },
-        {
-          "id": 1,
-          "name": "Club",
-          "cost": 60
-        },
-        {
-          "id": 2,
-          "name": "Copper Sword",
-          "cost": 180
-        },
-        {
-          "id": 8,
-          "name": "Leather Armor",
-          "cost": 70
-        },
-        {
-          "id": 9,
-          "name": "Chain Mail",
-          "cost": 300
-        },
-        {
-          "id": 15,
-          "name": "Large Shield",
-          "cost": 800
-        }
-      ],
-      "total_items": 6
-    },
-    {
-      "name": "Cantlin Weapons & Armor 2",
-      "location": "Cantlin",
-      "type": "weapons_armor",
-      "inventory": [
-        {
-          "id": 3,
-          "name": "Hand Axe",
-          "cost": 560
-        },
-        {
-          "id": 4,
-          "name": "Broad Sword",
-          "cost": 1500
-        },
-        {
-          "id": 11,
-          "name": "Full Plate",
-          "cost": 3000
-        },
-        {
-          "id": 12,
-          "name": "Magic Armor",
-          "cost": 7700
-        }
-      ],
-      "total_items": 4
-    },
-    {
-      "name": "Cantlin Weapons & Armor 3",
-      "location": "Cantlin",
-      "type": "weapons_armor",
-      "inventory": [
-        {
-          "id": 5,
-          "name": "Flame Sword",
-          "cost": 9800
-        },
-        {
-          "id": 16,
-          "name": "Silver Shield",
-          "cost": 14800
-        }
-      ],
-      "total_items": 2
-    },
-    {
-      "name": "Rimuldar Weapons & Armor",
-      "location": "Rimuldar",
-      "type": "weapons_armor",
-      "inventory": [
-        {
-          "id": 2,
-          "name": "Copper Sword",
-          "cost": 180
-        },
-        {
-          "id": 3,
-          "name": "Hand Axe",
-          "cost": 560
-        },
-        {
-          "id": 4,
-          "name": "Broad Sword",
-          "cost": 1500
-        },
-        {
-          "id": 10,
-          "name": "Half Plate",
-          "cost": 1000
-        },
-        {
-          "id": 11,
-          "name": "Full Plate",
-          "cost": 3000
-        },
-        {
-          "id": 12,
-          "name": "Magic Armor",
-          "cost": 7700
-        }
-      ],
-      "total_items": 6
-    },
-    {
-      "name": "Kol Item Shop",
-      "location": "Kol",
-      "type": "items",
-      "inventory": [
-        {
-          "id": 17,
-          "name": "Herb",
-          "cost": 24
-        },
-        {
-          "id": 19,
-          "name": "Dragon's Scale",
-          "cost": 20
-        },
-        {
-          "id": 22,
-          "name": "Fairy Water",
-          "cost": 38
-        },
-        {
-          "id": 21,
-          "name": "Magic Key",
-          "cost": 53
-        }
-      ],
-      "total_items": 4
-    },
-    {
-      "name": "Brecconary Item Shop",
-      "location": "Brecconary",
-      "type": "items",
-      "inventory": [
-        {
-          "id": 17,
-          "name": "Herb",
-          "cost": 24
-        },
-        {
-          "id": 19,
-          "name": "Dragon's Scale",
-          "cost": 20
-        },
-        {
-          "id": 22,
-          "name": "Fairy Water",
-          "cost": 38
-        }
-      ],
-      "total_items": 3
-    },
-    {
-      "name": "Garinham Item Shop",
-      "location": "Garinham",
-      "type": "items",
-      "inventory": [
-        {
-          "id": 17,
-          "name": "Herb",
-          "cost": 24
-        },
-        {
-          "id": 19,
-          "name": "Dragon's Scale",
-          "cost": 20
-        },
-        {
-          "id": 22,
-          "name": "Fairy Water",
-          "cost": 38
-        }
-      ],
-      "total_items": 3
-    },
-    {
-      "name": "Cantlin Item Shop",
-      "location": "Cantlin",
-      "type": "items",
-      "inventory": [
-        {
-          "id": 17,
-          "name": "Herb",
-          "cost": 24
-        },
-        {
-          "id": 19,
-          "name": "Dragon's Scale",
-          "cost": 20
-        }
-      ],
-      "total_items": 2
-    }
-  ]
+	"metadata": {
+		"game": "Dragon Warrior (NES)",
+		"version": "PRG0",
+		"total_items": 35,
+		"total_spells": 10,
+		"total_shops": 11
+	},
+	"items": {
+		"Bamboo Pole": {
+			"id": 0,
+			"name": "Bamboo Pole",
+			"type": "weapon",
+			"cost": 10,
+			"attack_bonus": 2
+		},
+		"Club": {
+			"id": 1,
+			"name": "Club",
+			"type": "weapon",
+			"cost": 60,
+			"attack_bonus": 4
+		},
+		"Copper Sword": {
+			"id": 2,
+			"name": "Copper Sword",
+			"type": "weapon",
+			"cost": 180,
+			"attack_bonus": 10
+		},
+		"Hand Axe": {
+			"id": 3,
+			"name": "Hand Axe",
+			"type": "weapon",
+			"cost": 560,
+			"attack_bonus": 15
+		},
+		"Broad Sword": {
+			"id": 4,
+			"name": "Broad Sword",
+			"type": "weapon",
+			"cost": 1500,
+			"attack_bonus": 20
+		},
+		"Flame Sword": {
+			"id": 5,
+			"name": "Flame Sword",
+			"type": "weapon",
+			"cost": 9800,
+			"attack_bonus": 28
+		},
+		"Erdrick's Sword": {
+			"id": 6,
+			"name": "Erdrick's Sword",
+			"type": "weapon",
+			"cost": 2,
+			"attack_bonus": 40,
+			"note": "Quest item"
+		},
+		"Clothes": {
+			"id": 7,
+			"name": "Clothes",
+			"type": "armor",
+			"cost": 20,
+			"defense_bonus": 2
+		},
+		"Leather Armor": {
+			"id": 8,
+			"name": "Leather Armor",
+			"type": "armor",
+			"cost": 70,
+			"defense_bonus": 4
+		},
+		"Chain Mail": {
+			"id": 9,
+			"name": "Chain Mail",
+			"type": "armor",
+			"cost": 300,
+			"defense_bonus": 10
+		},
+		"Half Plate": {
+			"id": 10,
+			"name": "Half Plate",
+			"type": "armor",
+			"cost": 1000,
+			"defense_bonus": 16
+		},
+		"Full Plate": {
+			"id": 11,
+			"name": "Full Plate",
+			"type": "armor",
+			"cost": 3000,
+			"defense_bonus": 24
+		},
+		"Magic Armor": {
+			"id": 12,
+			"name": "Magic Armor",
+			"type": "armor",
+			"cost": 7700,
+			"defense_bonus": 24,
+			"note": "Regenerates HP while walking"
+		},
+		"Erdrick's Armor": {
+			"id": 13,
+			"name": "Erdrick's Armor",
+			"type": "armor",
+			"cost": 2,
+			"defense_bonus": 28,
+			"note": "Quest item, resists damage floors"
+		},
+		"Small Shield": {
+			"id": 14,
+			"name": "Small Shield",
+			"type": "shield",
+			"cost": 90,
+			"defense_bonus": 4
+		},
+		"Large Shield": {
+			"id": 15,
+			"name": "Large Shield",
+			"type": "shield",
+			"cost": 800,
+			"defense_bonus": 10
+		},
+		"Silver Shield": {
+			"id": 16,
+			"name": "Silver Shield",
+			"type": "shield",
+			"cost": 14800,
+			"defense_bonus": 20
+		},
+		"Herb": {
+			"id": 17,
+			"name": "Herb",
+			"type": "consumable",
+			"cost": 24,
+			"effect": "Restores 30-40 HP"
+		},
+		"Torch": {
+			"id": 18,
+			"name": "Torch",
+			"type": "consumable",
+			"cost": 8,
+			"effect": "Lights dungeon"
+		},
+		"Dragon's Scale": {
+			"id": 19,
+			"name": "Dragon's Scale",
+			"type": "consumable",
+			"cost": 20,
+			"effect": "Reduces dragon breath damage (single use)"
+		},
+		"Wings": {
+			"id": 20,
+			"name": "Wings",
+			"type": "consumable",
+			"cost": 70,
+			"effect": "Return to Tantegel Castle"
+		},
+		"Magic Key": {
+			"id": 21,
+			"name": "Magic Key",
+			"type": "consumable",
+			"cost": 53,
+			"effect": "Opens one locked door"
+		},
+		"Fairy Water": {
+			"id": 22,
+			"name": "Fairy Water",
+			"type": "consumable",
+			"cost": 38,
+			"effect": "Prevents enemy encounters (like Repel spell)"
+		},
+		"Ball of Light": {
+			"id": 23,
+			"name": "Ball of Light",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Quest item for Princess Gwaelin"
+		},
+		"Tablet": {
+			"id": 24,
+			"name": "Tablet",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Quest item"
+		},
+		"Fairy Flute": {
+			"id": 25,
+			"name": "Fairy Flute",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Quest item, puts Golem to sleep"
+		},
+		"Silver Harp": {
+			"id": 26,
+			"name": "Silver Harp",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Quest item"
+		},
+		"Staff of Rain": {
+			"id": 27,
+			"name": "Staff of Rain",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Quest item, creates Rainbow Bridge"
+		},
+		"Stones of Sunlight": {
+			"id": 30,
+			"name": "Stones of Sunlight",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Duplicate entry in ROM"
+		},
+		"Gwaelin's Love": {
+			"id": 29,
+			"name": "Gwaelin's Love",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Shows distance/direction to Tantegel"
+		},
+		"Cursed Belt": {
+			"id": 31,
+			"name": "Cursed Belt",
+			"type": "cursed",
+			"cost": 360,
+			"note": "Cursed item, cannot be removed except by priest"
+		},
+		"Death Necklace": {
+			"id": 32,
+			"name": "Death Necklace",
+			"type": "cursed",
+			"cost": 2400,
+			"note": "Cursed item, cannot be removed except by priest"
+		},
+		"Fighter's Ring": {
+			"id": 33,
+			"name": "Fighter's Ring",
+			"type": "accessory",
+			"cost": 30,
+			"note": "Unknown effect"
+		},
+		"Erdrick's Token": {
+			"id": 34,
+			"name": "Erdrick's Token",
+			"type": "key_item",
+			"cost": 0,
+			"note": "Quest item, proves royal lineage"
+		}
+	},
+	"items_by_type": {
+		"weapon": [
+			{
+				"id": 0,
+				"name": "Bamboo Pole",
+				"type": "weapon",
+				"cost": 10,
+				"attack_bonus": 2
+			},
+			{
+				"id": 1,
+				"name": "Club",
+				"type": "weapon",
+				"cost": 60,
+				"attack_bonus": 4
+			},
+			{
+				"id": 2,
+				"name": "Copper Sword",
+				"type": "weapon",
+				"cost": 180,
+				"attack_bonus": 10
+			},
+			{
+				"id": 3,
+				"name": "Hand Axe",
+				"type": "weapon",
+				"cost": 560,
+				"attack_bonus": 15
+			},
+			{
+				"id": 4,
+				"name": "Broad Sword",
+				"type": "weapon",
+				"cost": 1500,
+				"attack_bonus": 20
+			},
+			{
+				"id": 5,
+				"name": "Flame Sword",
+				"type": "weapon",
+				"cost": 9800,
+				"attack_bonus": 28
+			},
+			{
+				"id": 6,
+				"name": "Erdrick's Sword",
+				"type": "weapon",
+				"cost": 2,
+				"attack_bonus": 40,
+				"note": "Quest item"
+			}
+		],
+		"armor": [
+			{
+				"id": 7,
+				"name": "Clothes",
+				"type": "armor",
+				"cost": 20,
+				"defense_bonus": 2
+			},
+			{
+				"id": 8,
+				"name": "Leather Armor",
+				"type": "armor",
+				"cost": 70,
+				"defense_bonus": 4
+			},
+			{
+				"id": 9,
+				"name": "Chain Mail",
+				"type": "armor",
+				"cost": 300,
+				"defense_bonus": 10
+			},
+			{
+				"id": 10,
+				"name": "Half Plate",
+				"type": "armor",
+				"cost": 1000,
+				"defense_bonus": 16
+			},
+			{
+				"id": 11,
+				"name": "Full Plate",
+				"type": "armor",
+				"cost": 3000,
+				"defense_bonus": 24
+			},
+			{
+				"id": 12,
+				"name": "Magic Armor",
+				"type": "armor",
+				"cost": 7700,
+				"defense_bonus": 24,
+				"note": "Regenerates HP while walking"
+			},
+			{
+				"id": 13,
+				"name": "Erdrick's Armor",
+				"type": "armor",
+				"cost": 2,
+				"defense_bonus": 28,
+				"note": "Quest item, resists damage floors"
+			}
+		],
+		"shield": [
+			{
+				"id": 14,
+				"name": "Small Shield",
+				"type": "shield",
+				"cost": 90,
+				"defense_bonus": 4
+			},
+			{
+				"id": 15,
+				"name": "Large Shield",
+				"type": "shield",
+				"cost": 800,
+				"defense_bonus": 10
+			},
+			{
+				"id": 16,
+				"name": "Silver Shield",
+				"type": "shield",
+				"cost": 14800,
+				"defense_bonus": 20
+			}
+		],
+		"consumable": [
+			{
+				"id": 17,
+				"name": "Herb",
+				"type": "consumable",
+				"cost": 24,
+				"effect": "Restores 30-40 HP"
+			},
+			{
+				"id": 18,
+				"name": "Torch",
+				"type": "consumable",
+				"cost": 8,
+				"effect": "Lights dungeon"
+			},
+			{
+				"id": 19,
+				"name": "Dragon's Scale",
+				"type": "consumable",
+				"cost": 20,
+				"effect": "Reduces dragon breath damage (single use)"
+			},
+			{
+				"id": 20,
+				"name": "Wings",
+				"type": "consumable",
+				"cost": 70,
+				"effect": "Return to Tantegel Castle"
+			},
+			{
+				"id": 21,
+				"name": "Magic Key",
+				"type": "consumable",
+				"cost": 53,
+				"effect": "Opens one locked door"
+			},
+			{
+				"id": 22,
+				"name": "Fairy Water",
+				"type": "consumable",
+				"cost": 38,
+				"effect": "Prevents enemy encounters (like Repel spell)"
+			}
+		],
+		"key_item": [
+			{
+				"id": 23,
+				"name": "Ball of Light",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Quest item for Princess Gwaelin"
+			},
+			{
+				"id": 24,
+				"name": "Tablet",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Quest item"
+			},
+			{
+				"id": 25,
+				"name": "Fairy Flute",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Quest item, puts Golem to sleep"
+			},
+			{
+				"id": 26,
+				"name": "Silver Harp",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Quest item"
+			},
+			{
+				"id": 27,
+				"name": "Staff of Rain",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Quest item, creates Rainbow Bridge"
+			},
+			{
+				"id": 28,
+				"name": "Stones of Sunlight",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Quest item"
+			},
+			{
+				"id": 29,
+				"name": "Gwaelin's Love",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Shows distance/direction to Tantegel"
+			},
+			{
+				"id": 30,
+				"name": "Stones of Sunlight",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Duplicate entry in ROM"
+			},
+			{
+				"id": 34,
+				"name": "Erdrick's Token",
+				"type": "key_item",
+				"cost": 0,
+				"note": "Quest item, proves royal lineage"
+			}
+		],
+		"cursed": [
+			{
+				"id": 31,
+				"name": "Cursed Belt",
+				"type": "cursed",
+				"cost": 360,
+				"note": "Cursed item, cannot be removed except by priest"
+			},
+			{
+				"id": 32,
+				"name": "Death Necklace",
+				"type": "cursed",
+				"cost": 2400,
+				"note": "Cursed item, cannot be removed except by priest"
+			}
+		],
+		"accessory": [
+			{
+				"id": 33,
+				"name": "Fighter's Ring",
+				"type": "accessory",
+				"cost": 30,
+				"note": "Unknown effect"
+			}
+		]
+	},
+	"spells": [
+		{
+			"id": 0,
+			"name": "HEAL",
+			"mp_cost": 4,
+			"level": 3,
+			"effect": "Restores 10-17 HP"
+		},
+		{
+			"id": 1,
+			"name": "HURT",
+			"mp_cost": 2,
+			"level": 4,
+			"effect": "Deals 5-12 damage to enemy"
+		},
+		{
+			"id": 2,
+			"name": "SLEEP",
+			"mp_cost": 2,
+			"level": 7,
+			"effect": "Puts enemy to sleep"
+		},
+		{
+			"id": 3,
+			"name": "RADIANT",
+			"mp_cost": 3,
+			"level": 9,
+			"effect": "Lights up dark areas"
+		},
+		{
+			"id": 4,
+			"name": "STOPSPELL",
+			"mp_cost": 2,
+			"level": 10,
+			"effect": "Prevents enemy from casting spells"
+		},
+		{
+			"id": 5,
+			"name": "OUTSIDE",
+			"mp_cost": 6,
+			"level": 12,
+			"effect": "Exit dungeon instantly"
+		},
+		{
+			"id": 6,
+			"name": "RETURN",
+			"mp_cost": 8,
+			"level": 13,
+			"effect": "Warp to last save point (Tantegel throne)"
+		},
+		{
+			"id": 7,
+			"name": "REPEL",
+			"mp_cost": 2,
+			"level": 15,
+			"effect": "Prevents weak enemy encounters"
+		},
+		{
+			"id": 8,
+			"name": "HEALMORE",
+			"mp_cost": 10,
+			"level": 17,
+			"effect": "Restores 85-100 HP"
+		},
+		{
+			"id": 9,
+			"name": "HURTMORE",
+			"mp_cost": 5,
+			"level": 19,
+			"effect": "Deals 58-65 damage to enemy"
+		}
+	],
+	"shops": [
+		{
+			"name": "Kol Weapons & Armor",
+			"location": "Kol",
+			"type": "weapons_armor",
+			"inventory": [
+				{
+					"id": 2,
+					"name": "Copper Sword",
+					"cost": 180
+				},
+				{
+					"id": 3,
+					"name": "Hand Axe",
+					"cost": 560
+				},
+				{
+					"id": 10,
+					"name": "Half Plate",
+					"cost": 1000
+				},
+				{
+					"id": 11,
+					"name": "Full Plate",
+					"cost": 3000
+				},
+				{
+					"id": 14,
+					"name": "Small Shield",
+					"cost": 90
+				}
+			],
+			"total_items": 5
+		},
+		{
+			"name": "Brecconary Weapons & Armor",
+			"location": "Brecconary",
+			"type": "weapons_armor",
+			"inventory": [
+				{
+					"id": 0,
+					"name": "Bamboo Pole",
+					"cost": 10
+				},
+				{
+					"id": 1,
+					"name": "Club",
+					"cost": 60
+				},
+				{
+					"id": 2,
+					"name": "Copper Sword",
+					"cost": 180
+				},
+				{
+					"id": 7,
+					"name": "Clothes",
+					"cost": 20
+				},
+				{
+					"id": 8,
+					"name": "Leather Armor",
+					"cost": 70
+				},
+				{
+					"id": 14,
+					"name": "Small Shield",
+					"cost": 90
+				}
+			],
+			"total_items": 6
+		},
+		{
+			"name": "Garinham Weapons & Armor",
+			"location": "Garinham",
+			"type": "weapons_armor",
+			"inventory": [
+				{
+					"id": 1,
+					"name": "Club",
+					"cost": 60
+				},
+				{
+					"id": 2,
+					"name": "Copper Sword",
+					"cost": 180
+				},
+				{
+					"id": 3,
+					"name": "Hand Axe",
+					"cost": 560
+				},
+				{
+					"id": 8,
+					"name": "Leather Armor",
+					"cost": 70
+				},
+				{
+					"id": 9,
+					"name": "Chain Mail",
+					"cost": 300
+				},
+				{
+					"id": 10,
+					"name": "Half Plate",
+					"cost": 1000
+				},
+				{
+					"id": 15,
+					"name": "Large Shield",
+					"cost": 800
+				}
+			],
+			"total_items": 7
+		},
+		{
+			"name": "Cantlin Weapons & Armor 1",
+			"location": "Cantlin",
+			"type": "weapons_armor",
+			"inventory": [
+				{
+					"id": 0,
+					"name": "Bamboo Pole",
+					"cost": 10
+				},
+				{
+					"id": 1,
+					"name": "Club",
+					"cost": 60
+				},
+				{
+					"id": 2,
+					"name": "Copper Sword",
+					"cost": 180
+				},
+				{
+					"id": 8,
+					"name": "Leather Armor",
+					"cost": 70
+				},
+				{
+					"id": 9,
+					"name": "Chain Mail",
+					"cost": 300
+				},
+				{
+					"id": 15,
+					"name": "Large Shield",
+					"cost": 800
+				}
+			],
+			"total_items": 6
+		},
+		{
+			"name": "Cantlin Weapons & Armor 2",
+			"location": "Cantlin",
+			"type": "weapons_armor",
+			"inventory": [
+				{
+					"id": 3,
+					"name": "Hand Axe",
+					"cost": 560
+				},
+				{
+					"id": 4,
+					"name": "Broad Sword",
+					"cost": 1500
+				},
+				{
+					"id": 11,
+					"name": "Full Plate",
+					"cost": 3000
+				},
+				{
+					"id": 12,
+					"name": "Magic Armor",
+					"cost": 7700
+				}
+			],
+			"total_items": 4
+		},
+		{
+			"name": "Cantlin Weapons & Armor 3",
+			"location": "Cantlin",
+			"type": "weapons_armor",
+			"inventory": [
+				{
+					"id": 5,
+					"name": "Flame Sword",
+					"cost": 9800
+				},
+				{
+					"id": 16,
+					"name": "Silver Shield",
+					"cost": 14800
+				}
+			],
+			"total_items": 2
+		},
+		{
+			"name": "Rimuldar Weapons & Armor",
+			"location": "Rimuldar",
+			"type": "weapons_armor",
+			"inventory": [
+				{
+					"id": 2,
+					"name": "Copper Sword",
+					"cost": 180
+				},
+				{
+					"id": 3,
+					"name": "Hand Axe",
+					"cost": 560
+				},
+				{
+					"id": 4,
+					"name": "Broad Sword",
+					"cost": 1500
+				},
+				{
+					"id": 10,
+					"name": "Half Plate",
+					"cost": 1000
+				},
+				{
+					"id": 11,
+					"name": "Full Plate",
+					"cost": 3000
+				},
+				{
+					"id": 12,
+					"name": "Magic Armor",
+					"cost": 7700
+				}
+			],
+			"total_items": 6
+		},
+		{
+			"name": "Kol Item Shop",
+			"location": "Kol",
+			"type": "items",
+			"inventory": [
+				{
+					"id": 17,
+					"name": "Herb",
+					"cost": 24
+				},
+				{
+					"id": 19,
+					"name": "Dragon's Scale",
+					"cost": 20
+				},
+				{
+					"id": 22,
+					"name": "Fairy Water",
+					"cost": 38
+				},
+				{
+					"id": 21,
+					"name": "Magic Key",
+					"cost": 53
+				}
+			],
+			"total_items": 4
+		},
+		{
+			"name": "Brecconary Item Shop",
+			"location": "Brecconary",
+			"type": "items",
+			"inventory": [
+				{
+					"id": 17,
+					"name": "Herb",
+					"cost": 24
+				},
+				{
+					"id": 19,
+					"name": "Dragon's Scale",
+					"cost": 20
+				},
+				{
+					"id": 22,
+					"name": "Fairy Water",
+					"cost": 38
+				}
+			],
+			"total_items": 3
+		},
+		{
+			"name": "Garinham Item Shop",
+			"location": "Garinham",
+			"type": "items",
+			"inventory": [
+				{
+					"id": 17,
+					"name": "Herb",
+					"cost": 24
+				},
+				{
+					"id": 19,
+					"name": "Dragon's Scale",
+					"cost": 20
+				},
+				{
+					"id": 22,
+					"name": "Fairy Water",
+					"cost": 38
+				}
+			],
+			"total_items": 3
+		},
+		{
+			"name": "Cantlin Item Shop",
+			"location": "Cantlin",
+			"type": "items",
+			"inventory": [
+				{
+					"id": 17,
+					"name": "Herb",
+					"cost": 24
+				},
+				{
+					"id": 19,
+					"name": "Dragon's Scale",
+					"cost": 20
+				}
+			],
+			"total_items": 2
+		}
+	]
 }

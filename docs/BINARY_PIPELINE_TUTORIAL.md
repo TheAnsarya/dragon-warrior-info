@@ -310,11 +310,11 @@ python tools/assets_to_binary.py
 **What happens**:
 1. Loads JSON/PNG files
 2. **VALIDATES all data**:
-   - HP: 1-255 (no zero HP!)
-   - Attack/Defense/Agility: 0-255
-   - Spell: 0-9 (9 = no spell)
-   - XP/Gold: 0-65535
-   - Cross-references (spell IDs exist)
+	 - HP: 1-255 (no zero HP!)
+	 - Attack/Defense/Agility: 0-255
+	 - Spell: 0-9 (9 = no spell)
+	 - XP/Gold: 0-65535
+	 - Cross-references (spell IDs exist)
 3. Packs into binary format
 4. Calculates new CRC32
 5. Creates validated `.dwdata` files

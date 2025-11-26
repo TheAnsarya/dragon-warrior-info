@@ -75,14 +75,14 @@ tools/new_module.py        95%
 **Manual test procedure:**
 
 1. Step 1:
-   - Command: `python tools/...`
-   - Expected: [result]
-   - Actual: [result]
+	 - Command: `python tools/...`
+	 - Expected: [result]
+	 - Actual: [result]
 
 2. Step 2:
-   - Command: `...`
-   - Expected: [result]
-   - Actual: [result]
+	 - Command: `...`
+	 - Expected: [result]
+	 - Actual: [result]
 
 **Test results:**
 - [ ] All unit tests pass

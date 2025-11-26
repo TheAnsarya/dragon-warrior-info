@@ -1,112 +1,112 @@
 [
-  {
-    "id": 0,
-    "name": "Heal",
-    "mp_cost": 255,
-    "effect": "Restores HP",
-    "formula": "10-17 HP",
-    "target": "Self",
-    "usable_in_battle": true,
-    "usable_in_field": true,
-    "rom_offset": "0x7CFD"
-  },
-  {
-    "id": 1,
-    "name": "Hurt",
-    "mp_cost": 54,
-    "effect": "Damages enemy",
-    "formula": "5-12 damage",
-    "target": "Enemy",
-    "usable_in_battle": true,
-    "usable_in_field": false,
-    "rom_offset": "0x7CFE"
-  },
-  {
-    "id": 2,
-    "name": "Sleep",
-    "mp_cost": 25,
-    "effect": "Puts enemy to sleep",
-    "formula": "Sleep status",
-    "target": "Enemy",
-    "usable_in_battle": true,
-    "usable_in_field": false,
-    "rom_offset": "0x7CFF"
-  },
-  {
-    "id": 3,
-    "name": "Radiant",
-    "mp_cost": 14,
-    "effect": "Lights up dark areas",
-    "formula": "Illumination",
-    "target": "Self",
-    "usable_in_battle": false,
-    "usable_in_field": true,
-    "rom_offset": "0x7D00"
-  },
-  {
-    "id": 4,
-    "name": "Stopspell",
-    "mp_cost": 12,
-    "effect": "Prevents enemy spells",
-    "formula": "Silence status",
-    "target": "Enemy",
-    "usable_in_battle": true,
-    "usable_in_field": false,
-    "rom_offset": "0x7D01"
-  },
-  {
-    "id": 5,
-    "name": "Outside",
-    "mp_cost": 29,
-    "effect": "Exit dungeon/cave",
-    "formula": "Teleport to entrance",
-    "target": "Party",
-    "usable_in_battle": false,
-    "usable_in_field": true,
-    "rom_offset": "0x7D02"
-  },
-  {
-    "id": 6,
-    "name": "Return",
-    "mp_cost": 14,
-    "effect": "Return to castle",
-    "formula": "Teleport to Tantegel",
-    "target": "Party",
-    "usable_in_battle": false,
-    "usable_in_field": true,
-    "rom_offset": "0x7D03"
-  },
-  {
-    "id": 7,
-    "name": "Repel",
-    "mp_cost": 27,
-    "effect": "Repel weak monsters",
-    "formula": "Enemy avoidance",
-    "target": "Party",
-    "usable_in_battle": false,
-    "usable_in_field": true,
-    "rom_offset": "0x7D04"
-  },
-  {
-    "id": 8,
-    "name": "Healmore",
-    "mp_cost": 255,
-    "effect": "Restores more HP",
-    "formula": "85-100 HP",
-    "target": "Self",
-    "usable_in_battle": true,
-    "usable_in_field": true,
-    "rom_offset": "0x7D05"
-  },
-  {
-    "id": 9,
-    "name": "Hurtmore",
-    "mp_cost": 58,
-    "effect": "Damages enemy greatly",
-    "formula": "58-65 damage",
-    "target": "Enemy",
-    "usable_in_battle": true,
-    "usable_in_field": false,
-    "rom_offset": "0x7D06"
-  }
+	{
+		"id": 0,
+		"name": "Heal",
+		"mp_cost": 255,
+		"effect": "Restores HP",
+		"formula": "10-17 HP",
+		"target": "Self",
+		"usable_in_battle": true,
+		"usable_in_field": true,
+		"rom_offset": "0x7CFD"
+	},
+	{
+		"id": 1,
+		"name": "Hurt",
+		"mp_cost": 54,
+		"effect": "Damages enemy",
+		"formula": "5-12 damage",
+		"target": "Enemy",
+		"usable_in_battle": true,
+		"usable_in_field": false,
+		"rom_offset": "0x7CFE"
+	},
+	{
+		"id": 2,
+		"name": "Sleep",
+		"mp_cost": 25,
+		"effect": "Puts enemy to sleep",
+		"formula": "Sleep status",
+		"target": "Enemy",
+		"usable_in_battle": true,
+		"usable_in_field": false,
+		"rom_offset": "0x7CFF"
+	},
+	{
+		"id": 3,
+		"name": "Radiant",
+		"mp_cost": 14,
+		"effect": "Lights up dark areas",
+		"formula": "Illumination",
+		"target": "Self",
+		"usable_in_battle": false,
+		"usable_in_field": true,
+		"rom_offset": "0x7D00"
+	},
+	{
+		"id": 4,
+		"name": "Stopspell",
+		"mp_cost": 12,
+		"effect": "Prevents enemy spells",
+		"formula": "Silence status",
+		"target": "Enemy",
+		"usable_in_battle": true,
+		"usable_in_field": false,
+		"rom_offset": "0x7D01"
+	},
+	{
+		"id": 5,
+		"name": "Outside",
+		"mp_cost": 29,
+		"effect": "Exit dungeon/cave",
+		"formula": "Teleport to entrance",
+		"target": "Party",
+		"usable_in_battle": false,
+		"usable_in_field": true,
+		"rom_offset": "0x7D02"
+	},
+	{
+		"id": 6,
+		"name": "Return",
+		"mp_cost": 14,
+		"effect": "Return to castle",
+		"formula": "Teleport to Tantegel",
+		"target": "Party",
+		"usable_in_battle": false,
+		"usable_in_field": true,
+		"rom_offset": "0x7D03"
+	},
+	{
+		"id": 7,
+		"name": "Repel",
+		"mp_cost": 27,
+		"effect": "Repel weak monsters",
+		"formula": "Enemy avoidance",
+		"target": "Party",
+		"usable_in_battle": false,
+		"usable_in_field": true,
+		"rom_offset": "0x7D04"
+	},
+	{
+		"id": 8,
+		"name": "Healmore",
+		"mp_cost": 255,
+		"effect": "Restores more HP",
+		"formula": "85-100 HP",
+		"target": "Self",
+		"usable_in_battle": true,
+		"usable_in_field": true,
+		"rom_offset": "0x7D05"
+	},
+	{
+		"id": 9,
+		"name": "Hurtmore",
+		"mp_cost": 58,
+		"effect": "Damages enemy greatly",
+		"formula": "58-65 damage",
+		"target": "Enemy",
+		"usable_in_battle": true,
+		"usable_in_field": false,
+		"rom_offset": "0x7D06"
+	}
 ]

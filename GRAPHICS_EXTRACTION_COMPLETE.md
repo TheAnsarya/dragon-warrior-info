@@ -144,13 +144,13 @@ python tools/extraction/monster_sprite_extractor.py "roms/Dragon Warrior (U) (PR
 
 ### Fixed Files
 1. **tools/extraction/graphics_extractor.py**
-   - Changed CHR offset from 0x8010 → 0x10010
-   - Updated CHR size from 0x2000 → 0x4000
-   - Added real palette data from disassembly
+	 - Changed CHR offset from 0x8010 → 0x10010
+	 - Updated CHR size from 0x2000 → 0x4000
+	 - Added real palette data from disassembly
 
 2. **tools/extraction/enhanced_graphics_extractor.py**
-   - Changed CHR offset from 0x8010 → 0x10010
-   - Updated CHR size from 0x2000 → 0x4000
+	 - Changed CHR offset from 0x8010 → 0x10010
+	 - Updated CHR size from 0x2000 → 0x4000
 
 ### New Files
 1. **tools/extraction/comprehensive_graphics_extractor.py** - Complete extraction system

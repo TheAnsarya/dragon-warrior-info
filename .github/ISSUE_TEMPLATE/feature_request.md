@@ -71,14 +71,14 @@ python tools/new_tool.py --option value
 **What other approaches did you consider?**
 
 1. **Alternative 1:**
-   - Description:
-   - Pros:
-   - Cons:
+	 - Description:
+	 - Pros:
+	 - Cons:
 
 2. **Alternative 2:**
-   - Description:
-   - Pros:
-   - Cons:
+	 - Description:
+	 - Pros:
+	 - Cons:
 
 **Why is your proposed solution better?**
 
@@ -88,8 +88,8 @@ python tools/new_tool.py --option value
 **Similar features in other ROM hacking tools:**
 
 - **Tool Name**: [Description of similar feature]
-  - Link: [URL]
-  - How it works: [Brief explanation]
+	- Link: [URL]
+	- How it works: [Brief explanation]
 
 ## Expected Behavior
 

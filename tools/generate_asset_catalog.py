@@ -10,611 +10,611 @@ from datetime import datetime
 from typing import Dict, List, Optional
 
 class AssetCatalogGenerator:
-    """Generate interactive HTML catalog of extracted assets"""
+	"""Generate interactive HTML catalog of extracted assets"""
 
-    def __init__(self, extracted_dir: str, output_dir: str):
-        self.extracted_dir = Path(extracted_dir)
-        self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(parents=True, exist_ok=True)
+	def __init__(self, extracted_dir: str, output_dir: str):
+		self.extracted_dir = Path(extracted_dir)
+		self.output_dir = Path(output_dir)
+		self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Create subdirectories
-        self.images_dir = self.output_dir / "images"
-        self.images_dir.mkdir(exist_ok=True)
+		# Create subdirectories
+		self.images_dir = self.output_dir / "images"
+		self.images_dir.mkdir(exist_ok=True)
 
-    def generate_html_header(self, title: str) -> str:
-        """Generate HTML header with CSS styling"""
-        return f"""<!DOCTYPE html>
+	def generate_html_header(self, title: str) -> str:
+		"""Generate HTML header with CSS styling"""
+		return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} - Dragon Warrior Asset Catalog</title>
-    <style>
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{title} - Dragon Warrior Asset Catalog</title>
+	<style>
+		* {{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}}
 
-        body {{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #fff;
-            padding: 20px;
-            line-height: 1.6;
-        }}
+		body {{
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+			color: #fff;
+			padding: 20px;
+			line-height: 1.6;
+		}}
 
-        .container {{
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }}
+		.container {{
+			max-width: 1400px;
+			margin: 0 auto;
+			background: rgba(0, 0, 0, 0.7);
+			padding: 30px;
+			border-radius: 15px;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+		}}
 
-        h1 {{
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }}
+		h1 {{
+			text-align: center;
+			margin-bottom: 10px;
+			font-size: 3em;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+			background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}}
 
-        .subtitle {{
-            text-align: center;
-            margin-bottom: 30px;
-            color: #aaa;
-            font-size: 1.1em;
-        }}
+		.subtitle {{
+			text-align: center;
+			margin-bottom: 30px;
+			color: #aaa;
+			font-size: 1.1em;
+		}}
 
-        nav {{
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            text-align: center;
-        }}
+		nav {{
+			background: rgba(255, 255, 255, 0.1);
+			padding: 15px;
+			margin-bottom: 30px;
+			border-radius: 8px;
+			text-align: center;
+		}}
 
-        nav a {{
-            color: #4ecdc4;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 5px;
-            transition: all 0.3s;
-            display: inline-block;
-        }}
+		nav a {{
+			color: #4ecdc4;
+			text-decoration: none;
+			padding: 10px 20px;
+			margin: 0 5px;
+			border-radius: 5px;
+			transition: all 0.3s;
+			display: inline-block;
+		}}
 
-        nav a:hover {{
-            background: rgba(78, 205, 196, 0.2);
-            transform: translateY(-2px);
-        }}
+		nav a:hover {{
+			background: rgba(78, 205, 196, 0.2);
+			transform: translateY(-2px);
+		}}
 
-        .section {{
-            margin: 40px 0;
-        }}
+		.section {{
+			margin: 40px 0;
+		}}
 
-        h2 {{
-            margin: 30px 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4ecdc4;
-            color: #4ecdc4;
-            font-size: 2em;
-        }}
+		h2 {{
+			margin: 30px 0 20px 0;
+			padding-bottom: 10px;
+			border-bottom: 2px solid #4ecdc4;
+			color: #4ecdc4;
+			font-size: 2em;
+		}}
 
-        h3 {{
-            margin: 20px 0 10px 0;
-            color: #ff6b6b;
-            font-size: 1.5em;
-        }}
+		h3 {{
+			margin: 20px 0 10px 0;
+			color: #ff6b6b;
+			font-size: 1.5em;
+		}}
 
-        .grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }}
+		.grid {{
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+			gap: 20px;
+			margin: 20px 0;
+		}}
 
-        .card {{
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s;
-        }}
+		.card {{
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			border-radius: 10px;
+			padding: 20px;
+			transition: all 0.3s;
+		}}
 
-        .card:hover {{
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
-            border-color: #4ecdc4;
-        }}
+		.card:hover {{
+			transform: translateY(-5px);
+			box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+			border-color: #4ecdc4;
+		}}
 
-        .card img {{
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            background: #000;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }}
+		.card img {{
+			width: 100%;
+			height: auto;
+			border-radius: 8px;
+			background: #000;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+		}}
 
-        .card-title {{
-            font-size: 1.3em;
-            margin: 15px 0 10px 0;
-            color: #fff;
-            font-weight: bold;
-        }}
+		.card-title {{
+			font-size: 1.3em;
+			margin: 15px 0 10px 0;
+			color: #fff;
+			font-weight: bold;
+		}}
 
-        .stats {{
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-            font-size: 0.9em;
-        }}
+		.stats {{
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 10px;
+			margin: 15px 0;
+			font-size: 0.9em;
+		}}
 
-        .stat {{
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px;
-            border-radius: 5px;
-        }}
+		.stat {{
+			background: rgba(0, 0, 0, 0.3);
+			padding: 8px;
+			border-radius: 5px;
+		}}
 
-        .stat-label {{
-            color: #aaa;
-            font-size: 0.85em;
-            text-transform: uppercase;
-        }}
+		.stat-label {{
+			color: #aaa;
+			font-size: 0.85em;
+			text-transform: uppercase;
+		}}
 
-        .stat-value {{
-            color: #4ecdc4;
-            font-weight: bold;
-            font-size: 1.1em;
-        }}
+		.stat-value {{
+			color: #4ecdc4;
+			font-weight: bold;
+			font-size: 1.1em;
+		}}
 
-        .tile-sheet {{
-            background: #000;
-            border: 2px solid #4ecdc4;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin: 20px 0;
-        }}
+		.tile-sheet {{
+			background: #000;
+			border: 2px solid #4ecdc4;
+			border-radius: 10px;
+			padding: 20px;
+			text-align: center;
+			margin: 20px 0;
+		}}
 
-        .tile-sheet img {{
-            max-width: 100%;
-            height: auto;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }}
+		.tile-sheet img {{
+			max-width: 100%;
+			height: auto;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+		}}
 
-        table {{
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            overflow: hidden;
-        }}
+		table {{
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			background: rgba(0, 0, 0, 0.3);
+			border-radius: 10px;
+			overflow: hidden;
+		}}
 
-        th {{
-            background: rgba(78, 205, 196, 0.2);
-            padding: 12px;
-            text-align: left;
-            color: #4ecdc4;
-            font-weight: bold;
-        }}
+		th {{
+			background: rgba(78, 205, 196, 0.2);
+			padding: 12px;
+			text-align: left;
+			color: #4ecdc4;
+			font-weight: bold;
+		}}
 
-        td {{
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }}
+		td {{
+			padding: 10px 12px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}}
 
-        tr:hover {{
-            background: rgba(255, 255, 255, 0.05);
-        }}
+		tr:hover {{
+			background: rgba(255, 255, 255, 0.05);
+		}}
 
-        .footer {{
-            margin-top: 50px;
-            text-align: center;
-            color: #aaa;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }}
+		.footer {{
+			margin-top: 50px;
+			text-align: center;
+			color: #aaa;
+			padding-top: 30px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}}
 
-        .badge {{
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin: 2px;
-        }}
+		.badge {{
+			display: inline-block;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 0.8em;
+			font-weight: bold;
+			margin: 2px;
+		}}
 
-        .badge-dragon {{ background: #ff6b6b; }}
-        .badge-slime {{ background: #4ecdc4; }}
-        .badge-undead {{ background: #9b59b6; }}
-        .badge-beast {{ background: #f39c12; }}
-        .badge-metal {{ background: #95a5a6; }}
-        .badge-demon {{ background: #c0392b; }}
+		.badge-dragon {{ background: #ff6b6b; }}
+		.badge-slime {{ background: #4ecdc4; }}
+		.badge-undead {{ background: #9b59b6; }}
+		.badge-beast {{ background: #f39c12; }}
+		.badge-metal {{ background: #95a5a6; }}
+		.badge-demon {{ background: #c0392b; }}
 
-        code {{
-            background: rgba(0, 0, 0, 0.5);
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-            color: #4ecdc4;
-        }}
-    </style>
+		code {{
+			background: rgba(0, 0, 0, 0.5);
+			padding: 2px 6px;
+			border-radius: 3px;
+			font-family: 'Courier New', monospace;
+			color: #4ecdc4;
+		}}
+	</style>
 </head>
 <body>
-    <div class="container">
+	<div class="container">
 """
 
-    def generate_html_footer(self) -> str:
-        """Generate HTML footer"""
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        return f"""
-        <div class="footer">
-            <p>Dragon Warrior Asset Catalog</p>
-            <p>Generated on {now}</p>
-            <p>ROM Version: PRG1 | Extraction Tool v1.0</p>
-        </div>
-    </div>
+	def generate_html_footer(self) -> str:
+		"""Generate HTML footer"""
+		now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+		return f"""
+		<div class="footer">
+			<p>Dragon Warrior Asset Catalog</p>
+			<p>Generated on {now}</p>
+			<p>ROM Version: PRG1 | Extraction Tool v1.0</p>
+		</div>
+	</div>
 </body>
 </html>
 """
 
-    def generate_navigation(self) -> str:
-        """Generate navigation menu"""
-        return """
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="monsters.html">Monsters</a>
-            <a href="chr_tiles.html">CHR Tiles</a>
-            <a href="items.html">Items</a>
-            <a href="spells.html">Spells</a>
-            <a href="dialogs.html">Dialogs</a>
-            <a href="palettes.html">Palettes</a>
-        </nav>
+	def generate_navigation(self) -> str:
+		"""Generate navigation menu"""
+		return """
+		<nav>
+			<a href="index.html">Home</a>
+			<a href="monsters.html">Monsters</a>
+			<a href="chr_tiles.html">CHR Tiles</a>
+			<a href="items.html">Items</a>
+			<a href="spells.html">Spells</a>
+			<a href="dialogs.html">Dialogs</a>
+			<a href="palettes.html">Palettes</a>
+		</nav>
 """
 
-    def generate_index_page(self):
-        """Generate main index page"""
-        html = self.generate_html_header("Home")
-        html += """
-        <h1>🐉 Dragon Warrior Asset Catalog</h1>
-        <p class="subtitle">Complete extraction of Dragon Warrior (NES) game assets</p>
+	def generate_index_page(self):
+		"""Generate main index page"""
+		html = self.generate_html_header("Home")
+		html += """
+		<h1>🐉 Dragon Warrior Asset Catalog</h1>
+		<p class="subtitle">Complete extraction of Dragon Warrior (NES) game assets</p>
 """
-        html += self.generate_navigation()
+		html += self.generate_navigation()
 
-        html += """
-        <div class="section">
-            <h2>About This Catalog</h2>
-            <p>This catalog contains all extracted assets from Dragon Warrior (NES) PRG1 ROM, including:</p>
-            <ul style="margin: 20px 0 20px 40px; line-height: 2;">
-                <li><strong>39 Monster Sprites</strong> with complete stat information</li>
-                <li><strong>1024 CHR Tiles</strong> (16KB pattern tables)</li>
-                <li><strong>35 Items</strong> with prices and effects</li>
-                <li><strong>10 Spells</strong> with MP costs</li>
-                <li><strong>Dialog Text</strong> from all NPCs</li>
-                <li><strong>8 Color Palettes</strong> (4 background + 4 sprite)</li>
-            </ul>
-        </div>
+		html += """
+		<div class="section">
+			<h2>About This Catalog</h2>
+			<p>This catalog contains all extracted assets from Dragon Warrior (NES) PRG1 ROM, including:</p>
+			<ul style="margin: 20px 0 20px 40px; line-height: 2;">
+				<li><strong>39 Monster Sprites</strong> with complete stat information</li>
+				<li><strong>1024 CHR Tiles</strong> (16KB pattern tables)</li>
+				<li><strong>35 Items</strong> with prices and effects</li>
+				<li><strong>10 Spells</strong> with MP costs</li>
+				<li><strong>Dialog Text</strong> from all NPCs</li>
+				<li><strong>8 Color Palettes</strong> (4 background + 4 sprite)</li>
+			</ul>
+		</div>
 
-        <div class="section">
-            <h2>ROM Information</h2>
-            <table>
-                <tr><th>Property</th><th>Value</th></tr>
-                <tr><td>Game</td><td>Dragon Warrior (USA)</td></tr>
-                <tr><td>Version</td><td>PRG1 (Revised)</td></tr>
-                <tr><td>Mapper</td><td>MMC1 (Mapper 1)</td></tr>
-                <tr><td>PRG ROM</td><td>64KB (4 × 16KB banks)</td></tr>
-                <tr><td>CHR ROM</td><td>16KB (4 × 4KB banks)</td></tr>
-                <tr><td>File Size</td><td>81,936 bytes</td></tr>
-            </table>
-        </div>
+		<div class="section">
+			<h2>ROM Information</h2>
+			<table>
+				<tr><th>Property</th><th>Value</th></tr>
+				<tr><td>Game</td><td>Dragon Warrior (USA)</td></tr>
+				<tr><td>Version</td><td>PRG1 (Revised)</td></tr>
+				<tr><td>Mapper</td><td>MMC1 (Mapper 1)</td></tr>
+				<tr><td>PRG ROM</td><td>64KB (4 × 16KB banks)</td></tr>
+				<tr><td>CHR ROM</td><td>16KB (4 × 4KB banks)</td></tr>
+				<tr><td>File Size</td><td>81,936 bytes</td></tr>
+			</table>
+		</div>
 
-        <div class="section">
-            <h2>Extraction Status</h2>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-label">Monster Stats</div>
-                    <div class="stat-value">✓ 39/39 Verified</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">CHR Tiles</div>
-                    <div class="stat-value">✓ 1024/1024 Extracted</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">Items</div>
-                    <div class="stat-value">✓ 29/35 Extracted</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">Spells</div>
-                    <div class="stat-value">✓ 10/10 Verified</div>
-                </div>
-            </div>
-        </div>
+		<div class="section">
+			<h2>Extraction Status</h2>
+			<div class="stats">
+				<div class="stat">
+					<div class="stat-label">Monster Stats</div>
+					<div class="stat-value">✓ 39/39 Verified</div>
+				</div>
+				<div class="stat">
+					<div class="stat-label">CHR Tiles</div>
+					<div class="stat-value">✓ 1024/1024 Extracted</div>
+				</div>
+				<div class="stat">
+					<div class="stat-label">Items</div>
+					<div class="stat-value">✓ 29/35 Extracted</div>
+				</div>
+				<div class="stat">
+					<div class="stat-label">Spells</div>
+					<div class="stat-value">✓ 10/10 Verified</div>
+				</div>
+			</div>
+		</div>
 
-        <div class="section">
-            <h2>Quick Links</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Monster Database</h3>
-                    <p>Complete stats, sprites, and battle info for all 39 monsters</p>
-                    <p style="margin-top: 15px;"><a href="monsters.html" style="color: #4ecdc4;">View Monsters →</a></p>
-                </div>
-                <div class="card">
-                    <h3>CHR Tile Viewer</h3>
-                    <p>Browse all 1024 pattern table tiles with complete sprite sheet</p>
-                    <p style="margin-top: 15px;"><a href="chr_tiles.html" style="color: #4ecdc4;">View Tiles →</a></p>
-                </div>
-                <div class="card">
-                    <h3>Item Catalog</h3>
-                    <p>Weapons, armor, shields, and items with prices and effects</p>
-                    <p style="margin-top: 15px;"><a href="items.html" style="color: #4ecdc4;">View Items →</a></p>
-                </div>
-            </div>
-        </div>
+		<div class="section">
+			<h2>Quick Links</h2>
+			<div class="grid">
+				<div class="card">
+					<h3>Monster Database</h3>
+					<p>Complete stats, sprites, and battle info for all 39 monsters</p>
+					<p style="margin-top: 15px;"><a href="monsters.html" style="color: #4ecdc4;">View Monsters →</a></p>
+				</div>
+				<div class="card">
+					<h3>CHR Tile Viewer</h3>
+					<p>Browse all 1024 pattern table tiles with complete sprite sheet</p>
+					<p style="margin-top: 15px;"><a href="chr_tiles.html" style="color: #4ecdc4;">View Tiles →</a></p>
+				</div>
+				<div class="card">
+					<h3>Item Catalog</h3>
+					<p>Weapons, armor, shields, and items with prices and effects</p>
+					<p style="margin-top: 15px;"><a href="items.html" style="color: #4ecdc4;">View Items →</a></p>
+				</div>
+			</div>
+		</div>
 """
 
-        html += self.generate_html_footer()
+		html += self.generate_html_footer()
 
-        with open(self.output_dir / "index.html", 'w', encoding='utf-8') as f:
-            f.write(html)
+		with open(self.output_dir / "index.html", 'w', encoding='utf-8') as f:
+			f.write(html)
 
-    def generate_monsters_page(self):
-        """Generate monsters catalog page"""
-        monsters_json = self.extracted_dir / "graphics_comprehensive" / "monsters" / "monsters_database.json"
-        stats_json = self.extracted_dir / "json" / "monsters.json"
+	def generate_monsters_page(self):
+		"""Generate monsters catalog page"""
+		monsters_json = self.extracted_dir / "graphics_comprehensive" / "monsters" / "monsters_database.json"
+		stats_json = self.extracted_dir / "json" / "monsters.json"
 
-        if not monsters_json.exists() or not stats_json.exists():
-            return
+		if not monsters_json.exists() or not stats_json.exists():
+			return
 
-        with open(monsters_json, 'r') as f:
-            monsters_gfx = json.load(f)
+		with open(monsters_json, 'r') as f:
+			monsters_gfx = json.load(f)
 
-        with open(stats_json, 'r') as f:
-            monsters_stats = json.load(f)
+		with open(stats_json, 'r') as f:
+			monsters_stats = json.load(f)
 
-        html = self.generate_html_header("Monsters")
-        html += """
-        <h1>🐉 Monster Database</h1>
-        <p class="subtitle">Complete stats and sprites for all 39 monsters</p>
+		html = self.generate_html_header("Monsters")
+		html += """
+		<h1>🐉 Monster Database</h1>
+		<p class="subtitle">Complete stats and sprites for all 39 monsters</p>
 """
-        html += self.generate_navigation()
+		html += self.generate_navigation()
 
-        html += '<div class="section"><h2>All Monsters</h2><div class="grid">'
+		html += '<div class="section"><h2>All Monsters</h2><div class="grid">'
 
-        for i, monster in enumerate(monsters_gfx):
-            name = monster.get('name', f'Unknown {i}')
-            sprite_tiles = monster.get('sprite_tiles', 0)
-            rom_ptr = monster.get('rom_pointer_offset', 'Unknown')
+		for i, monster in enumerate(monsters_gfx):
+			name = monster.get('name', f'Unknown {i}')
+			sprite_tiles = monster.get('sprite_tiles', 0)
+			rom_ptr = monster.get('rom_pointer_offset', 'Unknown')
 
-            # Get stats from stats JSON
-            stats = monsters_stats.get(str(i), {})
-            hp = stats.get('hp', 0)
-            strength = stats.get('strength', 0)
-            agility = stats.get('agility', 0)
-            exp = stats.get('experience', 0)
-            gold = stats.get('gold', 0)
+			# Get stats from stats JSON
+			stats = monsters_stats.get(str(i), {})
+			hp = stats.get('hp', 0)
+			strength = stats.get('strength', 0)
+			agility = stats.get('agility', 0)
+			exp = stats.get('experience', 0)
+			gold = stats.get('gold', 0)
 
-            # Determine type badge
-            monster_type = 'beast'
-            if i <= 2:
-                monster_type = 'slime'
-            elif i in [31, 35, 38]:
-                monster_type = 'dragon'
-            elif i in [3, 8, 15, 18, 24]:
-                monster_type = 'undead'
-            elif i in [13, 16]:
-                monster_type = 'metal'
-            elif i in [29, 39]:
-                monster_type = 'demon'
+			# Determine type badge
+			monster_type = 'beast'
+			if i <= 2:
+				monster_type = 'slime'
+			elif i in [31, 35, 38]:
+				monster_type = 'dragon'
+			elif i in [3, 8, 15, 18, 24]:
+				monster_type = 'undead'
+			elif i in [13, 16]:
+				monster_type = 'metal'
+			elif i in [29, 39]:
+				monster_type = 'demon'
 
-            html += f'''
-            <div class="card">
-                <div class="card-title">
-                    {name}
-                    <span class="badge badge-{monster_type}">{monster_type.upper()}</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">{hp}</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">{strength}</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">{agility}</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">{exp}</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">{gold}G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">{sprite_tiles}</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>{rom_ptr}</code>
-                </p>
-            </div>
+			html += f'''
+			<div class="card">
+				<div class="card-title">
+					{name}
+					<span class="badge badge-{monster_type}">{monster_type.upper()}</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">{hp}</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">{strength}</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">{agility}</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">{exp}</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">{gold}G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">{sprite_tiles}</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>{rom_ptr}</code>
+				</p>
+			</div>
 '''
 
-        html += '</div></div>'
-        html += self.generate_html_footer()
+		html += '</div></div>'
+		html += self.generate_html_footer()
 
-        with open(self.output_dir / "monsters.html", 'w', encoding='utf-8') as f:
-            f.write(html)
+		with open(self.output_dir / "monsters.html", 'w', encoding='utf-8') as f:
+			f.write(html)
 
-    def generate_chr_tiles_page(self):
-        """Generate CHR tiles catalog page"""
-        chr_sheet = self.extracted_dir / "chr_tiles" / "chr_tiles_complete_sheet.png"
+	def generate_chr_tiles_page(self):
+		"""Generate CHR tiles catalog page"""
+		chr_sheet = self.extracted_dir / "chr_tiles" / "chr_tiles_complete_sheet.png"
 
-        if not chr_sheet.exists():
-            return
+		if not chr_sheet.exists():
+			return
 
-        # Copy sprite sheet to output
-        shutil.copy(chr_sheet, self.images_dir / "chr_tiles_sheet.png")
+		# Copy sprite sheet to output
+		shutil.copy(chr_sheet, self.images_dir / "chr_tiles_sheet.png")
 
-        html = self.generate_html_header("CHR Tiles")
-        html += """
-        <h1>🎨 CHR Tile Viewer</h1>
-        <p class="subtitle">All 1024 pattern table tiles from 16KB CHR ROM</p>
+		html = self.generate_html_header("CHR Tiles")
+		html += """
+		<h1>🎨 CHR Tile Viewer</h1>
+		<p class="subtitle">All 1024 pattern table tiles from 16KB CHR ROM</p>
 """
-        html += self.generate_navigation()
+		html += self.generate_navigation()
 
-        html += '''
-        <div class="section">
-            <h2>Complete CHR Sprite Sheet</h2>
-            <p>All 1024 tiles arranged in a 16×64 grid. Each tile is 8×8 pixels, upscaled 4× for visibility.</p>
-            <div class="tile-sheet">
-                <img src="images/chr_tiles_sheet.png" alt="CHR Tiles Complete Sheet">
-            </div>
-            <table>
-                <tr><th>Property</th><th>Value</th></tr>
-                <tr><td>Total Tiles</td><td>1024</td></tr>
-                <tr><td>Banks</td><td>4 banks × 256 tiles</td></tr>
-                <tr><td>Tile Size</td><td>8×8 pixels</td></tr>
-                <tr><td>Bytes per Tile</td><td>16 bytes (2 bitplanes)</td></tr>
-                <tr><td>Colors per Tile</td><td>4 colors (2 bits per pixel)</td></tr>
-                <tr><td>Total CHR Size</td><td>16KB (16,384 bytes)</td></tr>
-            </table>
-        </div>
+		html += '''
+		<div class="section">
+			<h2>Complete CHR Sprite Sheet</h2>
+			<p>All 1024 tiles arranged in a 16×64 grid. Each tile is 8×8 pixels, upscaled 4× for visibility.</p>
+			<div class="tile-sheet">
+				<img src="images/chr_tiles_sheet.png" alt="CHR Tiles Complete Sheet">
+			</div>
+			<table>
+				<tr><th>Property</th><th>Value</th></tr>
+				<tr><td>Total Tiles</td><td>1024</td></tr>
+				<tr><td>Banks</td><td>4 banks × 256 tiles</td></tr>
+				<tr><td>Tile Size</td><td>8×8 pixels</td></tr>
+				<tr><td>Bytes per Tile</td><td>16 bytes (2 bitplanes)</td></tr>
+				<tr><td>Colors per Tile</td><td>4 colors (2 bits per pixel)</td></tr>
+				<tr><td>Total CHR Size</td><td>16KB (16,384 bytes)</td></tr>
+			</table>
+		</div>
 '''
 
-        html += self.generate_html_footer()
+		html += self.generate_html_footer()
 
-        with open(self.output_dir / "chr_tiles.html", 'w', encoding='utf-8') as f:
-            f.write(html)
+		with open(self.output_dir / "chr_tiles.html", 'w', encoding='utf-8') as f:
+			f.write(html)
 
-    def generate_items_page(self):
-        """Generate items catalog page"""
-        items_json = self.extracted_dir / "json" / "items.json"
+	def generate_items_page(self):
+		"""Generate items catalog page"""
+		items_json = self.extracted_dir / "json" / "items.json"
 
-        if not items_json.exists():
-            return
+		if not items_json.exists():
+			return
 
-        with open(items_json, 'r') as f:
-            items = json.load(f)
+		with open(items_json, 'r') as f:
+			items = json.load(f)
 
-        html = self.generate_html_header("Items")
-        html += """
-        <h1>⚔️ Item Catalog</h1>
-        <p class="subtitle">Weapons, armor, tools, and consumables</p>
+		html = self.generate_html_header("Items")
+		html += """
+		<h1>⚔️ Item Catalog</h1>
+		<p class="subtitle">Weapons, armor, tools, and consumables</p>
 """
-        html += self.generate_navigation()
+		html += self.generate_navigation()
 
-        # Group items by type
-        weapons = {}
-        armor = {}
-        shields = {}
-        tools = {}
+		# Group items by type
+		weapons = {}
+		armor = {}
+		shields = {}
+		tools = {}
 
-        for item_id, item in items.items():
-            item_type = item.get('type', 'tool')
-            if 'sword' in item.get('name', '').lower() or 'club' in item.get('name', '').lower():
-                weapons[item_id] = item
-            elif 'armor' in item.get('name', '').lower() or 'clothes' in item.get('name', '').lower():
-                armor[item_id] = item
-            elif 'shield' in item.get('name', '').lower():
-                shields[item_id] = item
-            else:
-                tools[item_id] = item
+		for item_id, item in items.items():
+			item_type = item.get('type', 'tool')
+			if 'sword' in item.get('name', '').lower() or 'club' in item.get('name', '').lower():
+				weapons[item_id] = item
+			elif 'armor' in item.get('name', '').lower() or 'clothes' in item.get('name', '').lower():
+				armor[item_id] = item
+			elif 'shield' in item.get('name', '').lower():
+				shields[item_id] = item
+			else:
+				tools[item_id] = item
 
-        html += '<div class="section"><h2>⚔️ Weapons</h2><div class="grid">'
-        for item_id, item in weapons.items():
-            html += self._generate_item_card(item)
-        html += '</div></div>'
+		html += '<div class="section"><h2>⚔️ Weapons</h2><div class="grid">'
+		for item_id, item in weapons.items():
+			html += self._generate_item_card(item)
+		html += '</div></div>'
 
-        html += '<div class="section"><h2>🛡️ Armor</h2><div class="grid">'
-        for item_id, item in armor.items():
-            html += self._generate_item_card(item)
-        html += '</div></div>'
+		html += '<div class="section"><h2>🛡️ Armor</h2><div class="grid">'
+		for item_id, item in armor.items():
+			html += self._generate_item_card(item)
+		html += '</div></div>'
 
-        html += '<div class="section"><h2>🛡️ Shields</h2><div class="grid">'
-        for item_id, item in shields.items():
-            html += self._generate_item_card(item)
-        html += '</div></div>'
+		html += '<div class="section"><h2>🛡️ Shields</h2><div class="grid">'
+		for item_id, item in shields.items():
+			html += self._generate_item_card(item)
+		html += '</div></div>'
 
-        html += '<div class="section"><h2>🔧 Tools & Items</h2><div class="grid">'
-        for item_id, item in tools.items():
-            html += self._generate_item_card(item)
-        html += '</div></div>'
+		html += '<div class="section"><h2>🔧 Tools & Items</h2><div class="grid">'
+		for item_id, item in tools.items():
+			html += self._generate_item_card(item)
+		html += '</div></div>'
 
-        html += self.generate_html_footer()
+		html += self.generate_html_footer()
 
-        with open(self.output_dir / "items.html", 'w', encoding='utf-8') as f:
-            f.write(html)
+		with open(self.output_dir / "items.html", 'w', encoding='utf-8') as f:
+			f.write(html)
 
-    def _generate_item_card(self, item: dict) -> str:
-        """Generate HTML card for an item"""
-        name = item.get('name', 'Unknown')
-        price = item.get('price', 0)
-        attack = item.get('attack_bonus', 0)
-        defense = item.get('defense_bonus', 0)
+	def _generate_item_card(self, item: dict) -> str:
+		"""Generate HTML card for an item"""
+		name = item.get('name', 'Unknown')
+		price = item.get('price', 0)
+		attack = item.get('attack_bonus', 0)
+		defense = item.get('defense_bonus', 0)
 
-        return f'''
-        <div class="card">
-            <div class="card-title">{name}</div>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-label">PRICE</div>
-                    <div class="stat-value">{price}G</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">ATK</div>
-                    <div class="stat-value">{attack if attack else '-'}</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">DEF</div>
-                    <div class="stat-value">{defense if defense else '-'}</div>
-                </div>
-            </div>
-        </div>
+		return f'''
+		<div class="card">
+			<div class="card-title">{name}</div>
+			<div class="stats">
+				<div class="stat">
+					<div class="stat-label">PRICE</div>
+					<div class="stat-value">{price}G</div>
+				</div>
+				<div class="stat">
+					<div class="stat-label">ATK</div>
+					<div class="stat-value">{attack if attack else '-'}</div>
+				</div>
+				<div class="stat">
+					<div class="stat-label">DEF</div>
+					<div class="stat-value">{defense if defense else '-'}</div>
+				</div>
+			</div>
+		</div>
 '''
 
-    def generate_all(self):
-        """Generate all catalog pages"""
-        print("Generating Dragon Warrior Asset Catalog...")
+	def generate_all(self):
+		"""Generate all catalog pages"""
+		print("Generating Dragon Warrior Asset Catalog...")
 
-        self.generate_index_page()
-        print("✓ Generated index.html")
+		self.generate_index_page()
+		print("✓ Generated index.html")
 
-        self.generate_monsters_page()
-        print("✓ Generated monsters.html")
+		self.generate_monsters_page()
+		print("✓ Generated monsters.html")
 
-        self.generate_chr_tiles_page()
-        print("✓ Generated chr_tiles.html")
+		self.generate_chr_tiles_page()
+		print("✓ Generated chr_tiles.html")
 
-        self.generate_items_page()
-        print("✓ Generated items.html")
+		self.generate_items_page()
+		print("✓ Generated items.html")
 
-        print(f"\n✓ Catalog complete! Open {self.output_dir / 'index.html'} in a browser")
+		print(f"\n✓ Catalog complete! Open {self.output_dir / 'index.html'} in a browser")
 
 
 def main():
-    """Main catalog generation entry point"""
-    repo_root = Path(__file__).parent.parent
-    extracted_dir = repo_root / "extracted_assets"
-    output_dir = repo_root / "docs" / "asset_catalog"
+	"""Main catalog generation entry point"""
+	repo_root = Path(__file__).parent.parent
+	extracted_dir = repo_root / "extracted_assets"
+	output_dir = repo_root / "docs" / "asset_catalog"
 
-    generator = AssetCatalogGenerator(str(extracted_dir), str(output_dir))
-    generator.generate_all()
+	generator = AssetCatalogGenerator(str(extracted_dir), str(output_dir))
+	generator.generate_all()
 
 
 if __name__ == "__main__":
-    main()
+	main()

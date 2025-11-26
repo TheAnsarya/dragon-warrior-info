@@ -312,12 +312,12 @@
 .alias ThisNPCYPos      $43     ;Copy of current NPCs y block position on map.
 
 .alias StatBonus        $42     ;When stat penalties are applied, any value here will
-                                ;be added in as a bonus. Potential bonus of 0-3 points.
+				;be added in as a bonus. Potential bonus of 0-3 points.
 .alias StatPenalty      $43     ;Lower 2 bits only. stat penalties work as follows:
-                                ;If bit 0 is clear -> strength is reduced by 10%.
-                                ;If bit 0 is set   -> max MP is reduced by 10%.
-                                ;If bit 1 is clear -> agility is reduced by 10%.
-                                ;If bit 1 is set   -> max HP is reduced by 10%.
+				;If bit 0 is clear -> strength is reduced by 10%.
+				;If bit 0 is set   -> max MP is reduced by 10%.
+				;If bit 1 is clear -> agility is reduced by 10%.
+				;If bit 1 is set   -> max HP is reduced by 10%.
 
 .alias MapNumber        $45     ;Current map player is on.
 .alias JoypadBit        $46     ;LSB Contains current bit read from joypad 1.
@@ -329,7 +329,7 @@
 .alias NTBlockX         $4A     ;Nametable X block position, #$00-#$1F(1/2 X tile position).
 .alias NTBlockY         $4B     ;Nametable Y block position, #$00-#$0E(1/2 y tile position).
 .alias BlkRemoveFlgs    $4C     ;Lower nibble is flags of tiles to remove when changing a map block.
-                                ;1-upper left, 2-upper right, 4-lower left, 8-lower right.
+				;1-upper left, 2-upper right, 4-lower left, 8-lower right.
 .alias BridgeFlashCntr  $4C     ;Used to count palette flash cycles when rainbow bridge is created.
 .alias TileCounter      $4D     ;Used to count tiles when modifying blocks.
 .alias RowCounter       $4D     ;Used to count block rows when clearing out nametable on map change.
@@ -421,24 +421,24 @@
 .alias GoldLB           $BC     ;Current gold, lower byte.
 .alias GoldUB           $BD     ;Current gold, upper bytee.
 .alias EqippedItems     $BE     ;Current equipped items %WWWAAASS W-weapon, A-armor, S-shield
-                                ;Value  Weapon           Armor            Shield
-                                ;--------------------------------------------------------------------
-                                ; 000   None             None             None
-                                ; 001   Bamboo Pole      Clothes          Small Shield
-                                ; 010   Club             Leather Armor    Large Shield
-                                ; 011   Copper Sword     Chain Mail       Silver Shield
-                                ; 100   Hand Axe         Half Plate       N/A
-                                ; 101   Broad Sword      Full Plate       N/A
-                                ; 110   Flame Sword      Magic Armor      N/A
-                                ; 111   Erdrick's Sword  Erdrick's Armor  N/A
+				;Value  Weapon           Armor            Shield
+				;--------------------------------------------------------------------
+				; 000   None             None             None
+				; 001   Bamboo Pole      Clothes          Small Shield
+				; 010   Club             Leather Armor    Large Shield
+				; 011   Copper Sword     Chain Mail       Silver Shield
+				; 100   Hand Axe         Half Plate       N/A
+				; 101   Broad Sword      Full Plate       N/A
+				; 110   Flame Sword      Magic Armor      N/A
+				; 111   Erdrick's Sword  Erdrick's Armor  N/A
 
-                                ;Inventory
-                                ;$00=None, $01=Torch, $02=Fairy Water, $03=Wings
-                                ;$04=Dragon's Scale, $05=Fairy Flute, $06=Fighter's Ring
-                                ;$07=Erdrick's Token, $08=Gwaelin's Love, $09=Cursed Belt
-                                ;$0A=Slver Harp, $0B=Death Necklace, $0C=Stones of Sunlight
-                                ;$0D=Staff of Rain, $0E=Rainbow Drop, $0F=Herb(can't be used).
-                                ;--------------------------------------------------------------------
+				;Inventory
+				;$00=None, $01=Torch, $02=Fairy Water, $03=Wings
+				;$04=Dragon's Scale, $05=Fairy Flute, $06=Fighter's Ring
+				;$07=Erdrick's Token, $08=Gwaelin's Love, $09=Cursed Belt
+				;$0A=Slver Harp, $0B=Death Necklace, $0C=Stones of Sunlight
+				;$0D=Staff of Rain, $0E=Rainbow Drop, $0F=Herb(can't be used).
+				;--------------------------------------------------------------------
 .alias InventoryKeys    $BF     ;Magic key count. Not part of regular inventory.
 .alias InventoryHerbs   $C0     ;Herb count. Not part of regular inventory.
 .alias InventoryPtr     $00C1   ;Inventory pointer.
@@ -456,27 +456,27 @@
 .alias DisplayedAttck   $CC     ;Attack power, for display only.
 .alias DisplayedDefns   $CD     ;Defense power, for display only.
 .alias SpellFlags       $CE     ;Flags that keep track of the player's spells.
-                                ;%00000001-Heal
-                                ;%00000010-Hurt
-                                ;%00000100-Sleep
-                                ;%00001000-Radiant
-                                ;%00010000-Stopspell
-                                ;%00100000-Outside
-                                ;%01000000-Return
-                                ;%10000000-Repel
+				;%00000001-Heal
+				;%00000010-Hurt
+				;%00000100-Sleep
+				;%00001000-Radiant
+				;%00010000-Stopspell
+				;%00100000-Outside
+				;%01000000-Return
+				;%10000000-Repel
 .alias ModsnSpells      $CF     ;Two more spell flags and stat enhancing items.
-                                ;%00000001-Healmore Spell.
-                                ;%00000010-Hurtmore Spell.
-                                ;%00000100-Dragonlord castle secret passage found.
-                                ;%00001000-Rainbow bridge created.
-                                ;%00010000-Wearing Dragon's scale.
-                                ;%00100000-Wearing Fighter's ring.
-                                ;%01000000-Wearing Cursed belt.
-                                ;%10000000-Wearing Death necklace.
+				;%00000001-Healmore Spell.
+				;%00000010-Hurtmore Spell.
+				;%00000100-Dragonlord castle secret passage found.
+				;%00001000-Rainbow bridge created.
+				;%00010000-Wearing Dragon's scale.
+				;%00100000-Wearing Fighter's ring.
+				;%01000000-Wearing Cursed belt.
+				;%10000000-Wearing Death necklace.
 
 .alias LightDiameter    $D0     ;Diameter in blocks of light around player in dungeons.
 .alias PPUHorzVert      $D1     ;#$00=Write PPU data in vertical column(add #$20 every write).
-                                ;non-zero=Write PPU data horizontally.
+				;non-zero=Write PPU data horizontally.
 .alias AddAttribData    $D1     ;#$00=Move attrib data to buffer. Non-zero=skip attrib table data.
 
 .alias WndTxtXCoord     $D2     ;X coordinant of current text byte relative to the window.
@@ -496,30 +496,30 @@
 .alias DescTemp         $DE     ;Temporary storage of item description byte.
 .alias PalFlashCntr     $DE     ;Counter used when flashing palette when enemy hit.
 .alias PlayerFlags      $DF     ;Additional player flags.
-                                ;%00000001-Carrying Gwaelin.
-                                ;%00000010-Gwaelin returned.
-                                ;%00000100-Player received a death necklace.
-                                ;%00001000-Player has been beyond the throne room.
-                                ;%00010000-Player stopspelled.
-                                ;%00100000-Enemy stopspelled.
-                                ;%01000000-Enemy asleep.
-                                ;%10000000-Player asleep.
+				;%00000001-Carrying Gwaelin.
+				;%00000010-Gwaelin returned.
+				;%00000100-Player received a death necklace.
+				;%00001000-Player has been beyond the throne room.
+				;%00010000-Player stopspelled.
+				;%00100000-Enemy stopspelled.
+				;%01000000-Enemy asleep.
+				;%10000000-Player asleep.
 
 .alias EnNumber         $E0     ;Enemy number. $00 through $27.
 .alias ThisTile         $E0     ;Current block type player is standing on.
 
 .alias EnCurntHP        $E2     ;Enemy's current hit points.
 .alias MjArmrHP         $E3     ;Increments every movement and increments HP every
-                                ;3 steps if wearing magic armor.
+				;3 steps if wearing magic armor.
 .alias StoryFlags       $E4     ;Flags that keep track of major game events.
-                                ;%00000001-
-                                ;%00000010-Golem defeated.
-                                ;%00000100-Dragonlord defeated.
-                                ;%00001000-Left throne room.
-                                ;%00010000-
-                                ;%00100000-
-                                ;%01000000-Green dragon defeated.
-                                ;%10000000-
+				;%00000001-
+				;%00000010-Golem defeated.
+				;%00000100-Dragonlord defeated.
+				;%00001000-Left throne room.
+				;%00010000-
+				;%00100000-
+				;%01000000-Green dragon defeated.
+				;%10000000-
 .alias MessageSpeed     $E5     ;#$00-fast, #$01-normal, #$02-slow.
 
 ;--------------------------------------[Sound Engine Variables]--------------------------------------
@@ -563,19 +563,19 @@
 .alias EnBaseHP         $0102   ;Enemy base hit points.
 
 .alias EnSpell          $0103   ;Enemy spells.
-                                ;The enemy spells are broken into the upper and lower nibbles.
-                                ;The upper nibble controls the sleep, stopspell, heal and
-                                ;healmore spells.  Bits 4 and 5 control the percent the spell
-                                ;will be cast:
-                                ;00=0%, 01=25%, 10=50%, 11 = 75%.
-                                ;Bits 6 and 7 control which spell:
-                                ;00=sleep, 01=stopspell, 10=heal, 11=healmore.
-                                ;The lower nibble controls the hurt, hurtmore, fire1 and fire2
-                                ;spells.  Fire2 is only used by the final boss. Bits 0 and 1
-                                ;control the percent the spell will be cast:
-                                ;00=0%, 01=25%, 10=50%, 11 = 75%.
-                                ;Bits 2 and 3 control which spell:
-                                ;00=hurt, 01=hurtmore, 10=fire1, 11=fire2.
+				;The enemy spells are broken into the upper and lower nibbles.
+				;The upper nibble controls the sleep, stopspell, heal and
+				;healmore spells.  Bits 4 and 5 control the percent the spell
+				;will be cast:
+				;00=0%, 01=25%, 10=50%, 11 = 75%.
+				;Bits 6 and 7 control which spell:
+				;00=sleep, 01=stopspell, 10=heal, 11=healmore.
+				;The lower nibble controls the hurt, hurtmore, fire1 and fire2
+				;spells.  Fire2 is only used by the final boss. Bits 0 and 1
+				;control the percent the spell will be cast:
+				;00=0%, 01=25%, 10=50%, 11 = 75%.
+				;Bits 2 and 3 control which spell:
+				;00=hurt, 01=hurtmore, 10=fire1, 11=fire2.
 
 .alias BankFuncDatLB    $0103   ;Pointer to bank function data after BRK command, lower byte.
 .alias BankFuncDatUB    $0104   ;Pointer to bank function data after BRK command, upper byte.
@@ -642,8 +642,8 @@
 .alias SndEngineStat    $6005   ;If not 0, sound engine is processing.
 
 .alias DrgnLrdPal       $600A   ;Read only once and loads a special palette when
-                                ;the dradonlord is defeated. The palette does not
-                                ;seemed to be used for anything.
+				;the dradonlord is defeated. The palette does not
+				;seemed to be used for anything.
 
 .alias DoorXPos         $600C   ;Through $601A. X and y positions of doors
 .alias DoorYPos         $600D   ;Through $601B. opened on the current map.

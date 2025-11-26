@@ -1,302 +1,302 @@
 {
-  "summary": {
-    "total_monsters": 39,
-    "unique_sprite_definitions": 19,
-    "total_unique_tiles": 252,
-    "average_tiles_per_sprite": 13.26,
-    "max_sharing": 3,
-    "sprite_reuse_efficiency": "20 monsters reuse sprites"
-  },
-  "sprite_definitions": [
-    {
-      "sprite_name": "ArKntSprts",
-      "tile_count": 4,
-      "monster_count": 1,
-      "monsters": [
-        {
-          "id": 36,
-          "name": "Armored Knight"
-        }
-      ]
-    },
-    {
-      "sprite_name": "AxKntSprts",
-      "tile_count": 6,
-      "monster_count": 1,
-      "monsters": [
-        {
-          "id": 33,
-          "name": "Axe Knight"
-        }
-      ]
-    },
-    {
-      "sprite_name": "DKnightSprts",
-      "tile_count": 4,
-      "monster_count": 2,
-      "monsters": [
-        {
-          "id": 23,
-          "name": "Wraith Knight"
-        },
-        {
-          "id": 28,
-          "name": "Demon Knight"
-        }
-      ]
-    },
-    {
-      "sprite_name": "DgLdSprts",
-      "tile_count": 22,
-      "monster_count": 1,
-      "monsters": [
-        {
-          "id": 38,
-          "name": "Dragonlord (Form 1)"
-        }
-      ]
-    },
-    {
-      "sprite_name": "DgnSprts",
-      "tile_count": 9,
-      "monster_count": 1,
-      "monsters": [
-        {
-          "id": 30,
-          "name": "Green Dragon"
-        }
-      ]
-    },
-    {
-      "sprite_name": "DrakeeSprts",
-      "tile_count": 10,
-      "monster_count": 3,
-      "monsters": [
-        {
-          "id": 2,
-          "name": "Drakee"
-        },
-        {
-          "id": 5,
-          "name": "Magidrakee"
-        },
-        {
-          "id": 10,
-          "name": "Drakeema"
-        }
-      ]
-    },
-    {
-      "sprite_name": "DrollSprts",
-      "tile_count": 11,
-      "monster_count": 2,
-      "monsters": [
-        {
-          "id": 9,
-          "name": "Droll"
-        },
-        {
-          "id": 20,
-          "name": "Drollmagi"
-        }
-      ]
-    },
-    {
-      "sprite_name": "DruinSprts",
-      "tile_count": 11,
-      "monster_count": 2,
-      "monsters": [
-        {
-          "id": 7,
-          "name": "Druin"
-        },
-        {
-          "id": 19,
-          "name": "Druinlord"
-        }
-      ]
-    },
-    {
-      "sprite_name": "GhstSprts",
-      "tile_count": 13,
-      "monster_count": 3,
-      "monsters": [
-        {
-          "id": 3,
-          "name": "Ghost"
-        },
-        {
-          "id": 8,
-          "name": "Poltergeist"
-        },
-        {
-          "id": 17,
-          "name": "Specter"
-        }
-      ]
-    },
-    {
-      "sprite_name": "GolemSprts",
-      "tile_count": 31,
-      "monster_count": 3,
-      "monsters": [
-        {
-          "id": 24,
-          "name": "Golem"
-        },
-        {
-          "id": 25,
-          "name": "Goldman"
-        },
-        {
-          "id": 35,
-          "name": "Stoneman"
-        }
-      ]
-    },
-    {
-      "sprite_name": "KntSprts",
-      "tile_count": 31,
-      "monster_count": 1,
-      "monsters": [
-        {
-          "id": 26,
-          "name": "Knight"
-        }
-      ]
-    },
-    {
-      "sprite_name": "MagSprts",
-      "tile_count": 4,
-      "monster_count": 1,
-      "monsters": [
-        {
-          "id": 4,
-          "name": "Magician"
-        }
-      ]
-    },
-    {
-      "sprite_name": "RBDgnSprts",
-      "tile_count": 2,
-      "monster_count": 2,
-      "monsters": [
-        {
-          "id": 34,
-          "name": "Blue Dragon"
-        },
-        {
-          "id": 37,
-          "name": "Red Dragon"
-        }
-      ]
-    },
-    {
-      "sprite_name": "ScorpSprts",
-      "tile_count": 17,
-      "monster_count": 3,
-      "monsters": [
-        {
-          "id": 6,
-          "name": "Scorpion"
-        },
-        {
-          "id": 13,
-          "name": "Metal Scorpion"
-        },
-        {
-          "id": 22,
-          "name": "Rouge Scorpion"
-        }
-      ]
-    },
-    {
-      "sprite_name": "SkelSprts",
-      "tile_count": 14,
-      "monster_count": 2,
-      "monsters": [
-        {
-          "id": 11,
-          "name": "Skeleton"
-        },
-        {
-          "id": 15,
-          "name": "Wraith"
-        }
-      ]
-    },
-    {
-      "sprite_name": "SlimeSprts",
-      "tile_count": 8,
-      "monster_count": 3,
-      "monsters": [
-        {
-          "id": 0,
-          "name": "Slime"
-        },
-        {
-          "id": 1,
-          "name": "Red Slime"
-        },
-        {
-          "id": 16,
-          "name": "Metal Slime"
-        }
-      ]
-    },
-    {
-      "sprite_name": "WizSprts",
-      "tile_count": 4,
-      "monster_count": 2,
-      "monsters": [
-        {
-          "id": 12,
-          "name": "Warlock"
-        },
-        {
-          "id": 32,
-          "name": "Wizard"
-        }
-      ]
-    },
-    {
-      "sprite_name": "WolfSprts",
-      "tile_count": 30,
-      "monster_count": 3,
-      "monsters": [
-        {
-          "id": 14,
-          "name": "Wolf"
-        },
-        {
-          "id": 18,
-          "name": "Wolflord"
-        },
-        {
-          "id": 29,
-          "name": "Werewolf"
-        }
-      ]
-    },
-    {
-      "sprite_name": "WyvrnSprts",
-      "tile_count": 21,
-      "monster_count": 3,
-      "monsters": [
-        {
-          "id": 21,
-          "name": "Wyvern"
-        },
-        {
-          "id": 27,
-          "name": "Magiwyvern"
-        },
-        {
-          "id": 31,
-          "name": "Starwyvern"
-        }
-      ]
-    }
-  ],
-  "correction_note": "IMPORTANT: Previous documentation incorrectly stated '64 tiles for 64 different monsters'. In reality, 39 monsters use 19 unique sprite definitions comprising 252 total tiles. Sprite sharing is extensive - for example, SlimeSprts (8 tiles) is shared by Slime, Red Slime, and Metal Slime."
+	"summary": {
+		"total_monsters": 39,
+		"unique_sprite_definitions": 19,
+		"total_unique_tiles": 252,
+		"average_tiles_per_sprite": 13.26,
+		"max_sharing": 3,
+		"sprite_reuse_efficiency": "20 monsters reuse sprites"
+	},
+	"sprite_definitions": [
+		{
+			"sprite_name": "ArKntSprts",
+			"tile_count": 4,
+			"monster_count": 1,
+			"monsters": [
+				{
+					"id": 36,
+					"name": "Armored Knight"
+				}
+			]
+		},
+		{
+			"sprite_name": "AxKntSprts",
+			"tile_count": 6,
+			"monster_count": 1,
+			"monsters": [
+				{
+					"id": 33,
+					"name": "Axe Knight"
+				}
+			]
+		},
+		{
+			"sprite_name": "DKnightSprts",
+			"tile_count": 4,
+			"monster_count": 2,
+			"monsters": [
+				{
+					"id": 23,
+					"name": "Wraith Knight"
+				},
+				{
+					"id": 28,
+					"name": "Demon Knight"
+				}
+			]
+		},
+		{
+			"sprite_name": "DgLdSprts",
+			"tile_count": 22,
+			"monster_count": 1,
+			"monsters": [
+				{
+					"id": 38,
+					"name": "Dragonlord (Form 1)"
+				}
+			]
+		},
+		{
+			"sprite_name": "DgnSprts",
+			"tile_count": 9,
+			"monster_count": 1,
+			"monsters": [
+				{
+					"id": 30,
+					"name": "Green Dragon"
+				}
+			]
+		},
+		{
+			"sprite_name": "DrakeeSprts",
+			"tile_count": 10,
+			"monster_count": 3,
+			"monsters": [
+				{
+					"id": 2,
+					"name": "Drakee"
+				},
+				{
+					"id": 5,
+					"name": "Magidrakee"
+				},
+				{
+					"id": 10,
+					"name": "Drakeema"
+				}
+			]
+		},
+		{
+			"sprite_name": "DrollSprts",
+			"tile_count": 11,
+			"monster_count": 2,
+			"monsters": [
+				{
+					"id": 9,
+					"name": "Droll"
+				},
+				{
+					"id": 20,
+					"name": "Drollmagi"
+				}
+			]
+		},
+		{
+			"sprite_name": "DruinSprts",
+			"tile_count": 11,
+			"monster_count": 2,
+			"monsters": [
+				{
+					"id": 7,
+					"name": "Druin"
+				},
+				{
+					"id": 19,
+					"name": "Druinlord"
+				}
+			]
+		},
+		{
+			"sprite_name": "GhstSprts",
+			"tile_count": 13,
+			"monster_count": 3,
+			"monsters": [
+				{
+					"id": 3,
+					"name": "Ghost"
+				},
+				{
+					"id": 8,
+					"name": "Poltergeist"
+				},
+				{
+					"id": 17,
+					"name": "Specter"
+				}
+			]
+		},
+		{
+			"sprite_name": "GolemSprts",
+			"tile_count": 31,
+			"monster_count": 3,
+			"monsters": [
+				{
+					"id": 24,
+					"name": "Golem"
+				},
+				{
+					"id": 25,
+					"name": "Goldman"
+				},
+				{
+					"id": 35,
+					"name": "Stoneman"
+				}
+			]
+		},
+		{
+			"sprite_name": "KntSprts",
+			"tile_count": 31,
+			"monster_count": 1,
+			"monsters": [
+				{
+					"id": 26,
+					"name": "Knight"
+				}
+			]
+		},
+		{
+			"sprite_name": "MagSprts",
+			"tile_count": 4,
+			"monster_count": 1,
+			"monsters": [
+				{
+					"id": 4,
+					"name": "Magician"
+				}
+			]
+		},
+		{
+			"sprite_name": "RBDgnSprts",
+			"tile_count": 2,
+			"monster_count": 2,
+			"monsters": [
+				{
+					"id": 34,
+					"name": "Blue Dragon"
+				},
+				{
+					"id": 37,
+					"name": "Red Dragon"
+				}
+			]
+		},
+		{
+			"sprite_name": "ScorpSprts",
+			"tile_count": 17,
+			"monster_count": 3,
+			"monsters": [
+				{
+					"id": 6,
+					"name": "Scorpion"
+				},
+				{
+					"id": 13,
+					"name": "Metal Scorpion"
+				},
+				{
+					"id": 22,
+					"name": "Rouge Scorpion"
+				}
+			]
+		},
+		{
+			"sprite_name": "SkelSprts",
+			"tile_count": 14,
+			"monster_count": 2,
+			"monsters": [
+				{
+					"id": 11,
+					"name": "Skeleton"
+				},
+				{
+					"id": 15,
+					"name": "Wraith"
+				}
+			]
+		},
+		{
+			"sprite_name": "SlimeSprts",
+			"tile_count": 8,
+			"monster_count": 3,
+			"monsters": [
+				{
+					"id": 0,
+					"name": "Slime"
+				},
+				{
+					"id": 1,
+					"name": "Red Slime"
+				},
+				{
+					"id": 16,
+					"name": "Metal Slime"
+				}
+			]
+		},
+		{
+			"sprite_name": "WizSprts",
+			"tile_count": 4,
+			"monster_count": 2,
+			"monsters": [
+				{
+					"id": 12,
+					"name": "Warlock"
+				},
+				{
+					"id": 32,
+					"name": "Wizard"
+				}
+			]
+		},
+		{
+			"sprite_name": "WolfSprts",
+			"tile_count": 30,
+			"monster_count": 3,
+			"monsters": [
+				{
+					"id": 14,
+					"name": "Wolf"
+				},
+				{
+					"id": 18,
+					"name": "Wolflord"
+				},
+				{
+					"id": 29,
+					"name": "Werewolf"
+				}
+			]
+		},
+		{
+			"sprite_name": "WyvrnSprts",
+			"tile_count": 21,
+			"monster_count": 3,
+			"monsters": [
+				{
+					"id": 21,
+					"name": "Wyvern"
+				},
+				{
+					"id": 27,
+					"name": "Magiwyvern"
+				},
+				{
+					"id": 31,
+					"name": "Starwyvern"
+				}
+			]
+		}
+	],
+	"correction_note": "IMPORTANT: Previous documentation incorrectly stated '64 tiles for 64 different monsters'. In reality, 39 monsters use 19 unique sprite definitions comprising 252 total tiles. Sprite sharing is extensive - for example, SlimeSprts (8 tiles) is shared by Slime, Red Slime, and Metal Slime."
 }

@@ -115,40 +115,40 @@ verification/
 #### FCEUX Setup
 
 1. **Load ROM:**
-   - File → Open ROM
-   - Select `roms/dragon_warrior_original.nes`
+	 - File → Open ROM
+	 - Select `roms/dragon_warrior_original.nes`
 
 2. **Configure Screenshot Settings:**
-   - Config → Screenshot Options
-   - Format: PNG
-   - Directory: `verification/screenshots/original/`
-   - Naming: `dw_YYYYMMDD_HHMMSS.png`
+	 - Config → Screenshot Options
+	 - Format: PNG
+	 - Directory: `verification/screenshots/original/`
+	 - Naming: `dw_YYYYMMDD_HHMMSS.png`
 
 3. **Save State Setup:**
-   - Create save state folder: `verification/save_states/`
-   - F5 to save, F7 to load
-   - Name states descriptively: `tantegel_throne.fc0`
+	 - Create save state folder: `verification/save_states/`
+	 - F5 to save, F7 to load
+	 - Name states descriptively: `tantegel_throne.fc0`
 
 4. **Cheat Codes (Optional):**
-   - Tools → Cheats
-   - Add GameGenie codes for testing
-   - Example: Force encounters, max gold, level up
+	 - Tools → Cheats
+	 - Add GameGenie codes for testing
+	 - Example: Force encounters, max gold, level up
 
 #### Mesen Setup
 
 1. **Load ROM:**
-   - File → Open
-   - Select Dragon Warrior ROM
+	 - File → Open
+	 - Select Dragon Warrior ROM
 
 2. **Screenshot Configuration:**
-   - Tools → Preferences → Screenshots
-   - Format: PNG
-   - Output: `verification/screenshots/original/`
+	 - Tools → Preferences → Screenshots
+	 - Format: PNG
+	 - Output: `verification/screenshots/original/`
 
 3. **Debugging Tools:**
-   - Tools → Debugger (for memory inspection)
-   - Tools → Memory Viewer (verify data offsets)
-   - Tools → Event Viewer (track game events)
+	 - Tools → Debugger (for memory inspection)
+	 - Tools → Memory Viewer (verify data offsets)
+	 - Tools → Event Viewer (track game events)
 
 ### Game Preparation
 
@@ -262,16 +262,16 @@ verification/screenshots/
 ### Required Screenshots per Monster
 
 1. **Battle Encounter Screen**
-   - Shows monster name and sprite
-   - File: `monster_{ID}_{name}_battle.png`
+	 - Shows monster name and sprite
+	 - File: `monster_{ID}_{name}_battle.png`
 
 2. **Monster HP Display**
-   - Shows current/max HP during battle
-   - File: `monster_{ID}_{name}_hp.png`
+	 - Shows current/max HP during battle
+	 - File: `monster_{ID}_{name}_hp.png`
 
 3. **Victory Screen**
-   - Shows XP and Gold rewards
-   - File: `monster_{ID}_{name}_victory.png`
+	 - Shows XP and Gold rewards
+	 - File: `monster_{ID}_{name}_victory.png`
 
 ### Screenshot Capture Method
 
@@ -362,30 +362,30 @@ verification/screenshots/
 **Screenshot Groups:**
 
 1. **SlimeSprts (Shared by 3)**
-   - Slime (ID 00)
-   - Red Slime (ID 01)
-   - Metal Slime (ID 16)
-   - **Verification:** Place screenshots side-by-side, compare sprite shapes
+	 - Slime (ID 00)
+	 - Red Slime (ID 01)
+	 - Metal Slime (ID 16)
+	 - **Verification:** Place screenshots side-by-side, compare sprite shapes
 
 2. **DrakeeSprts (Shared by 3)**
-   - Drakee (ID 02)
-   - Magidrakee (ID 05)
-   - Drakeema (ID 10)
+	 - Drakee (ID 02)
+	 - Magidrakee (ID 05)
+	 - Drakeema (ID 10)
 
 3. **GhstSprts (Shared by 3)**
-   - Ghost (ID 03)
-   - Poltergeist (ID 08)
-   - Specter (ID 17)
+	 - Ghost (ID 03)
+	 - Poltergeist (ID 08)
+	 - Specter (ID 17)
 
 4. **WolfSprts (Shared by 3)**
-   - Wolf (ID 14)
-   - Wolflord (ID 18)
-   - Werewolf (ID 29)
+	 - Wolf (ID 14)
+	 - Wolflord (ID 18)
+	 - Werewolf (ID 29)
 
 5. **GolemSprts (Shared by 3)**
-   - Golem (ID 24)
-   - Goldman (ID 25)
-   - Stoneman (ID 35)
+	 - Golem (ID 24)
+	 - Goldman (ID 25)
+	 - Stoneman (ID 35)
 
 **Verification Steps:**
 - [ ] Capture all sprite-sharing groups
@@ -402,16 +402,16 @@ verification/screenshots/
 ### Required Screenshots per Spell
 
 1. **Spell Menu Display**
-   - Shows spell name and MP cost
-   - File: `spell_{ID}_{name}_menu.png`
+	 - Shows spell name and MP cost
+	 - File: `spell_{ID}_{name}_menu.png`
 
 2. **Spell Casting**
-   - Shows spell being cast
-   - File: `spell_{ID}_{name}_casting.png`
+	 - Shows spell being cast
+	 - File: `spell_{ID}_{name}_casting.png`
 
 3. **Spell Effect**
-   - Shows spell effect result
-   - File: `spell_{ID}_{name}_effect.png`
+	 - Shows spell effect result
+	 - File: `spell_{ID}_{name}_effect.png`
 
 ### Spell Screenshot Checklist
 
@@ -468,26 +468,26 @@ verification/screenshots/
 #### Shop Screenshots (5 Towns)
 
 1. **Brecconary Shops**
-   - Weapon shop: `shop_brecconary_weapons.png`
-   - Armor shop: `shop_brecconary_armor.png`
-   - Item shop: `shop_brecconary_items.png`
+	 - Weapon shop: `shop_brecconary_weapons.png`
+	 - Armor shop: `shop_brecconary_armor.png`
+	 - Item shop: `shop_brecconary_items.png`
 
 2. **Garinham Shops**
-   - Weapon shop: `shop_garinham_weapons.png`
-   - Item shop: `shop_garinham_items.png`
+	 - Weapon shop: `shop_garinham_weapons.png`
+	 - Item shop: `shop_garinham_items.png`
 
 3. **Kol Shops**
-   - Weapon shop: `shop_kol_weapons.png`
-   - Armor shop: `shop_kol_armor.png`
+	 - Weapon shop: `shop_kol_weapons.png`
+	 - Armor shop: `shop_kol_armor.png`
 
 4. **Rimuldar Shops**
-   - Weapon shop: `shop_rimuldar_weapons.png`
-   - Armor shop: `shop_rimuldar_armor.png`
-   - Item shop: `shop_rimuldar_items.png`
+	 - Weapon shop: `shop_rimuldar_weapons.png`
+	 - Armor shop: `shop_rimuldar_armor.png`
+	 - Item shop: `shop_rimuldar_items.png`
 
 5. **Cantlin Shops**
-   - Weapon shop: `shop_cantlin_weapons.png`
-   - Armor shop: `shop_cantlin_armor.png`
+	 - Weapon shop: `shop_cantlin_weapons.png`
+	 - Armor shop: `shop_cantlin_armor.png`
 
 #### Item Description Screenshots
 
@@ -545,17 +545,17 @@ For each of 32 items, capture:
 ### Required Screenshots per Location
 
 1. **Full Map Overview**
-   - Hero visible to show scale
-   - File: `map_{ID}_{name}_overview.png`
+	 - Hero visible to show scale
+	 - File: `map_{ID}_{name}_overview.png`
 
 2. **Detailed Sections**
-   - Close-ups of specific areas
-   - File: `map_{ID}_{name}_{section}.png`
-   - Example: `map_00_tantegel_throne_king.png` (king's throne area)
+	 - Close-ups of specific areas
+	 - File: `map_{ID}_{name}_{section}.png`
+	 - Example: `map_00_tantegel_throne_king.png` (king's throne area)
 
 3. **Entry/Exit Points**
-   - Doors, stairs, warps
-   - File: `map_{ID}_{name}_entry.png`
+	 - Doors, stairs, warps
+	 - File: `map_{ID}_{name}_entry.png`
 
 ### Map Screenshot Checklist (22 Locations)
 
@@ -626,50 +626,50 @@ For each of 32 items, capture:
 Capture key NPC conversations:
 
 1. **King Lorik**
-   - `text_king_lorik_greeting.png` - Initial greeting
-   - `text_king_lorik_quest.png` - Quest description
-   - `text_king_lorik_status.png` - Status report dialog
+	 - `text_king_lorik_greeting.png` - Initial greeting
+	 - `text_king_lorik_quest.png` - Quest description
+	 - `text_king_lorik_status.png` - Status report dialog
 
 2. **Princess Gwaelin**
-   - `text_gwaelin_rescue.png` - "I am Gwaelin, Princess of Tantegel"
-   - `text_gwaelin_love.png` - "Dost thou love me?"
-   - `text_gwaelin_yes.png` - Response to "YES"
-   - `text_gwaelin_no.png` - Response to "NO"
+	 - `text_gwaelin_rescue.png` - "I am Gwaelin, Princess of Tantegel"
+	 - `text_gwaelin_love.png` - "Dost thou love me?"
+	 - `text_gwaelin_yes.png` - Response to "YES"
+	 - `text_gwaelin_no.png` - Response to "NO"
 
 3. **Shopkeepers**
-   - `text_shop_greeting.png` - Shop welcome message
-   - `text_shop_transaction.png` - Buy/sell confirmation
+	 - `text_shop_greeting.png` - Shop welcome message
+	 - `text_shop_transaction.png` - Buy/sell confirmation
 
 4. **Inn Keepers**
-   - `text_inn_greeting.png` - "Welcome to the Inn"
-   - `text_inn_cost.png` - "It costs {price}G per night"
+	 - `text_inn_greeting.png` - "Welcome to the Inn"
+	 - `text_inn_cost.png` - "It costs {price}G per night"
 
 5. **Important NPCs**
-   - Wise men
-   - Guards with hints
-   - Townspeople with lore
+	 - Wise men
+	 - Guards with hints
+	 - Townspeople with lore
 
 #### System Messages
 
 1. **Battle Messages**
-   - `text_battle_encounter.png` - "A {Monster} draws near! Command?"
-   - `text_battle_victory.png` - Victory message
-   - `text_battle_defeat.png` - "Thou art dead"
-   - `text_battle_run.png` - Escape messages
+	 - `text_battle_encounter.png` - "A {Monster} draws near! Command?"
+	 - `text_battle_victory.png` - Victory message
+	 - `text_battle_defeat.png` - "Thou art dead"
+	 - `text_battle_run.png` - Escape messages
 
 2. **Level Up Messages**
-   - `text_levelup.png` - "Thy experience blessed thee..."
-   - `text_spell_learned.png` - Spell learning message
+	 - `text_levelup.png` - "Thy experience blessed thee..."
+	 - `text_spell_learned.png` - Spell learning message
 
 3. **Item Messages**
-   - `text_item_get.png` - "The {Hero} found a {Item}!"
-   - `text_item_use.png` - Item usage messages
-   - `text_item_cursed.png` - "But thou cannot remove it!"
+	 - `text_item_get.png` - "The {Hero} found a {Item}!"
+	 - `text_item_use.png` - Item usage messages
+	 - `text_item_cursed.png` - "But thou cannot remove it!"
 
 4. **Special Events**
-   - `text_dragonlord_offer.png` - Dragonlord's proposition
-   - `text_ending_1.png` - Ending sequence (multiple screenshots)
-   - `text_rainbow_bridge.png` - Rainbow bridge creation
+	 - `text_dragonlord_offer.png` - Dragonlord's proposition
+	 - `text_ending_1.png` - Ending sequence (multiple screenshots)
+	 - `text_rainbow_bridge.png` - Rainbow bridge creation
 
 ### Text Encoding Verification
 

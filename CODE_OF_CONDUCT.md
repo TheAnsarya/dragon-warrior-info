@@ -44,28 +44,28 @@ Examples of unacceptable behavior include:
 As a ROM hacking community, we have additional responsibilities:
 
 1. **Legal Compliance**
-   - Only work with legally obtained ROM files
-   - Do not distribute copyrighted ROM files
-   - Share only patches, tools, and documentation
-   - Respect intellectual property rights
+	 - Only work with legally obtained ROM files
+	 - Do not distribute copyrighted ROM files
+	 - Share only patches, tools, and documentation
+	 - Respect intellectual property rights
 
 2. **Attribution**
-   - Credit original game developers
-   - Acknowledge toolkit contributors
-   - Reference sources for techniques and code
-   - Don't claim others' work as your own
+	 - Credit original game developers
+	 - Acknowledge toolkit contributors
+	 - Reference sources for techniques and code
+	 - Don't claim others' work as your own
 
 3. **Quality Standards**
-   - Test modifications before sharing
-   - Document known issues and limitations
-   - Provide clear installation instructions
-   - Include warnings for experimental features
+	 - Test modifications before sharing
+	 - Document known issues and limitations
+	 - Provide clear installation instructions
+	 - Include warnings for experimental features
 
 4. **Educational Focus**
-   - Share knowledge and techniques
-   - Write clear documentation
-   - Help others learn ROM hacking
-   - Encourage experimentation and learning
+	 - Share knowledge and techniques
+	 - Write clear documentation
+	 - Help others learn ROM hacking
+	 - Encourage experimentation and learning
 
 ## Enforcement Responsibilities
 
@@ -145,30 +145,30 @@ Community leaders will follow these Community Impact Guidelines in determining t
 ### Copyright and Legal Issues
 
 - **Sharing ROMs is strictly prohibited**
-  - Consequence: Immediate permanent ban
-  - No warnings will be given
-  
+	- Consequence: Immediate permanent ban
+	- No warnings will be given
+	
 - **Encouraging piracy**
-  - Consequence: Warning, followed by temporary ban if continued
-  
+	- Consequence: Warning, followed by temporary ban if continued
+	
 ### Malicious Code
 
 - **Distributing malicious ROM modifications**
-  - Consequence: Immediate permanent ban
-  - May be reported to appropriate authorities
-  
+	- Consequence: Immediate permanent ban
+	- May be reported to appropriate authorities
+	
 - **Deliberately corrupting tools or data**
-  - Consequence: Immediate permanent ban
+	- Consequence: Immediate permanent ban
 
 ### Skill Level Respect
 
 - **Mocking beginners** or "gatekeeping"
-  - First offense: Correction
-  - Repeated: Warning or temporary ban
-  
+	- First offense: Correction
+	- Repeated: Warning or temporary ban
+	
 - **Elitism** or discouraging participation
-  - First offense: Warning
-  - Repeated: Temporary ban
+	- First offense: Warning
+	- Repeated: Temporary ban
 
 ## Appeals Process
 

@@ -2,155 +2,155 @@ name: CI - Continuous Integration
 
 on:
   push:
-    branches: [ main, master, develop ]
+	branches: [ main, master, develop ]
   pull_request:
-    branches: [ main, master, develop ]
+	branches: [ main, master, develop ]
 
 jobs:
   test:
-    name: Test on Python ${{ matrix.python-version }}
-    runs-on: ${{ matrix.os }}
+	name: Test on Python ${{ matrix.python-version }}
+	runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+	strategy:
+	  matrix:
+		os: [ubuntu-latest, windows-latest, macos-latest]
+		python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+	steps:
+	- name: Checkout code
+	  uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip'
+	- name: Set up Python ${{ matrix.python-version }}
+	  uses: actions/setup-python@v5
+	  with:
+		python-version: ${{ matrix.python-version }}
+		cache: 'pip'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest pytest-cov
+	- name: Install dependencies
+	  run: |
+		python -m pip install --upgrade pip
+		pip install -r requirements.txt
+		pip install pytest pytest-cov
 
-    - name: Run tests
-      run: |
-        pytest tests/ -v --cov=tools --cov-report=xml --cov-report=term
+	- name: Run tests
+	  run: |
+		pytest tests/ -v --cov=tools --cov-report=xml --cov-report=term
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
+	- name: Upload coverage to Codecov
+	  uses: codecov/codecov-action@v3
+	  with:
+		file: ./coverage.xml
+		flags: unittests
+		name: codecov-umbrella
+		fail_ci_if_error: false
 
   lint:
-    name: Lint Code
-    runs-on: ubuntu-latest
+	name: Lint Code
+	runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+	steps:
+	- name: Checkout code
+	  uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+	- name: Set up Python
+	  uses: actions/setup-python@v5
+	  with:
+		python-version: '3.11'
+		cache: 'pip'
 
-    - name: Install linting tools
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pylint black isort
+	- name: Install linting tools
+	  run: |
+		python -m pip install --upgrade pip
+		pip install flake8 pylint black isort
 
-    - name: Run flake8
-      run: |
-        flake8 tools/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 tools/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	- name: Run flake8
+	  run: |
+		flake8 tools/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+		flake8 tools/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-    - name: Run pylint
-      run: |
-        pylint tools/ --exit-zero --max-line-length=127
+	- name: Run pylint
+	  run: |
+		pylint tools/ --exit-zero --max-line-length=127
 
-    - name: Check formatting with black
-      run: |
-        black --check tools/ tests/
+	- name: Check formatting with black
+	  run: |
+		black --check tools/ tests/
 
-    - name: Check import sorting
-      run: |
-        isort --check-only tools/ tests/
+	- name: Check import sorting
+	  run: |
+		isort --check-only tools/ tests/
 
   validate-rom:
-    name: Validate ROM Handling
-    runs-on: ubuntu-latest
+	name: Validate ROM Handling
+	runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+	steps:
+	- name: Checkout code
+	  uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+	- name: Set up Python
+	  uses: actions/setup-python@v5
+	  with:
+		python-version: '3.11'
+		cache: 'pip'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+	- name: Install dependencies
+	  run: |
+		python -m pip install --upgrade pip
+		pip install -r requirements.txt
 
-    - name: Create test ROM
-      run: |
-        python -c "
+	- name: Create test ROM
+	  run: |
+		python -c "
 import os
 os.makedirs('roms', exist_ok=True)
 # Create minimal NES ROM (16-byte header + 32KB PRG + 8KB CHR)
 with open('roms/test.nes', 'wb') as f:
-    # NES header
-    f.write(b'NES\x1A')  # Magic
-    f.write(b'\x02')     # PRG ROM banks (2 * 16KB = 32KB)
-    f.write(b'\x01')     # CHR ROM banks (1 * 8KB = 8KB)
-    f.write(b'\x00' * 10)  # Remaining header
-    # PRG ROM (32KB)
-    f.write(b'\x00' * 32768)
-    # CHR ROM (8KB)
-    f.write(b'\x00' * 8192)
-        "
+	# NES header
+	f.write(b'NES\x1A')  # Magic
+	f.write(b'\x02')     # PRG ROM banks (2 * 16KB = 32KB)
+	f.write(b'\x01')     # CHR ROM banks (1 * 8KB = 8KB)
+	f.write(b'\x00' * 10)  # Remaining header
+	# PRG ROM (32KB)
+	f.write(b'\x00' * 32768)
+	# CHR ROM (8KB)
+	f.write(b'\x00' * 8192)
+		"
 
-    - name: Validate ROM tools
-      run: |
-        python tools/extract_binary.py --help
-        python tools/map_editor.py --help
-        python tools/text_editor.py --help
+	- name: Validate ROM tools
+	  run: |
+		python tools/extract_binary.py --help
+		python tools/map_editor.py --help
+		python tools/text_editor.py --help
 
   build-docs:
-    name: Build Documentation
-    runs-on: ubuntu-latest
+	name: Build Documentation
+	runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+	steps:
+	- name: Checkout code
+	  uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+	- name: Set up Python
+	  uses: actions/setup-python@v5
+	  with:
+		python-version: '3.11'
 
-    - name: Validate markdown
-      run: |
-        for file in docs/*.md *.md; do
-          if [ -f "$file" ]; then
-            echo "Checking $file..."
-            # Basic validation: ensure file is not empty
-            [ -s "$file" ] || (echo "Error: $file is empty" && exit 1)
-          fi
-        done
+	- name: Validate markdown
+	  run: |
+		for file in docs/*.md *.md; do
+		  if [ -f "$file" ]; then
+			echo "Checking $file..."
+			# Basic validation: ensure file is not empty
+			[ -s "$file" ] || (echo "Error: $file is empty" && exit 1)
+		  fi
+		done
 
-    - name: Check documentation completeness
-      run: |
-        # Ensure key documentation exists
-        test -f README.md || (echo "Missing README.md" && exit 1)
-        test -f docs/BINARY_PIPELINE_TUTORIAL.md || (echo "Missing tutorial" && exit 1)
-        test -f docs/TROUBLESHOOTING.md || (echo "Missing troubleshooting" && exit 1)
-        test -f docs/OPTIMIZATION_TECHNIQUES.md || (echo "Missing optimization guide" && exit 1)
-        echo "Documentation complete!"
+	- name: Check documentation completeness
+	  run: |
+		# Ensure key documentation exists
+		test -f README.md || (echo "Missing README.md" && exit 1)
+		test -f docs/BINARY_PIPELINE_TUTORIAL.md || (echo "Missing tutorial" && exit 1)
+		test -f docs/TROUBLESHOOTING.md || (echo "Missing troubleshooting" && exit 1)
+		test -f docs/OPTIMIZATION_TECHNIQUES.md || (echo "Missing optimization guide" && exit 1)
+		echo "Documentation complete!"

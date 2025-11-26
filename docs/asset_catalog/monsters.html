@@ -1,1655 +1,1655 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monsters - Dragon Warrior Asset Catalog</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #fff;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #aaa;
-            font-size: 1.1em;
-        }
-        
-        nav {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        nav a {
-            color: #4ecdc4;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 5px;
-            transition: all 0.3s;
-            display: inline-block;
-        }
-        
-        nav a:hover {
-            background: rgba(78, 205, 196, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .section {
-            margin: 40px 0;
-        }
-        
-        h2 {
-            margin: 30px 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4ecdc4;
-            color: #4ecdc4;
-            font-size: 2em;
-        }
-        
-        h3 {
-            margin: 20px 0 10px 0;
-            color: #ff6b6b;
-            font-size: 1.5em;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
-            border-color: #4ecdc4;
-        }
-        
-        .card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            background: #000;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-        
-        .card-title {
-            font-size: 1.3em;
-            margin: 15px 0 10px 0;
-            color: #fff;
-            font-weight: bold;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-            font-size: 0.9em;
-        }
-        
-        .stat {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px;
-            border-radius: 5px;
-        }
-        
-        .stat-label {
-            color: #aaa;
-            font-size: 0.85em;
-            text-transform: uppercase;
-        }
-        
-        .stat-value {
-            color: #4ecdc4;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        
-        .tile-sheet {
-            background: #000;
-            border: 2px solid #4ecdc4;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .tile-sheet img {
-            max-width: 100%;
-            height: auto;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        th {
-            background: rgba(78, 205, 196, 0.2);
-            padding: 12px;
-            text-align: left;
-            color: #4ecdc4;
-            font-weight: bold;
-        }
-        
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            color: #aaa;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin: 2px;
-        }
-        
-        .badge-dragon { background: #ff6b6b; }
-        .badge-slime { background: #4ecdc4; }
-        .badge-undead { background: #9b59b6; }
-        .badge-beast { background: #f39c12; }
-        .badge-metal { background: #95a5a6; }
-        .badge-demon { background: #c0392b; }
-        
-        code {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-            color: #4ecdc4;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Monsters - Dragon Warrior Asset Catalog</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+			color: #fff;
+			padding: 20px;
+			line-height: 1.6;
+		}
+		
+		.container {
+			max-width: 1400px;
+			margin: 0 auto;
+			background: rgba(0, 0, 0, 0.7);
+			padding: 30px;
+			border-radius: 15px;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+		}
+		
+		h1 {
+			text-align: center;
+			margin-bottom: 10px;
+			font-size: 3em;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+			background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+		
+		.subtitle {
+			text-align: center;
+			margin-bottom: 30px;
+			color: #aaa;
+			font-size: 1.1em;
+		}
+		
+		nav {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 15px;
+			margin-bottom: 30px;
+			border-radius: 8px;
+			text-align: center;
+		}
+		
+		nav a {
+			color: #4ecdc4;
+			text-decoration: none;
+			padding: 10px 20px;
+			margin: 0 5px;
+			border-radius: 5px;
+			transition: all 0.3s;
+			display: inline-block;
+		}
+		
+		nav a:hover {
+			background: rgba(78, 205, 196, 0.2);
+			transform: translateY(-2px);
+		}
+		
+		.section {
+			margin: 40px 0;
+		}
+		
+		h2 {
+			margin: 30px 0 20px 0;
+			padding-bottom: 10px;
+			border-bottom: 2px solid #4ecdc4;
+			color: #4ecdc4;
+			font-size: 2em;
+		}
+		
+		h3 {
+			margin: 20px 0 10px 0;
+			color: #ff6b6b;
+			font-size: 1.5em;
+		}
+		
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+			gap: 20px;
+			margin: 20px 0;
+		}
+		
+		.card {
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			border-radius: 10px;
+			padding: 20px;
+			transition: all 0.3s;
+		}
+		
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+			border-color: #4ecdc4;
+		}
+		
+		.card img {
+			width: 100%;
+			height: auto;
+			border-radius: 8px;
+			background: #000;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+		}
+		
+		.card-title {
+			font-size: 1.3em;
+			margin: 15px 0 10px 0;
+			color: #fff;
+			font-weight: bold;
+		}
+		
+		.stats {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 10px;
+			margin: 15px 0;
+			font-size: 0.9em;
+		}
+		
+		.stat {
+			background: rgba(0, 0, 0, 0.3);
+			padding: 8px;
+			border-radius: 5px;
+		}
+		
+		.stat-label {
+			color: #aaa;
+			font-size: 0.85em;
+			text-transform: uppercase;
+		}
+		
+		.stat-value {
+			color: #4ecdc4;
+			font-weight: bold;
+			font-size: 1.1em;
+		}
+		
+		.tile-sheet {
+			background: #000;
+			border: 2px solid #4ecdc4;
+			border-radius: 10px;
+			padding: 20px;
+			text-align: center;
+			margin: 20px 0;
+		}
+		
+		.tile-sheet img {
+			max-width: 100%;
+			height: auto;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+		}
+		
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			background: rgba(0, 0, 0, 0.3);
+			border-radius: 10px;
+			overflow: hidden;
+		}
+		
+		th {
+			background: rgba(78, 205, 196, 0.2);
+			padding: 12px;
+			text-align: left;
+			color: #4ecdc4;
+			font-weight: bold;
+		}
+		
+		td {
+			padding: 10px 12px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+		
+		tr:hover {
+			background: rgba(255, 255, 255, 0.05);
+		}
+		
+		.footer {
+			margin-top: 50px;
+			text-align: center;
+			color: #aaa;
+			padding-top: 30px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+		
+		.badge {
+			display: inline-block;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 0.8em;
+			font-weight: bold;
+			margin: 2px;
+		}
+		
+		.badge-dragon { background: #ff6b6b; }
+		.badge-slime { background: #4ecdc4; }
+		.badge-undead { background: #9b59b6; }
+		.badge-beast { background: #f39c12; }
+		.badge-metal { background: #95a5a6; }
+		.badge-demon { background: #c0392b; }
+		
+		code {
+			background: rgba(0, 0, 0, 0.5);
+			padding: 2px 6px;
+			border-radius: 3px;
+			font-family: 'Courier New', monospace;
+			color: #4ecdc4;
+		}
+	</style>
 </head>
 <body>
-    <div class="container">
+	<div class="container">
 
-        <h1>🐉 Monster Database</h1>
-        <p class="subtitle">Complete stats and sprites for all 39 monsters</p>
+		<h1>🐉 Monster Database</h1>
+		<p class="subtitle">Complete stats and sprites for all 39 monsters</p>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="monsters.html">Monsters</a>
-            <a href="chr_tiles.html">CHR Tiles</a>
-            <a href="items.html">Items</a>
-            <a href="spells.html">Spells</a>
-            <a href="dialogs.html">Dialogs</a>
-            <a href="palettes.html">Palettes</a>
-        </nav>
+		<nav>
+			<a href="index.html">Home</a>
+			<a href="monsters.html">Monsters</a>
+			<a href="chr_tiles.html">CHR Tiles</a>
+			<a href="items.html">Items</a>
+			<a href="spells.html">Spells</a>
+			<a href="dialogs.html">Dialogs</a>
+			<a href="palettes.html">Palettes</a>
+		</nav>
 <div class="section"><h2>All Monsters</h2><div class="grid">
-            <div class="card">
-                <div class="card-title">
-                    Slime
-                    <span class="badge badge-slime">SLIME</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">3</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">5</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">1</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">2G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">7</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x0059F4</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Slime
+					<span class="badge badge-slime">SLIME</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">3</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">5</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">1</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">2G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">7</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x0059F4</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Red Slime
-                    <span class="badge badge-slime">SLIME</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">4</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">7</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">1</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">3G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">7</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x0059F6</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Red Slime
+					<span class="badge badge-slime">SLIME</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">4</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">7</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">1</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">3G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">7</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x0059F6</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Drakee
-                    <span class="badge badge-slime">SLIME</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">6</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">9</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">2</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">3G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">9</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x0059F8</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Drakee
+					<span class="badge badge-slime">SLIME</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">6</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">9</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">2</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">3G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">9</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x0059F8</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Ghost
-                    <span class="badge badge-undead">UNDEAD</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">7</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">11</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">3</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">5G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">14</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x0059FA</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Ghost
+					<span class="badge badge-undead">UNDEAD</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">7</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">11</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">3</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">5G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">14</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x0059FA</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Magician
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">13</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">11</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">0</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">4</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">12G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">18</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x0059FC</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Magician
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">13</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">11</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">0</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">4</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">12G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">18</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x0059FC</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Magidrakee
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">14</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">0</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">5</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">12G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">9</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x0059FE</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Magidrakee
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">14</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">0</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">5</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">12G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">9</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x0059FE</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Scorpion
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">20</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">18</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">6</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">16G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">16</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A00</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Scorpion
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">20</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">18</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">6</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">16G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">16</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A00</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Druin
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">22</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">20</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">7</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">16G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A02</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Druin
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">22</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">20</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">7</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">16G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">15</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A02</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Poltergeist
-                    <span class="badge badge-undead">UNDEAD</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">23</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">18</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">0</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">8</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">18G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">14</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A04</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Poltergeist
+					<span class="badge badge-undead">UNDEAD</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">23</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">18</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">0</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">8</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">18G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">14</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A04</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Droll
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">25</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">24</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">14</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">10</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">25G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">20</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A06</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Droll
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">25</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">24</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">14</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">10</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">25G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">20</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A06</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Drakeema
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">20</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">22</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">32</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">11</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">20G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">9</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A08</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Drakeema
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">20</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">22</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">32</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">11</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">20G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">9</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A08</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Skeleton
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">30</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">28</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">11</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">30G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">4</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A0A</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Skeleton
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">30</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">28</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">11</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">30G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">4</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A0A</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Warlock
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">30</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">28</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">49</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">13</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">35G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">22</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A0C</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Warlock
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">30</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">28</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">49</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">13</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">35G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">22</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A0C</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Metal Scorpion
-                    <span class="badge badge-metal">METAL</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">22</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">36</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">15</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">14</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">40G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">50</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A0E</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Metal Scorpion
+					<span class="badge badge-metal">METAL</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">22</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">36</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">15</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">14</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">40G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">50</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A0E</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Wolf
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">34</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">40</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">31</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">16</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">50G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">30</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A10</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Wolf
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">34</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">40</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">31</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">16</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">50G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">30</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A10</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Wraith
-                    <span class="badge badge-undead">UNDEAD</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">36</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">44</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">112</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">17</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">60G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">24</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A12</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Wraith
+					<span class="badge badge-undead">UNDEAD</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">36</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">44</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">112</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">17</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">60G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">24</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A12</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Metal Slime
-                    <span class="badge badge-metal">METAL</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">4</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">10</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">255</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">115</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">6G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">7</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A14</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Metal Slime
+					<span class="badge badge-metal">METAL</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">4</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">10</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">255</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">115</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">6G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">7</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A14</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Specter
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">36</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">40</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">49</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">18</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">70G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">14</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A16</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Specter
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">36</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">40</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">49</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">18</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">70G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">14</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A16</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Wolflord
-                    <span class="badge badge-undead">UNDEAD</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">38</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">50</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">71</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">20</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">80G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">13</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A18</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Wolflord
+					<span class="badge badge-undead">UNDEAD</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">38</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">50</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">71</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">20</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">80G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">13</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A18</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Druinlord
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">35</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">47</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">240</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">20</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">85G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">28</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A1A</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Druinlord
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">35</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">47</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">240</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">20</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">85G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">28</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A1A</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Drollmagi
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">38</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">52</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">34</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">22</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">90G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">20</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A1C</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Drollmagi
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">38</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">52</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">34</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">22</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">90G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">20</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A1C</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Wyvern
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">42</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">56</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">79</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">24</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">100G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">21</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A1E</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Wyvern
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">42</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">56</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">79</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">24</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">100G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">21</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A1E</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Rouge Scorpion
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">35</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">60</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">127</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">26</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">110G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">16</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A20</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Rouge Scorpion
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">35</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">60</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">127</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">26</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">110G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">16</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A20</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Wraith Knight
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">46</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">68</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">80</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">28</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">120G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">8</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A22</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Wraith Knight
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">46</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">68</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">80</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">28</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">120G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">8</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A22</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Golem
-                    <span class="badge badge-undead">UNDEAD</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">70</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">120</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">255</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">5</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">10G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">50</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A24</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Golem
+					<span class="badge badge-undead">UNDEAD</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">70</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">120</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">255</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">5</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">10G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">50</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A24</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Goldman
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">50</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">48</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">223</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">6</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">200G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">32</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A26</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Goldman
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">50</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">48</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">223</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">6</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">200G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">32</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A26</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Knight
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">55</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">76</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">103</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">33</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">130G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">30</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A28</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Knight
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">55</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">76</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">103</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">33</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">130G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">30</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A28</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Magiwyvern
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">58</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">78</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">32</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">34</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">140G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">32</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A2A</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Magiwyvern
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">58</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">78</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">32</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">34</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">140G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">32</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A2A</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Demon Knight
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">50</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">79</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">255</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">37</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">150G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">8</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A2C</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Demon Knight
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">50</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">79</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">255</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">37</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">150G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">8</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A2C</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Werewolf
-                    <span class="badge badge-demon">DEMON</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">60</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">86</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">127</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">40</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">155G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">30</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A2E</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Werewolf
+					<span class="badge badge-demon">DEMON</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">60</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">86</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">127</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">40</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">155G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">30</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A2E</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Green Dragon
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">65</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">88</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">127</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">45</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">160G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">25</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A30</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Green Dragon
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">65</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">88</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">127</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">45</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">160G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">25</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A30</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Starwyvern
-                    <span class="badge badge-dragon">DRAGON</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">65</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">86</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">128</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">43</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">160G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">21</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A32</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Starwyvern
+					<span class="badge badge-dragon">DRAGON</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">65</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">86</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">128</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">43</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">160G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">21</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A32</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Wizard
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">65</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">80</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">247</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">50</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">165G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">25</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A34</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Wizard
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">65</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">80</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">247</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">50</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">165G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">25</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A34</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Axe Knight
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">70</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">94</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">243</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">54</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">165G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">44</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A36</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Axe Knight
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">70</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">94</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">243</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">54</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">165G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">44</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A36</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Blue Dragon
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">70</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">98</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">255</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">60</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">150G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">27</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A38</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Blue Dragon
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">70</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">98</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">255</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">60</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">150G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">27</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A38</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Stoneman
-                    <span class="badge badge-dragon">DRAGON</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">160</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">100</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">47</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">65</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">140G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">32</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A3A</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Stoneman
+					<span class="badge badge-dragon">DRAGON</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">160</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">100</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">47</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">65</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">140G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">32</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A3A</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Armored Knight
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">90</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">105</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">247</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">70</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">140G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">40</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A3C</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Armored Knight
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">90</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">105</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">247</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">70</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">140G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">40</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A3C</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Red Dragon
-                    <span class="badge badge-beast">BEAST</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">100</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">120</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">247</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">100</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">140G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">27</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A3E</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Red Dragon
+					<span class="badge badge-beast">BEAST</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">100</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">120</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">247</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">100</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">140G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">27</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A3E</code>
+				</p>
+			</div>
 
-            <div class="card">
-                <div class="card-title">
-                    Dragonlord
-                    <span class="badge badge-dragon">DRAGON</span>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">HP</div>
-                        <div class="stat-value">100</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">STR</div>
-                        <div class="stat-value">90</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">AGI</div>
-                        <div class="stat-value">255</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">EXP</div>
-                        <div class="stat-value">0</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">GOLD</div>
-                        <div class="stat-value">0G</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">TILES</div>
-                        <div class="stat-value">22</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.85em; color: #888; margin-top: 10px;">
-                    ROM: <code>0x005A40</code>
-                </p>
-            </div>
+			<div class="card">
+				<div class="card-title">
+					Dragonlord
+					<span class="badge badge-dragon">DRAGON</span>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<div class="stat-label">HP</div>
+						<div class="stat-value">100</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">STR</div>
+						<div class="stat-value">90</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">AGI</div>
+						<div class="stat-value">255</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">EXP</div>
+						<div class="stat-value">0</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">GOLD</div>
+						<div class="stat-value">0G</div>
+					</div>
+					<div class="stat">
+						<div class="stat-label">TILES</div>
+						<div class="stat-value">22</div>
+					</div>
+				</div>
+				<p style="font-size: 0.85em; color: #888; margin-top: 10px;">
+					ROM: <code>0x005A40</code>
+				</p>
+			</div>
 </div></div>
-        <div class="footer">
-            <p>Dragon Warrior Asset Catalog</p>
-            <p>Generated on 2025-11-25 21:49:20</p>
-            <p>ROM Version: PRG1 | Extraction Tool v1.0</p>
-        </div>
-    </div>
+		<div class="footer">
+			<p>Dragon Warrior Asset Catalog</p>
+			<p>Generated on 2025-11-25 21:49:20</p>
+			<p>ROM Version: PRG1 | Extraction Tool v1.0</p>
+		</div>
+	</div>
 </body>
 </html>

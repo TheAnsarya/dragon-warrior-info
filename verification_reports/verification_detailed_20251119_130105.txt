@@ -22,58 +22,58 @@ COMPARISON RESULTS:
 
 SEGMENT ANALYSIS:
   nes_header:
-    Range: 0x0000-0x0010
-    Matches: YES
-    Differences: 0
+	Range: 0x0000-0x0010
+	Matches: YES
+	Differences: 0
 
   trainer:
-    Range: 0x0010-0x0210
-    Matches: YES
-    Differences: 0
+	Range: 0x0010-0x0210
+	Matches: YES
+	Differences: 0
 
   prg_rom_bank0:
-    Range: 0x8010-0xC000
-    Matches: NO
-    Differences: 1
-    First Diff: 0x00AF7C (F0 -> EF)
+	Range: 0x8010-0xC000
+	Matches: NO
+	Differences: 1
+	First Diff: 0x00AF7C (F0 -> EF)
 
   prg_rom_bank1:
-    Range: 0xC000-0x10000
-    Matches: YES
-    Differences: 0
+	Range: 0xC000-0x10000
+	Matches: YES
+	Differences: 0
 
   chr_rom:
-    Range: 0x10000-0x12000
-    Matches: YES
-    Differences: 0
+	Range: 0x10000-0x12000
+	Matches: YES
+	Differences: 0
 
 CRITICAL AREAS:
   nes_header: PASS
-    NES header and ROM configuration
-    Range: 0x0000-0x0010
+	NES header and ROM configuration
+	Range: 0x0000-0x0010
 
   reset_vector: PASS
-    CPU reset vector
-    Range: 0xFFFC-0xFFFE
+	CPU reset vector
+	Range: 0xFFFC-0xFFFE
 
   nmi_vector: PASS
-    NMI interrupt vector
-    Range: 0xFFFA-0xFFFC
+	NMI interrupt vector
+	Range: 0xFFFA-0xFFFC
 
   irq_vector: PASS
-    IRQ interrupt vector
-    Range: 0xFFFE-0x10000
+	IRQ interrupt vector
+	Range: 0xFFFE-0x10000
 
 DETAILED DIFFERENCES:
   Difference #1:
-    Offset: 0x003FAE (length: 2)
-    Context: ...2427283024352E5F [3229] 5F312C3137283127...
-    Reference: 3229
-    Built:     3732
+	Offset: 0x003FAE (length: 2)
+	Context: ...2427283024352E5F [3229] 5F312C3137283127...
+	Reference: 3229
+	Built:     3732
 
   Difference #2:
-    Offset: 0x00AF7C (length: 1)
-    Context: ...FC3711225F2B121D [F0] 5F0D0E0C1B0E0A1C...
-    Reference: F0
-    Built:     EF
+	Offset: 0x00AF7C (length: 1)
+	Context: ...FC3711225F2B121D [F0] 5F0D0E0C1B0E0A1C...
+	Reference: F0
+	Built:     EF
 

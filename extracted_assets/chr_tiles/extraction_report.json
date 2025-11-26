@@ -1,2610 +1,2610 @@
 {
-  "rom": "C:\\Users\\me\\source\\repos\\dragon-warrior-info\\roms\\Dragon Warrior (U) (PRG0) [!].nes",
-  "chr_offset": "0x10010",
-  "chr_size": 16384,
-  "total_tiles": 1024,
-  "categories": [
-    {
-      "category": "background",
-      "palette": "background",
-      "palette_colors": [
-        "0x0F",
-        "0x29",
-        "0x1A",
-        "0x09"
-      ],
-      "tile_range": {
-        "start": 0,
-        "end": 255,
-        "start_hex": "0x000",
-        "end_hex": "0x0FF"
-      },
-      "tiles": [
-        {
-          "index": 0,
-          "hex": "0x000",
-          "file": "tile_000.png"
-        },
-        {
-          "index": 1,
-          "hex": "0x001",
-          "file": "tile_001.png"
-        },
-        {
-          "index": 2,
-          "hex": "0x002",
-          "file": "tile_002.png"
-        },
-        {
-          "index": 3,
-          "hex": "0x003",
-          "file": "tile_003.png"
-        },
-        {
-          "index": 4,
-          "hex": "0x004",
-          "file": "tile_004.png"
-        },
-        {
-          "index": 5,
-          "hex": "0x005",
-          "file": "tile_005.png"
-        },
-        {
-          "index": 6,
-          "hex": "0x006",
-          "file": "tile_006.png"
-        },
-        {
-          "index": 7,
-          "hex": "0x007",
-          "file": "tile_007.png"
-        },
-        {
-          "index": 8,
-          "hex": "0x008",
-          "file": "tile_008.png"
-        },
-        {
-          "index": 9,
-          "hex": "0x009",
-          "file": "tile_009.png"
-        },
-        {
-          "index": 10,
-          "hex": "0x00A",
-          "file": "tile_00A.png"
-        },
-        {
-          "index": 11,
-          "hex": "0x00B",
-          "file": "tile_00B.png"
-        },
-        {
-          "index": 12,
-          "hex": "0x00C",
-          "file": "tile_00C.png"
-        },
-        {
-          "index": 13,
-          "hex": "0x00D",
-          "file": "tile_00D.png"
-        },
-        {
-          "index": 14,
-          "hex": "0x00E",
-          "file": "tile_00E.png"
-        },
-        {
-          "index": 15,
-          "hex": "0x00F",
-          "file": "tile_00F.png"
-        },
-        {
-          "index": 16,
-          "hex": "0x010",
-          "file": "tile_010.png"
-        },
-        {
-          "index": 17,
-          "hex": "0x011",
-          "file": "tile_011.png"
-        },
-        {
-          "index": 18,
-          "hex": "0x012",
-          "file": "tile_012.png"
-        },
-        {
-          "index": 19,
-          "hex": "0x013",
-          "file": "tile_013.png"
-        },
-        {
-          "index": 20,
-          "hex": "0x014",
-          "file": "tile_014.png"
-        },
-        {
-          "index": 21,
-          "hex": "0x015",
-          "file": "tile_015.png"
-        },
-        {
-          "index": 22,
-          "hex": "0x016",
-          "file": "tile_016.png"
-        },
-        {
-          "index": 23,
-          "hex": "0x017",
-          "file": "tile_017.png"
-        },
-        {
-          "index": 24,
-          "hex": "0x018",
-          "file": "tile_018.png"
-        },
-        {
-          "index": 25,
-          "hex": "0x019",
-          "file": "tile_019.png"
-        },
-        {
-          "index": 26,
-          "hex": "0x01A",
-          "file": "tile_01A.png"
-        },
-        {
-          "index": 27,
-          "hex": "0x01B",
-          "file": "tile_01B.png"
-        },
-        {
-          "index": 28,
-          "hex": "0x01C",
-          "file": "tile_01C.png"
-        },
-        {
-          "index": 29,
-          "hex": "0x01D",
-          "file": "tile_01D.png"
-        },
-        {
-          "index": 30,
-          "hex": "0x01E",
-          "file": "tile_01E.png"
-        },
-        {
-          "index": 31,
-          "hex": "0x01F",
-          "file": "tile_01F.png"
-        },
-        {
-          "index": 32,
-          "hex": "0x020",
-          "file": "tile_020.png"
-        },
-        {
-          "index": 33,
-          "hex": "0x021",
-          "file": "tile_021.png"
-        },
-        {
-          "index": 34,
-          "hex": "0x022",
-          "file": "tile_022.png"
-        },
-        {
-          "index": 35,
-          "hex": "0x023",
-          "file": "tile_023.png"
-        },
-        {
-          "index": 36,
-          "hex": "0x024",
-          "file": "tile_024.png"
-        },
-        {
-          "index": 37,
-          "hex": "0x025",
-          "file": "tile_025.png"
-        },
-        {
-          "index": 38,
-          "hex": "0x026",
-          "file": "tile_026.png"
-        },
-        {
-          "index": 39,
-          "hex": "0x027",
-          "file": "tile_027.png"
-        },
-        {
-          "index": 40,
-          "hex": "0x028",
-          "file": "tile_028.png"
-        },
-        {
-          "index": 41,
-          "hex": "0x029",
-          "file": "tile_029.png"
-        },
-        {
-          "index": 42,
-          "hex": "0x02A",
-          "file": "tile_02A.png"
-        },
-        {
-          "index": 43,
-          "hex": "0x02B",
-          "file": "tile_02B.png"
-        },
-        {
-          "index": 44,
-          "hex": "0x02C",
-          "file": "tile_02C.png"
-        },
-        {
-          "index": 45,
-          "hex": "0x02D",
-          "file": "tile_02D.png"
-        },
-        {
-          "index": 46,
-          "hex": "0x02E",
-          "file": "tile_02E.png"
-        },
-        {
-          "index": 47,
-          "hex": "0x02F",
-          "file": "tile_02F.png"
-        },
-        {
-          "index": 48,
-          "hex": "0x030",
-          "file": "tile_030.png"
-        },
-        {
-          "index": 49,
-          "hex": "0x031",
-          "file": "tile_031.png"
-        },
-        {
-          "index": 50,
-          "hex": "0x032",
-          "file": "tile_032.png"
-        },
-        {
-          "index": 51,
-          "hex": "0x033",
-          "file": "tile_033.png"
-        },
-        {
-          "index": 52,
-          "hex": "0x034",
-          "file": "tile_034.png"
-        },
-        {
-          "index": 53,
-          "hex": "0x035",
-          "file": "tile_035.png"
-        },
-        {
-          "index": 54,
-          "hex": "0x036",
-          "file": "tile_036.png"
-        },
-        {
-          "index": 55,
-          "hex": "0x037",
-          "file": "tile_037.png"
-        },
-        {
-          "index": 56,
-          "hex": "0x038",
-          "file": "tile_038.png"
-        },
-        {
-          "index": 57,
-          "hex": "0x039",
-          "file": "tile_039.png"
-        },
-        {
-          "index": 58,
-          "hex": "0x03A",
-          "file": "tile_03A.png"
-        },
-        {
-          "index": 59,
-          "hex": "0x03B",
-          "file": "tile_03B.png"
-        },
-        {
-          "index": 60,
-          "hex": "0x03C",
-          "file": "tile_03C.png"
-        },
-        {
-          "index": 61,
-          "hex": "0x03D",
-          "file": "tile_03D.png"
-        },
-        {
-          "index": 62,
-          "hex": "0x03E",
-          "file": "tile_03E.png"
-        },
-        {
-          "index": 63,
-          "hex": "0x03F",
-          "file": "tile_03F.png"
-        },
-        {
-          "index": 64,
-          "hex": "0x040",
-          "file": "tile_040.png"
-        },
-        {
-          "index": 65,
-          "hex": "0x041",
-          "file": "tile_041.png"
-        },
-        {
-          "index": 66,
-          "hex": "0x042",
-          "file": "tile_042.png"
-        },
-        {
-          "index": 67,
-          "hex": "0x043",
-          "file": "tile_043.png"
-        },
-        {
-          "index": 68,
-          "hex": "0x044",
-          "file": "tile_044.png"
-        },
-        {
-          "index": 69,
-          "hex": "0x045",
-          "file": "tile_045.png"
-        },
-        {
-          "index": 70,
-          "hex": "0x046",
-          "file": "tile_046.png"
-        },
-        {
-          "index": 71,
-          "hex": "0x047",
-          "file": "tile_047.png"
-        },
-        {
-          "index": 72,
-          "hex": "0x048",
-          "file": "tile_048.png"
-        },
-        {
-          "index": 73,
-          "hex": "0x049",
-          "file": "tile_049.png"
-        },
-        {
-          "index": 74,
-          "hex": "0x04A",
-          "file": "tile_04A.png"
-        },
-        {
-          "index": 75,
-          "hex": "0x04B",
-          "file": "tile_04B.png"
-        },
-        {
-          "index": 76,
-          "hex": "0x04C",
-          "file": "tile_04C.png"
-        },
-        {
-          "index": 77,
-          "hex": "0x04D",
-          "file": "tile_04D.png"
-        },
-        {
-          "index": 78,
-          "hex": "0x04E",
-          "file": "tile_04E.png"
-        },
-        {
-          "index": 79,
-          "hex": "0x04F",
-          "file": "tile_04F.png"
-        },
-        {
-          "index": 80,
-          "hex": "0x050",
-          "file": "tile_050.png"
-        },
-        {
-          "index": 81,
-          "hex": "0x051",
-          "file": "tile_051.png"
-        },
-        {
-          "index": 82,
-          "hex": "0x052",
-          "file": "tile_052.png"
-        },
-        {
-          "index": 83,
-          "hex": "0x053",
-          "file": "tile_053.png"
-        },
-        {
-          "index": 84,
-          "hex": "0x054",
-          "file": "tile_054.png"
-        },
-        {
-          "index": 85,
-          "hex": "0x055",
-          "file": "tile_055.png"
-        },
-        {
-          "index": 86,
-          "hex": "0x056",
-          "file": "tile_056.png"
-        },
-        {
-          "index": 87,
-          "hex": "0x057",
-          "file": "tile_057.png"
-        },
-        {
-          "index": 88,
-          "hex": "0x058",
-          "file": "tile_058.png"
-        },
-        {
-          "index": 89,
-          "hex": "0x059",
-          "file": "tile_059.png"
-        },
-        {
-          "index": 90,
-          "hex": "0x05A",
-          "file": "tile_05A.png"
-        },
-        {
-          "index": 91,
-          "hex": "0x05B",
-          "file": "tile_05B.png"
-        },
-        {
-          "index": 92,
-          "hex": "0x05C",
-          "file": "tile_05C.png"
-        },
-        {
-          "index": 93,
-          "hex": "0x05D",
-          "file": "tile_05D.png"
-        },
-        {
-          "index": 94,
-          "hex": "0x05E",
-          "file": "tile_05E.png"
-        },
-        {
-          "index": 95,
-          "hex": "0x05F",
-          "file": "tile_05F.png"
-        },
-        {
-          "index": 96,
-          "hex": "0x060",
-          "file": "tile_060.png"
-        },
-        {
-          "index": 97,
-          "hex": "0x061",
-          "file": "tile_061.png"
-        },
-        {
-          "index": 98,
-          "hex": "0x062",
-          "file": "tile_062.png"
-        },
-        {
-          "index": 99,
-          "hex": "0x063",
-          "file": "tile_063.png"
-        },
-        {
-          "index": 100,
-          "hex": "0x064",
-          "file": "tile_064.png"
-        },
-        {
-          "index": 101,
-          "hex": "0x065",
-          "file": "tile_065.png"
-        },
-        {
-          "index": 102,
-          "hex": "0x066",
-          "file": "tile_066.png"
-        },
-        {
-          "index": 103,
-          "hex": "0x067",
-          "file": "tile_067.png"
-        },
-        {
-          "index": 104,
-          "hex": "0x068",
-          "file": "tile_068.png"
-        },
-        {
-          "index": 105,
-          "hex": "0x069",
-          "file": "tile_069.png"
-        },
-        {
-          "index": 106,
-          "hex": "0x06A",
-          "file": "tile_06A.png"
-        },
-        {
-          "index": 107,
-          "hex": "0x06B",
-          "file": "tile_06B.png"
-        },
-        {
-          "index": 108,
-          "hex": "0x06C",
-          "file": "tile_06C.png"
-        },
-        {
-          "index": 109,
-          "hex": "0x06D",
-          "file": "tile_06D.png"
-        },
-        {
-          "index": 110,
-          "hex": "0x06E",
-          "file": "tile_06E.png"
-        },
-        {
-          "index": 111,
-          "hex": "0x06F",
-          "file": "tile_06F.png"
-        },
-        {
-          "index": 112,
-          "hex": "0x070",
-          "file": "tile_070.png"
-        },
-        {
-          "index": 113,
-          "hex": "0x071",
-          "file": "tile_071.png"
-        },
-        {
-          "index": 114,
-          "hex": "0x072",
-          "file": "tile_072.png"
-        },
-        {
-          "index": 115,
-          "hex": "0x073",
-          "file": "tile_073.png"
-        },
-        {
-          "index": 116,
-          "hex": "0x074",
-          "file": "tile_074.png"
-        },
-        {
-          "index": 117,
-          "hex": "0x075",
-          "file": "tile_075.png"
-        },
-        {
-          "index": 118,
-          "hex": "0x076",
-          "file": "tile_076.png"
-        },
-        {
-          "index": 119,
-          "hex": "0x077",
-          "file": "tile_077.png"
-        },
-        {
-          "index": 120,
-          "hex": "0x078",
-          "file": "tile_078.png"
-        },
-        {
-          "index": 121,
-          "hex": "0x079",
-          "file": "tile_079.png"
-        },
-        {
-          "index": 122,
-          "hex": "0x07A",
-          "file": "tile_07A.png"
-        },
-        {
-          "index": 123,
-          "hex": "0x07B",
-          "file": "tile_07B.png"
-        },
-        {
-          "index": 124,
-          "hex": "0x07C",
-          "file": "tile_07C.png"
-        },
-        {
-          "index": 125,
-          "hex": "0x07D",
-          "file": "tile_07D.png"
-        },
-        {
-          "index": 126,
-          "hex": "0x07E",
-          "file": "tile_07E.png"
-        },
-        {
-          "index": 127,
-          "hex": "0x07F",
-          "file": "tile_07F.png"
-        },
-        {
-          "index": 128,
-          "hex": "0x080",
-          "file": "tile_080.png"
-        },
-        {
-          "index": 129,
-          "hex": "0x081",
-          "file": "tile_081.png"
-        },
-        {
-          "index": 130,
-          "hex": "0x082",
-          "file": "tile_082.png"
-        },
-        {
-          "index": 131,
-          "hex": "0x083",
-          "file": "tile_083.png"
-        },
-        {
-          "index": 132,
-          "hex": "0x084",
-          "file": "tile_084.png"
-        },
-        {
-          "index": 133,
-          "hex": "0x085",
-          "file": "tile_085.png"
-        },
-        {
-          "index": 134,
-          "hex": "0x086",
-          "file": "tile_086.png"
-        },
-        {
-          "index": 135,
-          "hex": "0x087",
-          "file": "tile_087.png"
-        },
-        {
-          "index": 136,
-          "hex": "0x088",
-          "file": "tile_088.png"
-        },
-        {
-          "index": 137,
-          "hex": "0x089",
-          "file": "tile_089.png"
-        },
-        {
-          "index": 138,
-          "hex": "0x08A",
-          "file": "tile_08A.png"
-        },
-        {
-          "index": 139,
-          "hex": "0x08B",
-          "file": "tile_08B.png"
-        },
-        {
-          "index": 140,
-          "hex": "0x08C",
-          "file": "tile_08C.png"
-        },
-        {
-          "index": 141,
-          "hex": "0x08D",
-          "file": "tile_08D.png"
-        },
-        {
-          "index": 142,
-          "hex": "0x08E",
-          "file": "tile_08E.png"
-        },
-        {
-          "index": 143,
-          "hex": "0x08F",
-          "file": "tile_08F.png"
-        },
-        {
-          "index": 144,
-          "hex": "0x090",
-          "file": "tile_090.png"
-        },
-        {
-          "index": 145,
-          "hex": "0x091",
-          "file": "tile_091.png"
-        },
-        {
-          "index": 146,
-          "hex": "0x092",
-          "file": "tile_092.png"
-        },
-        {
-          "index": 147,
-          "hex": "0x093",
-          "file": "tile_093.png"
-        },
-        {
-          "index": 148,
-          "hex": "0x094",
-          "file": "tile_094.png"
-        },
-        {
-          "index": 149,
-          "hex": "0x095",
-          "file": "tile_095.png"
-        },
-        {
-          "index": 150,
-          "hex": "0x096",
-          "file": "tile_096.png"
-        },
-        {
-          "index": 151,
-          "hex": "0x097",
-          "file": "tile_097.png"
-        },
-        {
-          "index": 152,
-          "hex": "0x098",
-          "file": "tile_098.png"
-        },
-        {
-          "index": 153,
-          "hex": "0x099",
-          "file": "tile_099.png"
-        },
-        {
-          "index": 154,
-          "hex": "0x09A",
-          "file": "tile_09A.png"
-        },
-        {
-          "index": 155,
-          "hex": "0x09B",
-          "file": "tile_09B.png"
-        },
-        {
-          "index": 156,
-          "hex": "0x09C",
-          "file": "tile_09C.png"
-        },
-        {
-          "index": 157,
-          "hex": "0x09D",
-          "file": "tile_09D.png"
-        },
-        {
-          "index": 158,
-          "hex": "0x09E",
-          "file": "tile_09E.png"
-        },
-        {
-          "index": 159,
-          "hex": "0x09F",
-          "file": "tile_09F.png"
-        },
-        {
-          "index": 160,
-          "hex": "0x0A0",
-          "file": "tile_0A0.png"
-        },
-        {
-          "index": 161,
-          "hex": "0x0A1",
-          "file": "tile_0A1.png"
-        },
-        {
-          "index": 162,
-          "hex": "0x0A2",
-          "file": "tile_0A2.png"
-        },
-        {
-          "index": 163,
-          "hex": "0x0A3",
-          "file": "tile_0A3.png"
-        },
-        {
-          "index": 164,
-          "hex": "0x0A4",
-          "file": "tile_0A4.png"
-        },
-        {
-          "index": 165,
-          "hex": "0x0A5",
-          "file": "tile_0A5.png"
-        },
-        {
-          "index": 166,
-          "hex": "0x0A6",
-          "file": "tile_0A6.png"
-        },
-        {
-          "index": 167,
-          "hex": "0x0A7",
-          "file": "tile_0A7.png"
-        },
-        {
-          "index": 168,
-          "hex": "0x0A8",
-          "file": "tile_0A8.png"
-        },
-        {
-          "index": 169,
-          "hex": "0x0A9",
-          "file": "tile_0A9.png"
-        },
-        {
-          "index": 170,
-          "hex": "0x0AA",
-          "file": "tile_0AA.png"
-        },
-        {
-          "index": 171,
-          "hex": "0x0AB",
-          "file": "tile_0AB.png"
-        },
-        {
-          "index": 172,
-          "hex": "0x0AC",
-          "file": "tile_0AC.png"
-        },
-        {
-          "index": 173,
-          "hex": "0x0AD",
-          "file": "tile_0AD.png"
-        },
-        {
-          "index": 174,
-          "hex": "0x0AE",
-          "file": "tile_0AE.png"
-        },
-        {
-          "index": 175,
-          "hex": "0x0AF",
-          "file": "tile_0AF.png"
-        },
-        {
-          "index": 176,
-          "hex": "0x0B0",
-          "file": "tile_0B0.png"
-        },
-        {
-          "index": 177,
-          "hex": "0x0B1",
-          "file": "tile_0B1.png"
-        },
-        {
-          "index": 178,
-          "hex": "0x0B2",
-          "file": "tile_0B2.png"
-        },
-        {
-          "index": 179,
-          "hex": "0x0B3",
-          "file": "tile_0B3.png"
-        },
-        {
-          "index": 180,
-          "hex": "0x0B4",
-          "file": "tile_0B4.png"
-        },
-        {
-          "index": 181,
-          "hex": "0x0B5",
-          "file": "tile_0B5.png"
-        },
-        {
-          "index": 182,
-          "hex": "0x0B6",
-          "file": "tile_0B6.png"
-        },
-        {
-          "index": 183,
-          "hex": "0x0B7",
-          "file": "tile_0B7.png"
-        },
-        {
-          "index": 184,
-          "hex": "0x0B8",
-          "file": "tile_0B8.png"
-        },
-        {
-          "index": 185,
-          "hex": "0x0B9",
-          "file": "tile_0B9.png"
-        },
-        {
-          "index": 186,
-          "hex": "0x0BA",
-          "file": "tile_0BA.png"
-        },
-        {
-          "index": 187,
-          "hex": "0x0BB",
-          "file": "tile_0BB.png"
-        },
-        {
-          "index": 188,
-          "hex": "0x0BC",
-          "file": "tile_0BC.png"
-        },
-        {
-          "index": 189,
-          "hex": "0x0BD",
-          "file": "tile_0BD.png"
-        },
-        {
-          "index": 190,
-          "hex": "0x0BE",
-          "file": "tile_0BE.png"
-        },
-        {
-          "index": 191,
-          "hex": "0x0BF",
-          "file": "tile_0BF.png"
-        },
-        {
-          "index": 192,
-          "hex": "0x0C0",
-          "file": "tile_0C0.png"
-        },
-        {
-          "index": 193,
-          "hex": "0x0C1",
-          "file": "tile_0C1.png"
-        },
-        {
-          "index": 194,
-          "hex": "0x0C2",
-          "file": "tile_0C2.png"
-        },
-        {
-          "index": 195,
-          "hex": "0x0C3",
-          "file": "tile_0C3.png"
-        },
-        {
-          "index": 196,
-          "hex": "0x0C4",
-          "file": "tile_0C4.png"
-        },
-        {
-          "index": 197,
-          "hex": "0x0C5",
-          "file": "tile_0C5.png"
-        },
-        {
-          "index": 198,
-          "hex": "0x0C6",
-          "file": "tile_0C6.png"
-        },
-        {
-          "index": 199,
-          "hex": "0x0C7",
-          "file": "tile_0C7.png"
-        },
-        {
-          "index": 200,
-          "hex": "0x0C8",
-          "file": "tile_0C8.png"
-        },
-        {
-          "index": 201,
-          "hex": "0x0C9",
-          "file": "tile_0C9.png"
-        },
-        {
-          "index": 202,
-          "hex": "0x0CA",
-          "file": "tile_0CA.png"
-        },
-        {
-          "index": 203,
-          "hex": "0x0CB",
-          "file": "tile_0CB.png"
-        },
-        {
-          "index": 204,
-          "hex": "0x0CC",
-          "file": "tile_0CC.png"
-        },
-        {
-          "index": 205,
-          "hex": "0x0CD",
-          "file": "tile_0CD.png"
-        },
-        {
-          "index": 206,
-          "hex": "0x0CE",
-          "file": "tile_0CE.png"
-        },
-        {
-          "index": 207,
-          "hex": "0x0CF",
-          "file": "tile_0CF.png"
-        },
-        {
-          "index": 208,
-          "hex": "0x0D0",
-          "file": "tile_0D0.png"
-        },
-        {
-          "index": 209,
-          "hex": "0x0D1",
-          "file": "tile_0D1.png"
-        },
-        {
-          "index": 210,
-          "hex": "0x0D2",
-          "file": "tile_0D2.png"
-        },
-        {
-          "index": 211,
-          "hex": "0x0D3",
-          "file": "tile_0D3.png"
-        },
-        {
-          "index": 212,
-          "hex": "0x0D4",
-          "file": "tile_0D4.png"
-        },
-        {
-          "index": 213,
-          "hex": "0x0D5",
-          "file": "tile_0D5.png"
-        },
-        {
-          "index": 214,
-          "hex": "0x0D6",
-          "file": "tile_0D6.png"
-        },
-        {
-          "index": 215,
-          "hex": "0x0D7",
-          "file": "tile_0D7.png"
-        },
-        {
-          "index": 216,
-          "hex": "0x0D8",
-          "file": "tile_0D8.png"
-        },
-        {
-          "index": 217,
-          "hex": "0x0D9",
-          "file": "tile_0D9.png"
-        },
-        {
-          "index": 218,
-          "hex": "0x0DA",
-          "file": "tile_0DA.png"
-        },
-        {
-          "index": 219,
-          "hex": "0x0DB",
-          "file": "tile_0DB.png"
-        },
-        {
-          "index": 220,
-          "hex": "0x0DC",
-          "file": "tile_0DC.png"
-        },
-        {
-          "index": 221,
-          "hex": "0x0DD",
-          "file": "tile_0DD.png"
-        },
-        {
-          "index": 222,
-          "hex": "0x0DE",
-          "file": "tile_0DE.png"
-        },
-        {
-          "index": 223,
-          "hex": "0x0DF",
-          "file": "tile_0DF.png"
-        },
-        {
-          "index": 224,
-          "hex": "0x0E0",
-          "file": "tile_0E0.png"
-        },
-        {
-          "index": 225,
-          "hex": "0x0E1",
-          "file": "tile_0E1.png"
-        },
-        {
-          "index": 226,
-          "hex": "0x0E2",
-          "file": "tile_0E2.png"
-        },
-        {
-          "index": 227,
-          "hex": "0x0E3",
-          "file": "tile_0E3.png"
-        },
-        {
-          "index": 228,
-          "hex": "0x0E4",
-          "file": "tile_0E4.png"
-        },
-        {
-          "index": 229,
-          "hex": "0x0E5",
-          "file": "tile_0E5.png"
-        },
-        {
-          "index": 230,
-          "hex": "0x0E6",
-          "file": "tile_0E6.png"
-        },
-        {
-          "index": 231,
-          "hex": "0x0E7",
-          "file": "tile_0E7.png"
-        },
-        {
-          "index": 232,
-          "hex": "0x0E8",
-          "file": "tile_0E8.png"
-        },
-        {
-          "index": 233,
-          "hex": "0x0E9",
-          "file": "tile_0E9.png"
-        },
-        {
-          "index": 234,
-          "hex": "0x0EA",
-          "file": "tile_0EA.png"
-        },
-        {
-          "index": 235,
-          "hex": "0x0EB",
-          "file": "tile_0EB.png"
-        },
-        {
-          "index": 236,
-          "hex": "0x0EC",
-          "file": "tile_0EC.png"
-        },
-        {
-          "index": 237,
-          "hex": "0x0ED",
-          "file": "tile_0ED.png"
-        },
-        {
-          "index": 238,
-          "hex": "0x0EE",
-          "file": "tile_0EE.png"
-        },
-        {
-          "index": 239,
-          "hex": "0x0EF",
-          "file": "tile_0EF.png"
-        },
-        {
-          "index": 240,
-          "hex": "0x0F0",
-          "file": "tile_0F0.png"
-        },
-        {
-          "index": 241,
-          "hex": "0x0F1",
-          "file": "tile_0F1.png"
-        },
-        {
-          "index": 242,
-          "hex": "0x0F2",
-          "file": "tile_0F2.png"
-        },
-        {
-          "index": 243,
-          "hex": "0x0F3",
-          "file": "tile_0F3.png"
-        },
-        {
-          "index": 244,
-          "hex": "0x0F4",
-          "file": "tile_0F4.png"
-        },
-        {
-          "index": 245,
-          "hex": "0x0F5",
-          "file": "tile_0F5.png"
-        },
-        {
-          "index": 246,
-          "hex": "0x0F6",
-          "file": "tile_0F6.png"
-        },
-        {
-          "index": 247,
-          "hex": "0x0F7",
-          "file": "tile_0F7.png"
-        },
-        {
-          "index": 248,
-          "hex": "0x0F8",
-          "file": "tile_0F8.png"
-        },
-        {
-          "index": 249,
-          "hex": "0x0F9",
-          "file": "tile_0F9.png"
-        },
-        {
-          "index": 250,
-          "hex": "0x0FA",
-          "file": "tile_0FA.png"
-        },
-        {
-          "index": 251,
-          "hex": "0x0FB",
-          "file": "tile_0FB.png"
-        },
-        {
-          "index": 252,
-          "hex": "0x0FC",
-          "file": "tile_0FC.png"
-        },
-        {
-          "index": 253,
-          "hex": "0x0FD",
-          "file": "tile_0FD.png"
-        },
-        {
-          "index": 254,
-          "hex": "0x0FE",
-          "file": "tile_0FE.png"
-        },
-        {
-          "index": 255,
-          "hex": "0x0FF",
-          "file": "tile_0FF.png"
-        }
-      ],
-      "total_tiles": 256,
-      "description": "Background tiles: terrain, walls, objects",
-      "sheet": "background_sheet.png"
-    },
-    {
-      "category": "font_and_ui",
-      "palette": "background",
-      "palette_colors": [
-        "0x0F",
-        "0x29",
-        "0x1A",
-        "0x09"
-      ],
-      "tile_range": {
-        "start": 256,
-        "end": 511,
-        "start_hex": "0x100",
-        "end_hex": "0x1FF"
-      },
-      "tiles": [
-        {
-          "index": 256,
-          "hex": "0x100",
-          "file": "tile_100.png"
-        },
-        {
-          "index": 257,
-          "hex": "0x101",
-          "file": "tile_101.png"
-        },
-        {
-          "index": 258,
-          "hex": "0x102",
-          "file": "tile_102.png"
-        },
-        {
-          "index": 259,
-          "hex": "0x103",
-          "file": "tile_103.png"
-        },
-        {
-          "index": 260,
-          "hex": "0x104",
-          "file": "tile_104.png"
-        },
-        {
-          "index": 261,
-          "hex": "0x105",
-          "file": "tile_105.png"
-        },
-        {
-          "index": 262,
-          "hex": "0x106",
-          "file": "tile_106.png"
-        },
-        {
-          "index": 263,
-          "hex": "0x107",
-          "file": "tile_107.png"
-        },
-        {
-          "index": 264,
-          "hex": "0x108",
-          "file": "tile_108.png"
-        },
-        {
-          "index": 265,
-          "hex": "0x109",
-          "file": "tile_109.png"
-        },
-        {
-          "index": 266,
-          "hex": "0x10A",
-          "file": "tile_10A.png"
-        },
-        {
-          "index": 267,
-          "hex": "0x10B",
-          "file": "tile_10B.png"
-        },
-        {
-          "index": 268,
-          "hex": "0x10C",
-          "file": "tile_10C.png"
-        },
-        {
-          "index": 269,
-          "hex": "0x10D",
-          "file": "tile_10D.png"
-        },
-        {
-          "index": 270,
-          "hex": "0x10E",
-          "file": "tile_10E.png"
-        },
-        {
-          "index": 271,
-          "hex": "0x10F",
-          "file": "tile_10F.png"
-        },
-        {
-          "index": 272,
-          "hex": "0x110",
-          "file": "tile_110.png"
-        },
-        {
-          "index": 273,
-          "hex": "0x111",
-          "file": "tile_111.png"
-        },
-        {
-          "index": 274,
-          "hex": "0x112",
-          "file": "tile_112.png"
-        },
-        {
-          "index": 275,
-          "hex": "0x113",
-          "file": "tile_113.png"
-        },
-        {
-          "index": 276,
-          "hex": "0x114",
-          "file": "tile_114.png"
-        },
-        {
-          "index": 277,
-          "hex": "0x115",
-          "file": "tile_115.png"
-        },
-        {
-          "index": 278,
-          "hex": "0x116",
-          "file": "tile_116.png"
-        },
-        {
-          "index": 279,
-          "hex": "0x117",
-          "file": "tile_117.png"
-        },
-        {
-          "index": 280,
-          "hex": "0x118",
-          "file": "tile_118.png"
-        },
-        {
-          "index": 281,
-          "hex": "0x119",
-          "file": "tile_119.png"
-        },
-        {
-          "index": 282,
-          "hex": "0x11A",
-          "file": "tile_11A.png"
-        },
-        {
-          "index": 283,
-          "hex": "0x11B",
-          "file": "tile_11B.png"
-        },
-        {
-          "index": 284,
-          "hex": "0x11C",
-          "file": "tile_11C.png"
-        },
-        {
-          "index": 285,
-          "hex": "0x11D",
-          "file": "tile_11D.png"
-        },
-        {
-          "index": 286,
-          "hex": "0x11E",
-          "file": "tile_11E.png"
-        },
-        {
-          "index": 287,
-          "hex": "0x11F",
-          "file": "tile_11F.png"
-        },
-        {
-          "index": 288,
-          "hex": "0x120",
-          "file": "tile_120.png"
-        },
-        {
-          "index": 289,
-          "hex": "0x121",
-          "file": "tile_121.png"
-        },
-        {
-          "index": 290,
-          "hex": "0x122",
-          "file": "tile_122.png"
-        },
-        {
-          "index": 291,
-          "hex": "0x123",
-          "file": "tile_123.png"
-        },
-        {
-          "index": 292,
-          "hex": "0x124",
-          "file": "tile_124.png"
-        },
-        {
-          "index": 293,
-          "hex": "0x125",
-          "file": "tile_125.png"
-        },
-        {
-          "index": 294,
-          "hex": "0x126",
-          "file": "tile_126.png"
-        },
-        {
-          "index": 295,
-          "hex": "0x127",
-          "file": "tile_127.png"
-        },
-        {
-          "index": 296,
-          "hex": "0x128",
-          "file": "tile_128.png"
-        },
-        {
-          "index": 297,
-          "hex": "0x129",
-          "file": "tile_129.png"
-        },
-        {
-          "index": 298,
-          "hex": "0x12A",
-          "file": "tile_12A.png"
-        },
-        {
-          "index": 299,
-          "hex": "0x12B",
-          "file": "tile_12B.png"
-        },
-        {
-          "index": 300,
-          "hex": "0x12C",
-          "file": "tile_12C.png"
-        },
-        {
-          "index": 301,
-          "hex": "0x12D",
-          "file": "tile_12D.png"
-        },
-        {
-          "index": 302,
-          "hex": "0x12E",
-          "file": "tile_12E.png"
-        },
-        {
-          "index": 303,
-          "hex": "0x12F",
-          "file": "tile_12F.png"
-        },
-        {
-          "index": 304,
-          "hex": "0x130",
-          "file": "tile_130.png"
-        },
-        {
-          "index": 305,
-          "hex": "0x131",
-          "file": "tile_131.png"
-        },
-        {
-          "index": 306,
-          "hex": "0x132",
-          "file": "tile_132.png"
-        },
-        {
-          "index": 307,
-          "hex": "0x133",
-          "file": "tile_133.png"
-        },
-        {
-          "index": 308,
-          "hex": "0x134",
-          "file": "tile_134.png"
-        },
-        {
-          "index": 309,
-          "hex": "0x135",
-          "file": "tile_135.png"
-        },
-        {
-          "index": 310,
-          "hex": "0x136",
-          "file": "tile_136.png"
-        },
-        {
-          "index": 311,
-          "hex": "0x137",
-          "file": "tile_137.png"
-        },
-        {
-          "index": 312,
-          "hex": "0x138",
-          "file": "tile_138.png"
-        },
-        {
-          "index": 313,
-          "hex": "0x139",
-          "file": "tile_139.png"
-        },
-        {
-          "index": 314,
-          "hex": "0x13A",
-          "file": "tile_13A.png"
-        },
-        {
-          "index": 315,
-          "hex": "0x13B",
-          "file": "tile_13B.png"
-        },
-        {
-          "index": 316,
-          "hex": "0x13C",
-          "file": "tile_13C.png"
-        },
-        {
-          "index": 317,
-          "hex": "0x13D",
-          "file": "tile_13D.png"
-        },
-        {
-          "index": 318,
-          "hex": "0x13E",
-          "file": "tile_13E.png"
-        },
-        {
-          "index": 319,
-          "hex": "0x13F",
-          "file": "tile_13F.png"
-        },
-        {
-          "index": 320,
-          "hex": "0x140",
-          "file": "tile_140.png"
-        },
-        {
-          "index": 321,
-          "hex": "0x141",
-          "file": "tile_141.png"
-        },
-        {
-          "index": 322,
-          "hex": "0x142",
-          "file": "tile_142.png"
-        },
-        {
-          "index": 323,
-          "hex": "0x143",
-          "file": "tile_143.png"
-        },
-        {
-          "index": 324,
-          "hex": "0x144",
-          "file": "tile_144.png"
-        },
-        {
-          "index": 325,
-          "hex": "0x145",
-          "file": "tile_145.png"
-        },
-        {
-          "index": 326,
-          "hex": "0x146",
-          "file": "tile_146.png"
-        },
-        {
-          "index": 327,
-          "hex": "0x147",
-          "file": "tile_147.png"
-        },
-        {
-          "index": 328,
-          "hex": "0x148",
-          "file": "tile_148.png"
-        },
-        {
-          "index": 329,
-          "hex": "0x149",
-          "file": "tile_149.png"
-        },
-        {
-          "index": 330,
-          "hex": "0x14A",
-          "file": "tile_14A.png"
-        },
-        {
-          "index": 331,
-          "hex": "0x14B",
-          "file": "tile_14B.png"
-        },
-        {
-          "index": 332,
-          "hex": "0x14C",
-          "file": "tile_14C.png"
-        },
-        {
-          "index": 333,
-          "hex": "0x14D",
-          "file": "tile_14D.png"
-        },
-        {
-          "index": 334,
-          "hex": "0x14E",
-          "file": "tile_14E.png"
-        },
-        {
-          "index": 335,
-          "hex": "0x14F",
-          "file": "tile_14F.png"
-        },
-        {
-          "index": 336,
-          "hex": "0x150",
-          "file": "tile_150.png"
-        },
-        {
-          "index": 337,
-          "hex": "0x151",
-          "file": "tile_151.png"
-        },
-        {
-          "index": 338,
-          "hex": "0x152",
-          "file": "tile_152.png"
-        },
-        {
-          "index": 339,
-          "hex": "0x153",
-          "file": "tile_153.png"
-        },
-        {
-          "index": 340,
-          "hex": "0x154",
-          "file": "tile_154.png"
-        },
-        {
-          "index": 341,
-          "hex": "0x155",
-          "file": "tile_155.png"
-        },
-        {
-          "index": 342,
-          "hex": "0x156",
-          "file": "tile_156.png"
-        },
-        {
-          "index": 343,
-          "hex": "0x157",
-          "file": "tile_157.png"
-        },
-        {
-          "index": 344,
-          "hex": "0x158",
-          "file": "tile_158.png"
-        },
-        {
-          "index": 345,
-          "hex": "0x159",
-          "file": "tile_159.png"
-        },
-        {
-          "index": 346,
-          "hex": "0x15A",
-          "file": "tile_15A.png"
-        },
-        {
-          "index": 347,
-          "hex": "0x15B",
-          "file": "tile_15B.png"
-        },
-        {
-          "index": 348,
-          "hex": "0x15C",
-          "file": "tile_15C.png"
-        },
-        {
-          "index": 349,
-          "hex": "0x15D",
-          "file": "tile_15D.png"
-        },
-        {
-          "index": 350,
-          "hex": "0x15E",
-          "file": "tile_15E.png"
-        },
-        {
-          "index": 351,
-          "hex": "0x15F",
-          "file": "tile_15F.png"
-        },
-        {
-          "index": 352,
-          "hex": "0x160",
-          "file": "tile_160.png"
-        },
-        {
-          "index": 353,
-          "hex": "0x161",
-          "file": "tile_161.png"
-        },
-        {
-          "index": 354,
-          "hex": "0x162",
-          "file": "tile_162.png"
-        },
-        {
-          "index": 355,
-          "hex": "0x163",
-          "file": "tile_163.png"
-        },
-        {
-          "index": 356,
-          "hex": "0x164",
-          "file": "tile_164.png"
-        },
-        {
-          "index": 357,
-          "hex": "0x165",
-          "file": "tile_165.png"
-        },
-        {
-          "index": 358,
-          "hex": "0x166",
-          "file": "tile_166.png"
-        },
-        {
-          "index": 359,
-          "hex": "0x167",
-          "file": "tile_167.png"
-        },
-        {
-          "index": 360,
-          "hex": "0x168",
-          "file": "tile_168.png"
-        },
-        {
-          "index": 361,
-          "hex": "0x169",
-          "file": "tile_169.png"
-        },
-        {
-          "index": 362,
-          "hex": "0x16A",
-          "file": "tile_16A.png"
-        },
-        {
-          "index": 363,
-          "hex": "0x16B",
-          "file": "tile_16B.png"
-        },
-        {
-          "index": 364,
-          "hex": "0x16C",
-          "file": "tile_16C.png"
-        },
-        {
-          "index": 365,
-          "hex": "0x16D",
-          "file": "tile_16D.png"
-        },
-        {
-          "index": 366,
-          "hex": "0x16E",
-          "file": "tile_16E.png"
-        },
-        {
-          "index": 367,
-          "hex": "0x16F",
-          "file": "tile_16F.png"
-        },
-        {
-          "index": 368,
-          "hex": "0x170",
-          "file": "tile_170.png"
-        },
-        {
-          "index": 369,
-          "hex": "0x171",
-          "file": "tile_171.png"
-        },
-        {
-          "index": 370,
-          "hex": "0x172",
-          "file": "tile_172.png"
-        },
-        {
-          "index": 371,
-          "hex": "0x173",
-          "file": "tile_173.png"
-        },
-        {
-          "index": 372,
-          "hex": "0x174",
-          "file": "tile_174.png"
-        },
-        {
-          "index": 373,
-          "hex": "0x175",
-          "file": "tile_175.png"
-        },
-        {
-          "index": 374,
-          "hex": "0x176",
-          "file": "tile_176.png"
-        },
-        {
-          "index": 375,
-          "hex": "0x177",
-          "file": "tile_177.png"
-        },
-        {
-          "index": 376,
-          "hex": "0x178",
-          "file": "tile_178.png"
-        },
-        {
-          "index": 377,
-          "hex": "0x179",
-          "file": "tile_179.png"
-        },
-        {
-          "index": 378,
-          "hex": "0x17A",
-          "file": "tile_17A.png"
-        },
-        {
-          "index": 379,
-          "hex": "0x17B",
-          "file": "tile_17B.png"
-        },
-        {
-          "index": 380,
-          "hex": "0x17C",
-          "file": "tile_17C.png"
-        },
-        {
-          "index": 381,
-          "hex": "0x17D",
-          "file": "tile_17D.png"
-        },
-        {
-          "index": 382,
-          "hex": "0x17E",
-          "file": "tile_17E.png"
-        },
-        {
-          "index": 383,
-          "hex": "0x17F",
-          "file": "tile_17F.png"
-        },
-        {
-          "index": 384,
-          "hex": "0x180",
-          "file": "tile_180.png"
-        },
-        {
-          "index": 385,
-          "hex": "0x181",
-          "file": "tile_181.png"
-        },
-        {
-          "index": 386,
-          "hex": "0x182",
-          "file": "tile_182.png"
-        },
-        {
-          "index": 387,
-          "hex": "0x183",
-          "file": "tile_183.png"
-        },
-        {
-          "index": 388,
-          "hex": "0x184",
-          "file": "tile_184.png"
-        },
-        {
-          "index": 389,
-          "hex": "0x185",
-          "file": "tile_185.png"
-        },
-        {
-          "index": 390,
-          "hex": "0x186",
-          "file": "tile_186.png"
-        },
-        {
-          "index": 391,
-          "hex": "0x187",
-          "file": "tile_187.png"
-        },
-        {
-          "index": 392,
-          "hex": "0x188",
-          "file": "tile_188.png"
-        },
-        {
-          "index": 393,
-          "hex": "0x189",
-          "file": "tile_189.png"
-        },
-        {
-          "index": 394,
-          "hex": "0x18A",
-          "file": "tile_18A.png"
-        },
-        {
-          "index": 395,
-          "hex": "0x18B",
-          "file": "tile_18B.png"
-        },
-        {
-          "index": 396,
-          "hex": "0x18C",
-          "file": "tile_18C.png"
-        },
-        {
-          "index": 397,
-          "hex": "0x18D",
-          "file": "tile_18D.png"
-        },
-        {
-          "index": 398,
-          "hex": "0x18E",
-          "file": "tile_18E.png"
-        },
-        {
-          "index": 399,
-          "hex": "0x18F",
-          "file": "tile_18F.png"
-        },
-        {
-          "index": 400,
-          "hex": "0x190",
-          "file": "tile_190.png"
-        },
-        {
-          "index": 401,
-          "hex": "0x191",
-          "file": "tile_191.png"
-        },
-        {
-          "index": 402,
-          "hex": "0x192",
-          "file": "tile_192.png"
-        },
-        {
-          "index": 403,
-          "hex": "0x193",
-          "file": "tile_193.png"
-        },
-        {
-          "index": 404,
-          "hex": "0x194",
-          "file": "tile_194.png"
-        },
-        {
-          "index": 405,
-          "hex": "0x195",
-          "file": "tile_195.png"
-        },
-        {
-          "index": 406,
-          "hex": "0x196",
-          "file": "tile_196.png"
-        },
-        {
-          "index": 407,
-          "hex": "0x197",
-          "file": "tile_197.png"
-        },
-        {
-          "index": 408,
-          "hex": "0x198",
-          "file": "tile_198.png"
-        },
-        {
-          "index": 409,
-          "hex": "0x199",
-          "file": "tile_199.png"
-        },
-        {
-          "index": 410,
-          "hex": "0x19A",
-          "file": "tile_19A.png"
-        },
-        {
-          "index": 411,
-          "hex": "0x19B",
-          "file": "tile_19B.png"
-        },
-        {
-          "index": 412,
-          "hex": "0x19C",
-          "file": "tile_19C.png"
-        },
-        {
-          "index": 413,
-          "hex": "0x19D",
-          "file": "tile_19D.png"
-        },
-        {
-          "index": 414,
-          "hex": "0x19E",
-          "file": "tile_19E.png"
-        },
-        {
-          "index": 415,
-          "hex": "0x19F",
-          "file": "tile_19F.png"
-        },
-        {
-          "index": 416,
-          "hex": "0x1A0",
-          "file": "tile_1A0.png"
-        },
-        {
-          "index": 417,
-          "hex": "0x1A1",
-          "file": "tile_1A1.png"
-        },
-        {
-          "index": 418,
-          "hex": "0x1A2",
-          "file": "tile_1A2.png"
-        },
-        {
-          "index": 419,
-          "hex": "0x1A3",
-          "file": "tile_1A3.png"
-        },
-        {
-          "index": 420,
-          "hex": "0x1A4",
-          "file": "tile_1A4.png"
-        },
-        {
-          "index": 421,
-          "hex": "0x1A5",
-          "file": "tile_1A5.png"
-        },
-        {
-          "index": 422,
-          "hex": "0x1A6",
-          "file": "tile_1A6.png"
-        },
-        {
-          "index": 423,
-          "hex": "0x1A7",
-          "file": "tile_1A7.png"
-        },
-        {
-          "index": 424,
-          "hex": "0x1A8",
-          "file": "tile_1A8.png"
-        },
-        {
-          "index": 425,
-          "hex": "0x1A9",
-          "file": "tile_1A9.png"
-        },
-        {
-          "index": 426,
-          "hex": "0x1AA",
-          "file": "tile_1AA.png"
-        },
-        {
-          "index": 427,
-          "hex": "0x1AB",
-          "file": "tile_1AB.png"
-        },
-        {
-          "index": 428,
-          "hex": "0x1AC",
-          "file": "tile_1AC.png"
-        },
-        {
-          "index": 429,
-          "hex": "0x1AD",
-          "file": "tile_1AD.png"
-        },
-        {
-          "index": 430,
-          "hex": "0x1AE",
-          "file": "tile_1AE.png"
-        },
-        {
-          "index": 431,
-          "hex": "0x1AF",
-          "file": "tile_1AF.png"
-        },
-        {
-          "index": 432,
-          "hex": "0x1B0",
-          "file": "tile_1B0.png"
-        },
-        {
-          "index": 433,
-          "hex": "0x1B1",
-          "file": "tile_1B1.png"
-        },
-        {
-          "index": 434,
-          "hex": "0x1B2",
-          "file": "tile_1B2.png"
-        },
-        {
-          "index": 435,
-          "hex": "0x1B3",
-          "file": "tile_1B3.png"
-        },
-        {
-          "index": 436,
-          "hex": "0x1B4",
-          "file": "tile_1B4.png"
-        },
-        {
-          "index": 437,
-          "hex": "0x1B5",
-          "file": "tile_1B5.png"
-        },
-        {
-          "index": 438,
-          "hex": "0x1B6",
-          "file": "tile_1B6.png"
-        },
-        {
-          "index": 439,
-          "hex": "0x1B7",
-          "file": "tile_1B7.png"
-        },
-        {
-          "index": 440,
-          "hex": "0x1B8",
-          "file": "tile_1B8.png"
-        },
-        {
-          "index": 441,
-          "hex": "0x1B9",
-          "file": "tile_1B9.png"
-        },
-        {
-          "index": 442,
-          "hex": "0x1BA",
-          "file": "tile_1BA.png"
-        },
-        {
-          "index": 443,
-          "hex": "0x1BB",
-          "file": "tile_1BB.png"
-        },
-        {
-          "index": 444,
-          "hex": "0x1BC",
-          "file": "tile_1BC.png"
-        },
-        {
-          "index": 445,
-          "hex": "0x1BD",
-          "file": "tile_1BD.png"
-        },
-        {
-          "index": 446,
-          "hex": "0x1BE",
-          "file": "tile_1BE.png"
-        },
-        {
-          "index": 447,
-          "hex": "0x1BF",
-          "file": "tile_1BF.png"
-        },
-        {
-          "index": 448,
-          "hex": "0x1C0",
-          "file": "tile_1C0.png"
-        },
-        {
-          "index": 449,
-          "hex": "0x1C1",
-          "file": "tile_1C1.png"
-        },
-        {
-          "index": 450,
-          "hex": "0x1C2",
-          "file": "tile_1C2.png"
-        },
-        {
-          "index": 451,
-          "hex": "0x1C3",
-          "file": "tile_1C3.png"
-        },
-        {
-          "index": 452,
-          "hex": "0x1C4",
-          "file": "tile_1C4.png"
-        },
-        {
-          "index": 453,
-          "hex": "0x1C5",
-          "file": "tile_1C5.png"
-        },
-        {
-          "index": 454,
-          "hex": "0x1C6",
-          "file": "tile_1C6.png"
-        },
-        {
-          "index": 455,
-          "hex": "0x1C7",
-          "file": "tile_1C7.png"
-        },
-        {
-          "index": 456,
-          "hex": "0x1C8",
-          "file": "tile_1C8.png"
-        },
-        {
-          "index": 457,
-          "hex": "0x1C9",
-          "file": "tile_1C9.png"
-        },
-        {
-          "index": 458,
-          "hex": "0x1CA",
-          "file": "tile_1CA.png"
-        },
-        {
-          "index": 459,
-          "hex": "0x1CB",
-          "file": "tile_1CB.png"
-        },
-        {
-          "index": 460,
-          "hex": "0x1CC",
-          "file": "tile_1CC.png"
-        },
-        {
-          "index": 461,
-          "hex": "0x1CD",
-          "file": "tile_1CD.png"
-        },
-        {
-          "index": 462,
-          "hex": "0x1CE",
-          "file": "tile_1CE.png"
-        },
-        {
-          "index": 463,
-          "hex": "0x1CF",
-          "file": "tile_1CF.png"
-        },
-        {
-          "index": 464,
-          "hex": "0x1D0",
-          "file": "tile_1D0.png"
-        },
-        {
-          "index": 465,
-          "hex": "0x1D1",
-          "file": "tile_1D1.png"
-        },
-        {
-          "index": 466,
-          "hex": "0x1D2",
-          "file": "tile_1D2.png"
-        },
-        {
-          "index": 467,
-          "hex": "0x1D3",
-          "file": "tile_1D3.png"
-        },
-        {
-          "index": 468,
-          "hex": "0x1D4",
-          "file": "tile_1D4.png"
-        },
-        {
-          "index": 469,
-          "hex": "0x1D5",
-          "file": "tile_1D5.png"
-        },
-        {
-          "index": 470,
-          "hex": "0x1D6",
-          "file": "tile_1D6.png"
-        },
-        {
-          "index": 471,
-          "hex": "0x1D7",
-          "file": "tile_1D7.png"
-        },
-        {
-          "index": 472,
-          "hex": "0x1D8",
-          "file": "tile_1D8.png"
-        },
-        {
-          "index": 473,
-          "hex": "0x1D9",
-          "file": "tile_1D9.png"
-        },
-        {
-          "index": 474,
-          "hex": "0x1DA",
-          "file": "tile_1DA.png"
-        },
-        {
-          "index": 475,
-          "hex": "0x1DB",
-          "file": "tile_1DB.png"
-        },
-        {
-          "index": 476,
-          "hex": "0x1DC",
-          "file": "tile_1DC.png"
-        },
-        {
-          "index": 477,
-          "hex": "0x1DD",
-          "file": "tile_1DD.png"
-        },
-        {
-          "index": 478,
-          "hex": "0x1DE",
-          "file": "tile_1DE.png"
-        },
-        {
-          "index": 479,
-          "hex": "0x1DF",
-          "file": "tile_1DF.png"
-        },
-        {
-          "index": 480,
-          "hex": "0x1E0",
-          "file": "tile_1E0.png"
-        },
-        {
-          "index": 481,
-          "hex": "0x1E1",
-          "file": "tile_1E1.png"
-        },
-        {
-          "index": 482,
-          "hex": "0x1E2",
-          "file": "tile_1E2.png"
-        },
-        {
-          "index": 483,
-          "hex": "0x1E3",
-          "file": "tile_1E3.png"
-        },
-        {
-          "index": 484,
-          "hex": "0x1E4",
-          "file": "tile_1E4.png"
-        },
-        {
-          "index": 485,
-          "hex": "0x1E5",
-          "file": "tile_1E5.png"
-        },
-        {
-          "index": 486,
-          "hex": "0x1E6",
-          "file": "tile_1E6.png"
-        },
-        {
-          "index": 487,
-          "hex": "0x1E7",
-          "file": "tile_1E7.png"
-        },
-        {
-          "index": 488,
-          "hex": "0x1E8",
-          "file": "tile_1E8.png"
-        },
-        {
-          "index": 489,
-          "hex": "0x1E9",
-          "file": "tile_1E9.png"
-        },
-        {
-          "index": 490,
-          "hex": "0x1EA",
-          "file": "tile_1EA.png"
-        },
-        {
-          "index": 491,
-          "hex": "0x1EB",
-          "file": "tile_1EB.png"
-        },
-        {
-          "index": 492,
-          "hex": "0x1EC",
-          "file": "tile_1EC.png"
-        },
-        {
-          "index": 493,
-          "hex": "0x1ED",
-          "file": "tile_1ED.png"
-        },
-        {
-          "index": 494,
-          "hex": "0x1EE",
-          "file": "tile_1EE.png"
-        },
-        {
-          "index": 495,
-          "hex": "0x1EF",
-          "file": "tile_1EF.png"
-        },
-        {
-          "index": 496,
-          "hex": "0x1F0",
-          "file": "tile_1F0.png"
-        },
-        {
-          "index": 497,
-          "hex": "0x1F1",
-          "file": "tile_1F1.png"
-        },
-        {
-          "index": 498,
-          "hex": "0x1F2",
-          "file": "tile_1F2.png"
-        },
-        {
-          "index": 499,
-          "hex": "0x1F3",
-          "file": "tile_1F3.png"
-        },
-        {
-          "index": 500,
-          "hex": "0x1F4",
-          "file": "tile_1F4.png"
-        },
-        {
-          "index": 501,
-          "hex": "0x1F5",
-          "file": "tile_1F5.png"
-        },
-        {
-          "index": 502,
-          "hex": "0x1F6",
-          "file": "tile_1F6.png"
-        },
-        {
-          "index": 503,
-          "hex": "0x1F7",
-          "file": "tile_1F7.png"
-        },
-        {
-          "index": 504,
-          "hex": "0x1F8",
-          "file": "tile_1F8.png"
-        },
-        {
-          "index": 505,
-          "hex": "0x1F9",
-          "file": "tile_1F9.png"
-        },
-        {
-          "index": 506,
-          "hex": "0x1FA",
-          "file": "tile_1FA.png"
-        },
-        {
-          "index": 507,
-          "hex": "0x1FB",
-          "file": "tile_1FB.png"
-        },
-        {
-          "index": 508,
-          "hex": "0x1FC",
-          "file": "tile_1FC.png"
-        },
-        {
-          "index": 509,
-          "hex": "0x1FD",
-          "file": "tile_1FD.png"
-        },
-        {
-          "index": 510,
-          "hex": "0x1FE",
-          "file": "tile_1FE.png"
-        },
-        {
-          "index": 511,
-          "hex": "0x1FF",
-          "file": "tile_1FF.png"
-        }
-      ],
-      "total_tiles": 256,
-      "description": "Text font, numbers, UI elements",
-      "sheet": "font_and_ui_sheet.png"
-    }
-  ]
+	"rom": "C:\\Users\\me\\source\\repos\\dragon-warrior-info\\roms\\Dragon Warrior (U) (PRG0) [!].nes",
+	"chr_offset": "0x10010",
+	"chr_size": 16384,
+	"total_tiles": 1024,
+	"categories": [
+		{
+			"category": "background",
+			"palette": "background",
+			"palette_colors": [
+				"0x0F",
+				"0x29",
+				"0x1A",
+				"0x09"
+			],
+			"tile_range": {
+				"start": 0,
+				"end": 255,
+				"start_hex": "0x000",
+				"end_hex": "0x0FF"
+			},
+			"tiles": [
+				{
+					"index": 0,
+					"hex": "0x000",
+					"file": "tile_000.png"
+				},
+				{
+					"index": 1,
+					"hex": "0x001",
+					"file": "tile_001.png"
+				},
+				{
+					"index": 2,
+					"hex": "0x002",
+					"file": "tile_002.png"
+				},
+				{
+					"index": 3,
+					"hex": "0x003",
+					"file": "tile_003.png"
+				},
+				{
+					"index": 4,
+					"hex": "0x004",
+					"file": "tile_004.png"
+				},
+				{
+					"index": 5,
+					"hex": "0x005",
+					"file": "tile_005.png"
+				},
+				{
+					"index": 6,
+					"hex": "0x006",
+					"file": "tile_006.png"
+				},
+				{
+					"index": 7,
+					"hex": "0x007",
+					"file": "tile_007.png"
+				},
+				{
+					"index": 8,
+					"hex": "0x008",
+					"file": "tile_008.png"
+				},
+				{
+					"index": 9,
+					"hex": "0x009",
+					"file": "tile_009.png"
+				},
+				{
+					"index": 10,
+					"hex": "0x00A",
+					"file": "tile_00A.png"
+				},
+				{
+					"index": 11,
+					"hex": "0x00B",
+					"file": "tile_00B.png"
+				},
+				{
+					"index": 12,
+					"hex": "0x00C",
+					"file": "tile_00C.png"
+				},
+				{
+					"index": 13,
+					"hex": "0x00D",
+					"file": "tile_00D.png"
+				},
+				{
+					"index": 14,
+					"hex": "0x00E",
+					"file": "tile_00E.png"
+				},
+				{
+					"index": 15,
+					"hex": "0x00F",
+					"file": "tile_00F.png"
+				},
+				{
+					"index": 16,
+					"hex": "0x010",
+					"file": "tile_010.png"
+				},
+				{
+					"index": 17,
+					"hex": "0x011",
+					"file": "tile_011.png"
+				},
+				{
+					"index": 18,
+					"hex": "0x012",
+					"file": "tile_012.png"
+				},
+				{
+					"index": 19,
+					"hex": "0x013",
+					"file": "tile_013.png"
+				},
+				{
+					"index": 20,
+					"hex": "0x014",
+					"file": "tile_014.png"
+				},
+				{
+					"index": 21,
+					"hex": "0x015",
+					"file": "tile_015.png"
+				},
+				{
+					"index": 22,
+					"hex": "0x016",
+					"file": "tile_016.png"
+				},
+				{
+					"index": 23,
+					"hex": "0x017",
+					"file": "tile_017.png"
+				},
+				{
+					"index": 24,
+					"hex": "0x018",
+					"file": "tile_018.png"
+				},
+				{
+					"index": 25,
+					"hex": "0x019",
+					"file": "tile_019.png"
+				},
+				{
+					"index": 26,
+					"hex": "0x01A",
+					"file": "tile_01A.png"
+				},
+				{
+					"index": 27,
+					"hex": "0x01B",
+					"file": "tile_01B.png"
+				},
+				{
+					"index": 28,
+					"hex": "0x01C",
+					"file": "tile_01C.png"
+				},
+				{
+					"index": 29,
+					"hex": "0x01D",
+					"file": "tile_01D.png"
+				},
+				{
+					"index": 30,
+					"hex": "0x01E",
+					"file": "tile_01E.png"
+				},
+				{
+					"index": 31,
+					"hex": "0x01F",
+					"file": "tile_01F.png"
+				},
+				{
+					"index": 32,
+					"hex": "0x020",
+					"file": "tile_020.png"
+				},
+				{
+					"index": 33,
+					"hex": "0x021",
+					"file": "tile_021.png"
+				},
+				{
+					"index": 34,
+					"hex": "0x022",
+					"file": "tile_022.png"
+				},
+				{
+					"index": 35,
+					"hex": "0x023",
+					"file": "tile_023.png"
+				},
+				{
+					"index": 36,
+					"hex": "0x024",
+					"file": "tile_024.png"
+				},
+				{
+					"index": 37,
+					"hex": "0x025",
+					"file": "tile_025.png"
+				},
+				{
+					"index": 38,
+					"hex": "0x026",
+					"file": "tile_026.png"
+				},
+				{
+					"index": 39,
+					"hex": "0x027",
+					"file": "tile_027.png"
+				},
+				{
+					"index": 40,
+					"hex": "0x028",
+					"file": "tile_028.png"
+				},
+				{
+					"index": 41,
+					"hex": "0x029",
+					"file": "tile_029.png"
+				},
+				{
+					"index": 42,
+					"hex": "0x02A",
+					"file": "tile_02A.png"
+				},
+				{
+					"index": 43,
+					"hex": "0x02B",
+					"file": "tile_02B.png"
+				},
+				{
+					"index": 44,
+					"hex": "0x02C",
+					"file": "tile_02C.png"
+				},
+				{
+					"index": 45,
+					"hex": "0x02D",
+					"file": "tile_02D.png"
+				},
+				{
+					"index": 46,
+					"hex": "0x02E",
+					"file": "tile_02E.png"
+				},
+				{
+					"index": 47,
+					"hex": "0x02F",
+					"file": "tile_02F.png"
+				},
+				{
+					"index": 48,
+					"hex": "0x030",
+					"file": "tile_030.png"
+				},
+				{
+					"index": 49,
+					"hex": "0x031",
+					"file": "tile_031.png"
+				},
+				{
+					"index": 50,
+					"hex": "0x032",
+					"file": "tile_032.png"
+				},
+				{
+					"index": 51,
+					"hex": "0x033",
+					"file": "tile_033.png"
+				},
+				{
+					"index": 52,
+					"hex": "0x034",
+					"file": "tile_034.png"
+				},
+				{
+					"index": 53,
+					"hex": "0x035",
+					"file": "tile_035.png"
+				},
+				{
+					"index": 54,
+					"hex": "0x036",
+					"file": "tile_036.png"
+				},
+				{
+					"index": 55,
+					"hex": "0x037",
+					"file": "tile_037.png"
+				},
+				{
+					"index": 56,
+					"hex": "0x038",
+					"file": "tile_038.png"
+				},
+				{
+					"index": 57,
+					"hex": "0x039",
+					"file": "tile_039.png"
+				},
+				{
+					"index": 58,
+					"hex": "0x03A",
+					"file": "tile_03A.png"
+				},
+				{
+					"index": 59,
+					"hex": "0x03B",
+					"file": "tile_03B.png"
+				},
+				{
+					"index": 60,
+					"hex": "0x03C",
+					"file": "tile_03C.png"
+				},
+				{
+					"index": 61,
+					"hex": "0x03D",
+					"file": "tile_03D.png"
+				},
+				{
+					"index": 62,
+					"hex": "0x03E",
+					"file": "tile_03E.png"
+				},
+				{
+					"index": 63,
+					"hex": "0x03F",
+					"file": "tile_03F.png"
+				},
+				{
+					"index": 64,
+					"hex": "0x040",
+					"file": "tile_040.png"
+				},
+				{
+					"index": 65,
+					"hex": "0x041",
+					"file": "tile_041.png"
+				},
+				{
+					"index": 66,
+					"hex": "0x042",
+					"file": "tile_042.png"
+				},
+				{
+					"index": 67,
+					"hex": "0x043",
+					"file": "tile_043.png"
+				},
+				{
+					"index": 68,
+					"hex": "0x044",
+					"file": "tile_044.png"
+				},
+				{
+					"index": 69,
+					"hex": "0x045",
+					"file": "tile_045.png"
+				},
+				{
+					"index": 70,
+					"hex": "0x046",
+					"file": "tile_046.png"
+				},
+				{
+					"index": 71,
+					"hex": "0x047",
+					"file": "tile_047.png"
+				},
+				{
+					"index": 72,
+					"hex": "0x048",
+					"file": "tile_048.png"
+				},
+				{
+					"index": 73,
+					"hex": "0x049",
+					"file": "tile_049.png"
+				},
+				{
+					"index": 74,
+					"hex": "0x04A",
+					"file": "tile_04A.png"
+				},
+				{
+					"index": 75,
+					"hex": "0x04B",
+					"file": "tile_04B.png"
+				},
+				{
+					"index": 76,
+					"hex": "0x04C",
+					"file": "tile_04C.png"
+				},
+				{
+					"index": 77,
+					"hex": "0x04D",
+					"file": "tile_04D.png"
+				},
+				{
+					"index": 78,
+					"hex": "0x04E",
+					"file": "tile_04E.png"
+				},
+				{
+					"index": 79,
+					"hex": "0x04F",
+					"file": "tile_04F.png"
+				},
+				{
+					"index": 80,
+					"hex": "0x050",
+					"file": "tile_050.png"
+				},
+				{
+					"index": 81,
+					"hex": "0x051",
+					"file": "tile_051.png"
+				},
+				{
+					"index": 82,
+					"hex": "0x052",
+					"file": "tile_052.png"
+				},
+				{
+					"index": 83,
+					"hex": "0x053",
+					"file": "tile_053.png"
+				},
+				{
+					"index": 84,
+					"hex": "0x054",
+					"file": "tile_054.png"
+				},
+				{
+					"index": 85,
+					"hex": "0x055",
+					"file": "tile_055.png"
+				},
+				{
+					"index": 86,
+					"hex": "0x056",
+					"file": "tile_056.png"
+				},
+				{
+					"index": 87,
+					"hex": "0x057",
+					"file": "tile_057.png"
+				},
+				{
+					"index": 88,
+					"hex": "0x058",
+					"file": "tile_058.png"
+				},
+				{
+					"index": 89,
+					"hex": "0x059",
+					"file": "tile_059.png"
+				},
+				{
+					"index": 90,
+					"hex": "0x05A",
+					"file": "tile_05A.png"
+				},
+				{
+					"index": 91,
+					"hex": "0x05B",
+					"file": "tile_05B.png"
+				},
+				{
+					"index": 92,
+					"hex": "0x05C",
+					"file": "tile_05C.png"
+				},
+				{
+					"index": 93,
+					"hex": "0x05D",
+					"file": "tile_05D.png"
+				},
+				{
+					"index": 94,
+					"hex": "0x05E",
+					"file": "tile_05E.png"
+				},
+				{
+					"index": 95,
+					"hex": "0x05F",
+					"file": "tile_05F.png"
+				},
+				{
+					"index": 96,
+					"hex": "0x060",
+					"file": "tile_060.png"
+				},
+				{
+					"index": 97,
+					"hex": "0x061",
+					"file": "tile_061.png"
+				},
+				{
+					"index": 98,
+					"hex": "0x062",
+					"file": "tile_062.png"
+				},
+				{
+					"index": 99,
+					"hex": "0x063",
+					"file": "tile_063.png"
+				},
+				{
+					"index": 100,
+					"hex": "0x064",
+					"file": "tile_064.png"
+				},
+				{
+					"index": 101,
+					"hex": "0x065",
+					"file": "tile_065.png"
+				},
+				{
+					"index": 102,
+					"hex": "0x066",
+					"file": "tile_066.png"
+				},
+				{
+					"index": 103,
+					"hex": "0x067",
+					"file": "tile_067.png"
+				},
+				{
+					"index": 104,
+					"hex": "0x068",
+					"file": "tile_068.png"
+				},
+				{
+					"index": 105,
+					"hex": "0x069",
+					"file": "tile_069.png"
+				},
+				{
+					"index": 106,
+					"hex": "0x06A",
+					"file": "tile_06A.png"
+				},
+				{
+					"index": 107,
+					"hex": "0x06B",
+					"file": "tile_06B.png"
+				},
+				{
+					"index": 108,
+					"hex": "0x06C",
+					"file": "tile_06C.png"
+				},
+				{
+					"index": 109,
+					"hex": "0x06D",
+					"file": "tile_06D.png"
+				},
+				{
+					"index": 110,
+					"hex": "0x06E",
+					"file": "tile_06E.png"
+				},
+				{
+					"index": 111,
+					"hex": "0x06F",
+					"file": "tile_06F.png"
+				},
+				{
+					"index": 112,
+					"hex": "0x070",
+					"file": "tile_070.png"
+				},
+				{
+					"index": 113,
+					"hex": "0x071",
+					"file": "tile_071.png"
+				},
+				{
+					"index": 114,
+					"hex": "0x072",
+					"file": "tile_072.png"
+				},
+				{
+					"index": 115,
+					"hex": "0x073",
+					"file": "tile_073.png"
+				},
+				{
+					"index": 116,
+					"hex": "0x074",
+					"file": "tile_074.png"
+				},
+				{
+					"index": 117,
+					"hex": "0x075",
+					"file": "tile_075.png"
+				},
+				{
+					"index": 118,
+					"hex": "0x076",
+					"file": "tile_076.png"
+				},
+				{
+					"index": 119,
+					"hex": "0x077",
+					"file": "tile_077.png"
+				},
+				{
+					"index": 120,
+					"hex": "0x078",
+					"file": "tile_078.png"
+				},
+				{
+					"index": 121,
+					"hex": "0x079",
+					"file": "tile_079.png"
+				},
+				{
+					"index": 122,
+					"hex": "0x07A",
+					"file": "tile_07A.png"
+				},
+				{
+					"index": 123,
+					"hex": "0x07B",
+					"file": "tile_07B.png"
+				},
+				{
+					"index": 124,
+					"hex": "0x07C",
+					"file": "tile_07C.png"
+				},
+				{
+					"index": 125,
+					"hex": "0x07D",
+					"file": "tile_07D.png"
+				},
+				{
+					"index": 126,
+					"hex": "0x07E",
+					"file": "tile_07E.png"
+				},
+				{
+					"index": 127,
+					"hex": "0x07F",
+					"file": "tile_07F.png"
+				},
+				{
+					"index": 128,
+					"hex": "0x080",
+					"file": "tile_080.png"
+				},
+				{
+					"index": 129,
+					"hex": "0x081",
+					"file": "tile_081.png"
+				},
+				{
+					"index": 130,
+					"hex": "0x082",
+					"file": "tile_082.png"
+				},
+				{
+					"index": 131,
+					"hex": "0x083",
+					"file": "tile_083.png"
+				},
+				{
+					"index": 132,
+					"hex": "0x084",
+					"file": "tile_084.png"
+				},
+				{
+					"index": 133,
+					"hex": "0x085",
+					"file": "tile_085.png"
+				},
+				{
+					"index": 134,
+					"hex": "0x086",
+					"file": "tile_086.png"
+				},
+				{
+					"index": 135,
+					"hex": "0x087",
+					"file": "tile_087.png"
+				},
+				{
+					"index": 136,
+					"hex": "0x088",
+					"file": "tile_088.png"
+				},
+				{
+					"index": 137,
+					"hex": "0x089",
+					"file": "tile_089.png"
+				},
+				{
+					"index": 138,
+					"hex": "0x08A",
+					"file": "tile_08A.png"
+				},
+				{
+					"index": 139,
+					"hex": "0x08B",
+					"file": "tile_08B.png"
+				},
+				{
+					"index": 140,
+					"hex": "0x08C",
+					"file": "tile_08C.png"
+				},
+				{
+					"index": 141,
+					"hex": "0x08D",
+					"file": "tile_08D.png"
+				},
+				{
+					"index": 142,
+					"hex": "0x08E",
+					"file": "tile_08E.png"
+				},
+				{
+					"index": 143,
+					"hex": "0x08F",
+					"file": "tile_08F.png"
+				},
+				{
+					"index": 144,
+					"hex": "0x090",
+					"file": "tile_090.png"
+				},
+				{
+					"index": 145,
+					"hex": "0x091",
+					"file": "tile_091.png"
+				},
+				{
+					"index": 146,
+					"hex": "0x092",
+					"file": "tile_092.png"
+				},
+				{
+					"index": 147,
+					"hex": "0x093",
+					"file": "tile_093.png"
+				},
+				{
+					"index": 148,
+					"hex": "0x094",
+					"file": "tile_094.png"
+				},
+				{
+					"index": 149,
+					"hex": "0x095",
+					"file": "tile_095.png"
+				},
+				{
+					"index": 150,
+					"hex": "0x096",
+					"file": "tile_096.png"
+				},
+				{
+					"index": 151,
+					"hex": "0x097",
+					"file": "tile_097.png"
+				},
+				{
+					"index": 152,
+					"hex": "0x098",
+					"file": "tile_098.png"
+				},
+				{
+					"index": 153,
+					"hex": "0x099",
+					"file": "tile_099.png"
+				},
+				{
+					"index": 154,
+					"hex": "0x09A",
+					"file": "tile_09A.png"
+				},
+				{
+					"index": 155,
+					"hex": "0x09B",
+					"file": "tile_09B.png"
+				},
+				{
+					"index": 156,
+					"hex": "0x09C",
+					"file": "tile_09C.png"
+				},
+				{
+					"index": 157,
+					"hex": "0x09D",
+					"file": "tile_09D.png"
+				},
+				{
+					"index": 158,
+					"hex": "0x09E",
+					"file": "tile_09E.png"
+				},
+				{
+					"index": 159,
+					"hex": "0x09F",
+					"file": "tile_09F.png"
+				},
+				{
+					"index": 160,
+					"hex": "0x0A0",
+					"file": "tile_0A0.png"
+				},
+				{
+					"index": 161,
+					"hex": "0x0A1",
+					"file": "tile_0A1.png"
+				},
+				{
+					"index": 162,
+					"hex": "0x0A2",
+					"file": "tile_0A2.png"
+				},
+				{
+					"index": 163,
+					"hex": "0x0A3",
+					"file": "tile_0A3.png"
+				},
+				{
+					"index": 164,
+					"hex": "0x0A4",
+					"file": "tile_0A4.png"
+				},
+				{
+					"index": 165,
+					"hex": "0x0A5",
+					"file": "tile_0A5.png"
+				},
+				{
+					"index": 166,
+					"hex": "0x0A6",
+					"file": "tile_0A6.png"
+				},
+				{
+					"index": 167,
+					"hex": "0x0A7",
+					"file": "tile_0A7.png"
+				},
+				{
+					"index": 168,
+					"hex": "0x0A8",
+					"file": "tile_0A8.png"
+				},
+				{
+					"index": 169,
+					"hex": "0x0A9",
+					"file": "tile_0A9.png"
+				},
+				{
+					"index": 170,
+					"hex": "0x0AA",
+					"file": "tile_0AA.png"
+				},
+				{
+					"index": 171,
+					"hex": "0x0AB",
+					"file": "tile_0AB.png"
+				},
+				{
+					"index": 172,
+					"hex": "0x0AC",
+					"file": "tile_0AC.png"
+				},
+				{
+					"index": 173,
+					"hex": "0x0AD",
+					"file": "tile_0AD.png"
+				},
+				{
+					"index": 174,
+					"hex": "0x0AE",
+					"file": "tile_0AE.png"
+				},
+				{
+					"index": 175,
+					"hex": "0x0AF",
+					"file": "tile_0AF.png"
+				},
+				{
+					"index": 176,
+					"hex": "0x0B0",
+					"file": "tile_0B0.png"
+				},
+				{
+					"index": 177,
+					"hex": "0x0B1",
+					"file": "tile_0B1.png"
+				},
+				{
+					"index": 178,
+					"hex": "0x0B2",
+					"file": "tile_0B2.png"
+				},
+				{
+					"index": 179,
+					"hex": "0x0B3",
+					"file": "tile_0B3.png"
+				},
+				{
+					"index": 180,
+					"hex": "0x0B4",
+					"file": "tile_0B4.png"
+				},
+				{
+					"index": 181,
+					"hex": "0x0B5",
+					"file": "tile_0B5.png"
+				},
+				{
+					"index": 182,
+					"hex": "0x0B6",
+					"file": "tile_0B6.png"
+				},
+				{
+					"index": 183,
+					"hex": "0x0B7",
+					"file": "tile_0B7.png"
+				},
+				{
+					"index": 184,
+					"hex": "0x0B8",
+					"file": "tile_0B8.png"
+				},
+				{
+					"index": 185,
+					"hex": "0x0B9",
+					"file": "tile_0B9.png"
+				},
+				{
+					"index": 186,
+					"hex": "0x0BA",
+					"file": "tile_0BA.png"
+				},
+				{
+					"index": 187,
+					"hex": "0x0BB",
+					"file": "tile_0BB.png"
+				},
+				{
+					"index": 188,
+					"hex": "0x0BC",
+					"file": "tile_0BC.png"
+				},
+				{
+					"index": 189,
+					"hex": "0x0BD",
+					"file": "tile_0BD.png"
+				},
+				{
+					"index": 190,
+					"hex": "0x0BE",
+					"file": "tile_0BE.png"
+				},
+				{
+					"index": 191,
+					"hex": "0x0BF",
+					"file": "tile_0BF.png"
+				},
+				{
+					"index": 192,
+					"hex": "0x0C0",
+					"file": "tile_0C0.png"
+				},
+				{
+					"index": 193,
+					"hex": "0x0C1",
+					"file": "tile_0C1.png"
+				},
+				{
+					"index": 194,
+					"hex": "0x0C2",
+					"file": "tile_0C2.png"
+				},
+				{
+					"index": 195,
+					"hex": "0x0C3",
+					"file": "tile_0C3.png"
+				},
+				{
+					"index": 196,
+					"hex": "0x0C4",
+					"file": "tile_0C4.png"
+				},
+				{
+					"index": 197,
+					"hex": "0x0C5",
+					"file": "tile_0C5.png"
+				},
+				{
+					"index": 198,
+					"hex": "0x0C6",
+					"file": "tile_0C6.png"
+				},
+				{
+					"index": 199,
+					"hex": "0x0C7",
+					"file": "tile_0C7.png"
+				},
+				{
+					"index": 200,
+					"hex": "0x0C8",
+					"file": "tile_0C8.png"
+				},
+				{
+					"index": 201,
+					"hex": "0x0C9",
+					"file": "tile_0C9.png"
+				},
+				{
+					"index": 202,
+					"hex": "0x0CA",
+					"file": "tile_0CA.png"
+				},
+				{
+					"index": 203,
+					"hex": "0x0CB",
+					"file": "tile_0CB.png"
+				},
+				{
+					"index": 204,
+					"hex": "0x0CC",
+					"file": "tile_0CC.png"
+				},
+				{
+					"index": 205,
+					"hex": "0x0CD",
+					"file": "tile_0CD.png"
+				},
+				{
+					"index": 206,
+					"hex": "0x0CE",
+					"file": "tile_0CE.png"
+				},
+				{
+					"index": 207,
+					"hex": "0x0CF",
+					"file": "tile_0CF.png"
+				},
+				{
+					"index": 208,
+					"hex": "0x0D0",
+					"file": "tile_0D0.png"
+				},
+				{
+					"index": 209,
+					"hex": "0x0D1",
+					"file": "tile_0D1.png"
+				},
+				{
+					"index": 210,
+					"hex": "0x0D2",
+					"file": "tile_0D2.png"
+				},
+				{
+					"index": 211,
+					"hex": "0x0D3",
+					"file": "tile_0D3.png"
+				},
+				{
+					"index": 212,
+					"hex": "0x0D4",
+					"file": "tile_0D4.png"
+				},
+				{
+					"index": 213,
+					"hex": "0x0D5",
+					"file": "tile_0D5.png"
+				},
+				{
+					"index": 214,
+					"hex": "0x0D6",
+					"file": "tile_0D6.png"
+				},
+				{
+					"index": 215,
+					"hex": "0x0D7",
+					"file": "tile_0D7.png"
+				},
+				{
+					"index": 216,
+					"hex": "0x0D8",
+					"file": "tile_0D8.png"
+				},
+				{
+					"index": 217,
+					"hex": "0x0D9",
+					"file": "tile_0D9.png"
+				},
+				{
+					"index": 218,
+					"hex": "0x0DA",
+					"file": "tile_0DA.png"
+				},
+				{
+					"index": 219,
+					"hex": "0x0DB",
+					"file": "tile_0DB.png"
+				},
+				{
+					"index": 220,
+					"hex": "0x0DC",
+					"file": "tile_0DC.png"
+				},
+				{
+					"index": 221,
+					"hex": "0x0DD",
+					"file": "tile_0DD.png"
+				},
+				{
+					"index": 222,
+					"hex": "0x0DE",
+					"file": "tile_0DE.png"
+				},
+				{
+					"index": 223,
+					"hex": "0x0DF",
+					"file": "tile_0DF.png"
+				},
+				{
+					"index": 224,
+					"hex": "0x0E0",
+					"file": "tile_0E0.png"
+				},
+				{
+					"index": 225,
+					"hex": "0x0E1",
+					"file": "tile_0E1.png"
+				},
+				{
+					"index": 226,
+					"hex": "0x0E2",
+					"file": "tile_0E2.png"
+				},
+				{
+					"index": 227,
+					"hex": "0x0E3",
+					"file": "tile_0E3.png"
+				},
+				{
+					"index": 228,
+					"hex": "0x0E4",
+					"file": "tile_0E4.png"
+				},
+				{
+					"index": 229,
+					"hex": "0x0E5",
+					"file": "tile_0E5.png"
+				},
+				{
+					"index": 230,
+					"hex": "0x0E6",
+					"file": "tile_0E6.png"
+				},
+				{
+					"index": 231,
+					"hex": "0x0E7",
+					"file": "tile_0E7.png"
+				},
+				{
+					"index": 232,
+					"hex": "0x0E8",
+					"file": "tile_0E8.png"
+				},
+				{
+					"index": 233,
+					"hex": "0x0E9",
+					"file": "tile_0E9.png"
+				},
+				{
+					"index": 234,
+					"hex": "0x0EA",
+					"file": "tile_0EA.png"
+				},
+				{
+					"index": 235,
+					"hex": "0x0EB",
+					"file": "tile_0EB.png"
+				},
+				{
+					"index": 236,
+					"hex": "0x0EC",
+					"file": "tile_0EC.png"
+				},
+				{
+					"index": 237,
+					"hex": "0x0ED",
+					"file": "tile_0ED.png"
+				},
+				{
+					"index": 238,
+					"hex": "0x0EE",
+					"file": "tile_0EE.png"
+				},
+				{
+					"index": 239,
+					"hex": "0x0EF",
+					"file": "tile_0EF.png"
+				},
+				{
+					"index": 240,
+					"hex": "0x0F0",
+					"file": "tile_0F0.png"
+				},
+				{
+					"index": 241,
+					"hex": "0x0F1",
+					"file": "tile_0F1.png"
+				},
+				{
+					"index": 242,
+					"hex": "0x0F2",
+					"file": "tile_0F2.png"
+				},
+				{
+					"index": 243,
+					"hex": "0x0F3",
+					"file": "tile_0F3.png"
+				},
+				{
+					"index": 244,
+					"hex": "0x0F4",
+					"file": "tile_0F4.png"
+				},
+				{
+					"index": 245,
+					"hex": "0x0F5",
+					"file": "tile_0F5.png"
+				},
+				{
+					"index": 246,
+					"hex": "0x0F6",
+					"file": "tile_0F6.png"
+				},
+				{
+					"index": 247,
+					"hex": "0x0F7",
+					"file": "tile_0F7.png"
+				},
+				{
+					"index": 248,
+					"hex": "0x0F8",
+					"file": "tile_0F8.png"
+				},
+				{
+					"index": 249,
+					"hex": "0x0F9",
+					"file": "tile_0F9.png"
+				},
+				{
+					"index": 250,
+					"hex": "0x0FA",
+					"file": "tile_0FA.png"
+				},
+				{
+					"index": 251,
+					"hex": "0x0FB",
+					"file": "tile_0FB.png"
+				},
+				{
+					"index": 252,
+					"hex": "0x0FC",
+					"file": "tile_0FC.png"
+				},
+				{
+					"index": 253,
+					"hex": "0x0FD",
+					"file": "tile_0FD.png"
+				},
+				{
+					"index": 254,
+					"hex": "0x0FE",
+					"file": "tile_0FE.png"
+				},
+				{
+					"index": 255,
+					"hex": "0x0FF",
+					"file": "tile_0FF.png"
+				}
+			],
+			"total_tiles": 256,
+			"description": "Background tiles: terrain, walls, objects",
+			"sheet": "background_sheet.png"
+		},
+		{
+			"category": "font_and_ui",
+			"palette": "background",
+			"palette_colors": [
+				"0x0F",
+				"0x29",
+				"0x1A",
+				"0x09"
+			],
+			"tile_range": {
+				"start": 256,
+				"end": 511,
+				"start_hex": "0x100",
+				"end_hex": "0x1FF"
+			},
+			"tiles": [
+				{
+					"index": 256,
+					"hex": "0x100",
+					"file": "tile_100.png"
+				},
+				{
+					"index": 257,
+					"hex": "0x101",
+					"file": "tile_101.png"
+				},
+				{
+					"index": 258,
+					"hex": "0x102",
+					"file": "tile_102.png"
+				},
+				{
+					"index": 259,
+					"hex": "0x103",
+					"file": "tile_103.png"
+				},
+				{
+					"index": 260,
+					"hex": "0x104",
+					"file": "tile_104.png"
+				},
+				{
+					"index": 261,
+					"hex": "0x105",
+					"file": "tile_105.png"
+				},
+				{
+					"index": 262,
+					"hex": "0x106",
+					"file": "tile_106.png"
+				},
+				{
+					"index": 263,
+					"hex": "0x107",
+					"file": "tile_107.png"
+				},
+				{
+					"index": 264,
+					"hex": "0x108",
+					"file": "tile_108.png"
+				},
+				{
+					"index": 265,
+					"hex": "0x109",
+					"file": "tile_109.png"
+				},
+				{
+					"index": 266,
+					"hex": "0x10A",
+					"file": "tile_10A.png"
+				},
+				{
+					"index": 267,
+					"hex": "0x10B",
+					"file": "tile_10B.png"
+				},
+				{
+					"index": 268,
+					"hex": "0x10C",
+					"file": "tile_10C.png"
+				},
+				{
+					"index": 269,
+					"hex": "0x10D",
+					"file": "tile_10D.png"
+				},
+				{
+					"index": 270,
+					"hex": "0x10E",
+					"file": "tile_10E.png"
+				},
+				{
+					"index": 271,
+					"hex": "0x10F",
+					"file": "tile_10F.png"
+				},
+				{
+					"index": 272,
+					"hex": "0x110",
+					"file": "tile_110.png"
+				},
+				{
+					"index": 273,
+					"hex": "0x111",
+					"file": "tile_111.png"
+				},
+				{
+					"index": 274,
+					"hex": "0x112",
+					"file": "tile_112.png"
+				},
+				{
+					"index": 275,
+					"hex": "0x113",
+					"file": "tile_113.png"
+				},
+				{
+					"index": 276,
+					"hex": "0x114",
+					"file": "tile_114.png"
+				},
+				{
+					"index": 277,
+					"hex": "0x115",
+					"file": "tile_115.png"
+				},
+				{
+					"index": 278,
+					"hex": "0x116",
+					"file": "tile_116.png"
+				},
+				{
+					"index": 279,
+					"hex": "0x117",
+					"file": "tile_117.png"
+				},
+				{
+					"index": 280,
+					"hex": "0x118",
+					"file": "tile_118.png"
+				},
+				{
+					"index": 281,
+					"hex": "0x119",
+					"file": "tile_119.png"
+				},
+				{
+					"index": 282,
+					"hex": "0x11A",
+					"file": "tile_11A.png"
+				},
+				{
+					"index": 283,
+					"hex": "0x11B",
+					"file": "tile_11B.png"
+				},
+				{
+					"index": 284,
+					"hex": "0x11C",
+					"file": "tile_11C.png"
+				},
+				{
+					"index": 285,
+					"hex": "0x11D",
+					"file": "tile_11D.png"
+				},
+				{
+					"index": 286,
+					"hex": "0x11E",
+					"file": "tile_11E.png"
+				},
+				{
+					"index": 287,
+					"hex": "0x11F",
+					"file": "tile_11F.png"
+				},
+				{
+					"index": 288,
+					"hex": "0x120",
+					"file": "tile_120.png"
+				},
+				{
+					"index": 289,
+					"hex": "0x121",
+					"file": "tile_121.png"
+				},
+				{
+					"index": 290,
+					"hex": "0x122",
+					"file": "tile_122.png"
+				},
+				{
+					"index": 291,
+					"hex": "0x123",
+					"file": "tile_123.png"
+				},
+				{
+					"index": 292,
+					"hex": "0x124",
+					"file": "tile_124.png"
+				},
+				{
+					"index": 293,
+					"hex": "0x125",
+					"file": "tile_125.png"
+				},
+				{
+					"index": 294,
+					"hex": "0x126",
+					"file": "tile_126.png"
+				},
+				{
+					"index": 295,
+					"hex": "0x127",
+					"file": "tile_127.png"
+				},
+				{
+					"index": 296,
+					"hex": "0x128",
+					"file": "tile_128.png"
+				},
+				{
+					"index": 297,
+					"hex": "0x129",
+					"file": "tile_129.png"
+				},
+				{
+					"index": 298,
+					"hex": "0x12A",
+					"file": "tile_12A.png"
+				},
+				{
+					"index": 299,
+					"hex": "0x12B",
+					"file": "tile_12B.png"
+				},
+				{
+					"index": 300,
+					"hex": "0x12C",
+					"file": "tile_12C.png"
+				},
+				{
+					"index": 301,
+					"hex": "0x12D",
+					"file": "tile_12D.png"
+				},
+				{
+					"index": 302,
+					"hex": "0x12E",
+					"file": "tile_12E.png"
+				},
+				{
+					"index": 303,
+					"hex": "0x12F",
+					"file": "tile_12F.png"
+				},
+				{
+					"index": 304,
+					"hex": "0x130",
+					"file": "tile_130.png"
+				},
+				{
+					"index": 305,
+					"hex": "0x131",
+					"file": "tile_131.png"
+				},
+				{
+					"index": 306,
+					"hex": "0x132",
+					"file": "tile_132.png"
+				},
+				{
+					"index": 307,
+					"hex": "0x133",
+					"file": "tile_133.png"
+				},
+				{
+					"index": 308,
+					"hex": "0x134",
+					"file": "tile_134.png"
+				},
+				{
+					"index": 309,
+					"hex": "0x135",
+					"file": "tile_135.png"
+				},
+				{
+					"index": 310,
+					"hex": "0x136",
+					"file": "tile_136.png"
+				},
+				{
+					"index": 311,
+					"hex": "0x137",
+					"file": "tile_137.png"
+				},
+				{
+					"index": 312,
+					"hex": "0x138",
+					"file": "tile_138.png"
+				},
+				{
+					"index": 313,
+					"hex": "0x139",
+					"file": "tile_139.png"
+				},
+				{
+					"index": 314,
+					"hex": "0x13A",
+					"file": "tile_13A.png"
+				},
+				{
+					"index": 315,
+					"hex": "0x13B",
+					"file": "tile_13B.png"
+				},
+				{
+					"index": 316,
+					"hex": "0x13C",
+					"file": "tile_13C.png"
+				},
+				{
+					"index": 317,
+					"hex": "0x13D",
+					"file": "tile_13D.png"
+				},
+				{
+					"index": 318,
+					"hex": "0x13E",
+					"file": "tile_13E.png"
+				},
+				{
+					"index": 319,
+					"hex": "0x13F",
+					"file": "tile_13F.png"
+				},
+				{
+					"index": 320,
+					"hex": "0x140",
+					"file": "tile_140.png"
+				},
+				{
+					"index": 321,
+					"hex": "0x141",
+					"file": "tile_141.png"
+				},
+				{
+					"index": 322,
+					"hex": "0x142",
+					"file": "tile_142.png"
+				},
+				{
+					"index": 323,
+					"hex": "0x143",
+					"file": "tile_143.png"
+				},
+				{
+					"index": 324,
+					"hex": "0x144",
+					"file": "tile_144.png"
+				},
+				{
+					"index": 325,
+					"hex": "0x145",
+					"file": "tile_145.png"
+				},
+				{
+					"index": 326,
+					"hex": "0x146",
+					"file": "tile_146.png"
+				},
+				{
+					"index": 327,
+					"hex": "0x147",
+					"file": "tile_147.png"
+				},
+				{
+					"index": 328,
+					"hex": "0x148",
+					"file": "tile_148.png"
+				},
+				{
+					"index": 329,
+					"hex": "0x149",
+					"file": "tile_149.png"
+				},
+				{
+					"index": 330,
+					"hex": "0x14A",
+					"file": "tile_14A.png"
+				},
+				{
+					"index": 331,
+					"hex": "0x14B",
+					"file": "tile_14B.png"
+				},
+				{
+					"index": 332,
+					"hex": "0x14C",
+					"file": "tile_14C.png"
+				},
+				{
+					"index": 333,
+					"hex": "0x14D",
+					"file": "tile_14D.png"
+				},
+				{
+					"index": 334,
+					"hex": "0x14E",
+					"file": "tile_14E.png"
+				},
+				{
+					"index": 335,
+					"hex": "0x14F",
+					"file": "tile_14F.png"
+				},
+				{
+					"index": 336,
+					"hex": "0x150",
+					"file": "tile_150.png"
+				},
+				{
+					"index": 337,
+					"hex": "0x151",
+					"file": "tile_151.png"
+				},
+				{
+					"index": 338,
+					"hex": "0x152",
+					"file": "tile_152.png"
+				},
+				{
+					"index": 339,
+					"hex": "0x153",
+					"file": "tile_153.png"
+				},
+				{
+					"index": 340,
+					"hex": "0x154",
+					"file": "tile_154.png"
+				},
+				{
+					"index": 341,
+					"hex": "0x155",
+					"file": "tile_155.png"
+				},
+				{
+					"index": 342,
+					"hex": "0x156",
+					"file": "tile_156.png"
+				},
+				{
+					"index": 343,
+					"hex": "0x157",
+					"file": "tile_157.png"
+				},
+				{
+					"index": 344,
+					"hex": "0x158",
+					"file": "tile_158.png"
+				},
+				{
+					"index": 345,
+					"hex": "0x159",
+					"file": "tile_159.png"
+				},
+				{
+					"index": 346,
+					"hex": "0x15A",
+					"file": "tile_15A.png"
+				},
+				{
+					"index": 347,
+					"hex": "0x15B",
+					"file": "tile_15B.png"
+				},
+				{
+					"index": 348,
+					"hex": "0x15C",
+					"file": "tile_15C.png"
+				},
+				{
+					"index": 349,
+					"hex": "0x15D",
+					"file": "tile_15D.png"
+				},
+				{
+					"index": 350,
+					"hex": "0x15E",
+					"file": "tile_15E.png"
+				},
+				{
+					"index": 351,
+					"hex": "0x15F",
+					"file": "tile_15F.png"
+				},
+				{
+					"index": 352,
+					"hex": "0x160",
+					"file": "tile_160.png"
+				},
+				{
+					"index": 353,
+					"hex": "0x161",
+					"file": "tile_161.png"
+				},
+				{
+					"index": 354,
+					"hex": "0x162",
+					"file": "tile_162.png"
+				},
+				{
+					"index": 355,
+					"hex": "0x163",
+					"file": "tile_163.png"
+				},
+				{
+					"index": 356,
+					"hex": "0x164",
+					"file": "tile_164.png"
+				},
+				{
+					"index": 357,
+					"hex": "0x165",
+					"file": "tile_165.png"
+				},
+				{
+					"index": 358,
+					"hex": "0x166",
+					"file": "tile_166.png"
+				},
+				{
+					"index": 359,
+					"hex": "0x167",
+					"file": "tile_167.png"
+				},
+				{
+					"index": 360,
+					"hex": "0x168",
+					"file": "tile_168.png"
+				},
+				{
+					"index": 361,
+					"hex": "0x169",
+					"file": "tile_169.png"
+				},
+				{
+					"index": 362,
+					"hex": "0x16A",
+					"file": "tile_16A.png"
+				},
+				{
+					"index": 363,
+					"hex": "0x16B",
+					"file": "tile_16B.png"
+				},
+				{
+					"index": 364,
+					"hex": "0x16C",
+					"file": "tile_16C.png"
+				},
+				{
+					"index": 365,
+					"hex": "0x16D",
+					"file": "tile_16D.png"
+				},
+				{
+					"index": 366,
+					"hex": "0x16E",
+					"file": "tile_16E.png"
+				},
+				{
+					"index": 367,
+					"hex": "0x16F",
+					"file": "tile_16F.png"
+				},
+				{
+					"index": 368,
+					"hex": "0x170",
+					"file": "tile_170.png"
+				},
+				{
+					"index": 369,
+					"hex": "0x171",
+					"file": "tile_171.png"
+				},
+				{
+					"index": 370,
+					"hex": "0x172",
+					"file": "tile_172.png"
+				},
+				{
+					"index": 371,
+					"hex": "0x173",
+					"file": "tile_173.png"
+				},
+				{
+					"index": 372,
+					"hex": "0x174",
+					"file": "tile_174.png"
+				},
+				{
+					"index": 373,
+					"hex": "0x175",
+					"file": "tile_175.png"
+				},
+				{
+					"index": 374,
+					"hex": "0x176",
+					"file": "tile_176.png"
+				},
+				{
+					"index": 375,
+					"hex": "0x177",
+					"file": "tile_177.png"
+				},
+				{
+					"index": 376,
+					"hex": "0x178",
+					"file": "tile_178.png"
+				},
+				{
+					"index": 377,
+					"hex": "0x179",
+					"file": "tile_179.png"
+				},
+				{
+					"index": 378,
+					"hex": "0x17A",
+					"file": "tile_17A.png"
+				},
+				{
+					"index": 379,
+					"hex": "0x17B",
+					"file": "tile_17B.png"
+				},
+				{
+					"index": 380,
+					"hex": "0x17C",
+					"file": "tile_17C.png"
+				},
+				{
+					"index": 381,
+					"hex": "0x17D",
+					"file": "tile_17D.png"
+				},
+				{
+					"index": 382,
+					"hex": "0x17E",
+					"file": "tile_17E.png"
+				},
+				{
+					"index": 383,
+					"hex": "0x17F",
+					"file": "tile_17F.png"
+				},
+				{
+					"index": 384,
+					"hex": "0x180",
+					"file": "tile_180.png"
+				},
+				{
+					"index": 385,
+					"hex": "0x181",
+					"file": "tile_181.png"
+				},
+				{
+					"index": 386,
+					"hex": "0x182",
+					"file": "tile_182.png"
+				},
+				{
+					"index": 387,
+					"hex": "0x183",
+					"file": "tile_183.png"
+				},
+				{
+					"index": 388,
+					"hex": "0x184",
+					"file": "tile_184.png"
+				},
+				{
+					"index": 389,
+					"hex": "0x185",
+					"file": "tile_185.png"
+				},
+				{
+					"index": 390,
+					"hex": "0x186",
+					"file": "tile_186.png"
+				},
+				{
+					"index": 391,
+					"hex": "0x187",
+					"file": "tile_187.png"
+				},
+				{
+					"index": 392,
+					"hex": "0x188",
+					"file": "tile_188.png"
+				},
+				{
+					"index": 393,
+					"hex": "0x189",
+					"file": "tile_189.png"
+				},
+				{
+					"index": 394,
+					"hex": "0x18A",
+					"file": "tile_18A.png"
+				},
+				{
+					"index": 395,
+					"hex": "0x18B",
+					"file": "tile_18B.png"
+				},
+				{
+					"index": 396,
+					"hex": "0x18C",
+					"file": "tile_18C.png"
+				},
+				{
+					"index": 397,
+					"hex": "0x18D",
+					"file": "tile_18D.png"
+				},
+				{
+					"index": 398,
+					"hex": "0x18E",
+					"file": "tile_18E.png"
+				},
+				{
+					"index": 399,
+					"hex": "0x18F",
+					"file": "tile_18F.png"
+				},
+				{
+					"index": 400,
+					"hex": "0x190",
+					"file": "tile_190.png"
+				},
+				{
+					"index": 401,
+					"hex": "0x191",
+					"file": "tile_191.png"
+				},
+				{
+					"index": 402,
+					"hex": "0x192",
+					"file": "tile_192.png"
+				},
+				{
+					"index": 403,
+					"hex": "0x193",
+					"file": "tile_193.png"
+				},
+				{
+					"index": 404,
+					"hex": "0x194",
+					"file": "tile_194.png"
+				},
+				{
+					"index": 405,
+					"hex": "0x195",
+					"file": "tile_195.png"
+				},
+				{
+					"index": 406,
+					"hex": "0x196",
+					"file": "tile_196.png"
+				},
+				{
+					"index": 407,
+					"hex": "0x197",
+					"file": "tile_197.png"
+				},
+				{
+					"index": 408,
+					"hex": "0x198",
+					"file": "tile_198.png"
+				},
+				{
+					"index": 409,
+					"hex": "0x199",
+					"file": "tile_199.png"
+				},
+				{
+					"index": 410,
+					"hex": "0x19A",
+					"file": "tile_19A.png"
+				},
+				{
+					"index": 411,
+					"hex": "0x19B",
+					"file": "tile_19B.png"
+				},
+				{
+					"index": 412,
+					"hex": "0x19C",
+					"file": "tile_19C.png"
+				},
+				{
+					"index": 413,
+					"hex": "0x19D",
+					"file": "tile_19D.png"
+				},
+				{
+					"index": 414,
+					"hex": "0x19E",
+					"file": "tile_19E.png"
+				},
+				{
+					"index": 415,
+					"hex": "0x19F",
+					"file": "tile_19F.png"
+				},
+				{
+					"index": 416,
+					"hex": "0x1A0",
+					"file": "tile_1A0.png"
+				},
+				{
+					"index": 417,
+					"hex": "0x1A1",
+					"file": "tile_1A1.png"
+				},
+				{
+					"index": 418,
+					"hex": "0x1A2",
+					"file": "tile_1A2.png"
+				},
+				{
+					"index": 419,
+					"hex": "0x1A3",
+					"file": "tile_1A3.png"
+				},
+				{
+					"index": 420,
+					"hex": "0x1A4",
+					"file": "tile_1A4.png"
+				},
+				{
+					"index": 421,
+					"hex": "0x1A5",
+					"file": "tile_1A5.png"
+				},
+				{
+					"index": 422,
+					"hex": "0x1A6",
+					"file": "tile_1A6.png"
+				},
+				{
+					"index": 423,
+					"hex": "0x1A7",
+					"file": "tile_1A7.png"
+				},
+				{
+					"index": 424,
+					"hex": "0x1A8",
+					"file": "tile_1A8.png"
+				},
+				{
+					"index": 425,
+					"hex": "0x1A9",
+					"file": "tile_1A9.png"
+				},
+				{
+					"index": 426,
+					"hex": "0x1AA",
+					"file": "tile_1AA.png"
+				},
+				{
+					"index": 427,
+					"hex": "0x1AB",
+					"file": "tile_1AB.png"
+				},
+				{
+					"index": 428,
+					"hex": "0x1AC",
+					"file": "tile_1AC.png"
+				},
+				{
+					"index": 429,
+					"hex": "0x1AD",
+					"file": "tile_1AD.png"
+				},
+				{
+					"index": 430,
+					"hex": "0x1AE",
+					"file": "tile_1AE.png"
+				},
+				{
+					"index": 431,
+					"hex": "0x1AF",
+					"file": "tile_1AF.png"
+				},
+				{
+					"index": 432,
+					"hex": "0x1B0",
+					"file": "tile_1B0.png"
+				},
+				{
+					"index": 433,
+					"hex": "0x1B1",
+					"file": "tile_1B1.png"
+				},
+				{
+					"index": 434,
+					"hex": "0x1B2",
+					"file": "tile_1B2.png"
+				},
+				{
+					"index": 435,
+					"hex": "0x1B3",
+					"file": "tile_1B3.png"
+				},
+				{
+					"index": 436,
+					"hex": "0x1B4",
+					"file": "tile_1B4.png"
+				},
+				{
+					"index": 437,
+					"hex": "0x1B5",
+					"file": "tile_1B5.png"
+				},
+				{
+					"index": 438,
+					"hex": "0x1B6",
+					"file": "tile_1B6.png"
+				},
+				{
+					"index": 439,
+					"hex": "0x1B7",
+					"file": "tile_1B7.png"
+				},
+				{
+					"index": 440,
+					"hex": "0x1B8",
+					"file": "tile_1B8.png"
+				},
+				{
+					"index": 441,
+					"hex": "0x1B9",
+					"file": "tile_1B9.png"
+				},
+				{
+					"index": 442,
+					"hex": "0x1BA",
+					"file": "tile_1BA.png"
+				},
+				{
+					"index": 443,
+					"hex": "0x1BB",
+					"file": "tile_1BB.png"
+				},
+				{
+					"index": 444,
+					"hex": "0x1BC",
+					"file": "tile_1BC.png"
+				},
+				{
+					"index": 445,
+					"hex": "0x1BD",
+					"file": "tile_1BD.png"
+				},
+				{
+					"index": 446,
+					"hex": "0x1BE",
+					"file": "tile_1BE.png"
+				},
+				{
+					"index": 447,
+					"hex": "0x1BF",
+					"file": "tile_1BF.png"
+				},
+				{
+					"index": 448,
+					"hex": "0x1C0",
+					"file": "tile_1C0.png"
+				},
+				{
+					"index": 449,
+					"hex": "0x1C1",
+					"file": "tile_1C1.png"
+				},
+				{
+					"index": 450,
+					"hex": "0x1C2",
+					"file": "tile_1C2.png"
+				},
+				{
+					"index": 451,
+					"hex": "0x1C3",
+					"file": "tile_1C3.png"
+				},
+				{
+					"index": 452,
+					"hex": "0x1C4",
+					"file": "tile_1C4.png"
+				},
+				{
+					"index": 453,
+					"hex": "0x1C5",
+					"file": "tile_1C5.png"
+				},
+				{
+					"index": 454,
+					"hex": "0x1C6",
+					"file": "tile_1C6.png"
+				},
+				{
+					"index": 455,
+					"hex": "0x1C7",
+					"file": "tile_1C7.png"
+				},
+				{
+					"index": 456,
+					"hex": "0x1C8",
+					"file": "tile_1C8.png"
+				},
+				{
+					"index": 457,
+					"hex": "0x1C9",
+					"file": "tile_1C9.png"
+				},
+				{
+					"index": 458,
+					"hex": "0x1CA",
+					"file": "tile_1CA.png"
+				},
+				{
+					"index": 459,
+					"hex": "0x1CB",
+					"file": "tile_1CB.png"
+				},
+				{
+					"index": 460,
+					"hex": "0x1CC",
+					"file": "tile_1CC.png"
+				},
+				{
+					"index": 461,
+					"hex": "0x1CD",
+					"file": "tile_1CD.png"
+				},
+				{
+					"index": 462,
+					"hex": "0x1CE",
+					"file": "tile_1CE.png"
+				},
+				{
+					"index": 463,
+					"hex": "0x1CF",
+					"file": "tile_1CF.png"
+				},
+				{
+					"index": 464,
+					"hex": "0x1D0",
+					"file": "tile_1D0.png"
+				},
+				{
+					"index": 465,
+					"hex": "0x1D1",
+					"file": "tile_1D1.png"
+				},
+				{
+					"index": 466,
+					"hex": "0x1D2",
+					"file": "tile_1D2.png"
+				},
+				{
+					"index": 467,
+					"hex": "0x1D3",
+					"file": "tile_1D3.png"
+				},
+				{
+					"index": 468,
+					"hex": "0x1D4",
+					"file": "tile_1D4.png"
+				},
+				{
+					"index": 469,
+					"hex": "0x1D5",
+					"file": "tile_1D5.png"
+				},
+				{
+					"index": 470,
+					"hex": "0x1D6",
+					"file": "tile_1D6.png"
+				},
+				{
+					"index": 471,
+					"hex": "0x1D7",
+					"file": "tile_1D7.png"
+				},
+				{
+					"index": 472,
+					"hex": "0x1D8",
+					"file": "tile_1D8.png"
+				},
+				{
+					"index": 473,
+					"hex": "0x1D9",
+					"file": "tile_1D9.png"
+				},
+				{
+					"index": 474,
+					"hex": "0x1DA",
+					"file": "tile_1DA.png"
+				},
+				{
+					"index": 475,
+					"hex": "0x1DB",
+					"file": "tile_1DB.png"
+				},
+				{
+					"index": 476,
+					"hex": "0x1DC",
+					"file": "tile_1DC.png"
+				},
+				{
+					"index": 477,
+					"hex": "0x1DD",
+					"file": "tile_1DD.png"
+				},
+				{
+					"index": 478,
+					"hex": "0x1DE",
+					"file": "tile_1DE.png"
+				},
+				{
+					"index": 479,
+					"hex": "0x1DF",
+					"file": "tile_1DF.png"
+				},
+				{
+					"index": 480,
+					"hex": "0x1E0",
+					"file": "tile_1E0.png"
+				},
+				{
+					"index": 481,
+					"hex": "0x1E1",
+					"file": "tile_1E1.png"
+				},
+				{
+					"index": 482,
+					"hex": "0x1E2",
+					"file": "tile_1E2.png"
+				},
+				{
+					"index": 483,
+					"hex": "0x1E3",
+					"file": "tile_1E3.png"
+				},
+				{
+					"index": 484,
+					"hex": "0x1E4",
+					"file": "tile_1E4.png"
+				},
+				{
+					"index": 485,
+					"hex": "0x1E5",
+					"file": "tile_1E5.png"
+				},
+				{
+					"index": 486,
+					"hex": "0x1E6",
+					"file": "tile_1E6.png"
+				},
+				{
+					"index": 487,
+					"hex": "0x1E7",
+					"file": "tile_1E7.png"
+				},
+				{
+					"index": 488,
+					"hex": "0x1E8",
+					"file": "tile_1E8.png"
+				},
+				{
+					"index": 489,
+					"hex": "0x1E9",
+					"file": "tile_1E9.png"
+				},
+				{
+					"index": 490,
+					"hex": "0x1EA",
+					"file": "tile_1EA.png"
+				},
+				{
+					"index": 491,
+					"hex": "0x1EB",
+					"file": "tile_1EB.png"
+				},
+				{
+					"index": 492,
+					"hex": "0x1EC",
+					"file": "tile_1EC.png"
+				},
+				{
+					"index": 493,
+					"hex": "0x1ED",
+					"file": "tile_1ED.png"
+				},
+				{
+					"index": 494,
+					"hex": "0x1EE",
+					"file": "tile_1EE.png"
+				},
+				{
+					"index": 495,
+					"hex": "0x1EF",
+					"file": "tile_1EF.png"
+				},
+				{
+					"index": 496,
+					"hex": "0x1F0",
+					"file": "tile_1F0.png"
+				},
+				{
+					"index": 497,
+					"hex": "0x1F1",
+					"file": "tile_1F1.png"
+				},
+				{
+					"index": 498,
+					"hex": "0x1F2",
+					"file": "tile_1F2.png"
+				},
+				{
+					"index": 499,
+					"hex": "0x1F3",
+					"file": "tile_1F3.png"
+				},
+				{
+					"index": 500,
+					"hex": "0x1F4",
+					"file": "tile_1F4.png"
+				},
+				{
+					"index": 501,
+					"hex": "0x1F5",
+					"file": "tile_1F5.png"
+				},
+				{
+					"index": 502,
+					"hex": "0x1F6",
+					"file": "tile_1F6.png"
+				},
+				{
+					"index": 503,
+					"hex": "0x1F7",
+					"file": "tile_1F7.png"
+				},
+				{
+					"index": 504,
+					"hex": "0x1F8",
+					"file": "tile_1F8.png"
+				},
+				{
+					"index": 505,
+					"hex": "0x1F9",
+					"file": "tile_1F9.png"
+				},
+				{
+					"index": 506,
+					"hex": "0x1FA",
+					"file": "tile_1FA.png"
+				},
+				{
+					"index": 507,
+					"hex": "0x1FB",
+					"file": "tile_1FB.png"
+				},
+				{
+					"index": 508,
+					"hex": "0x1FC",
+					"file": "tile_1FC.png"
+				},
+				{
+					"index": 509,
+					"hex": "0x1FD",
+					"file": "tile_1FD.png"
+				},
+				{
+					"index": 510,
+					"hex": "0x1FE",
+					"file": "tile_1FE.png"
+				},
+				{
+					"index": 511,
+					"hex": "0x1FF",
+					"file": "tile_1FF.png"
+				}
+			],
+			"total_tiles": 256,
+			"description": "Text font, numbers, UI elements",
+			"sheet": "font_and_ui_sheet.png"
+		}
+	]
 }

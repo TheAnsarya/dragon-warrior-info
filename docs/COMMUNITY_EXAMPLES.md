@@ -503,9 +503,9 @@ def update_boss_sprite():
    ```
 
 3. **Submit pull request**:
-   - Fork repository
-   - Add your example
-   - Create pull request with description
+	 - Fork repository
+	 - Add your example
+	 - Create pull request with description
 
 ### Community Standards
 

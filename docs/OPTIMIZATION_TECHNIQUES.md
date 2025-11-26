@@ -351,7 +351,7 @@ Current substitutions (0x80-0x8F):
    python tools/analyze_text_frequency.py
    ```
 
-   Output:
+	 Output:
    ```
    Top Compression Candidates:
    1. TANTEGEL (42 occurrences, 7 bytes) → saves 252 bytes
@@ -789,18 +789,18 @@ WriteRun:
 **Strategy**:
 
 1. **Sprite Sharing** (0 bytes CHR):
-   - Create 10 palette variants of existing sprites
-   - Use different color palettes (0x00-0x07)
+	 - Create 10 palette variants of existing sprites
+	 - Use different color palettes (0x00-0x07)
 
 2. **Text Compression** (+879 bytes PRG):
-   - Implement new substitutions (0x90-0x9F)
-   - Save ~1,270 bytes from dialog
-   - Use ~391 bytes for new monster names/data
+	 - Implement new substitutions (0x90-0x9F)
+	 - Save ~1,270 bytes from dialog
+	 - Use ~391 bytes for new monster names/data
 
 3. **Map Compression** (+500 bytes PRG):
-   - Compress overworld map with RLE
-   - Save ~650 bytes
-   - Use ~150 bytes for 10 monsters (10 × 16 bytes = 160 bytes)
+	 - Compress overworld map with RLE
+	 - Save ~650 bytes
+	 - Use ~150 bytes for 10 monsters (10 × 16 bytes = 160 bytes)
 
 **Result**:
 - 10 new monsters added

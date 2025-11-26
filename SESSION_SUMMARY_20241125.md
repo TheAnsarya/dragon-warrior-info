@@ -81,9 +81,9 @@ This session delivered **major improvements** to the Dragon Warrior ROM hacking 
 
 **Solution:** 
 - Identified 3 byte differences between PRG0 and PRG1:
-  - `0x3FAE`: `0x37` → `0x32` (trademark "TO" text)
-  - `0x3FAF`: `0x32` → `0x29` (trademark "TO" text)
-  - `0xAF7C`: `0xEF` → `0xF0` (dialog player marker)
+	- `0x3FAE`: `0x37` → `0x32` (trademark "TO" text)
+	- `0x3FAF`: `0x32` → `0x29` (trademark "TO" text)
+	- `0xAF7C`: `0xEF` → `0xF0` (dialog player marker)
 - Modified `Bank00.asm` and `Bank02.asm` with direct byte changes
 - Added `ROM_VERSION` configuration in `Dragon_Warrior_Defines.asm`
 - Included commented alternatives for easy PRG0 switching
@@ -256,8 +256,8 @@ Extracted from `Bank03.asm` offset `LF522-LF53E`:
 - 14 unique encounter groups
 - Mapped to enemy difficulty progression
 - Examples:
-  - Zone 0x0: Slime/Red Slime (starting area)
-  - Zone 0xD: Knight/Magiwyvern/Demon Knight/Armored Knight/Green Dragon (endgame)
+	- Zone 0x0: Slime/Red Slime (starting area)
+	- Zone 0xD: Knight/Magiwyvern/Demon Knight/Armored Knight/Green Dragon (endgame)
 
 **Warp Points:**
 Extracted from `Bank03.asm` offset `LF461-LF4F7`:
@@ -519,49 +519,49 @@ Interactive Map HTML: ~600 KB (embedded tile data)
 ### ROM Hacking Insights
 
 1. **Dragon Warrior has 16KB CHR-ROM, not 8KB**
-   - Initial assumption was 512 tiles (8KB)
-   - Actually has 1024 tiles (16KB)
-   - Lesson: Always verify ROM structure against actual data
+	 - Initial assumption was 512 tiles (8KB)
+	 - Actually has 1024 tiles (16KB)
+	 - Lesson: Always verify ROM structure against actual data
 
 2. **Monster Stats Need Precise Offset Calculation**
-   - File offset ≠ CPU address
-   - Must account for iNES header (0x10) + bank offset
-   - Correct offset: 0x10 + 0x4000 + 0x1E4B = 0x5E5B
+	 - File offset ≠ CPU address
+	 - Must account for iNES header (0x10) + bank offset
+	 - Correct offset: 0x10 + 0x4000 + 0x1E4B = 0x5E5B
 
 3. **Ophis Assembler Has Limitations**
-   - `.if` directive doesn't support `.alias` comparisons
-   - Solution: Direct byte modification with commented alternatives
-   - Simpler approach often more maintainable
+	 - `.if` directive doesn't support `.alias` comparisons
+	 - Solution: Direct byte modification with commented alternatives
+	 - Simpler approach often more maintainable
 
 4. **Unknown Map Tiles Suggest Additional Data**
-   - Tiles D/E/F account for 20.65% of map
-   - Likely represent special map features or metadata
-   - Need further investigation of map rendering code
+	 - Tiles D/E/F account for 20.65% of map
+	 - Likely represent special map features or metadata
+	 - Need further investigation of map rendering code
 
 ### Development Best Practices
 
 1. **Verification is Critical**
-   - Created `verify_extractions.py` before trusting extracted data
-   - Caught offset error in monster stats extraction
-   - Lesson: Always verify against ground truth (ROM)
+	 - Created `verify_extractions.py` before trusting extracted data
+	 - Caught offset error in monster stats extraction
+	 - Lesson: Always verify against ground truth (ROM)
 
 2. **Multiple Output Formats Increase Value**
-   - JSON for programmatic access
-   - PNG for visual verification
-   - HTML for human-friendly browsing
-   - Lesson: Different formats serve different needs
+	 - JSON for programmatic access
+	 - PNG for visual verification
+	 - HTML for human-friendly browsing
+	 - Lesson: Different formats serve different needs
 
 3. **Interactive Tools Enhance Understanding**
-   - Static images limited
-   - Interactive map viewer reveals spatial relationships
-   - Zoom/pan essential for large maps
-   - Lesson: Invest in UX for complex data
+	 - Static images limited
+	 - Interactive map viewer reveals spatial relationships
+	 - Zoom/pan essential for large maps
+	 - Lesson: Invest in UX for complex data
 
 4. **Documentation Pays Off**
-   - 500+ line ROM hacking guide
-   - Future modifications much easier
-   - New contributors can get started faster
-   - Lesson: Document while fresh in mind
+	 - 500+ line ROM hacking guide
+	 - Future modifications much easier
+	 - New contributors can get started faster
+	 - Lesson: Document while fresh in mind
 
 ---
 

@@ -33,8 +33,8 @@
 **Solutions**:
 
 1. **Install Python 3.8+**:
-   - Download from https://python.org
-   - ✅ Check "Add Python to PATH" during installation
+	 - Download from https://python.org
+	 - ✅ Check "Add Python to PATH" during installation
 
 2. **Verify installation**:
    ```powershell
@@ -71,8 +71,8 @@ ERROR: Could not find a version that satisfies the requirement pillow
    ```
 
 3. **Check internet connection**:
-   - Ensure firewall allows pip
-   - Try different network
+	 - Ensure firewall allows pip
+	 - Try different network
 
 4. **Install from requirements.txt**:
    ```powershell
@@ -146,8 +146,8 @@ Got: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
    ```
 
 2. **Expected hashes**:
-   - **PRG1** (recommended): `6a0d2e06ff016f1b8c0b632fd6b79ac7`
-   - **PRG0**: `066d9435a488b107e0365e98878560a9`
+	 - **PRG1** (recommended): `6a0d2e06ff016f1b8c0b632fd6b79ac7`
+	 - **PRG0**: `066d9435a488b107e0365e98878560a9`
 
 3. **Verify file size**:
    ```powershell
@@ -156,8 +156,8 @@ Got: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
    ```
 
 4. **If wrong version**:
-   - Obtain correct ROM (PRG1 recommended)
-   - Toolkit works with both, but PRG1 is standard
+	 - Obtain correct ROM (PRG1 recommended)
+	 - Toolkit works with both, but PRG1 is standard
 
 ### ROM Header Issues
 
@@ -175,7 +175,7 @@ Invalid NES header
    ```
 
 2. **Remove trainer** (if present):
-   Some ROMs have 512-byte trainer - remove it:
+	 Some ROMs have 512-byte trainer - remove it:
    ```python
    with open('roms/dragon_warrior.nes', 'rb') as f:
        data = f.read()
@@ -234,9 +234,9 @@ Got: 0x9E8F7D6C
    ```
 
 2. **If persistent**:
-   - Check ROM integrity
-   - Verify no antivirus interference
-   - Try different directory
+	 - Check ROM integrity
+	 - Verify no antivirus interference
+	 - Try different directory
 
 3. **Bypass validation** (temporary):
    ```python
@@ -303,8 +303,8 @@ Got: 0x9E8F7D6C
 **Solutions**:
 
 1. **Verify NES palette**:
-   - Must use standard NES 64-color palette
-   - Tools like YY-CHR export correct palettes
+	 - Must use standard NES 64-color palette
+	 - Tools like YY-CHR export correct palettes
 
 2. **Check palette index**:
    ```json
@@ -328,17 +328,17 @@ Got: 0x9E8F7D6C
 **Solutions**:
 
 1. **Verify 8×8 grid**:
-   - All edits must respect 8-pixel grid
-   - Use grid overlay in graphics editor
+	 - All edits must respect 8-pixel grid
+	 - Use grid overlay in graphics editor
 
 2. **Check image dimensions**:
-   - Must be exactly 256×256 (32×32 tiles)
-   - No cropping or resizing
+	 - Must be exactly 256×256 (32×32 tiles)
+	 - No cropping or resizing
 
 3. **Re-export with correct settings**:
-   - Format: PNG
-   - Size: 256×256
-   - Grid: 8×8 pixels
+	 - Format: PNG
+	 - Size: 256×256
+	 - Grid: 8×8 pixels
 
 ---
 
@@ -364,9 +364,9 @@ Got: 0x9E8F7D6C
    ```
 
 2. **Common mistakes**:
-   - HP = 0 (invalid, use 1+)
-   - HP > 255 (invalid, max is 255)
-   - HP as string `"10"` (must be number)
+	 - HP = 0 (invalid, use 1+)
+	 - HP > 255 (invalid, max is 255)
+	 - HP as string `"10"` (must be number)
 
 ### Spell ID Out of Range
 
@@ -408,8 +408,8 @@ Got: 0x9E8F7D6C
 **Solutions**:
 
 1. **Check max values**:
-   - XP: 0-65535 (16-bit unsigned)
-   - Gold: 0-65535 (16-bit unsigned)
+	 - XP: 0-65535 (16-bit unsigned)
+	 - Gold: 0-65535 (16-bit unsigned)
 
 2. **Cap values**:
    ```python
@@ -432,19 +432,19 @@ json.decoder.JSONDecodeError: Expecting ',' delimiter: line 15 column 5
    ```
 
 2. **Common issues**:
-   - Trailing commas:
+	 - Trailing commas:
      ```json
      {
        "hp": 10,  // ❌ Last property has comma
      }
      ```
-   - Missing quotes:
+	 - Missing quotes:
      ```json
      {
        name: "Slime"  // ❌ Should be "name"
      }
      ```
-   - Comments (not allowed):
+	 - Comments (not allowed):
      ```json
      {
        "hp": 10  // ❌ JSON doesn't support comments
@@ -452,8 +452,8 @@ json.decoder.JSONDecodeError: Expecting ',' delimiter: line 15 column 5
      ```
 
 3. **Use JSON editor**:
-   - VS Code with JSON extension
-   - JSONLint online validator
+	 - VS Code with JSON extension
+	 - JSONLint online validator
 
 ---
 
@@ -474,8 +474,8 @@ json.decoder.JSONDecodeError: Expecting ',' delimiter: line 15 column 5
    ```
 
 2. **Fix all validation errors**:
-   - Check console output for specific errors
-   - Edit JSON files to fix issues
+	 - Check console output for specific errors
+	 - Edit JSON files to fix issues
 
 3. **Re-run packaging**:
    ```powershell
@@ -520,8 +520,8 @@ Got: 40960
 **Solutions**:
 
 1. **Check CHR-ROM**:
-   - Should be 8192 bytes
-   - Verify graphics.dwdata size
+	 - Should be 8192 bytes
+	 - Verify graphics.dwdata size
 
 2. **Verify all data inserted**:
    ```powershell
@@ -545,9 +545,9 @@ Got: 40960
 **Solutions**:
 
 1. **Test with different emulators**:
-   - Try Mesen (most accurate)
-   - Try FCEUX
-   - Try Nestopia
+	 - Try Mesen (most accurate)
+	 - Try FCEUX
+	 - Try Nestopia
 
 2. **Check ROM size**:
    ```powershell
@@ -573,12 +573,12 @@ Got: 40960
 **Solutions**:
 
 1. **Check monster stats**:
-   - HP must be 1-255
-   - All stats within valid ranges
+	 - HP must be 1-255
+	 - All stats within valid ranges
 
 2. **Verify sprite data**:
-   - CHR tiles not corrupted
-   - Sprite pointers valid
+	 - CHR tiles not corrupted
+	 - Sprite pointers valid
 
 3. **Test specific monster**:
    ```powershell
@@ -599,8 +599,8 @@ Got: 40960
    ```
 
 2. **Check palette assignments**:
-   - Sprites use palettes 0-7
-   - Backgrounds use palettes 0-3
+	 - Sprites use palettes 0-7
+	 - Backgrounds use palettes 0-3
 
 3. **Re-insert graphics**:
    ```powershell
@@ -625,11 +625,11 @@ Got: 40960
    ```
 
 2. **Disable antivirus** (temporarily):
-   - Some AV scanners slow file I/O
+	 - Some AV scanners slow file I/O
 
 3. **Check disk**:
-   - Use SSD if available
-   - Defragment HDD
+	 - Use SSD if available
+	 - Defragment HDD
 
 4. **Benchmark performance**:
    ```powershell
@@ -643,8 +643,8 @@ Got: 40960
 **Solutions**:
 
 1. **Use streaming**:
-   - Process data in chunks
-   - Don't load entire ROM to memory
+	 - Process data in chunks
+	 - Don't load entire ROM to memory
 
 2. **Close other programs**:
    ```powershell
@@ -653,7 +653,7 @@ Got: 40960
    ```
 
 3. **Increase virtual memory**:
-   - System → Advanced → Performance → Virtual memory
+	 - System → Advanced → Performance → Virtual memory
 
 ---
 
@@ -698,9 +698,9 @@ fatal: not a git repository
    ```
 
 2. **Resolve manually**:
-   - Open conflicted file
-   - Remove `<<<<<<<`, `=======`, `>>>>>>>` markers
-   - Keep desired changes
+	 - Open conflicted file
+	 - Remove `<<<<<<<`, `=======`, `>>>>>>>` markers
+	 - Keep desired changes
 
 3. **Mark resolved**:
    ```powershell

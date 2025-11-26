@@ -10,9 +10,9 @@ This session accomplished comprehensive asset extraction and ROM analysis for Dr
 - Assembles Header + 4 PRG banks + CHR-ROM
 - Output: 81,936 bytes (exact ROM size)
 - **Critical Discovery**: Disassembly is from **PRG0**, not PRG1
-  - 3 byte differences (0x3FAE, 0x3FAF, 0xAF7C)
-  - Build produces perfect PRG0 ROM
-  - Documented in BUILD_VERIFICATION.md
+	- 3 byte differences (0x3FAE, 0x3FAF, 0xAF7C)
+	- Build produces perfect PRG0 ROM
+	- Documented in BUILD_VERIFICATION.md
 
 **Fixed Bank01.asm**:
 - Replaced unsupported `.ifdef` conditionals with actual monster data
@@ -49,24 +49,24 @@ This session accomplished comprehensive asset extraction and ROM analysis for Dr
 
 **Created item_data_extractor.py**:
 - Complete item database with 35 items
-  - 7 weapons (Bamboo Pole → Erdrick's Sword)
-  - 7 armor (Clothes → Erdrick's Armor)
-  - 3 shields (Small → Silver)
-  - 6 consumables (Herb, Torch, Dragon Scale, Wings, Magic Key, Fairy Water)
-  - 9 key items (quest-critical items)
-  - 2 cursed items (Belt, Necklace)
-  - 1 accessory (Fighter's Ring)
+	- 7 weapons (Bamboo Pole → Erdrick's Sword)
+	- 7 armor (Clothes → Erdrick's Armor)
+	- 3 shields (Small → Silver)
+	- 6 consumables (Herb, Torch, Dragon Scale, Wings, Magic Key, Fairy Water)
+	- 9 key items (quest-critical items)
+	- 2 cursed items (Belt, Necklace)
+	- 1 accessory (Fighter's Ring)
 
 - 10 spells with complete data:
-  - Names, MP costs, learn levels, effects
-  - HEAL, HURT, SLEEP, RADIANT, STOPSPELL, OUTSIDE, RETURN, REPEL, HEALMORE, HURTMORE
+	- Names, MP costs, learn levels, effects
+	- HEAL, HURT, SLEEP, RADIANT, STOPSPELL, OUTSIDE, RETURN, REPEL, HEALMORE, HURTMORE
 
 - 11 shops across 5 towns:
-  - Brecconary: 2 shops (weapons/armor + items)
-  - Garinham: 2 shops
-  - Kol: 2 shops
-  - Cantlin: 4 shops (3 weapon/armor specialty shops)
-  - Rimuldar: 1 shop
+	- Brecconary: 2 shops (weapons/armor + items)
+	- Garinham: 2 shops
+	- Kol: 2 shops
+	- Cantlin: 4 shops (3 weapon/armor specialty shops)
+	- Rimuldar: 1 shop
 
 **Output**: item_database.json with full stats, bonuses, costs, and shop inventories
 
@@ -95,30 +95,30 @@ This session accomplished comprehensive asset extraction and ROM analysis for Dr
 
 ### Extraction Tools (tools/extraction/)
 1. **rom_monster_sprite_extractor.py** (416 lines)
-   - Direct ROM sprite parser
-   - Multi-tile composition renderer
-   - Bank address translator
+	 - Direct ROM sprite parser
+	 - Multi-tile composition renderer
+	 - Bank address translator
 
 2. **chr_tile_extractor.py** (290 lines)
-   - CHR-ROM tile decoder
-   - Tile sheet generator
-   - NES palette renderer
+	 - CHR-ROM tile decoder
+	 - Tile sheet generator
+	 - NES palette renderer
 
 3. **item_data_extractor.py** (224 lines)
-   - Item/spell database generator
-   - Shop inventory compiler
+	 - Item/spell database generator
+	 - Shop inventory compiler
 
 ### Build System
 1. **build_rom.ps1** (168 lines)
-   - Multi-bank ROM assembler
-   - CHR-ROM extractor
-   - Verification system
+	 - Multi-bank ROM assembler
+	 - CHR-ROM extractor
+	 - Verification system
 
 ### Documentation
 1. **BUILD_VERIFICATION.md**
-   - ROM version analysis (PRG0 vs PRG1)
-   - Build process documentation
-   - Byte difference breakdown
+	 - ROM version analysis (PRG0 vs PRG1)
+	 - Build process documentation
+	 - Byte difference breakdown
 
 ### Extracted Assets
 - `extracted_assets/graphics_comprehensive/monsters/` - 39 monster sprites (120 files)
@@ -129,20 +129,20 @@ This session accomplished comprehensive asset extraction and ROM analysis for Dr
 ## Commits Made
 
 1. **Extract all 39 monsters with ROM-based sprite extractor** (commit 9eb5574)
-   - rom_monster_sprite_extractor.py
-   - 39 monsters × 3 files = 120 asset files
-   - Visual catalogs regenerated
+	 - rom_monster_sprite_extractor.py
+	 - 39 monsters × 3 files = 120 asset files
+	 - Visual catalogs regenerated
 
 2. **Fix ROM build system and verify disassembly matches PRG0** (commit 59a2822)
-   - build_rom.ps1 created
-   - Bank01.asm fixed (monster data restored)
-   - BUILD_VERIFICATION.md added
-   - PRG0 vs PRG1 analysis documented
+	 - build_rom.ps1 created
+	 - Bank01.asm fixed (monster data restored)
+	 - BUILD_VERIFICATION.md added
+	 - PRG0 vs PRG1 analysis documented
 
 3. **Extract CHR tiles, items, spells, and shop data** (commit b422c80)
-   - chr_tile_extractor.py: 512 CHR tiles
-   - item_data_extractor.py: Complete game database
-   - 520 files committed
+	 - chr_tile_extractor.py: 512 CHR tiles
+	 - item_data_extractor.py: Complete game database
+	 - 520 files committed
 
 ## Statistics
 

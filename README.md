@@ -238,7 +238,7 @@ dragon-warrior-info/
 **extract_all_data.py**
 - Comprehensive data extraction with verification
 - Monsters: 39 from offset 0x5E5B (Bank01:0x1E4B)
-  - Format: 8 bytes stats (Att Def HP Spel Agi Mdef Exp Gld) + 8 unused
+	- Format: 8 bytes stats (Att Def HP Spel Agi Mdef Exp Gld) + 8 unused
 - Spells: 10 from offset 0x7CFD with MP costs
 - Items: 32 total (tools, weapons, armor, shields) from offsets 0x7CF5+
 - Byte-perfect ROM verification
@@ -265,13 +265,13 @@ dragon-warrior-info/
 **reinsert_assets.py**
 - ROM modification framework for edited JSON data
 - Features:
-  - Modify monster stats (attack, defense, HP, agility, magic defense, exp, gold)
-  - Modify spell MP costs
-  - Modify equipment stats (weapon attack, armor/shield defense)
-  - Automatic ROM backup before modifications
-  - Validation (0-255 range checks for all stats)
-  - Modification logging with before/after comparisons
-  - Detailed JSON reports
+	- Modify monster stats (attack, defense, HP, agility, magic defense, exp, gold)
+	- Modify spell MP costs
+	- Modify equipment stats (weapon attack, armor/shield defense)
+	- Automatic ROM backup before modifications
+	- Validation (0-255 range checks for all stats)
+	- Modification logging with before/after comparisons
+	- Detailed JSON reports
 - Output: `output/dragon_warrior_modified.nes`
 
 ### ROM Offset Reference

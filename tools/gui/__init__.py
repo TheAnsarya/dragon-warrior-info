@@ -14,12 +14,12 @@ from .spell_editor_tab import SpellEditorTab
 from .item_editor_tab import ItemEditorTab
 
 __all__ = [
-    'DragonWarriorEditor',
-    'DataManager',
-    'Monster',
-    'Spell',
-    'Item',
-    'MonsterEditorTab',
-    'SpellEditorTab',
-    'ItemEditorTab',
+	'DragonWarriorEditor',
+	'DataManager',
+	'Monster',
+	'Spell',
+	'Item',
+	'MonsterEditorTab',
+	'SpellEditorTab',
+	'ItemEditorTab',
 ]

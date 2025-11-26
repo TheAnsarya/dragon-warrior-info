@@ -28,22 +28,22 @@ Or simply uncomment the PRG0 lines and comment out the PRG1 lines in:
 The build system assembles the ROM in the following steps:
 
 1. **Assemble iNES Header** (16 bytes)
-   - Source: `source_files/Header.asm`
-   - Output: `build/header.bin`
+	 - Source: `source_files/Header.asm`
+	 - Output: `build/header.bin`
 
 2. **Assemble PRG-ROM Banks** (4 × 16KB = 64KB)
-   - Bank00: `source_files/Bank00.asm` → `build/bank00.bin` (16,384 bytes)
-   - Bank01: `source_files/Bank01.asm` → `build/bank01.bin` (16,384 bytes)
-   - Bank02: `source_files/Bank02.asm` → `build/bank02.bin` (16,384 bytes)
-   - Bank03: `source_files/Bank03.asm` → `build/bank03.bin` (16,384 bytes)
+	 - Bank00: `source_files/Bank00.asm` → `build/bank00.bin` (16,384 bytes)
+	 - Bank01: `source_files/Bank01.asm` → `build/bank01.bin` (16,384 bytes)
+	 - Bank02: `source_files/Bank02.asm` → `build/bank02.bin` (16,384 bytes)
+	 - Bank03: `source_files/Bank03.asm` → `build/bank03.bin` (16,384 bytes)
 
 3. **Copy CHR-ROM** (16KB)
-   - Source: `source_files/chr_rom.bin`
-   - Output: `build/chr_rom.bin` (16,384 bytes)
+	 - Source: `source_files/chr_rom.bin`
+	 - Output: `build/chr_rom.bin` (16,384 bytes)
 
 4. **Concatenate All Parts**
-   - Header (16) + Bank00 (16384) + Bank01 (16384) + Bank02 (16384) + Bank03 (16384) + CHR (16384)
-   - Total: 81,936 bytes ✅
+	 - Header (16) + Bank00 (16384) + Bank01 (16384) + Bank02 (16384) + Bank03 (16384) + CHR (16384)
+	 - Total: 81,936 bytes ✅
 
 ## ROM Version Analysis
 
@@ -75,9 +75,9 @@ Dragon Warrior has two ROM versions with only **3 bytes** differing:
 
 - The disassembly perfectly reconstructs **PRG0** ROM (zero byte differences expected if comparing to PRG0)
 - To create **PRG1** ROM, three bytes need to be patched:
-  - File 0x003FAE: Change 0x37 → 0x32
-  - File 0x003FAF: Change 0x32 → 0x29
-  - File 0x00AF7C: Change 0xEF → 0xF0
+	- File 0x003FAE: Change 0x37 → 0x32
+	- File 0x003FAF: Change 0x32 → 0x29
+	- File 0x00AF7C: Change 0xEF → 0xF0
 
 ### CPU Address Mapping
 
@@ -156,13 +156,13 @@ Write-Host "Differences from PRG0: $diffs bytes"  # Should be 0 (perfect match)
 To create a PRG1-compatible build:
 
 1. **Option A: Patch the assembly source**
-   - Identify the ASM labels for the 3 differing bytes
-   - Create a PRG1-specific version of the affected banks
-   - Add conditional assembly for ROM version selection
+	 - Identify the ASM labels for the 3 differing bytes
+	 - Create a PRG1-specific version of the affected banks
+	 - Add conditional assembly for ROM version selection
 
 2. **Option B: Post-build patching**
-   - Build the PRG0 ROM as normal
-   - Apply 3-byte patch to convert to PRG1:
+	 - Build the PRG0 ROM as normal
+	 - Apply 3-byte patch to convert to PRG1:
      ```powershell
      $rom = [System.IO.File]::ReadAllBytes(".\build\dragon_warrior_rebuilt.nes")
      $rom[0x3FAE] = 0x32
@@ -172,9 +172,9 @@ To create a PRG1-compatible build:
      ```
 
 3. **Option C: Use PRG0 as canonical version**
-   - Since disassembly is from PRG0, use PRG0 ROM as reference
-   - Update all extraction tools to use PRG0
-   - Document that this project targets PRG0
+	 - Since disassembly is from PRG0, use PRG0 ROM as reference
+	 - Update all extraction tools to use PRG0
+	 - Document that this project targets PRG0
 
 ## Recommendation
 

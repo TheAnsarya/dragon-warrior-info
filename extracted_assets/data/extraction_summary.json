@@ -1,23 +1,23 @@
 {
-  "rom_path": "C:\\Users\\me\\source\\repos\\dragon-warrior-info\\roms\\Dragon Warrior (U) (PRG1) [!].nes",
-  "extraction_date": "2024-11-25",
-  "monsters": {
-    "count": 39,
-    "file": "monsters.json"
-  },
-  "spells": {
-    "count": 10,
-    "file": "spells.json"
-  },
-  "items": {
-    "count": 32,
-    "file": "items_equipment.json"
-  },
-  "verification": {
-    "status": "PASSED",
-    "errors": [],
-    "warnings": [],
-    "monsters_verified": 39,
-    "spells_verified": 10
-  }
+	"rom_path": "C:\\Users\\me\\source\\repos\\dragon-warrior-info\\roms\\Dragon Warrior (U) (PRG1) [!].nes",
+	"extraction_date": "2024-11-25",
+	"monsters": {
+		"count": 39,
+		"file": "monsters.json"
+	},
+	"spells": {
+		"count": 10,
+		"file": "spells.json"
+	},
+	"items": {
+		"count": 32,
+		"file": "items_equipment.json"
+	},
+	"verification": {
+		"status": "PASSED",
+		"errors": [],
+		"warnings": [],
+		"monsters_verified": 39,
+		"spells_verified": 10
+	}
 }

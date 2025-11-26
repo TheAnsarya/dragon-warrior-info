@@ -390,11 +390,11 @@ For ROM modifications, include emulator testing instructions:
 - **All modules** must have a module docstring
 - **All classes** must have a class docstring
 - **All public functions** must have docstrings with:
-  - Brief description
-  - Args section
-  - Returns section
-  - Raises section (if applicable)
-  - Examples section (recommended)
+	- Brief description
+	- Args section
+	- Returns section
+	- Raises section (if applicable)
+	- Examples section (recommended)
 
 ### User Documentation
 

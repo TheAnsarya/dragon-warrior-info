@@ -1,127 +1,127 @@
 {
-  "timestamp": "2025-11-19T13:01:05.076348",
-  "reference_rom": {
-    "filename": "Dragon Warrior (U) (PRG1) [!].nes",
-    "size": 81936,
-    "md5": "25cf03eb7ac2dec4ef332425c151f373",
-    "sha1": "1ecc63aaac50a9612eaa8b69143858c3e48dd0ae"
-  },
-  "built_rom": {
-    "filename": "Dragon Warrior (U) (PRG0) [!].nes",
-    "size": 81936,
-    "md5": "1cfeeac7a20b405780eea318d3d1af2a",
-    "sha1": "6a50ce57097332393e0e8751924fd56456ef083c"
-  },
-  "comparison": {
-    "identical": false,
-    "size_match": true,
-    "size_difference": 0
-  },
-  "segment_analysis": {
-    "nes_header": {
-      "start_offset": "0x0000",
-      "end_offset": "0x0010",
-      "size": 16,
-      "matches": true,
-      "differences": 0
-    },
-    "trainer": {
-      "start_offset": "0x0010",
-      "end_offset": "0x0210",
-      "size": 512,
-      "matches": true,
-      "differences": 0
-    },
-    "prg_rom_bank0": {
-      "start_offset": "0x8010",
-      "end_offset": "0xC000",
-      "size": 16368,
-      "matches": false,
-      "differences": 1,
-      "first_difference": {
-        "offset": "0x00AF7C",
-        "reference": "F0",
-        "built": "EF"
-      }
-    },
-    "prg_rom_bank1": {
-      "start_offset": "0xC000",
-      "end_offset": "0x10000",
-      "size": 16384,
-      "matches": true,
-      "differences": 0
-    },
-    "chr_rom": {
-      "start_offset": "0x10000",
-      "end_offset": "0x12000",
-      "size": 8192,
-      "matches": true,
-      "differences": 0
-    }
-  },
-  "critical_areas": {
-    "nes_header": {
-      "description": "NES header and ROM configuration",
-      "offset": "0x0000-0x0010",
-      "matches": true,
-      "reference_hex": "4E45531A040212000000000000000000",
-      "built_hex": "4E45531A040212000000000000000000"
-    },
-    "reset_vector": {
-      "description": "CPU reset vector",
-      "offset": "0xFFFC-0xFFFE",
-      "matches": true,
-      "reference_hex": "4F52",
-      "built_hex": "4F52"
-    },
-    "nmi_vector": {
-      "description": "NMI interrupt vector",
-      "offset": "0xFFFA-0xFFFC",
-      "matches": true,
-      "reference_hex": "5249",
-      "built_hex": "5249"
-    },
-    "irq_vector": {
-      "description": "IRQ interrupt vector",
-      "offset": "0xFFFE-0x10000",
-      "matches": true,
-      "reference_hex": "2020",
-      "built_hex": "2020"
-    }
-  },
-  "differences": [
-    {
-      "offset": "0x003FAE",
-      "start_offset": 16302,
-      "reference_bytes": [
-        "32",
-        "29"
-      ],
-      "built_bytes": [
-        "37",
-        "32"
-      ],
-      "context_before": "2427283024352E5F",
-      "length": 2,
-      "context_after": "5F312C3137283127",
-      "reference_hex": "3229",
-      "built_hex": "3732"
-    },
-    {
-      "offset": "0x00AF7C",
-      "start_offset": 44924,
-      "reference_bytes": [
-        "F0"
-      ],
-      "built_bytes": [
-        "EF"
-      ],
-      "context_before": "FC3711225F2B121D",
-      "length": 1,
-      "context_after": "5F0D0E0C1B0E0A1C",
-      "reference_hex": "F0",
-      "built_hex": "EF"
-    }
-  ],
-  "match_percentage": 99.99633860574106
+	"timestamp": "2025-11-19T13:01:05.076348",
+	"reference_rom": {
+		"filename": "Dragon Warrior (U) (PRG1) [!].nes",
+		"size": 81936,
+		"md5": "25cf03eb7ac2dec4ef332425c151f373",
+		"sha1": "1ecc63aaac50a9612eaa8b69143858c3e48dd0ae"
+	},
+	"built_rom": {
+		"filename": "Dragon Warrior (U) (PRG0) [!].nes",
+		"size": 81936,
+		"md5": "1cfeeac7a20b405780eea318d3d1af2a",
+		"sha1": "6a50ce57097332393e0e8751924fd56456ef083c"
+	},
+	"comparison": {
+		"identical": false,
+		"size_match": true,
+		"size_difference": 0
+	},
+	"segment_analysis": {
+		"nes_header": {
+			"start_offset": "0x0000",
+			"end_offset": "0x0010",
+			"size": 16,
+			"matches": true,
+			"differences": 0
+		},
+		"trainer": {
+			"start_offset": "0x0010",
+			"end_offset": "0x0210",
+			"size": 512,
+			"matches": true,
+			"differences": 0
+		},
+		"prg_rom_bank0": {
+			"start_offset": "0x8010",
+			"end_offset": "0xC000",
+			"size": 16368,
+			"matches": false,
+			"differences": 1,
+			"first_difference": {
+				"offset": "0x00AF7C",
+				"reference": "F0",
+				"built": "EF"
+			}
+		},
+		"prg_rom_bank1": {
+			"start_offset": "0xC000",
+			"end_offset": "0x10000",
+			"size": 16384,
+			"matches": true,
+			"differences": 0
+		},
+		"chr_rom": {
+			"start_offset": "0x10000",
+			"end_offset": "0x12000",
+			"size": 8192,
+			"matches": true,
+			"differences": 0
+		}
+	},
+	"critical_areas": {
+		"nes_header": {
+			"description": "NES header and ROM configuration",
+			"offset": "0x0000-0x0010",
+			"matches": true,
+			"reference_hex": "4E45531A040212000000000000000000",
+			"built_hex": "4E45531A040212000000000000000000"
+		},
+		"reset_vector": {
+			"description": "CPU reset vector",
+			"offset": "0xFFFC-0xFFFE",
+			"matches": true,
+			"reference_hex": "4F52",
+			"built_hex": "4F52"
+		},
+		"nmi_vector": {
+			"description": "NMI interrupt vector",
+			"offset": "0xFFFA-0xFFFC",
+			"matches": true,
+			"reference_hex": "5249",
+			"built_hex": "5249"
+		},
+		"irq_vector": {
+			"description": "IRQ interrupt vector",
+			"offset": "0xFFFE-0x10000",
+			"matches": true,
+			"reference_hex": "2020",
+			"built_hex": "2020"
+		}
+	},
+	"differences": [
+		{
+			"offset": "0x003FAE",
+			"start_offset": 16302,
+			"reference_bytes": [
+				"32",
+				"29"
+			],
+			"built_bytes": [
+				"37",
+				"32"
+			],
+			"context_before": "2427283024352E5F",
+			"length": 2,
+			"context_after": "5F312C3137283127",
+			"reference_hex": "3229",
+			"built_hex": "3732"
+		},
+		{
+			"offset": "0x00AF7C",
+			"start_offset": 44924,
+			"reference_bytes": [
+				"F0"
+			],
+			"built_bytes": [
+				"EF"
+			],
+			"context_before": "FC3711225F2B121D",
+			"length": 1,
+			"context_after": "5F0D0E0C1B0E0A1C",
+			"reference_hex": "F0",
+			"built_hex": "EF"
+		}
+	],
+	"match_percentage": 99.99633860574106
 }

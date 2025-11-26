@@ -38,8 +38,8 @@ This session successfully created a **comprehensive, production-ready toolkit** 
 
 **What it does**:
 - Extracts **39 monsters** from ROM offset 0x5E5B (Bank01:0x1E4B)
-  - Format: 8 bytes stats (Att Def HP Spel Agi Mdef Exp Gld) + 8 unused = 16 bytes per monster
-  - Corrected from initial incorrect 16-bit format assumption
+	- Format: 8 bytes stats (Att Def HP Spel Agi Mdef Exp Gld) + 8 unused = 16 bytes per monster
+	- Corrected from initial incorrect 16-bit format assumption
 - Extracts **10 spells** from offset 0x7CFD with MP costs, effects, formulas, targets
 - Extracts **32 items/equipment** from offsets 0x7CF5+ (tools, weapons, armor, shields)
 - **Byte-perfect ROM verification** - all data PASSED validation
@@ -91,11 +91,11 @@ This session successfully created a **comprehensive, production-ready toolkit** 
 
 **What it does**:
 - Documents **complete character encoding** (0x00-0x7F)
-  - Characters: A-Z, a-z, 0-9, punctuation (', , . ! ? - :)
+	- Characters: A-Z, a-z, 0-9, punctuation (', , . ! ? - :)
 - Documents **word substitution compression** (0x80-0x8F)
-  - Common words: "the", "of", "to", "and", "thou", "thy", "art", "have", "with", etc.
+	- Common words: "the", "of", "to", "and", "thou", "thy", "art", "have", "with", etc.
 - Documents **control codes** (0xF0-0xFF)
-  - Formatting: HERO, WAIT, LINE, PAGE, CHOICE, ITEM, SPELL, MONSTER, END, TERM
+	- Formatting: HERO, WAIT, LINE, PAGE, CHOICE, ITEM, SPELL, MONSTER, END, TERM
 - Implements text decoder for compressed dialog strings
 - Extracts item/spell/monster name lists
 
@@ -190,16 +190,16 @@ This session successfully created a **comprehensive, production-ready toolkit** 
 
 ### ROM Format Understanding
 - **Monster Data Format**: Corrected from incorrect 16-bit assumption to correct 8-byte format
-  - Read Bank01.asm EnStatTbl to understand structure
-  - Format: Att Def HP Spel Agi Mdef Exp Gld + 8 unused bytes (16 total)
-  - Fixed validation to compare single-byte ROM values
+	- Read Bank01.asm EnStatTbl to understand structure
+	- Format: Att Def HP Spel Agi Mdef Exp Gld + 8 unused bytes (16 total)
+	- Fixed validation to compare single-byte ROM values
 
 - **Map Data Format**: Discovered MapDatTbl structure at ROM offset 0x801A
-  - 5 bytes per map: .word pointer, .byte width, .byte height, .byte boundary
-  - CPU address $8000-$BFFF maps to ROM 0x0010-0x4010 (Bank00)
+	- 5 bytes per map: .word pointer, .byte width, .byte height, .byte boundary
+	- CPU address $8000-$BFFF maps to ROM 0x0010-0x4010 (Bank00)
 
 - **CHR-ROM Location**: 0x10010 (after 16-byte header + 64KB PRG-ROM)
-  - 16KB total, 1024 tiles, NES 2bpp format (16 bytes per 8x8 tile)
+	- 16KB total, 1024 tiles, NES 2bpp format (16 bytes per 8x8 tile)
 
 ### Data Verification
 - **Byte-perfect extraction** - all extracted data validated against ROM source
@@ -299,24 +299,24 @@ This session successfully created a **comprehensive, production-ready toolkit** 
 ## 💡 Key Insights Gained
 
 1. **Monster Format Discovery**: Initial assumption of 16-bit multi-byte stats was wrong
-   - Lesson: Always check disassembly for exact format
-   - Solution: Read Bank01.asm EnStatTbl to find 8-byte + 8 unused structure
+	 - Lesson: Always check disassembly for exact format
+	 - Solution: Read Bank01.asm EnStatTbl to find 8-byte + 8 unused structure
 
 2. **Map Pointer Calculation**: CPU addresses require conversion to ROM offsets
-   - Formula: CPU $8000-$BFFF = ROM offset - $8000 + $10 (for Bank00)
-   - MapDatTbl at ROM 0x801A contains pointers to map data
+	 - Formula: CPU $8000-$BFFF = ROM offset - $8000 + $10 (for Bank00)
+	 - MapDatTbl at ROM 0x801A contains pointers to map data
 
 3. **Sprite Organization**: Individual tiles are hard to work with
-   - Solution: Group by purpose (heroes, monsters, NPCs, etc.) into sheets
-   - Benefits: Visual context, easier editing, fewer files
+	 - Solution: Group by purpose (heroes, monsters, NPCs, etc.) into sheets
+	 - Benefits: Visual context, easier editing, fewer files
 
 4. **Text Compression**: DW uses word substitution for common medieval words
-   - Codes 0x80-0x8F represent "the", "thou", "thy", "art", etc.
-   - Saves ROM space while maintaining ye olde English flavor
+	 - Codes 0x80-0x8F represent "the", "thou", "thy", "art", etc.
+	 - Saves ROM space while maintaining ye olde English flavor
 
 5. **Validation is Critical**: Range checks prevent invalid ROM modifications
-   - All stats must be 0-255 (single byte)
-   - Modification reports provide traceability
+	 - All stats must be 0-255 (single byte)
+	 - Modification reports provide traceability
 
 ---
 

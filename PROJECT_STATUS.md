@@ -196,40 +196,40 @@ TOTAL                              38   ~21,470   85% Complete
 ### High Priority (Planned for v2.0)
 
 - [ ] **Unified GUI Editor** (dragon_warrior_editor.py)
-  - PyQt5-based tabbed interface
-  - Monster/Spell/Item/Map/Text/Graphics editors
-  - Real-time preview
-  - Undo/Redo system
-  - Auto-save functionality
-  - Estimated: 2,500+ lines
+	- PyQt5-based tabbed interface
+	- Monster/Spell/Item/Map/Text/Graphics editors
+	- Real-time preview
+	- Undo/Redo system
+	- Auto-save functionality
+	- Estimated: 2,500+ lines
 
 - [ ] **Complete Map Editor**
-  - Tile grid editing
-  - NPC placement
-  - Collision layer
-  - Entry/exit point definition
-  - Estimated: 800+ lines
+	- Tile grid editing
+	- NPC placement
+	- Collision layer
+	- Entry/exit point definition
+	- Estimated: 800+ lines
 
 - [ ] **Text/Dialog Editor**
-  - Full text extraction
-  - Encoding/decoding
-  - Word substitution management
-  - Dialog tree visualization
-  - Estimated: 600+ lines
+	- Full text extraction
+	- Encoding/decoding
+	- Word substitution management
+	- Dialog tree visualization
+	- Estimated: 600+ lines
 
 ### Medium Priority
 
 - [ ] **Build System Integration**
-  - Integrate binary pipeline into build.ps1
-  - Add --binary-pipeline flag
-  - Automated testing after build
-  - Estimated: 200 lines
+	- Integrate binary pipeline into build.ps1
+	- Add --binary-pipeline flag
+	- Automated testing after build
+	- Estimated: 200 lines
 
 - [ ] **Additional Optimization Tools**
-  - Map compression analyzer
-  - CHR tile deduplication
-  - Palette optimization
-  - Estimated: 400 lines
+	- Map compression analyzer
+	- CHR tile deduplication
+	- Palette optimization
+	- Estimated: 400 lines
 
 ### Low Priority (Nice to Have)
 

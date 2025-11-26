@@ -1,21 +1,21 @@
 {
-  "character_encoding": "Custom 8-bit with compression",
-  "total_characters": 80,
-  "word_substitutions": 16,
-  "dialogs_extracted": 3,
-  "item_names": 31,
-  "spell_names": 10,
-  "monster_names": 40,
-  "files": {
-    "encoding": "extracted_assets\\text\\character_encoding.json",
-    "dialogs": "extracted_assets\\text\\dialogs.json",
-    "strings": "extracted_assets\\text\\text_strings.json"
-  },
-  "notes": [
-    "Character encoding uses 0x00-0x7F for basic characters",
-    "Word substitution codes at 0x80-0x8F for common words",
-    "Control codes at 0xF0-0xFF for formatting",
-    "Text terminator at 0xFE/0xFF",
-    "Dialog offsets approximate - need verification from disassembly"
-  ]
+	"character_encoding": "Custom 8-bit with compression",
+	"total_characters": 80,
+	"word_substitutions": 16,
+	"dialogs_extracted": 3,
+	"item_names": 31,
+	"spell_names": 10,
+	"monster_names": 40,
+	"files": {
+		"encoding": "extracted_assets\\text\\character_encoding.json",
+		"dialogs": "extracted_assets\\text\\dialogs.json",
+		"strings": "extracted_assets\\text\\text_strings.json"
+	},
+	"notes": [
+		"Character encoding uses 0x00-0x7F for basic characters",
+		"Word substitution codes at 0x80-0x8F for common words",
+		"Control codes at 0xF0-0xFF for formatting",
+		"Text terminator at 0xFE/0xFF",
+		"Dialog offsets approximate - need verification from disassembly"
+	]
 }

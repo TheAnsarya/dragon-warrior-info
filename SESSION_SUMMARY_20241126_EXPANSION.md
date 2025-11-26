@@ -17,73 +17,73 @@ This session focused on **maximizing token utilization** per user's explicit dir
 ### Schema and Validation Tools
 
 1. **generate_schemas.py** (570 lines)
-   - JSON schema generator for data validation
-   - Generates schemas for monsters, spells, items
-   - jsonschema integration for automated validation
-   - Type, range, and constraint enforcement
-   - Optional validation mode with comprehensive error reporting
+	 - JSON schema generator for data validation
+	 - Generates schemas for monsters, spells, items
+	 - jsonschema integration for automated validation
+	 - Type, range, and constraint enforcement
+	 - Optional validation mode with comprehensive error reporting
 
 2. **validate_all.py** (400 lines) *[Previous session]*
-   - Comprehensive data validation suite
-   - Monster validation (39 count, HP 1-255, stats 0-255)
-   - Spell validation (10 count, MP/power 0-255)
-   - Item validation (32 count, prices/bonuses valid)
-   - Cross-reference validation (spell IDs exist)
-   - Graphics validation (chr_tiles.png 256×256)
-   - Binary integrity checks (.dwdata magic/version)
+	 - Comprehensive data validation suite
+	 - Monster validation (39 count, HP 1-255, stats 0-255)
+	 - Spell validation (10 count, MP/power 0-255)
+	 - Item validation (32 count, prices/bonuses valid)
+	 - Cross-reference validation (spell IDs exist)
+	 - Graphics validation (chr_tiles.png 256×256)
+	 - Binary integrity checks (.dwdata magic/version)
 
 ### Data Management Tools
 
 3. **data_migration.py** (650 lines)
-   - Version migration system (v1.0 → v1.1 → v1.2 → v2.0)
-   - Automatic backup creation with timestamps
-   - Rollback support to previous versions
-   - Version detection from data structure
-   - Sequential migration path planning
-   - Migration tracking and documentation
+	 - Version migration system (v1.0 → v1.1 → v1.2 → v2.0)
+	 - Automatic backup creation with timestamps
+	 - Rollback support to previous versions
+	 - Version detection from data structure
+	 - Sequential migration path planning
+	 - Migration tracking and documentation
 
 ### Graphics and Animation Tools
 
 4. **palette_analyzer.py** (550 lines)
-   - NES palette extraction from ROM
-   - Color frequency analysis across all palettes
-   - Palette optimization suggestions
-   - Visual swatch generation (PNG output)
-   - Color usage chart export
-   - Identify unused NES colors (optimization opportunities)
-   - Duplicate palette detection
+	 - NES palette extraction from ROM
+	 - Color frequency analysis across all palettes
+	 - Palette optimization suggestions
+	 - Visual swatch generation (PNG output)
+	 - Color usage chart export
+	 - Identify unused NES colors (optimization opportunities)
+	 - Duplicate palette detection
 
 5. **sprite_animator.py** (450 lines)
-   - Sprite animation generator
-   - Idle animation (subtle movement, 2-8 frames)
-   - Battle entrance animation (fade + shake, 8 frames)
-   - Damage flash animation (4 frames)
-   - Export as animated GIF (configurable timing/looping)
-   - Export as sprite sheet (for game engines)
-   - NES palette support with upscaling
+	 - Sprite animation generator
+	 - Idle animation (subtle movement, 2-8 frames)
+	 - Battle entrance animation (fade + shake, 8 frames)
+	 - Damage flash animation (4 frames)
+	 - Export as animated GIF (configurable timing/looping)
+	 - Export as sprite sheet (for game engines)
+	 - NES palette support with upscaling
 
 ### Analysis and Debugging Tools
 
 6. **rom_diff.py** (500 lines) *[Previous session]*
-   - Byte-by-byte ROM comparison
-   - Identify changed regions (group within 16-byte gaps)
-   - Detect modified data types (monster stats, spells, items, CHR-ROM)
-   - Monster-specific analysis (ID, stat name identification)
-   - Generate visual hex diff with context
-   - Export JSON reports
-   - Region type summary
+	 - Byte-by-byte ROM comparison
+	 - Identify changed regions (group within 16-byte gaps)
+	 - Detect modified data types (monster stats, spells, items, CHR-ROM)
+	 - Monster-specific analysis (ID, stat name identification)
+	 - Generate visual hex diff with context
+	 - Export JSON reports
+	 - Region type summary
 
 7. **benchmark.py** (400 lines)
-   - Performance benchmark suite
-   - ROM loading speed measurement
-   - Data extraction benchmarks
-   - Binary creation (.dwdata) timing
-   - JSON parsing performance
-   - Image processing benchmarks
-   - CRC32 calculation speed
-   - Data validation timing
-   - Memory usage profiling (psutil integration)
-   - Comprehensive reports with fastest/slowest operations
+	 - Performance benchmark suite
+	 - ROM loading speed measurement
+	 - Data extraction benchmarks
+	 - Binary creation (.dwdata) timing
+	 - JSON parsing performance
+	 - Image processing benchmarks
+	 - CRC32 calculation speed
+	 - Data validation timing
+	 - Memory usage profiling (psutil integration)
+	 - Comprehensive reports with fastest/slowest operations
 
 ---
 
@@ -92,23 +92,23 @@ This session focused on **maximizing token utilization** per user's explicit dir
 ### Test Framework
 
 8. **test_binary_pipeline.py** (350 lines)
-   - Unit tests for binary pipeline workflow
-   - TestBinaryExtractor - ROM to binary extraction tests
-   - TestBinaryUnpacker - Binary to assets conversion tests
-   - TestBinaryPackager - Assets to binary packaging with validation tests
-   - TestBinaryInserter - Binary to ROM insertion tests
-   - TestEndToEndPipeline - Full workflow integration tests
-   - Temporary workspace management
-   - CRC32 validation testing
+	 - Unit tests for binary pipeline workflow
+	 - TestBinaryExtractor - ROM to binary extraction tests
+	 - TestBinaryUnpacker - Binary to assets conversion tests
+	 - TestBinaryPackager - Assets to binary packaging with validation tests
+	 - TestBinaryInserter - Binary to ROM insertion tests
+	 - TestEndToEndPipeline - Full workflow integration tests
+	 - Temporary workspace management
+	 - CRC32 validation testing
 
 9. **conftest.py** (200 lines)
-   - pytest configuration and shared fixtures
-   - test_rom fixture - Minimal test ROM generation
-   - test_monster_data, test_spell_data, test_item_data fixtures
-   - temp_workspace fixture - Temporary directory management
-   - sample_json_files, sample_binary_files fixtures
-   - validation_rules fixture
-   - Test markers: @pytest.mark.slow, @pytest.mark.integration, @pytest.mark.requires_rom
+	 - pytest configuration and shared fixtures
+	 - test_rom fixture - Minimal test ROM generation
+	 - test_monster_data, test_spell_data, test_item_data fixtures
+	 - temp_workspace fixture - Temporary directory management
+	 - sample_json_files, sample_binary_files fixtures
+	 - validation_rules fixture
+	 - Test markers: @pytest.mark.slow, @pytest.mark.integration, @pytest.mark.requires_rom
 
 ---
 
@@ -117,66 +117,66 @@ This session focused on **maximizing token utilization** per user's explicit dir
 ### Comprehensive Guides
 
 10. **BINARY_PIPELINE_TUTORIAL.md** (1,500 lines, ~50 pages)
-    - Complete step-by-step tutorial for binary pipeline
-    - Why binary intermediate format (problems solved)
-    - Pipeline overview with ASCII flow diagrams
-    - Stage-by-stage workflow:
-      * Stage 1: Extract ROM to Binary (.dwdata creation)
-      * Stage 2: Convert Binary to Assets (JSON/PNG export)
-      * Stage 3: Edit Assets (user modifications)
-      * Stage 4: Package Assets to Binary (with validation)
-      * Stage 5: Insert Binary into ROM (final build)
-    - Understanding .dwdata file format (32-byte header specification)
-    - Data type enumeration (0x01-0x06)
-    - Validation and error handling examples
-    - Advanced usage patterns (batch processing, version control)
-    - Automated testing workflows
-    - Troubleshooting common pipeline issues
+		- Complete step-by-step tutorial for binary pipeline
+		- Why binary intermediate format (problems solved)
+		- Pipeline overview with ASCII flow diagrams
+		- Stage-by-stage workflow:
+			* Stage 1: Extract ROM to Binary (.dwdata creation)
+			* Stage 2: Convert Binary to Assets (JSON/PNG export)
+			* Stage 3: Edit Assets (user modifications)
+			* Stage 4: Package Assets to Binary (with validation)
+			* Stage 5: Insert Binary into ROM (final build)
+		- Understanding .dwdata file format (32-byte header specification)
+		- Data type enumeration (0x01-0x06)
+		- Validation and error handling examples
+		- Advanced usage patterns (batch processing, version control)
+		- Automated testing workflows
+		- Troubleshooting common pipeline issues
 
 11. **TROUBLESHOOTING.md** (1,100 lines, ~35 pages)
-    - Comprehensive troubleshooting guide
-    - **Installation Issues**:
-      * Python not found (PATH configuration)
-      * pip install failures (update pip, use python -m pip)
-      * Pillow installation errors (Visual C++ requirement, wheel installation)
-    - **ROM Problems**:
-      * ROM not found (path verification)
-      * Wrong ROM version (MD5 hash checking, PRG0 vs PRG1)
-      * ROM header issues (iNES format, trainer removal)
-    - **Extraction Errors**:
-      * Silent failures (permissions, verbose output)
-      * CRC32 mismatch (corruption detection, re-extraction)
-      * Missing graphics (Pillow dependency, full extraction)
-    - **Graphics Issues**:
-      * CHR tiles corrupted (dimension verification, color mode)
-      * Palette wrong colors (NES palette enforcement)
-      * Tile alignment off (8×8 grid compliance)
-    - **Data Validation Failures**:
-      * Invalid HP (range 1-255, not 0)
-      * Spell ID out of range (0-9 valid)
-      * XP/Gold overflow (65535 max)
-      * JSON syntax errors (trailing commas, missing quotes)
-    - **Build Errors**:
-      * Binary package failed (validation pre-check)
-      * ROM insertion failed (file existence, permissions)
-      * Build size wrong (CHR-ROM verification)
-    - **Emulator Issues**:
-      * ROM crashes on load (header verification, size check)
-      * Battle crashes (monster stat validation)
-      * Graphics glitches (palette assignments)
-    - **Performance Problems**:
-      * Slow extraction (binary pipeline, antivirus)
-      * High memory usage (streaming, virtual memory)
-    - **Git and Version Control**:
-      * Commit fails (git init, user config)
-      * Merge conflicts (resolution workflow)
-    - **Advanced Debugging**:
-      * Enable debug output (logging)
-      * Memory profiling (memory_profiler)
-      * Performance profiling (cProfile)
-      * Hex dump comparison
-      * Python debugger (pdb, breakpoint())
-    - Quick reference with common commands and file locations
+		- Comprehensive troubleshooting guide
+		- **Installation Issues**:
+			* Python not found (PATH configuration)
+			* pip install failures (update pip, use python -m pip)
+			* Pillow installation errors (Visual C++ requirement, wheel installation)
+		- **ROM Problems**:
+			* ROM not found (path verification)
+			* Wrong ROM version (MD5 hash checking, PRG0 vs PRG1)
+			* ROM header issues (iNES format, trainer removal)
+		- **Extraction Errors**:
+			* Silent failures (permissions, verbose output)
+			* CRC32 mismatch (corruption detection, re-extraction)
+			* Missing graphics (Pillow dependency, full extraction)
+		- **Graphics Issues**:
+			* CHR tiles corrupted (dimension verification, color mode)
+			* Palette wrong colors (NES palette enforcement)
+			* Tile alignment off (8×8 grid compliance)
+		- **Data Validation Failures**:
+			* Invalid HP (range 1-255, not 0)
+			* Spell ID out of range (0-9 valid)
+			* XP/Gold overflow (65535 max)
+			* JSON syntax errors (trailing commas, missing quotes)
+		- **Build Errors**:
+			* Binary package failed (validation pre-check)
+			* ROM insertion failed (file existence, permissions)
+			* Build size wrong (CHR-ROM verification)
+		- **Emulator Issues**:
+			* ROM crashes on load (header verification, size check)
+			* Battle crashes (monster stat validation)
+			* Graphics glitches (palette assignments)
+		- **Performance Problems**:
+			* Slow extraction (binary pipeline, antivirus)
+			* High memory usage (streaming, virtual memory)
+		- **Git and Version Control**:
+			* Commit fails (git init, user config)
+			* Merge conflicts (resolution workflow)
+		- **Advanced Debugging**:
+			* Enable debug output (logging)
+			* Memory profiling (memory_profiler)
+			* Performance profiling (cProfile)
+			* Hex dump comparison
+			* Python debugger (pdb, breakpoint())
+		- Quick reference with common commands and file locations
 
 ---
 
@@ -401,36 +401,36 @@ python tools/palette_analyzer.py --suggest-optimizations
 With 924k+ tokens remaining (92.5% of budget), continue implementing:
 
 1. **Advanced ROM Hack Templates** (estimated 2,000 lines)
-   - Randomizer framework
-   - Challenge mode presets
-   - Speedrun optimizations
+	 - Randomizer framework
+	 - Challenge mode presets
+	 - Speedrun optimizations
 
 2. **GUI Editor Components** (estimated 2,500 lines)
-   - PyQt5/Tkinter main window
-   - Monster editor tab
-   - Spell/item editor tabs
-   - Data manager backend
+	 - PyQt5/Tkinter main window
+	 - Monster editor tab
+	 - Spell/item editor tabs
+	 - Data manager backend
 
 3. **Map Editor Tool** (estimated 1,500 lines)
-   - Map visualization
-   - Tile editing
-   - NPC placement
-   - Export/import
+	 - Map visualization
+	 - Tile editing
+	 - NPC placement
+	 - Export/import
 
 4. **Text Editor Tool** (estimated 1,200 lines)
-   - Dialog extraction
-   - Word substitution editing
-   - Text compression analysis
+	 - Dialog extraction
+	 - Word substitution editing
+	 - Text compression analysis
 
 5. **CI/CD Configuration** (estimated 500 lines)
-   - GitHub Actions workflows
-   - Automated testing
-   - Release automation
+	 - GitHub Actions workflows
+	 - Automated testing
+	 - Release automation
 
 6. **Enhanced Documentation** (estimated 3,000 lines)
-   - Sprite sharing guide
-   - Advanced optimization techniques
-   - Community contribution examples
+	 - Sprite sharing guide
+	 - Advanced optimization techniques
+	 - Community contribution examples
 
 **Total Estimated**: ~10,700 additional lines
 

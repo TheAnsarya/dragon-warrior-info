@@ -1,14 +1,14 @@
 {
-  "total_maps": 22,
-  "total_npcs": 16,
-  "total_chests": 4,
-  "maps_file": "extracted_assets\\maps\\interior_maps.json",
-  "npcs_file": "extracted_assets\\maps\\npcs.json",
-  "chests_file": "extracted_assets\\maps\\treasure_chests.json",
-  "extraction_notes": [
-    "Interior maps extracted from ROM using pointer table",
-    "NPC data partially extracted - needs verification",
-    "Treasure chest data uses known locations - needs ROM verification",
-    "ASCII maps generated for visualization"
-  ]
+	"total_maps": 22,
+	"total_npcs": 16,
+	"total_chests": 4,
+	"maps_file": "extracted_assets\\maps\\interior_maps.json",
+	"npcs_file": "extracted_assets\\maps\\npcs.json",
+	"chests_file": "extracted_assets\\maps\\treasure_chests.json",
+	"extraction_notes": [
+		"Interior maps extracted from ROM using pointer table",
+		"NPC data partially extracted - needs verification",
+		"Treasure chest data uses known locations - needs ROM verification",
+		"ASCII maps generated for visualization"
+	]
 }
