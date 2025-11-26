@@ -187,75 +187,75 @@ DEFAULT_DTE_PAIRS = {
 
 class TextCodec:
 	"""Encode/decode Dragon Warrior text."""
-	
+
 	def __init__(self, text_table: Optional[Dict[int, str]] = None,
 	             dte_pairs: Optional[Dict[int, Tuple[str, str]]] = None):
 		self.text_table = text_table or DEFAULT_TEXT_TABLE
 		self.dte_pairs = dte_pairs or DEFAULT_DTE_PAIRS
-		
+
 		# Create reverse mappings
 		self.char_to_byte = {v: k for k, v in self.text_table.items()}
 		self.pair_to_code = {v: k for k, v in self.dte_pairs.items()}
-	
+
 	def decode(self, data: bytes) -> str:
 		"""Decode bytes to text string."""
 		result = []
 		i = 0
-		
+
 		while i < len(data):
 			byte = data[i]
-			
+
 			# Check for text end
 			if byte == ControlCode.TEXT_END.value:
 				break
-			
+
 			# Check for line break
 			elif byte == ControlCode.LINE_BREAK.value:
 				result.append('\n')
-			
+
 			# Check for player name placeholder
 			elif byte == ControlCode.PLAYER_NAME.value:
 				result.append('[NAME]')
-			
+
 			# Check for other control codes
 			elif byte >= 0xF0:
 				result.append(f'[{byte:02X}]')
-			
+
 			# Check for DTE pair
 			elif 0x80 <= byte <= 0xEF and byte in self.dte_pairs:
 				char1, char2 = self.dte_pairs[byte]
 				result.append(char1)
 				result.append(char2)
-			
+
 			# Regular character
 			elif byte in self.text_table:
 				result.append(self.text_table[byte])
-			
+
 			# Unknown byte
 			else:
 				result.append(f'[{byte:02X}]')
-			
+
 			i += 1
-		
+
 		return ''.join(result)
-	
+
 	def encode(self, text: str, use_dte: bool = True) -> bytes:
 		"""Encode text string to bytes."""
 		result = bytearray()
 		i = 0
-		
+
 		while i < len(text):
 			# Check for newline
 			if text[i] == '\n':
 				result.append(ControlCode.LINE_BREAK.value)
 				i += 1
-			
+
 			# Check for control code placeholder
 			elif text[i] == '[':
 				end = text.find(']', i)
 				if end != -1:
 					code_str = text[i+1:end]
-					
+
 					# Check for special placeholders
 					if code_str == 'NAME':
 						result.append(ControlCode.PLAYER_NAME.value)
@@ -265,11 +265,11 @@ class TextCodec:
 							result.append(int(code_str, 16))
 						except ValueError:
 							print(f"WARNING: Unknown control code: [{code_str}]")
-					
+
 					i = end + 1
 				else:
 					i += 1
-			
+
 			# Check for DTE pair
 			elif use_dte and i + 1 < len(text):
 				pair = (text[i].lower(), text[i+1].lower())
@@ -277,14 +277,14 @@ class TextCodec:
 					result.append(self.pair_to_code[pair])
 					i += 2
 					continue
-				
+
 				# Single character
 				if text[i] in self.char_to_byte:
 					result.append(self.char_to_byte[text[i]])
 				else:
 					print(f"WARNING: Unknown character: {text[i]}")
 				i += 1
-			
+
 			# Single character
 			else:
 				if text[i] in self.char_to_byte:
@@ -292,10 +292,10 @@ class TextCodec:
 				else:
 					print(f"WARNING: Unknown character: {text[i]}")
 				i += 1
-		
+
 		# Add text end marker
 		result.append(ControlCode.TEXT_END.value)
-		
+
 		return bytes(result)
 
 
@@ -305,13 +305,13 @@ class TextCodec:
 
 class DialogueEditor:
 	"""Edit dialogue and text in Dragon Warrior."""
-	
+
 	def __init__(self, rom_path: str):
 		self.rom_path = Path(rom_path)
 		self.rom_data: bytearray = bytearray()
 		self.codec = TextCodec()
 		self.strings: List[TextString] = []
-		
+
 		# Text regions
 		self.text_regions = {
 			"dialogue": (0x36A0, 0x5FFF),
@@ -320,46 +320,46 @@ class DialogueEditor:
 			"spells": (0x1C40, 0x1CFF),
 			"monsters": (0x1D00, 0x1E7F),
 		}
-	
+
 	def load_rom(self) -> bool:
 		"""Load ROM file."""
 		if not self.rom_path.exists():
 			print(f"ERROR: ROM not found: {self.rom_path}")
 			return False
-		
+
 		with open(self.rom_path, 'rb') as f:
 			self.rom_data = bytearray(f.read())
-		
+
 		return True
-	
+
 	def extract_strings(self, category: str = "all") -> List[TextString]:
 		"""Extract text strings from ROM."""
 		strings = []
-		
+
 		regions = self.text_regions.items() if category == "all" else \
 		          [(category, self.text_regions[category])]
-		
+
 		for region_name, (start, end) in regions:
 			# Simple extraction: find strings by text end marker
 			offset = start
 			string_id = 0
-			
+
 			while offset < end:
 				# Find next text end marker
 				text_end = offset
 				while text_end < end and self.rom_data[text_end] != ControlCode.TEXT_END.value:
 					text_end += 1
-				
+
 				if text_end >= end:
 					break
-				
+
 				# Extract string
 				raw_bytes = self.rom_data[offset:text_end + 1]
-				
+
 				# Skip empty strings
 				if len(raw_bytes) > 1:
 					decoded = self.codec.decode(raw_bytes)
-					
+
 					text_str = TextString(
 						id=string_id,
 						offset=offset,
@@ -369,65 +369,65 @@ class DialogueEditor:
 						category=region_name,
 						compressed=any(0x80 <= b <= 0xEF for b in raw_bytes)
 					)
-					
+
 					strings.append(text_str)
 					string_id += 1
-				
+
 				offset = text_end + 1
-		
+
 		self.strings = strings
 		return strings
-	
+
 	def search_text(self, query: str) -> List[TextString]:
 		"""Search for text strings."""
 		results = []
-		
+
 		query_lower = query.lower()
-		
+
 		for string in self.strings:
 			if query_lower in string.decoded_text.lower():
 				results.append(string)
-		
+
 		return results
-	
+
 	def replace_text(self, old_text: str, new_text: str) -> int:
 		"""Replace text in all strings."""
 		count = 0
-		
+
 		for string in self.strings:
 			if old_text in string.decoded_text:
 				# Replace text
 				new_decoded = string.decoded_text.replace(old_text, new_text)
-				
+
 				# Encode new text
 				new_bytes = self.codec.encode(new_decoded)
-				
+
 				# Check if it fits
 				if len(new_bytes) <= string.length:
 					# Replace in ROM
 					self.rom_data[string.offset:string.offset + len(new_bytes)] = new_bytes
-					
+
 					# Pad if necessary
 					if len(new_bytes) < string.length:
 						padding = string.length - len(new_bytes)
 						self.rom_data[string.offset + len(new_bytes):string.offset + string.length] = b'\xFC' * padding
-					
+
 					# Update string
 					string.raw_bytes = new_bytes
 					string.decoded_text = new_decoded
 					string.length = len(new_bytes)
-					
+
 					count += 1
 				else:
 					print(f"WARNING: Replacement too long at 0x{string.offset:X} ({len(new_bytes)} > {string.length})")
-		
+
 		return count
-	
+
 	def save_rom(self, output_path: str):
 		"""Save modified ROM."""
 		with open(output_path, 'wb') as f:
 			f.write(self.rom_data)
-		
+
 		print(f"✓ ROM saved: {output_path}")
 
 
@@ -437,36 +437,36 @@ class DialogueEditor:
 
 class DTEAnalyzer:
 	"""Analyze and optimize DTE compression."""
-	
+
 	@staticmethod
 	def analyze_frequency(strings: List[TextString]) -> Counter:
 		"""Analyze character pair frequency."""
 		pairs = Counter()
-		
+
 		for string in strings:
 			text = string.decoded_text.replace('[NAME]', '').replace('\n', '')
-			
+
 			# Count all two-character pairs
 			for i in range(len(text) - 1):
 				if text[i].isalpha() and text[i+1].isalpha():
 					pair = text[i:i+2].lower()
 					pairs[pair] += 1
-		
+
 		return pairs
-	
+
 	@staticmethod
 	def calculate_optimal_dte(strings: List[TextString], num_pairs: int = 112) -> List[DTEPair]:
 		"""Calculate optimal DTE pairs for maximum compression."""
 		# Analyze frequency
 		pair_freq = DTEAnalyzer.analyze_frequency(strings)
-		
+
 		# Calculate savings for each pair
 		dte_candidates = []
-		
+
 		for pair, freq in pair_freq.items():
 			# Each occurrence saves 1 byte (2 chars -> 1 DTE code)
 			savings = freq * 1
-			
+
 			if savings > 0:
 				dte_candidates.append(DTEPair(
 					code=0,  # Will assign later
@@ -475,49 +475,49 @@ class DTEAnalyzer:
 					frequency=freq,
 					savings=savings
 				))
-		
+
 		# Sort by savings (descending)
 		dte_candidates.sort(key=lambda x: x.savings, reverse=True)
-		
+
 		# Assign codes (0x80-0xEF = 112 slots)
 		optimal_pairs = dte_candidates[:num_pairs]
 		for i, pair in enumerate(optimal_pairs):
 			pair.code = 0x80 + i
-		
+
 		return optimal_pairs
-	
+
 	@staticmethod
 	def analyze_stats(strings: List[TextString]) -> TextStats:
 		"""Generate text statistics."""
 		stats = TextStats()
-		
+
 		stats.total_strings = len(strings)
 		stats.total_bytes = sum(s.length for s in strings)
-		
+
 		# Count characters
 		all_chars = Counter()
 		for string in strings:
 			all_chars.update(string.decoded_text.replace('[NAME]', '').replace('\n', ''))
-		
+
 		stats.total_characters = sum(all_chars.values())
-		
+
 		if all_chars:
 			stats.most_common_char = all_chars.most_common(1)[0][0]
 			stats.most_common_count = all_chars.most_common(1)[0][1]
-		
+
 		# Count pairs
 		pair_freq = DTEAnalyzer.analyze_frequency(strings)
 		if pair_freq:
 			stats.most_common_pair = pair_freq.most_common(1)[0][0]
 			stats.most_common_pair_count = pair_freq.most_common(1)[0][1]
-		
+
 		# Count compressed strings
 		stats.compressed_strings = sum(1 for s in strings if s.compressed)
-		
+
 		# Calculate compression ratio
 		if stats.total_characters > 0:
 			stats.compression_ratio = stats.total_bytes / stats.total_characters
-		
+
 		return stats
 
 
@@ -530,7 +530,7 @@ def main():
 	parser = argparse.ArgumentParser(
 		description="Dragon Warrior Dialogue & Text Editor"
 	)
-	
+
 	parser.add_argument('rom', help="ROM file")
 	parser.add_argument('--extract-all', type=str, help="Extract all text to directory")
 	parser.add_argument('--search', type=str, help="Search for text")
@@ -542,89 +542,89 @@ def main():
 	                    choices=['all', 'dialogue', 'menu', 'items', 'spells', 'monsters'],
 	                    help="Text category")
 	parser.add_argument('-o', '--output', type=str, help="Output ROM file")
-	
+
 	args = parser.parse_args()
-	
+
 	# Load ROM
 	editor = DialogueEditor(args.rom)
 	if not editor.load_rom():
 		return 1
-	
+
 	# Extract strings
 	print(f"Extracting text (category: {args.category})...")
 	strings = editor.extract_strings(args.category)
 	print(f"✓ Found {len(strings)} text strings")
-	
+
 	# Search
 	if args.search:
 		print(f"\nSearching for: '{args.search}'")
 		results = editor.search_text(args.search)
-		
+
 		print(f"\n✓ Found {len(results)} matches:")
 		for i, result in enumerate(results[:10], 1):
 			print(f"\n  {i}. Offset: 0x{result.offset:X} ({result.category})")
 			print(f"     Text: {result.decoded_text[:100]}")
 			if len(result.decoded_text) > 100:
 				print(f"     ... ({len(result.decoded_text)} chars total)")
-		
+
 		if len(results) > 10:
 			print(f"\n  ... and {len(results) - 10} more matches")
-	
+
 	# Replace
 	if args.replace:
 		old_text, new_text = args.replace
 		print(f"\nReplacing '{old_text}' with '{new_text}'...")
 		count = editor.replace_text(old_text, new_text)
-		
+
 		print(f"✓ Replaced {count} occurrences")
-		
+
 		# Save ROM
 		if args.output:
 			editor.save_rom(args.output)
-	
+
 	# Analyze DTE
 	if args.analyze_dte:
 		print("\nAnalyzing DTE compression...")
 		pair_freq = DTEAnalyzer.analyze_frequency(strings)
-		
+
 		print(f"\n✓ Top 20 most common character pairs:")
 		for i, (pair, freq) in enumerate(pair_freq.most_common(20), 1):
 			savings = freq * 1  # 1 byte saved per occurrence
 			print(f"  {i:2d}. '{pair}' - {freq:4d} times ({savings:4d} bytes savings)")
-	
+
 	# Optimize DTE
 	if args.optimize_dte:
 		print("\nCalculating optimal DTE pairs...")
 		optimal = DTEAnalyzer.calculate_optimal_dte(strings)
-		
+
 		total_savings = sum(p.savings for p in optimal)
-		
+
 		print(f"\n✓ Top 20 optimal DTE pairs:")
 		for i, pair in enumerate(optimal[:20], 1):
 			char1 = chr(pair.char1)
 			char2 = chr(pair.char2)
 			print(f"  {i:2d}. 0x{pair.code:02X}: '{char1}{char2}' - {pair.frequency:4d} times ({pair.savings:4d} bytes)")
-		
+
 		print(f"\nTotal potential savings: {total_savings} bytes")
-	
+
 	# Statistics
 	if args.stats:
 		print("\nGenerating text statistics...")
 		stats = DTEAnalyzer.analyze_stats(strings)
-		
+
 		print(f"\n✓ Text Statistics:")
 		print(f"  Total strings: {stats.total_strings}")
 		print(f"  Total bytes: {stats.total_bytes}")
 		print(f"  Total characters: {stats.total_characters}")
 		print(f"  Compressed strings: {stats.compressed_strings}")
 		print(f"  Compression ratio: {stats.compression_ratio:.2f}")
-		
+
 		if stats.most_common_char:
 			print(f"\n  Most common character: '{stats.most_common_char}' ({stats.most_common_count} times)")
-		
+
 		if stats.most_common_pair:
 			print(f"  Most common pair: '{stats.most_common_pair}' ({stats.most_common_pair_count} times)")
-	
+
 	return 0
 
 

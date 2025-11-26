@@ -139,7 +139,7 @@ ITEMS_DATABASE = {
 	4: Item(4, "Broad Sword", ItemType.WEAPON, 1500, attack=20),
 	5: Item(5, "Flame Sword", ItemType.WEAPON, 9800, attack=28, effect="Fire damage"),
 	6: Item(6, "Erdrick's Sword", ItemType.WEAPON, 0, attack=40, key_item=True),
-	
+
 	# Armor
 	10: Item(10, "Clothes", ItemType.ARMOR, 20, defense=2),
 	11: Item(11, "Leather Armor", ItemType.ARMOR, 70, defense=4),
@@ -148,12 +148,12 @@ ITEMS_DATABASE = {
 	14: Item(14, "Full Plate", ItemType.ARMOR, 3000, defense=24),
 	15: Item(15, "Magic Armor", ItemType.ARMOR, 7700, defense=24, effect="HP regen"),
 	16: Item(16, "Erdrick's Armor", ItemType.ARMOR, 0, defense=28, key_item=True, effect="Damage reduction"),
-	
+
 	# Shields
 	20: Item(20, "Leather Shield", ItemType.SHIELD, 90, defense=4),
 	21: Item(21, "Iron Shield", ItemType.SHIELD, 800, defense=10),
 	22: Item(22, "Silver Shield", ItemType.SHIELD, 14800, defense=20, effect="Breath resistance"),
-	
+
 	# Tools & Consumables
 	30: Item(30, "Herb", ItemType.CONSUMABLE, 24, effect="Restore ~30 HP"),
 	31: Item(31, "Torch", ItemType.TOOL, 8, effect="Light radius"),
@@ -188,14 +188,14 @@ SHOPS_DATABASE = {
 
 class ItemDataLoader:
 	"""Load item data from ROM."""
-	
+
 	# ROM offsets (simplified - actual format may vary)
 	ITEM_NAMES_OFFSET = 0x1AF0
 	ITEM_PRICES_OFFSET = 0x1C40
 	WEAPON_STATS_OFFSET = 0x1D00
 	ARMOR_STATS_OFFSET = 0x1D40
 	SHOP_DATA_OFFSET = 0x1D80
-	
+
 	@staticmethod
 	def load_item(rom_data: bytes, item_id: int) -> Optional[Item]:
 		"""Load item from ROM."""
@@ -203,7 +203,7 @@ class ItemDataLoader:
 			# Return from database (in real implementation, read from ROM)
 			return ITEMS_DATABASE[item_id]
 		return None
-	
+
 	@staticmethod
 	def save_item(rom_data: bytearray, item: Item):
 		"""Save item to ROM."""
@@ -211,19 +211,19 @@ class ItemDataLoader:
 		price_offset = ItemDataLoader.ITEM_PRICES_OFFSET + (item.id * 2)
 		if price_offset + 2 <= len(rom_data):
 			struct.pack_into('<H', rom_data, price_offset, item.price)
-		
+
 		# Weapon stats
 		if item.item_type == ItemType.WEAPON:
 			stats_offset = ItemDataLoader.WEAPON_STATS_OFFSET + item.id
 			if stats_offset < len(rom_data):
 				rom_data[stats_offset] = item.attack
-		
+
 		# Armor stats
 		elif item.item_type in (ItemType.ARMOR, ItemType.SHIELD):
 			stats_offset = ItemDataLoader.ARMOR_STATS_OFFSET + (item.id - 10)
 			if stats_offset < len(rom_data):
 				rom_data[stats_offset] = item.defense
-	
+
 	@staticmethod
 	def load_shop(rom_data: bytes, shop_id: int) -> Optional[Shop]:
 		"""Load shop from ROM."""
@@ -238,7 +238,7 @@ class ItemDataLoader:
 
 class ItemAnalyzer:
 	"""Analyze item balance."""
-	
+
 	@staticmethod
 	def calculate_power_score(item: Item) -> float:
 		"""Calculate item power score."""
@@ -248,29 +248,29 @@ class ItemAnalyzer:
 			return item.defense * 8.0
 		else:
 			return 0.0
-	
+
 	@staticmethod
 	def calculate_cost_efficiency(item: Item) -> float:
 		"""Calculate cost efficiency (power per gold)."""
 		if item.price == 0:
 			return 0.0
-		
+
 		power = ItemAnalyzer.calculate_power_score(item)
-		
+
 		if power == 0:
 			return 0.0
-		
+
 		return power / item.price
-	
+
 	@staticmethod
 	def analyze_item(item: Item) -> ItemAnalysis:
 		"""Analyze item balance."""
 		power = ItemAnalyzer.calculate_power_score(item)
 		efficiency = ItemAnalyzer.calculate_cost_efficiency(item)
-		
+
 		# Classify balance
 		recommendations = []
-		
+
 		if item.key_item:
 			rating = "key_item"
 		elif efficiency == 0:
@@ -283,7 +283,7 @@ class ItemAnalyzer:
 			recommendations.append("Decrease stats or increase price")
 		else:
 			rating = "balanced"
-		
+
 		return ItemAnalysis(
 			item_id=item.id,
 			power_score=power,
@@ -299,24 +299,24 @@ class ItemAnalyzer:
 
 class ProgressionAnalyzer:
 	"""Analyze item progression."""
-	
+
 	@staticmethod
 	def analyze_weapon_curve(items: List[Item]) -> Dict[str, Any]:
 		"""Analyze weapon power curve."""
 		weapons = [item for item in items if item.item_type == ItemType.WEAPON]
 		weapons.sort(key=lambda x: x.attack)
-		
+
 		attack_values = [w.attack for w in weapons]
 		price_values = [w.price for w in weapons if w.price > 0]
-		
+
 		# Calculate progression smoothness
 		attack_gaps = []
 		for i in range(1, len(attack_values)):
 			gap = attack_values[i] - attack_values[i-1]
 			attack_gaps.append(gap)
-		
+
 		avg_gap = sum(attack_gaps) / len(attack_gaps) if attack_gaps else 0
-		
+
 		return {
 			"weapons": len(weapons),
 			"attack_range": (min(attack_values), max(attack_values)),
@@ -324,24 +324,24 @@ class ProgressionAnalyzer:
 			"price_range": (min(price_values), max(price_values)) if price_values else (0, 0),
 			"curve": "smooth" if avg_gap < 10 else "steep"
 		}
-	
+
 	@staticmethod
 	def analyze_armor_curve(items: List[Item]) -> Dict[str, Any]:
 		"""Analyze armor defense curve."""
 		armor = [item for item in items if item.item_type in (ItemType.ARMOR, ItemType.SHIELD)]
 		armor.sort(key=lambda x: x.defense)
-		
+
 		defense_values = [a.defense for a in armor]
 		price_values = [a.price for a in armor if a.price > 0]
-		
+
 		# Calculate progression smoothness
 		defense_gaps = []
 		for i in range(1, len(defense_values)):
 			gap = defense_values[i] - defense_values[i-1]
 			defense_gaps.append(gap)
-		
+
 		avg_gap = sum(defense_gaps) / len(defense_gaps) if defense_gaps else 0
-		
+
 		return {
 			"armor_pieces": len(armor),
 			"defense_range": (min(defense_values), max(defense_values)),
@@ -357,51 +357,51 @@ class ProgressionAnalyzer:
 
 class ItemEditor:
 	"""Edit items and shops."""
-	
+
 	def __init__(self, rom_path: str):
 		self.rom_path = Path(rom_path)
 		self.rom_data: bytearray = bytearray()
 		self.items: Dict[int, Item] = {}
 		self.shops: Dict[int, Shop] = {}
-	
+
 	def load_rom(self) -> bool:
 		"""Load ROM file."""
 		if not self.rom_path.exists():
 			print(f"ERROR: ROM not found: {self.rom_path}")
 			return False
-		
+
 		with open(self.rom_path, 'rb') as f:
 			self.rom_data = bytearray(f.read())
-		
+
 		return True
-	
+
 	def load_all_items(self):
 		"""Load all items."""
 		print("Loading items...")
 		self.items = ITEMS_DATABASE.copy()
 		print(f"✓ Loaded {len(self.items)} items")
-	
+
 	def load_all_shops(self):
 		"""Load all shops."""
 		print("Loading shops...")
 		self.shops = SHOPS_DATABASE.copy()
 		print(f"✓ Loaded {len(self.shops)} shops")
-	
+
 	def get_item_by_name(self, name: str) -> Optional[Item]:
 		"""Get item by name."""
 		for item in self.items.values():
 			if item.name.lower() == name.lower():
 				return item
 		return None
-	
+
 	def edit_item(self, item_id: int, **kwargs):
 		"""Edit item stats."""
 		if item_id not in self.items:
 			print(f"ERROR: Invalid item ID: {item_id}")
 			return
-		
+
 		item = self.items[item_id]
-		
+
 		# Update stats
 		if 'price' in kwargs:
 			item.price = kwargs['price']
@@ -409,19 +409,19 @@ class ItemEditor:
 			item.attack = kwargs['attack']
 		if 'defense' in kwargs:
 			item.defense = kwargs['defense']
-		
+
 		# Save to ROM
 		ItemDataLoader.save_item(self.rom_data, item)
-		
+
 		print(f"✓ Updated {item.name}")
-	
+
 	def save_rom(self, output_path: str):
 		"""Save modified ROM."""
 		with open(output_path, 'wb') as f:
 			f.write(self.rom_data)
-		
+
 		print(f"✓ ROM saved: {output_path}")
-	
+
 	def export_json(self, output_path: str):
 		"""Export item database to JSON."""
 		data = {
@@ -449,10 +449,10 @@ class ItemEditor:
 				for shop in self.shops.values()
 			]
 		}
-		
+
 		with open(output_path, 'w') as f:
 			json.dump(data, f, indent=2)
-		
+
 		print(f"✓ Item database exported: {output_path}")
 
 
@@ -465,7 +465,7 @@ def main():
 	parser = argparse.ArgumentParser(
 		description="Dragon Warrior Item & Shop Editor"
 	)
-	
+
 	parser.add_argument('rom', help="ROM file")
 	parser.add_argument('--list-items', action='store_true', help="List all items")
 	parser.add_argument('--list-shops', action='store_true', help="List all shops")
@@ -477,45 +477,45 @@ def main():
 	parser.add_argument('--analyze-progression', action='store_true', help="Analyze progression curves")
 	parser.add_argument('--export', type=str, help="Export to JSON")
 	parser.add_argument('-o', '--output', type=str, help="Output ROM file")
-	
+
 	args = parser.parse_args()
-	
+
 	# Load ROM
 	editor = ItemEditor(args.rom)
 	if not editor.load_rom():
 		return 1
-	
+
 	# Load data
 	editor.load_all_items()
 	editor.load_all_shops()
-	
+
 	# List items
 	if args.list_items:
 		print("\nItems:")
 		print("=" * 90)
 		print(f"{'ID':<4} {'Name':<25} {'Type':<10} {'Price':<8} {'ATK':<5} {'DEF':<5} {'Effect'}")
 		print("-" * 90)
-		
+
 		for item in sorted(editor.items.values(), key=lambda x: x.id):
 			print(f"{item.id:<4} {item.name:<25} {item.item_type.value:<10} "
 			      f"{item.price:<8} {item.attack:<5} {item.defense:<5} {item.effect}")
-	
+
 	# List shops
 	if args.list_shops:
 		print("\nShops:")
 		print("=" * 80)
-		
+
 		for shop in sorted(editor.shops.values(), key=lambda x: x.id):
 			print(f"\n{shop.name} ({shop.location}):")
 			for item_id in shop.inventory:
 				if item_id in editor.items:
 					item = editor.items[item_id]
 					print(f"  - {item.name} ({item.price} gold)")
-	
+
 	# Show item details
 	if args.item:
 		item = editor.get_item_by_name(args.item)
-		
+
 		if item:
 			print(f"\n{item.name} (ID: {item.id})")
 			print("=" * 60)
@@ -531,7 +531,7 @@ def main():
 				print("CURSED")
 			if item.key_item:
 				print("KEY ITEM")
-			
+
 			# Edit stats if provided
 			edits = {}
 			if args.price is not None:
@@ -540,51 +540,51 @@ def main():
 				edits['attack'] = args.attack
 			if args.defense is not None:
 				edits['defense'] = args.defense
-			
+
 			if edits:
 				print(f"\nApplying edits...")
 				editor.edit_item(item.id, **edits)
-				
+
 				if args.output:
 					editor.save_rom(args.output)
 		else:
 			print(f"ERROR: Item not found: {args.item}")
-	
+
 	# Analyze balance
 	if args.analyze_balance:
 		print("\nItem Balance Analysis:")
 		print("=" * 80)
-		
+
 		imbalanced = []
-		
+
 		for item in editor.items.values():
 			analysis = ItemAnalyzer.analyze_item(item)
-			
+
 			if analysis.balance_rating in ("underpowered", "overpowered"):
 				imbalanced.append((item, analysis))
-		
+
 		if imbalanced:
 			print(f"\nFound {len(imbalanced)} imbalanced items:\n")
-			
+
 			for item, analysis in imbalanced:
 				print(f"{item.name}:")
 				print(f"  Power: {analysis.power_score:.1f}")
 				print(f"  Efficiency: {analysis.cost_efficiency:.4f}")
 				print(f"  Rating: {analysis.balance_rating}")
-				
+
 				for rec in analysis.recommendations:
 					print(f"  → {rec}")
 				print()
 		else:
 			print("✓ All items are balanced!")
-	
+
 	# Analyze progression
 	if args.analyze_progression:
 		print("\nProgression Curve Analysis:")
 		print("=" * 80)
-		
+
 		items_list = list(editor.items.values())
-		
+
 		weapon_curve = ProgressionAnalyzer.analyze_weapon_curve(items_list)
 		print("\nWeapon Progression:")
 		print(f"  Weapons: {weapon_curve['weapons']}")
@@ -592,7 +592,7 @@ def main():
 		print(f"  Average gap: {weapon_curve['average_gap']:.1f}")
 		print(f"  Price range: {weapon_curve['price_range'][0]}-{weapon_curve['price_range'][1]} gold")
 		print(f"  Curve: {weapon_curve['curve']}")
-		
+
 		armor_curve = ProgressionAnalyzer.analyze_armor_curve(items_list)
 		print("\nArmor Progression:")
 		print(f"  Armor pieces: {armor_curve['armor_pieces']}")
@@ -600,11 +600,11 @@ def main():
 		print(f"  Average gap: {armor_curve['average_gap']:.1f}")
 		print(f"  Price range: {armor_curve['price_range'][0]}-{armor_curve['price_range'][1]} gold")
 		print(f"  Curve: {armor_curve['curve']}")
-	
+
 	# Export
 	if args.export:
 		editor.export_json(args.export)
-	
+
 	return 0
 
 

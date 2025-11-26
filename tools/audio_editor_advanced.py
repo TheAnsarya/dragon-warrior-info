@@ -192,7 +192,7 @@ class APUEmulator:
 
 	# NES frequency lookup table (NTSC)
 	NTSC_CPU_CLOCK = 1789773  # Hz
-	
+
 	def __init__(self):
 		self.pulse1_freq = 0
 		self.pulse2_freq = 0

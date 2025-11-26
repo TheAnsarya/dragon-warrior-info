@@ -206,20 +206,20 @@ AGILITY_TABLE = {
 
 class StatDataLoader:
 	"""Load character stat data from ROM."""
-	
+
 	# ROM offsets (simplified)
 	XP_TABLE_OFFSET = 0x6023
 	HP_TABLE_OFFSET = 0x6080
 	MP_TABLE_OFFSET = 0x60DD
 	STRENGTH_TABLE_OFFSET = 0x613A
 	AGILITY_TABLE_OFFSET = 0x6197
-	
+
 	@staticmethod
 	def load_level_stats(rom_data: bytes, level: int) -> LevelStats:
 		"""Load stats for a specific level."""
 		if level < 1 or level > 30:
 			raise ValueError("Level must be 1-30")
-		
+
 		# Use default tables (in real implementation, read from ROM)
 		return LevelStats(
 			level=level,
@@ -229,36 +229,36 @@ class StatDataLoader:
 			strength=STRENGTH_TABLE.get(level, 0),
 			agility=AGILITY_TABLE.get(level, 0)
 		)
-	
+
 	@staticmethod
 	def save_level_stats(rom_data: bytearray, stats: LevelStats):
 		"""Save stats for a specific level."""
 		level = stats.level
 		if level < 1 or level > 30:
 			return
-		
+
 		# XP (3 bytes, little endian)
 		xp_offset = StatDataLoader.XP_TABLE_OFFSET + ((level - 1) * 3)
 		if xp_offset + 3 <= len(rom_data):
 			# Pack as 3-byte little endian
 			xp_bytes = stats.xp_required.to_bytes(3, 'little')
 			rom_data[xp_offset:xp_offset+3] = xp_bytes
-		
+
 		# HP (1 byte)
 		hp_offset = StatDataLoader.HP_TABLE_OFFSET + (level - 1)
 		if hp_offset < len(rom_data):
 			rom_data[hp_offset] = min(255, stats.hp)
-		
+
 		# MP (1 byte)
 		mp_offset = StatDataLoader.MP_TABLE_OFFSET + (level - 1)
 		if mp_offset < len(rom_data):
 			rom_data[mp_offset] = min(255, stats.mp)
-		
+
 		# Strength (1 byte)
 		str_offset = StatDataLoader.STRENGTH_TABLE_OFFSET + (level - 1)
 		if str_offset < len(rom_data):
 			rom_data[str_offset] = min(255, stats.strength)
-		
+
 		# Agility (1 byte)
 		agi_offset = StatDataLoader.AGILITY_TABLE_OFFSET + (level - 1)
 		if agi_offset < len(rom_data):
@@ -271,19 +271,19 @@ class StatDataLoader:
 
 class CurveCalculator:
 	"""Calculate progression curves."""
-	
+
 	@staticmethod
-	def calculate_xp_curve(max_level: int, total_xp: int, 
+	def calculate_xp_curve(max_level: int, total_xp: int,
 	                       curve_type: str = "exponential") -> Dict[int, int]:
 		"""Calculate XP requirements for each level."""
 		xp_curve = {1: 0}
-		
+
 		if curve_type == "linear":
 			# Linear progression
 			xp_per_level = total_xp // (max_level - 1)
 			for level in range(2, max_level + 1):
 				xp_curve[level] = xp_per_level * (level - 1)
-		
+
 		elif curve_type == "exponential":
 			# Exponential progression (standard RPG curve)
 			base = (total_xp / sum(i ** 2 for i in range(1, max_level))) ** 0.5
@@ -291,39 +291,39 @@ class CurveCalculator:
 			for level in range(2, max_level + 1):
 				cumulative_xp += int(base * (level ** 2))
 				xp_curve[level] = cumulative_xp
-		
+
 		elif curve_type == "logarithmic":
 			# Logarithmic progression (easier late game)
 			for level in range(2, max_level + 1):
 				progress = (level - 1) / (max_level - 1)
 				xp_curve[level] = int(total_xp * math.log(1 + progress * 9) / math.log(10))
-		
+
 		return xp_curve
-	
+
 	@staticmethod
-	def calculate_stat_curve(base_value: int, final_value: int, 
+	def calculate_stat_curve(base_value: int, final_value: int,
 	                         max_level: int, curve_type: str = "linear") -> Dict[int, int]:
 		"""Calculate stat values for each level."""
 		stat_curve = {}
-		
+
 		if curve_type == "linear":
 			# Linear growth
 			growth_per_level = (final_value - base_value) / (max_level - 1)
 			for level in range(1, max_level + 1):
 				stat_curve[level] = int(base_value + (growth_per_level * (level - 1)))
-		
+
 		elif curve_type == "exponential":
 			# Exponential growth (fast early, slow late)
 			for level in range(1, max_level + 1):
 				progress = (level - 1) / (max_level - 1)
 				stat_curve[level] = int(base_value + (final_value - base_value) * (progress ** 1.5))
-		
+
 		elif curve_type == "logarithmic":
 			# Logarithmic growth (slow early, fast late)
 			for level in range(1, max_level + 1):
 				progress = (level - 1) / (max_level - 1)
 				stat_curve[level] = int(base_value + (final_value - base_value) * math.log(1 + progress * 9) / math.log(10))
-		
+
 		return stat_curve
 
 
@@ -333,54 +333,54 @@ class CurveCalculator:
 
 class ProgressionAnalyzer:
 	"""Analyze character progression."""
-	
+
 	@staticmethod
 	def analyze_progression(all_stats: List[LevelStats]) -> ProgressionAnalysis:
 		"""Analyze full progression curve."""
 		analysis = ProgressionAnalysis()
-		
+
 		analysis.total_levels = len(all_stats)
-		
+
 		# Calculate average growth rates
 		hp_growth = [all_stats[i].hp - all_stats[i-1].hp for i in range(1, len(all_stats))]
 		mp_growth = [all_stats[i].mp - all_stats[i-1].mp for i in range(1, len(all_stats)) if all_stats[i-1].mp > 0]
 		str_growth = [all_stats[i].strength - all_stats[i-1].strength for i in range(1, len(all_stats))]
 		agi_growth = [all_stats[i].agility - all_stats[i-1].agility for i in range(1, len(all_stats))]
-		
+
 		analysis.hp_growth_avg = sum(hp_growth) / len(hp_growth) if hp_growth else 0
 		analysis.mp_growth_avg = sum(mp_growth) / len(mp_growth) if mp_growth else 0
 		analysis.str_growth_avg = sum(str_growth) / len(str_growth) if str_growth else 0
 		analysis.agi_growth_avg = sum(agi_growth) / len(agi_growth) if agi_growth else 0
-		
+
 		# Calculate power scores
 		for stats in all_stats:
 			power = stats.hp + stats.mp + (stats.strength * 2) + (stats.agility * 1.5)
 			analysis.power_score_progression.append(power)
-		
+
 		# Analyze XP curve
 		xp_ratios = []
 		for i in range(2, len(all_stats)):
 			if all_stats[i-1].xp_required > 0:
 				ratio = all_stats[i].xp_required / all_stats[i-1].xp_required
 				xp_ratios.append(ratio)
-		
+
 		avg_ratio = sum(xp_ratios) / len(xp_ratios) if xp_ratios else 1.0
-		
+
 		if avg_ratio > 1.3:
 			analysis.xp_curve_type = "steep exponential"
 		elif avg_ratio > 1.1:
 			analysis.xp_curve_type = "exponential"
 		else:
 			analysis.xp_curve_type = "linear"
-		
+
 		# Balance assessment
 		if analysis.hp_growth_avg < 3.0:
 			analysis.recommendations.append("HP growth is low - consider increasing")
 		if analysis.str_growth_avg < 3.0:
 			analysis.recommendations.append("Strength growth is low - consider increasing")
-		
+
 		analysis.balance_rating = "balanced" if not analysis.recommendations else "needs_adjustment"
-		
+
 		return analysis
 
 
@@ -390,41 +390,41 @@ class ProgressionAnalyzer:
 
 class CharacterEditor:
 	"""Edit character stats and progression."""
-	
+
 	def __init__(self, rom_path: str):
 		self.rom_path = Path(rom_path)
 		self.rom_data: bytearray = bytearray()
 		self.level_stats: Dict[int, LevelStats] = {}
-	
+
 	def load_rom(self) -> bool:
 		"""Load ROM file."""
 		if not self.rom_path.exists():
 			print(f"ERROR: ROM not found: {self.rom_path}")
 			return False
-		
+
 		with open(self.rom_path, 'rb') as f:
 			self.rom_data = bytearray(f.read())
-		
+
 		return True
-	
+
 	def load_all_stats(self):
 		"""Load all level stats."""
 		print("Loading character stats...")
-		
+
 		for level in range(1, 31):
 			stats = StatDataLoader.load_level_stats(self.rom_data, level)
 			self.level_stats[level] = stats
-		
+
 		print(f"✓ Loaded stats for {len(self.level_stats)} levels")
-	
+
 	def edit_level(self, level: int, **kwargs):
 		"""Edit stats for a specific level."""
 		if level not in self.level_stats:
 			print(f"ERROR: Invalid level: {level}")
 			return
-		
+
 		stats = self.level_stats[level]
-		
+
 		# Update stats
 		if 'xp' in kwargs:
 			stats.xp_required = kwargs['xp']
@@ -436,39 +436,39 @@ class CharacterEditor:
 			stats.strength = kwargs['strength']
 		if 'agility' in kwargs:
 			stats.agility = kwargs['agility']
-		
+
 		# Save to ROM
 		StatDataLoader.save_level_stats(self.rom_data, stats)
-		
+
 		print(f"✓ Updated level {level}")
-	
+
 	def rebalance_xp_curve(self, difficulty: str = "normal"):
 		"""Rebalance XP curve."""
 		print(f"Rebalancing XP curve ({difficulty})...")
-		
+
 		# Adjust total XP based on difficulty
 		total_xp = {
 			"easier": 200000,
 			"normal": 260000,
 			"harder": 350000,
 		}.get(difficulty, 260000)
-		
+
 		new_curve = CurveCalculator.calculate_xp_curve(30, total_xp, "exponential")
-		
+
 		for level, xp in new_curve.items():
 			if level in self.level_stats:
 				self.level_stats[level].xp_required = xp
 				StatDataLoader.save_level_stats(self.rom_data, self.level_stats[level])
-		
+
 		print(f"✓ XP curve rebalanced")
-	
+
 	def save_rom(self, output_path: str):
 		"""Save modified ROM."""
 		with open(output_path, 'wb') as f:
 			f.write(self.rom_data)
-		
+
 		print(f"✓ ROM saved: {output_path}")
-	
+
 	def export_json(self, output_path: str):
 		"""Export stats to JSON."""
 		data = {
@@ -484,10 +484,10 @@ class CharacterEditor:
 				for stats in sorted(self.level_stats.values(), key=lambda x: x.level)
 			]
 		}
-		
+
 		with open(output_path, 'w') as f:
 			json.dump(data, f, indent=2)
-		
+
 		print(f"✓ Stats exported: {output_path}")
 
 
@@ -500,7 +500,7 @@ def main():
 	parser = argparse.ArgumentParser(
 		description="Dragon Warrior Character Stats & Progression Editor"
 	)
-	
+
 	parser.add_argument('rom', help="ROM file")
 	parser.add_argument('--show-all', action='store_true', help="Show all level stats")
 	parser.add_argument('--level', type=int, help="Specific level")
@@ -515,35 +515,35 @@ def main():
 	                    default='normal', help="Difficulty for rebalancing")
 	parser.add_argument('--export', type=str, help="Export to JSON")
 	parser.add_argument('-o', '--output', type=str, help="Output ROM file")
-	
+
 	args = parser.parse_args()
-	
+
 	# Load ROM
 	editor = CharacterEditor(args.rom)
 	if not editor.load_rom():
 		return 1
-	
+
 	# Load stats
 	editor.load_all_stats()
-	
+
 	# Show all stats
 	if args.show_all:
 		print("\nCharacter Stats by Level:")
 		print("=" * 90)
 		print(f"{'Lvl':<4} {'XP':<10} {'HP':<6} {'MP':<6} {'STR':<6} {'AGI':<6} {'Power Score'}")
 		print("-" * 90)
-		
+
 		for level in range(1, 31):
 			stats = editor.level_stats[level]
 			power = stats.hp + stats.mp + (stats.strength * 2) + (stats.agility * 1.5)
 			print(f"{stats.level:<4} {stats.xp_required:<10} {stats.hp:<6} {stats.mp:<6} "
 			      f"{stats.strength:<6} {stats.agility:<6} {power:.0f}")
-	
+
 	# Show specific level
 	if args.level:
 		if args.level in editor.level_stats:
 			stats = editor.level_stats[args.level]
-			
+
 			print(f"\nLevel {stats.level}:")
 			print("=" * 50)
 			print(f"XP Required: {stats.xp_required:,}")
@@ -551,7 +551,7 @@ def main():
 			print(f"MP: {stats.mp}")
 			print(f"Strength: {stats.strength}")
 			print(f"Agility: {stats.agility}")
-			
+
 			# Edit stats if provided
 			edits = {}
 			if args.xp is not None:
@@ -564,22 +564,22 @@ def main():
 				edits['strength'] = args.strength
 			if args.agility is not None:
 				edits['agility'] = args.agility
-			
+
 			if edits:
 				print(f"\nApplying edits...")
 				editor.edit_level(stats.level, **edits)
-				
+
 				if args.output:
 					editor.save_rom(args.output)
-	
+
 	# Analyze progression
 	if args.analyze:
 		print("\nProgression Analysis:")
 		print("=" * 80)
-		
+
 		all_stats = [editor.level_stats[i] for i in range(1, 31)]
 		analysis = ProgressionAnalyzer.analyze_progression(all_stats)
-		
+
 		print(f"Total Levels: {analysis.total_levels}")
 		print(f"XP Curve Type: {analysis.xp_curve_type}")
 		print(f"\nAverage Growth Rates:")
@@ -587,25 +587,25 @@ def main():
 		print(f"  MP: {analysis.mp_growth_avg:.2f} per level")
 		print(f"  Strength: {analysis.str_growth_avg:.2f} per level")
 		print(f"  Agility: {analysis.agi_growth_avg:.2f} per level")
-		
+
 		if analysis.recommendations:
 			print(f"\nRecommendations:")
 			for rec in analysis.recommendations:
 				print(f"  • {rec}")
 		else:
 			print(f"\n✓ Progression is well-balanced!")
-	
+
 	# Rebalance XP
 	if args.rebalance_xp:
 		editor.rebalance_xp_curve(args.difficulty)
-		
+
 		if args.output:
 			editor.save_rom(args.output)
-	
+
 	# Export
 	if args.export:
 		editor.export_json(args.export)
-	
+
 	return 0
 
 

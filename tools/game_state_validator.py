@@ -10,7 +10,7 @@ Features:
 - Save file validation
 - Game state consistency checks:
   * Experience vs Level validation
-  * Stats vs Level validation  
+  * Stats vs Level validation
   * Equipment requirements
   * Inventory capacity
   * Spell availability by level
@@ -114,18 +114,18 @@ class GameState:
 	agility: int = 4
 	attack: int = 5
 	defense: int = 4
-	
+
 	# Equipment
 	weapon_id: int = 0
 	armor_id: int = 0
 	shield_id: int = 0
-	
+
 	# Inventory
 	inventory: List[int] = field(default_factory=list)
-	
+
 	# Spells (bitmap)
 	spells: int = 0
-	
+
 	# Flags
 	has_princess: bool = False
 	has_token: bool = False
@@ -133,12 +133,12 @@ class GameState:
 	has_staff: bool = False
 	has_rainbow_drop: bool = False
 	defeated_dragonlord: bool = False
-	
+
 	# Location
 	map_x: int = 0
 	map_y: int = 0
 	current_map: int = 0
-	
+
 	# Progress
 	death_count: int = 0
 	steps_taken: int = 0
@@ -210,12 +210,12 @@ KEY_ITEMS = {
 
 class LevelValidator:
 	"""Validate level-related stats."""
-	
+
 	@staticmethod
 	def validate_experience(state: GameState) -> List[ValidationIssue]:
 		"""Validate experience matches level."""
 		issues = []
-		
+
 		if state.level < 1 or state.level > 30:
 			issues.append(ValidationIssue(
 				"error",
@@ -224,10 +224,10 @@ class LevelValidator:
 				"Set level to valid value (1-30)"
 			))
 			return issues
-		
+
 		# Check if experience matches level
 		required_exp = LEVEL_EXP_TABLE[state.level - 1]
-		
+
 		if state.experience < required_exp:
 			issues.append(ValidationIssue(
 				"warning",
@@ -235,7 +235,7 @@ class LevelValidator:
 				f"Level {state.level} requires {required_exp} EXP, but only have {state.experience}",
 				f"Increase experience to at least {required_exp}"
 			))
-		
+
 		# Check if experience is enough for next level
 		if state.level < 30:
 			next_level_exp = LEVEL_EXP_TABLE[state.level]
@@ -246,19 +246,19 @@ class LevelValidator:
 					f"Have enough experience ({state.experience}) to level up to {state.level + 1}",
 					"Level up character"
 				))
-		
+
 		return issues
-	
+
 	@staticmethod
 	def validate_stats(state: GameState) -> List[ValidationIssue]:
 		"""Validate stats match level."""
 		issues = []
-		
+
 		if state.level < 1 or state.level > 30:
 			return issues
-		
+
 		level_idx = state.level - 1
-		
+
 		# Max HP
 		expected_hp = LEVEL_HP_TABLE[level_idx]
 		if state.max_hp != expected_hp:
@@ -268,7 +268,7 @@ class LevelValidator:
 				f"Level {state.level} should have {expected_hp} max HP, but has {state.max_hp}",
 				f"Set max HP to {expected_hp}"
 			))
-		
+
 		# Max MP
 		expected_mp = LEVEL_MP_TABLE[level_idx]
 		if state.max_mp != expected_mp:
@@ -278,7 +278,7 @@ class LevelValidator:
 				f"Level {state.level} should have {expected_mp} max MP, but has {state.max_mp}",
 				f"Set max MP to {expected_mp}"
 			))
-		
+
 		# Strength
 		expected_str = LEVEL_STRENGTH_TABLE[level_idx]
 		if state.strength != expected_str:
@@ -288,7 +288,7 @@ class LevelValidator:
 				f"Level {state.level} should have {expected_str} strength, but has {state.strength}",
 				f"Set strength to {expected_str}"
 			))
-		
+
 		# Agility
 		expected_agi = LEVEL_AGILITY_TABLE[level_idx]
 		if state.agility != expected_agi:
@@ -298,7 +298,7 @@ class LevelValidator:
 				f"Level {state.level} should have {expected_agi} agility, but has {state.agility}",
 				f"Set agility to {expected_agi}"
 			))
-		
+
 		# Current HP/MP
 		if state.hp > state.max_hp:
 			issues.append(ValidationIssue(
@@ -307,7 +307,7 @@ class LevelValidator:
 				f"Current HP ({state.hp}) exceeds max HP ({state.max_hp})",
 				f"Set HP to max {state.max_hp}"
 			))
-		
+
 		if state.mp > state.max_mp:
 			issues.append(ValidationIssue(
 				"error",
@@ -315,13 +315,13 @@ class LevelValidator:
 				f"Current MP ({state.mp}) exceeds max MP ({state.max_mp})",
 				f"Set MP to max {state.max_mp}"
 			))
-		
+
 		return issues
 
 
 class SpellValidator:
 	"""Validate spell availability."""
-	
+
 	SPELL_BITS = {
 		"Heal": 0x01,
 		"Hurt": 0x02,
@@ -332,15 +332,15 @@ class SpellValidator:
 		"Return": 0x40,
 		"Repel": 0x80,
 	}
-	
+
 	@staticmethod
 	def validate_spells(state: GameState) -> List[ValidationIssue]:
 		"""Validate learned spells match level."""
 		issues = []
-		
+
 		for spell_name, min_level in SPELL_LEVELS.items():
 			has_spell = bool(state.spells & SpellValidator.SPELL_BITS[spell_name])
-			
+
 			if has_spell and state.level < min_level:
 				issues.append(ValidationIssue(
 					"error",
@@ -348,7 +348,7 @@ class SpellValidator:
 					f"Has {spell_name} spell but level {state.level} < {min_level}",
 					f"Remove {spell_name} spell or increase level to {min_level}"
 				))
-			
+
 			if not has_spell and state.level >= min_level:
 				issues.append(ValidationIssue(
 					"info",
@@ -356,18 +356,18 @@ class SpellValidator:
 					f"Level {state.level} can learn {spell_name} (level {min_level})",
 					f"Add {spell_name} spell"
 				))
-		
+
 		return issues
 
 
 class InventoryValidator:
 	"""Validate inventory and equipment."""
-	
+
 	@staticmethod
 	def validate_inventory(state: GameState) -> List[ValidationIssue]:
 		"""Validate inventory contents."""
 		issues = []
-		
+
 		# Check inventory size
 		if len(state.inventory) > 8:
 			issues.append(ValidationIssue(
@@ -376,13 +376,13 @@ class InventoryValidator:
 				f"Inventory has {len(state.inventory)} items (max 8)",
 				"Remove excess items"
 			))
-		
+
 		# Check for duplicate key items (shouldn't have multiples)
 		key_item_counts = {}
 		for item_id in state.inventory:
 			if item_id in KEY_ITEMS:
 				key_item_counts[item_id] = key_item_counts.get(item_id, 0) + 1
-		
+
 		for item_id, count in key_item_counts.items():
 			if count > 1:
 				issues.append(ValidationIssue(
@@ -391,7 +391,7 @@ class InventoryValidator:
 					f"Have {count} × {KEY_ITEMS[item_id]} (key items should be unique)",
 					f"Remove duplicate {KEY_ITEMS[item_id]}"
 				))
-		
+
 		# Check equipment
 		if state.weapon_id not in ITEM_WEAPON and state.weapon_id != 0:
 			issues.append(ValidationIssue(
@@ -400,7 +400,7 @@ class InventoryValidator:
 				f"Invalid weapon ID: {state.weapon_id}",
 				"Set weapon to valid ID or 0 (none)"
 			))
-		
+
 		if state.armor_id not in ITEM_ARMOR and state.armor_id != 0:
 			issues.append(ValidationIssue(
 				"error",
@@ -408,7 +408,7 @@ class InventoryValidator:
 				f"Invalid armor ID: {state.armor_id}",
 				"Set armor to valid ID or 0 (none)"
 			))
-		
+
 		if state.shield_id not in ITEM_SHIELD and state.shield_id != 0:
 			issues.append(ValidationIssue(
 				"error",
@@ -416,18 +416,18 @@ class InventoryValidator:
 				f"Invalid shield ID: {state.shield_id}",
 				"Set shield to valid ID or 0 (none)"
 			))
-		
+
 		return issues
 
 
 class ProgressionValidator:
 	"""Validate story progression."""
-	
+
 	@staticmethod
 	def validate_progression(state: GameState) -> List[ValidationIssue]:
 		"""Validate story progression flags."""
 		issues = []
-		
+
 		# Check for impossible early-game items
 		if state.level < 5:
 			if state.weapon_id == 0x07:  # Erdrick's Sword
@@ -437,7 +437,7 @@ class ProgressionValidator:
 					f"Level {state.level} with Erdrick's Sword (very unusual)",
 					"Verify this is legitimate"
 				))
-			
+
 			if state.armor_id == 0x0E:  # Erdrick's Armor
 				issues.append(ValidationIssue(
 					"warning",
@@ -445,7 +445,7 @@ class ProgressionValidator:
 					f"Level {state.level} with Erdrick's Armor (very unusual)",
 					"Verify this is legitimate"
 				))
-		
+
 		# Princess requires Erdrick's Token
 		if state.has_princess and not state.has_token:
 			issues.append(ValidationIssue(
@@ -454,7 +454,7 @@ class ProgressionValidator:
 				"Has Princess Gwaelin but no Erdrick's Token (impossible)",
 				"Add Erdrick's Token to inventory"
 			))
-		
+
 		# Rainbow Drop requires Stones and Staff
 		if state.has_rainbow_drop and not (state.has_stones and state.has_staff):
 			issues.append(ValidationIssue(
@@ -463,7 +463,7 @@ class ProgressionValidator:
 				"Has Rainbow Drop without Stones of Sunlight or Staff of Rain (impossible)",
 				"Ensure Stones and Staff are in inventory"
 			))
-		
+
 		# Defeated Dragonlord requires high level
 		if state.defeated_dragonlord and state.level < 15:
 			issues.append(ValidationIssue(
@@ -472,18 +472,18 @@ class ProgressionValidator:
 				f"Defeated Dragonlord at level {state.level} (very difficult)",
 				"Verify this is a speedrun or TAS"
 			))
-		
+
 		return issues
 
 
 class GoldValidator:
 	"""Validate gold amount."""
-	
+
 	@staticmethod
 	def validate_gold(state: GameState) -> List[ValidationIssue]:
 		"""Validate gold amount."""
 		issues = []
-		
+
 		# Maximum gold is 65535
 		if state.gold > 65535:
 			issues.append(ValidationIssue(
@@ -492,7 +492,7 @@ class GoldValidator:
 				f"Gold amount {state.gold} exceeds maximum (65535)",
 				"Set gold to 65535 or less"
 			))
-		
+
 		# Negative gold (due to integer overflow)
 		if state.gold < 0:
 			issues.append(ValidationIssue(
@@ -501,7 +501,7 @@ class GoldValidator:
 				f"Negative gold: {state.gold}",
 				"Set gold to positive value"
 			))
-		
+
 		return issues
 
 
@@ -511,7 +511,7 @@ class GoldValidator:
 
 class GameStateValidator:
 	"""Main game state validator."""
-	
+
 	def __init__(self, level: ValidationLevel = ValidationLevel.NORMAL):
 		self.level = level
 		self.validators = [
@@ -521,11 +521,11 @@ class GameStateValidator:
 			ProgressionValidator(),
 			GoldValidator(),
 		]
-	
+
 	def validate(self, state: GameState) -> List[ValidationIssue]:
 		"""Validate complete game state."""
 		all_issues = []
-		
+
 		# Run all validators
 		all_issues.extend(LevelValidator.validate_experience(state))
 		all_issues.extend(LevelValidator.validate_stats(state))
@@ -533,31 +533,31 @@ class GameStateValidator:
 		all_issues.extend(InventoryValidator.validate_inventory(state))
 		all_issues.extend(ProgressionValidator.validate_progression(state))
 		all_issues.extend(GoldValidator.validate_gold(state))
-		
+
 		# Filter by validation level
 		if self.level == ValidationLevel.LOOSE:
 			all_issues = [i for i in all_issues if i.severity == "error"]
 		elif self.level == ValidationLevel.NORMAL:
 			all_issues = [i for i in all_issues if i.severity in ["error", "warning"]]
-		
+
 		return all_issues
-	
+
 	def print_report(self, issues: List[ValidationIssue]):
 		"""Print validation report."""
 		if not issues:
 			print("✓ Validation passed - no issues found")
 			return
-		
+
 		# Group by severity
 		errors = [i for i in issues if i.severity == "error"]
 		warnings = [i for i in issues if i.severity == "warning"]
 		infos = [i for i in issues if i.severity == "info"]
-		
+
 		print("=" * 80)
 		print("VALIDATION REPORT")
 		print("=" * 80)
 		print()
-		
+
 		if errors:
 			print(f"ERRORS ({len(errors)}):")
 			print("-" * 80)
@@ -566,7 +566,7 @@ class GameStateValidator:
 				if issue.fix_suggestion:
 					print(f"    Fix: {issue.fix_suggestion}")
 				print()
-		
+
 		if warnings:
 			print(f"WARNINGS ({len(warnings)}):")
 			print("-" * 80)
@@ -575,7 +575,7 @@ class GameStateValidator:
 				if issue.fix_suggestion:
 					print(f"    Fix: {issue.fix_suggestion}")
 				print()
-		
+
 		if infos:
 			print(f"INFO ({len(infos)}):")
 			print("-" * 80)
@@ -595,7 +595,7 @@ def main():
 	parser = argparse.ArgumentParser(
 		description="Comprehensive Game State Validator"
 	)
-	
+
 	parser.add_argument('input', help="Save file or game state")
 	parser.add_argument('--level', choices=['loose', 'normal', 'strict', 'paranoid'],
 					   default='normal', help="Validation level")
@@ -603,9 +603,9 @@ def main():
 	parser.add_argument('--check-100percent', action='store_true',
 					   help="Check for 100%% completion")
 	parser.add_argument('--speedrun', action='store_true', help="Speedrun validation mode")
-	
+
 	args = parser.parse_args()
-	
+
 	# Create sample state (in real version, would load from save file)
 	state = GameState(
 		level=10,
@@ -624,24 +624,24 @@ def main():
 		spells=0x0F,  # Heal, Hurt, Sleep, Radiant
 		has_token=True,
 	)
-	
+
 	# Validate
 	validation_level = ValidationLevel(args.level)
 	validator = GameStateValidator(validation_level)
-	
+
 	print(f"Validating game state (level: {args.level})...")
 	print()
-	
+
 	issues = validator.validate(state)
 	validator.print_report(issues)
-	
+
 	# Summary
 	errors = [i for i in issues if i.severity == "error"]
 	warnings = [i for i in issues if i.severity == "warning"]
-	
+
 	print("=" * 80)
 	print(f"Summary: {len(errors)} errors, {len(warnings)} warnings")
-	
+
 	return 0 if len(errors) == 0 else 1
 
 

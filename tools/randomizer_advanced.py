@@ -72,7 +72,7 @@ class RandomizerPreset(Enum):
 class RandomizerOptions:
 	"""Randomizer configuration options."""
 	seed: int = 0
-	
+
 	# What to randomize
 	randomize_monsters: bool = True
 	randomize_items: bool = True
@@ -81,37 +81,37 @@ class RandomizerOptions:
 	randomize_spells: bool = True
 	randomize_encounters: bool = False
 	randomize_map_connections: bool = False
-	
+
 	# Monster options
 	monster_stat_variance: int = 30  # Percent
 	monster_hp_min: int = 5
 	monster_hp_max: int = 255
 	randomize_monster_gold: bool = True
 	randomize_monster_exp: bool = True
-	
+
 	# Item options
 	item_price_variance: int = 50  # Percent
 	item_price_min: int = 10
 	item_price_max: int = 9999
 	randomize_equipment_stats: bool = True
 	equipment_stat_variance: int = 40
-	
+
 	# Shop options
 	shop_inventory_size: int = 6
 	allow_random_shop_items: bool = True
-	
+
 	# Treasure options
 	treasure_randomize_gold: bool = True
 	treasure_gold_multiplier: float = 1.0
-	
+
 	# Difficulty
 	difficulty_scale: int = 100  # Percent (100 = normal)
 	progressive_difficulty: bool = True
-	
+
 	# Logic
 	ensure_completion: bool = True  # Ensure game is beatable
 	require_key_items: bool = True  # Key items must be accessible
-	
+
 	# Output
 	generate_spoiler: bool = True
 	spoiler_path: Optional[Path] = None

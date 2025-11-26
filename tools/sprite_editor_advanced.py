@@ -362,28 +362,28 @@ class SpriteExtractor:
 		# Slime family (tiles: 83, 84, 85, 254, 255)
 		(0, "Slime", [85, 83, 84, 83, 84, 255, 254], 16, 16),
 		(1, "Red Slime", [85, 83, 84, 83, 84, 255, 254], 16, 16),
-		
+
 		# Drakee family (tiles: 59, 60, 61, 62, 63, 252, 253)
 		(2, "Drakee", [59, 60, 61, 62, 59, 61, 253, 252, 255], 16, 16),
-		
+
 		# Ghost family (tiles: 67, 68, 69, 70, 71, 72, 73, 74, 75, 250, 251, 254, 255)
 		(3, "Ghost", [67, 68, 69, 70, 71, 72, 73, 74, 75, 250, 251, 254, 255], 24, 24),
-		
+
 		# Magician (tiles: 81, 82)
 		(4, "Magician", [81, 82, 81, 82], 16, 16),
-		
+
 		# Scorpion family (tiles: 40-56)
 		(5, "Scorpion", [40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56], 32, 32),
-		
+
 		# Wolf family (tiles: 0-29)
 		(6, "Wolf", list(range(0, 30)), 32, 32),
-		
+
 		# Skeleton family (tiles: 30-43)
 		(7, "Skeleton", list(range(30, 44)), 24, 24),
-		
+
 		# Warlock/Wizard (tiles: 77-80)
 		(8, "Warlock", [77, 78, 79, 80], 16, 16),
-		
+
 		# Knight (tiles: 186-216)
 		(9, "Knight", list(range(186, 217)), 32, 32),
 	]
