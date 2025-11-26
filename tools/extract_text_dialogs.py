@@ -14,17 +14,17 @@ from typing import Dict, List, Tuple, Any
 
 class DragonWarriorTextExtractor:
     """Extract text data from Dragon Warrior ROM."""
-    
+
     def __init__(self, rom_path: str):
         """Initialize extractor with ROM path."""
         self.rom_path = Path(rom_path)
         with open(rom_path, 'rb') as f:
             self.rom_data = f.read()
-        
+
         # Text data locations
         self.CHAR_TABLE_OFFSET = 0x14F10  # Character mapping table (Bank02)
         self.DIALOG_PTR_TABLE = 0x12010   # Dialog pointer table (Bank02)
-        
+
         # Dragon Warrior character encoding
         # Based on reverse engineering from various sources
         self.CHARACTER_MAP = {
@@ -62,7 +62,7 @@ class DragonWarriorTextExtractor:
             0xFE: '<END>',       # End of string
             0xFF: '<TERM>',      # String terminator
         }
-        
+
         # Common word substitutions (text compression)
         self.WORD_SUBS = {
             0x80: 'the ',
@@ -82,29 +82,29 @@ class DragonWarriorTextExtractor:
             0x8E: 'what ',
             0x8F: 'know ',
         }
-    
+
     def decode_text(self, data: bytes, max_len: int = 500) -> str:
         """
         Decode Dragon Warrior text using character mapping and compression.
-        
+
         Args:
             data: Raw bytes from ROM
             max_len: Maximum length to decode
-            
+
         Returns:
             Decoded text string
         """
         text = []
         i = 0
-        
+
         while i < len(data) and i < max_len:
             byte = data[i]
-            
+
             # Check for terminator
             if byte in (0xFE, 0xFF):
                 text.append(self.CHARACTER_MAP.get(byte, f'<${byte:02X}>'))
                 break
-            
+
             # Check for word substitution (0x80-0x8F)
             if byte in self.WORD_SUBS:
                 text.append(self.WORD_SUBS[byte])
@@ -114,23 +114,23 @@ class DragonWarriorTextExtractor:
             else:
                 # Unknown byte - show as hex
                 text.append(f'<${byte:02X}>')
-            
+
             i += 1
-        
+
         return ''.join(text)
-    
+
     def extract_dialog_strings(self) -> List[Dict[str, Any]]:
         """
         Extract all dialog strings from ROM.
-        
+
         Dialog strings are stored with pointer tables.
         Each dialog has an ID and pointer to compressed text.
         """
         dialogs = []
-        
+
         # Known dialog examples (from game knowledge)
         # We'll extract the famous opening dialog from Bank02
-        
+
         # Example: King's throne room initial dialog
         # This is approximate - exact offsets need verification from disassembly
         known_dialogs = [
@@ -153,17 +153,17 @@ class DragonWarriorTextExtractor:
                 "length": 150
             },
         ]
-        
+
         for dialog_info in known_dialogs:
             offset = dialog_info["offset"]
             length = dialog_info["length"]
-            
+
             if offset + length > len(self.rom_data):
                 continue
-            
+
             raw_data = self.rom_data[offset:offset + length]
             decoded_text = self.decode_text(raw_data)
-            
+
             dialogs.append({
                 "id": dialog_info["id"],
                 "description": dialog_info["description"],
@@ -171,13 +171,13 @@ class DragonWarriorTextExtractor:
                 "raw_bytes": list(raw_data[:50]),  # First 50 bytes
                 "decoded_text": decoded_text
             })
-        
+
         return dialogs
-    
+
     def extract_character_table(self) -> Dict[str, str]:
         """
         Extract and document the character mapping table.
-        
+
         Returns character encoding documentation.
         """
         table_doc = {
@@ -194,7 +194,7 @@ class DragonWarriorTextExtractor:
             "word_substitutions": {},
             "control_codes": {}
         }
-        
+
         # Organize character map
         for code, char in self.CHARACTER_MAP.items():
             if code < 0x80:
@@ -204,13 +204,13 @@ class DragonWarriorTextExtractor:
                 pass
             else:
                 table_doc["control_codes"][f"${code:02X}"] = char
-        
+
         # Add word substitutions
         for code, word in self.WORD_SUBS.items():
             table_doc["word_substitutions"][f"${code:02X}"] = word
-        
+
         return table_doc
-    
+
     def extract_item_names(self) -> List[str]:
         """Extract item name strings."""
         # Item names stored in Bank00/Bank01
@@ -231,9 +231,9 @@ class DragonWarriorTextExtractor:
             # Shields
             "Leather Shield", "Iron Shield", "Silver Shield"
         ]
-        
+
         return item_names
-    
+
     def extract_spell_names(self) -> List[str]:
         """Extract spell name strings."""
         spell_names = [
@@ -241,7 +241,7 @@ class DragonWarriorTextExtractor:
             "OUTSIDE", "RETURN", "REPEL", "HEALMORE", "HURTMORE"
         ]
         return spell_names
-    
+
     def extract_monster_names(self) -> List[str]:
         """Extract monster name strings."""
         # From monster data extraction
@@ -257,30 +257,30 @@ class DragonWarriorTextExtractor:
             "Red Dragon", "Dragonlord", "Dragonlord (Dragon Form)"
         ]
         return monster_names
-    
+
     def save_text_data(self, output_dir: Path):
         """Save all extracted text data to JSON files."""
         output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Extract all data
         char_table = self.extract_character_table()
         dialogs = self.extract_dialog_strings()
         items = self.extract_item_names()
         spells = self.extract_spell_names()
         monsters = self.extract_monster_names()
-        
+
         # Save character encoding table
         char_file = output_dir / "character_encoding.json"
         with open(char_file, 'w') as f:
             json.dump(char_table, f, indent=2)
         print(f"Saved character encoding to {char_file}")
-        
+
         # Save dialogs
         dialog_file = output_dir / "dialogs.json"
         with open(dialog_file, 'w') as f:
             json.dump(dialogs, f, indent=2)
         print(f"Saved {len(dialogs)} dialog strings to {dialog_file}")
-        
+
         # Save names
         names_data = {
             "items": items,
@@ -291,7 +291,7 @@ class DragonWarriorTextExtractor:
         with open(names_file, 'w') as f:
             json.dump(names_data, f, indent=2)
         print(f"Saved text strings to {names_file}")
-        
+
         # Create summary
         summary = {
             "character_encoding": "Custom 8-bit with compression",
@@ -314,12 +314,12 @@ class DragonWarriorTextExtractor:
                 "Dialog offsets approximate - need verification from disassembly"
             ]
         }
-        
+
         summary_file = output_dir / "text_extraction_summary.json"
         with open(summary_file, 'w') as f:
             json.dump(summary, f, indent=2)
         print(f"Saved summary to {summary_file}")
-        
+
         # Print character map for reference
         print("\n" + "="*60)
         print("DRAGON WARRIOR CHARACTER ENCODING")
@@ -328,12 +328,12 @@ class DragonWarriorTextExtractor:
         for code in sorted([k for k in self.CHARACTER_MAP.keys() if k < 0x80]):
             char = self.CHARACTER_MAP[code]
             print(f"  ${code:02X} = '{char}'")
-        
+
         print("\nWord Substitutions (0x80-0x8F):")
         for code in sorted(self.WORD_SUBS.keys()):
             word = self.WORD_SUBS[code]
             print(f"  ${code:02X} = '{word}'")
-        
+
         print("\nControl Codes (0xF0-0xFF):")
         for code in sorted([k for k in self.CHARACTER_MAP.keys() if k >= 0xF0]):
             ctrl = self.CHARACTER_MAP[code]
@@ -344,13 +344,13 @@ def main():
     """Main extraction function."""
     rom_path = "roms/Dragon Warrior (U) (PRG1) [!].nes"
     output_dir = Path("extracted_assets/text")
-    
+
     print("Dragon Warrior Text & Dialog Extractor")
     print("="*60)
-    
+
     extractor = DragonWarriorTextExtractor(rom_path)
     extractor.save_text_data(output_dir)
-    
+
     print("\n" + "="*60)
     print("Text extraction complete!")
     print("="*60)
