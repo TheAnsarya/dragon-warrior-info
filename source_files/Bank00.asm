@@ -7396,8 +7396,14 @@ LBF8A:  .byte $F7, $20, $5F, $FC    ;1 row of blank tiles.
 ;----------------------------------------------------------------------------------------------------
 
 LBF8E:  .byte $F7, $04, $5F         ;4 blank tiles.
+;
+; ROM Version difference: "TO" encoding differs between PRG0 and PRG1
+; PRG0: $37, $32 (file offset 0x3FAE-0x3FAF)  <-- Original line
+; PRG1: $32, $29 (file offset 0x3FAE-0x3FAF)  <-- Modified for PRG1
+;
 ;              T    M    _    T    R    A    D    E    M    A    R    K    _    T    O    _
-LBF91:  .byte $37, $30, $5F, $37, $35, $24, $27, $28, $30, $24, $35, $2E, $5F, $37, $32, $5F
+LBF91:  .byte $37, $30, $5F, $37, $35, $24, $27, $28, $30, $24, $35, $2E, $5F, $32, $29, $5F  ;PRG1 version
+;LBF91:  .byte $37, $30, $5F, $37, $35, $24, $27, $28, $30, $24, $35, $2E, $5F, $37, $32, $5F  ;PRG0 version (comment out for PRG1)
 ;              N    I    N    T    E    N    D    O
 LBFA1:  .byte $31, $2C, $31, $37, $28, $31, $27, $32
 LBFA9:  .byte $F7, $04, $5F, $FC    ;4 blank tiles.

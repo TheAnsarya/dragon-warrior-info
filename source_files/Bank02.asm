@@ -2837,8 +2837,13 @@ LAF64:  .byte $FC
 ;----------------------------------------------------------------------------------------------------
 
 TB16E10:
+; ROM Version difference: Player plural marker differs between PRG0 and PRG1
+; PRG0: $EF (file offset 0xAF7C)
+; PRG1: $F0 (file offset 0xAF7C)
+;
 ;              T    h    y    _    H    i    t   PLRL  _    d    e    c    r    e    a    s   
-LAF65:  .byte $37, $11, $22, $5F, $2B, $12, $1D, $EF, $5F, $0D, $0E, $0C, $1B, $0E, $0A, $1C
+LAF65:  .byte $37, $11, $22, $5F, $2B, $12, $1D, $F0, $5F, $0D, $0E, $0C, $1B, $0E, $0A, $1C  ;PRG1 version
+;LAF65:  .byte $37, $11, $22, $5F, $2B, $12, $1D, $EF, $5F, $0D, $0E, $0C, $1B, $0E, $0A, $1C  ;PRG0 version (comment out for PRG1)
 ;              e    d    _    b    y    _   AMNT  .   END  
 LAF75:  .byte $0E, $0D, $5F, $0B, $22, $5F, $F5, $47, $FC
 

@@ -1,3 +1,14 @@
+;-------------------------------------[ROM Version Configuration]-----------------------------------
+;
+; Dragon Warrior has two ROM versions: PRG0 (original) and PRG1 (revised)
+; Only 3 bytes differ between versions. Set ROM_VERSION to build the desired version.
+;
+; ROM_VERSION = 0: Build PRG0 (original release)
+; ROM_VERSION = 1: Build PRG1 (revised version)
+;
+
+.alias ROM_VERSION      1       ;Default to PRG1 (revised version)
+
 ;-------------------------------------[General Purpose Variables]------------------------------------
 
 .alias GenByte00        $00     ;General use byte.

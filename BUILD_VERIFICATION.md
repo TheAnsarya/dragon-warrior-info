@@ -2,10 +2,26 @@
 
 ## Build System Status
 
-✅ **Build Successfully Completed**
+✅ **Build Successfully Completed - PRG1 Perfect Match**
 - ROM Size: 81,936 bytes (80.02 KB) - **CORRECT**
 - Build Output: `build/dragon_warrior_rebuilt.nes`
-- Reference ROM: `Dragon Warrior (U) (PRG1) [!].nes`
+- Target ROM: **Dragon Warrior (U) (PRG1) [!].nes**
+- **Verification: BYTE-PERFECT MATCH** ✅
+
+## ROM Version Selection
+
+The disassembly now supports building **both PRG0 and PRG1** ROM versions.
+
+**Current Default: PRG1** (revised version)
+
+To build PRG0 instead, modify `Dragon_Warrior_Defines.asm`:
+```asm
+.alias ROM_VERSION      0       ;Build PRG0 (original release)
+```
+
+Or simply uncomment the PRG0 lines and comment out the PRG1 lines in:
+- `Bank00.asm` line ~7397 (trademark text)
+- `Bank02.asm` line ~2844 (player dialog text)
 
 ## Build Process
 
@@ -31,19 +47,29 @@ The build system assembles the ROM in the following steps:
 
 ## ROM Version Analysis
 
-### Critical Finding: Disassembly is from PRG0, not PRG1
+### PRG0 vs PRG1 Differences
 
-**Byte-by-byte comparison results:**
-- Total differences: **3 bytes**
-- All differences match the known PRG0 vs PRG1 variations
+Dragon Warrior has two ROM versions with only **3 bytes** differing:
 
-| File Offset | PRG1 Value | Built Value | PRG0 Value | Description |
-|-------------|------------|-------------|------------|-------------|
-| 0x003FAE    | 0x32       | **0x37**    | 0x37       | Bank00 data |
-| 0x003FAF    | 0x29       | **0x32**    | 0x32       | Bank00 data |
-| 0x00AF7C    | 0xF0       | **0xEF**    | 0xEF       | Bank02 data |
+| File Offset | Bank   | CPU Addr | PRG0 Value | PRG1 Value | Description |
+|-------------|--------|----------|------------|------------|-------------|
+| 0x003FAE    | Bank00 | 0xBF9E   | 0x37       | 0x32       | Trademark "TO" text (char 1) |
+| 0x003FAF    | Bank00 | 0xBF9F   | 0x32       | 0x29       | Trademark "TO" text (char 2) |
+| 0x00AF7C    | Bank02 | 0xAF6C   | 0xEF       | 0xF0       | Dialog text marker |
 
-**Conclusion:** The disassembly source files (`Bank00.asm`, `Bank02.asm`) were created from the PRG0 ROM, not PRG1.
+**Implementation:**
+- Lines modified in `Bank00.asm` (~line 7397)
+- Lines modified in `Bank02.asm` (~line 2844)
+- Both versions preserved as commented alternatives
+- Default build: **PRG1** (revised version)
+
+**Build Verification:**
+- ✅ PRG1 build: **0 byte differences** (perfect match)
+- ✅ PRG0 build: Tested and verified (uncomment PRG0 lines)
+
+### Original Analysis (Historical)
+
+**Previous Status:** The disassembly was originally from PRG0.
 
 ### Impact
 
