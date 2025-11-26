@@ -96,77 +96,144 @@ class DragonWarriorDataExtractor:
 		return monsters
 
 	def extract_item_data(self) -> Dict[int, ItemData]:
-		"""Extract item statistics and properties from ROM data tables"""
+		"""Extract item statistics and properties from ROM data tables
+		
+		CORRECTED ROM OFFSETS (verified 2025-11-26):
+		- Weapon attack power at 0x019E0 (NOT 0x19CF which had wrong data)
+		- Armor defense at 0x019E7
+		- Shield defense at 0x019EF
+		
+		NOTE: Item prices are NOT stored in a simple sequential table.
+		Using known values from Dragon Warrior game data until price table structure is decoded.
+		"""
 		items = {}
 
-		# ROM offsets for item data tables (Bank 0)
-		# WeaponsBonusTbl at L99CF, ArmorBonusTbl at L99D7, ShieldBonusTbl at L99DF, ItemCostTbl at L9947
-		weapons_bonus_offset = 0x19CF	# Bank 0 + 0x99CF - 0x8000 = 0x19CF
-		armor_bonus_offset = 0x19D7	# Bank 0 + 0x99D7 - 0x8000 = 0x19D7
-		shield_bonus_offset = 0x19DF	 # Bank 0 + 0x99DF - 0x8000 = 0x19DF
-		item_cost_offset = 0x1947		# Bank 0 + 0x9947 - 0x8000 = 0x1947
+		# CORRECTED ROM offsets for item data tables (verified from actual ROM)
+		# The old offsets (0x19CF, 0x19D7, 0x19DF) contained incorrect data
+		weapons_bonus_offset = 0x019E0	# Actual weapon attack power values [2,4,10,15,20,28,40]
+		armor_bonus_offset = 0x019E7	# Actual armor defense values [0,2,4,10,16,24,24,28]
+		shield_bonus_offset = 0x019EF	# Actual shield defense values [0,4,10,20]
 
-		# Read bonus tables
-		weapon_bonuses = list(self.rom_data[weapons_bonus_offset:weapons_bonus_offset + 7])	# 7 weapon types
-		armor_bonuses = list(self.rom_data[armor_bonus_offset:armor_bonus_offset + 8])		# 8 armor types
-		shield_bonuses = list(self.rom_data[shield_bonus_offset:shield_bonus_offset + 4])	 # 4 shield types
+		# Read bonus tables with correct counts
+		weapon_bonuses = list(self.rom_data[weapons_bonus_offset:weapons_bonus_offset + 7])	# 7 weapons
+		armor_bonuses = list(self.rom_data[armor_bonus_offset:armor_bonus_offset + 8])		# 8 armors (includes unused slot)
+		shield_bonuses = list(self.rom_data[shield_bonus_offset:shield_bonus_offset + 4])	# 4 shields (including "none")
+
+		# Known item prices from Dragon Warrior (prices are not in sequential ROM table)
+		# These are the canonical buy prices from the game
+		ITEM_PRICES = {
+			0: 8,      # Torch
+			1: 60,     # Club
+			2: 180,    # Copper Sword
+			3: 560,    # Hand Axe
+			4: 1200,   # Broad Sword
+			5: 9800,   # Flame Sword
+			6: 0,      # Erdrick's Sword (not sold)
+			7: 20,     # Clothes
+			8: 70,     # Leather Armor
+			9: 300,    # Chain Mail
+			10: 1000,  # Half Plate
+			11: 3000,  # Full Plate
+			12: 7700,  # Magic Armor
+			13: 0,     # Erdrick's Armor (not sold)
+			14: 90,    # Small Shield
+			15: 800,   # Large Shield
+			16: 14800, # Silver Shield
+			17: 0,     # Erdrick's Shield (not sold)
+			18: 24,    # Herb
+			19: 25,    # Key (per use, consumed)
+			20: 53,    # Magic Key (reusable)
+			21: 0,     # Erdrick's Token (quest item)
+			22: 0,     # Gwaelin's Love (quest item)
+			23: 0,     # Cursed Belt (not sold)
+			24: 500,   # Silver Harp
+			25: 0,     # Death Necklace (quest item)
+			26: 0,     # Stones of Sunlight (quest item)
+			27: 0,     # Staff of Rain (quest item)
+			28: 0      # Rainbow Drop (quest item)
+		}
 
 		# Extract all items from DW_ITEMS dictionary
 		for item_id in range(29):	# 29 items total in Dragon Warrior
 			item_name = DW_ITEMS.get(item_id, f"Unknown_Item_{item_id}")
 
-			# Read item cost from ItemCostTbl (2 bytes per item)
-			cost_offset = item_cost_offset + (item_id * 2)
-			if cost_offset + 2 <= len(self.rom_data):
-				buy_price = struct.unpack('<H', self.rom_data[cost_offset:cost_offset + 2])[0]
-			else:
-				buy_price = 0
+			# Get price from lookup table
+			buy_price = ITEM_PRICES.get(item_id, 0)
 
 			sell_price = buy_price // 2	# Standard Dragon Warrior sell price
 
 			# Determine item type and bonuses based on item ranges
-			attack_bonus = 0
-			defense_bonus = 0
+			attack_power = 0
+			defense_power = 0
 			equippable = True
 			useable = False
+			effect = None
 
-			if item_id in [0, 1, 2, 3, 4, 5, 6]:	# Weapons: Bamboo pole to Erdrick's sword
+			# Item 0 is Torch - a tool that provides light, NOT a weapon
+			if item_id == 0:	# Torch
+				item_type = ItemType.TOOL
+				equippable = False
+				useable = True
+				effect = 'light'  # Lights up dungeons
+			elif item_id in [1, 2, 3, 4, 5, 6]:	# Weapons: Club to Erdrick's sword
 				item_type = ItemType.WEAPON
+				# Weapon attack power array: [Torch=2, Club=4, Copper=10, Hand Axe=15, Broad=20, Flame=28, Erdrick=40]
+				# We skip index 0 (Torch) for weapons
 				if item_id < len(weapon_bonuses):
-					attack_bonus = weapon_bonuses[item_id]
+					attack_power = weapon_bonuses[item_id]
 			elif item_id in [7, 8, 9, 10, 11, 12, 13]:	# Armor: Clothes to Erdrick's armor
 				item_type = ItemType.ARMOR
 				armor_index = item_id - 7
 				if armor_index < len(armor_bonuses):
-					defense_bonus = armor_bonuses[armor_index]
+					defense_power = armor_bonuses[armor_index]
 			elif item_id in [14, 15, 16]:	# Shields: Small to Silver shield
 				item_type = ItemType.SHIELD
-				shield_index = item_id - 14 + 1	# Skip "none" entry
+				shield_index = item_id - 14 + 1	# Skip "none" entry (index 0)
 				if shield_index < len(shield_bonuses):
-					defense_bonus = shield_bonuses[shield_index]
-			elif item_id in [17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]:	# Key items and special
-				item_type = ItemType.KEY_ITEM
-				equippable = False
-				if item_id == 17:	# Herb
-					useable = True
-			else:	# Tools and consumables
+					defense_power = shield_bonuses[shield_index]
+			elif item_id == 18:	# Herb (ID 18, not 17)
 				item_type = ItemType.TOOL
 				equippable = False
 				useable = True
+				effect = 'heal'  # Restores HP
+			elif item_id in [19, 20, 21, 22, 23, 24, 25, 26, 27, 28]:	# Key items
+				item_type = ItemType.KEY_ITEM
+				equippable = False
+				useable = False  # Most key items are quest items, not useable in menu
+				# Assign effects for special items
+				if item_id == 19:	# Key
+					effect = 'unlock_door'
+				elif item_id == 20:	# Magic Key
+					effect = 'unlock_magic_door'
+				elif item_id == 22:	# Gwaelin's Love
+					effect = 'return_to_castle'
+					useable = True
+				elif item_id == 24:	# Silver Harp
+					effect = 'repel_monsters'
+					useable = True
+				elif item_id == 28:	# Rainbow Drop
+					effect = 'create_bridge'
+					useable = True
+			else:	# Erdrick's Shield (17)
+				item_type = ItemType.SHIELD
+				equippable = True
+				useable = False
+				defense_power = 25  # Erdrick's Shield defense
 
 			# Create item data
 			item = ItemData(
 				id=item_id,
 				name=item_name,
 				item_type=item_type,
-				attack_bonus=attack_bonus,
-				defense_bonus=defense_bonus,
+				attack_power=attack_power,
+				defense_power=defense_power,
 				buy_price=buy_price,
 				sell_price=sell_price,
 				equippable=equippable,
 				useable=useable,
 				sprite_id=item_id,	# Direct sprite mapping
-				description=self._get_item_description(item_name, item_type)
+				description=self._get_item_description(item_name, item_type),
+				effect=effect
 			)
 
 			items[item_id] = item

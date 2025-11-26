@@ -97,14 +97,15 @@ class ItemData:
 	id: int
 	name: str
 	item_type: ItemType
-	attack_bonus: int
-	defense_bonus: int
+	attack_power: int  # Renamed from attack_bonus for accuracy
+	defense_power: int  # Renamed from defense_bonus for accuracy
 	buy_price: int
 	sell_price: int
 	equippable: bool
 	useable: bool
 	sprite_id: int
 	description: str
+	effect: Optional[str] = None  # For tools: 'light', 'heal', 'warp', etc.
 
 	def to_dict(self) -> Dict[str, Any]:
 		return asdict(self)
