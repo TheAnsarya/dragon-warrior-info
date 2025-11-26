@@ -59,8 +59,7 @@ git comment and push everything that is uncommited!; that only extracted two mon
 
 git comment and push everything that is uncommited!; continue your work! thank you! please make all of our extracted graphics and data are accurate; fix the disassembly so it outputs PRG1 not PRG0 (you said it was 3 bytes difference?) or was a compiler switch with an #ifdef that defaults to PRG1 (as long as it doesn't move code and data around, but rather just replaces some code in-place); implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
-
-
+git comment and push everything that is uncommited!; update and make your todo-ists and github issues; continue your work! thank you! please make all of our extracted graphics and data accurate; those are too many files, we don't need an individual png file for every single 8x8 tile, instead group them by purpose (red slime/overworld bg tiles/overworld map background water tiles/Kol background town tiles/npcs/hero/menu borders/text/etc); make the graphics are accurate; make sure the data (like monster stats, item stats, magic effects, etc) are all accurate and extracted correctly; continue your previous work!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
 
 

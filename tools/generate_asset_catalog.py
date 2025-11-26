@@ -11,16 +11,16 @@ from typing import Dict, List, Optional
 
 class AssetCatalogGenerator:
     """Generate interactive HTML catalog of extracted assets"""
-    
+
     def __init__(self, extracted_dir: str, output_dir: str):
         self.extracted_dir = Path(extracted_dir)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Create subdirectories
         self.images_dir = self.output_dir / "images"
         self.images_dir.mkdir(exist_ok=True)
-        
+
     def generate_html_header(self, title: str) -> str:
         """Generate HTML header with CSS styling"""
         return f"""<!DOCTYPE html>
@@ -35,7 +35,7 @@ class AssetCatalogGenerator:
             padding: 0;
             box-sizing: border-box;
         }}
-        
+
         body {{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
@@ -43,7 +43,7 @@ class AssetCatalogGenerator:
             padding: 20px;
             line-height: 1.6;
         }}
-        
+
         .container {{
             max-width: 1400px;
             margin: 0 auto;
@@ -52,7 +52,7 @@ class AssetCatalogGenerator:
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }}
-        
+
         h1 {{
             text-align: center;
             margin-bottom: 10px;
@@ -63,14 +63,14 @@ class AssetCatalogGenerator:
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }}
-        
+
         .subtitle {{
             text-align: center;
             margin-bottom: 30px;
             color: #aaa;
             font-size: 1.1em;
         }}
-        
+
         nav {{
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
@@ -78,7 +78,7 @@ class AssetCatalogGenerator:
             border-radius: 8px;
             text-align: center;
         }}
-        
+
         nav a {{
             color: #4ecdc4;
             text-decoration: none;
@@ -88,16 +88,16 @@ class AssetCatalogGenerator:
             transition: all 0.3s;
             display: inline-block;
         }}
-        
+
         nav a:hover {{
             background: rgba(78, 205, 196, 0.2);
             transform: translateY(-2px);
         }}
-        
+
         .section {{
             margin: 40px 0;
         }}
-        
+
         h2 {{
             margin: 30px 0 20px 0;
             padding-bottom: 10px;
@@ -105,20 +105,20 @@ class AssetCatalogGenerator:
             color: #4ecdc4;
             font-size: 2em;
         }}
-        
+
         h3 {{
             margin: 20px 0 10px 0;
             color: #ff6b6b;
             font-size: 1.5em;
         }}
-        
+
         .grid {{
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }}
-        
+
         .card {{
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -126,13 +126,13 @@ class AssetCatalogGenerator:
             padding: 20px;
             transition: all 0.3s;
         }}
-        
+
         .card:hover {{
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
             border-color: #4ecdc4;
         }}
-        
+
         .card img {{
             width: 100%;
             height: auto;
@@ -141,14 +141,14 @@ class AssetCatalogGenerator:
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }}
-        
+
         .card-title {{
             font-size: 1.3em;
             margin: 15px 0 10px 0;
             color: #fff;
             font-weight: bold;
         }}
-        
+
         .stats {{
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -156,25 +156,25 @@ class AssetCatalogGenerator:
             margin: 15px 0;
             font-size: 0.9em;
         }}
-        
+
         .stat {{
             background: rgba(0, 0, 0, 0.3);
             padding: 8px;
             border-radius: 5px;
         }}
-        
+
         .stat-label {{
             color: #aaa;
             font-size: 0.85em;
             text-transform: uppercase;
         }}
-        
+
         .stat-value {{
             color: #4ecdc4;
             font-weight: bold;
             font-size: 1.1em;
         }}
-        
+
         .tile-sheet {{
             background: #000;
             border: 2px solid #4ecdc4;
@@ -183,14 +183,14 @@ class AssetCatalogGenerator:
             text-align: center;
             margin: 20px 0;
         }}
-        
+
         .tile-sheet img {{
             max-width: 100%;
             height: auto;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }}
-        
+
         table {{
             width: 100%;
             border-collapse: collapse;
@@ -199,7 +199,7 @@ class AssetCatalogGenerator:
             border-radius: 10px;
             overflow: hidden;
         }}
-        
+
         th {{
             background: rgba(78, 205, 196, 0.2);
             padding: 12px;
@@ -207,16 +207,16 @@ class AssetCatalogGenerator:
             color: #4ecdc4;
             font-weight: bold;
         }}
-        
+
         td {{
             padding: 10px 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }}
-        
+
         tr:hover {{
             background: rgba(255, 255, 255, 0.05);
         }}
-        
+
         .footer {{
             margin-top: 50px;
             text-align: center;
@@ -224,7 +224,7 @@ class AssetCatalogGenerator:
             padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }}
-        
+
         .badge {{
             display: inline-block;
             padding: 4px 8px;
@@ -233,14 +233,14 @@ class AssetCatalogGenerator:
             font-weight: bold;
             margin: 2px;
         }}
-        
+
         .badge-dragon {{ background: #ff6b6b; }}
         .badge-slime {{ background: #4ecdc4; }}
         .badge-undead {{ background: #9b59b6; }}
         .badge-beast {{ background: #f39c12; }}
         .badge-metal {{ background: #95a5a6; }}
         .badge-demon {{ background: #c0392b; }}
-        
+
         code {{
             background: rgba(0, 0, 0, 0.5);
             padding: 2px 6px;
@@ -253,7 +253,7 @@ class AssetCatalogGenerator:
 <body>
     <div class="container">
 """
-    
+
     def generate_html_footer(self) -> str:
         """Generate HTML footer"""
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -267,7 +267,7 @@ class AssetCatalogGenerator:
 </body>
 </html>
 """
-    
+
     def generate_navigation(self) -> str:
         """Generate navigation menu"""
         return """
@@ -281,7 +281,7 @@ class AssetCatalogGenerator:
             <a href="palettes.html">Palettes</a>
         </nav>
 """
-    
+
     def generate_index_page(self):
         """Generate main index page"""
         html = self.generate_html_header("Home")
@@ -290,7 +290,7 @@ class AssetCatalogGenerator:
         <p class="subtitle">Complete extraction of Dragon Warrior (NES) game assets</p>
 """
         html += self.generate_navigation()
-        
+
         html += """
         <div class="section">
             <h2>About This Catalog</h2>
@@ -304,7 +304,7 @@ class AssetCatalogGenerator:
                 <li><strong>8 Color Palettes</strong> (4 background + 4 sprite)</li>
             </ul>
         </div>
-        
+
         <div class="section">
             <h2>ROM Information</h2>
             <table>
@@ -317,7 +317,7 @@ class AssetCatalogGenerator:
                 <tr><td>File Size</td><td>81,936 bytes</td></tr>
             </table>
         </div>
-        
+
         <div class="section">
             <h2>Extraction Status</h2>
             <div class="stats">
@@ -339,7 +339,7 @@ class AssetCatalogGenerator:
                 </div>
             </div>
         </div>
-        
+
         <div class="section">
             <h2>Quick Links</h2>
             <div class="grid">
@@ -361,40 +361,40 @@ class AssetCatalogGenerator:
             </div>
         </div>
 """
-        
+
         html += self.generate_html_footer()
-        
+
         with open(self.output_dir / "index.html", 'w', encoding='utf-8') as f:
             f.write(html)
-    
+
     def generate_monsters_page(self):
         """Generate monsters catalog page"""
         monsters_json = self.extracted_dir / "graphics_comprehensive" / "monsters" / "monsters_database.json"
         stats_json = self.extracted_dir / "json" / "monsters.json"
-        
+
         if not monsters_json.exists() or not stats_json.exists():
             return
-        
+
         with open(monsters_json, 'r') as f:
             monsters_gfx = json.load(f)
-        
+
         with open(stats_json, 'r') as f:
             monsters_stats = json.load(f)
-        
+
         html = self.generate_html_header("Monsters")
         html += """
         <h1>🐉 Monster Database</h1>
         <p class="subtitle">Complete stats and sprites for all 39 monsters</p>
 """
         html += self.generate_navigation()
-        
+
         html += '<div class="section"><h2>All Monsters</h2><div class="grid">'
-        
+
         for i, monster in enumerate(monsters_gfx):
             name = monster.get('name', f'Unknown {i}')
             sprite_tiles = monster.get('sprite_tiles', 0)
             rom_ptr = monster.get('rom_pointer_offset', 'Unknown')
-            
+
             # Get stats from stats JSON
             stats = monsters_stats.get(str(i), {})
             hp = stats.get('hp', 0)
@@ -402,7 +402,7 @@ class AssetCatalogGenerator:
             agility = stats.get('agility', 0)
             exp = stats.get('experience', 0)
             gold = stats.get('gold', 0)
-            
+
             # Determine type badge
             monster_type = 'beast'
             if i <= 2:
@@ -415,7 +415,7 @@ class AssetCatalogGenerator:
                 monster_type = 'metal'
             elif i in [29, 39]:
                 monster_type = 'demon'
-            
+
             html += f'''
             <div class="card">
                 <div class="card-title">
@@ -453,30 +453,30 @@ class AssetCatalogGenerator:
                 </p>
             </div>
 '''
-        
+
         html += '</div></div>'
         html += self.generate_html_footer()
-        
+
         with open(self.output_dir / "monsters.html", 'w', encoding='utf-8') as f:
             f.write(html)
-    
+
     def generate_chr_tiles_page(self):
         """Generate CHR tiles catalog page"""
         chr_sheet = self.extracted_dir / "chr_tiles" / "chr_tiles_complete_sheet.png"
-        
+
         if not chr_sheet.exists():
             return
-        
+
         # Copy sprite sheet to output
         shutil.copy(chr_sheet, self.images_dir / "chr_tiles_sheet.png")
-        
+
         html = self.generate_html_header("CHR Tiles")
         html += """
         <h1>🎨 CHR Tile Viewer</h1>
         <p class="subtitle">All 1024 pattern table tiles from 16KB CHR ROM</p>
 """
         html += self.generate_navigation()
-        
+
         html += '''
         <div class="section">
             <h2>Complete CHR Sprite Sheet</h2>
@@ -495,35 +495,35 @@ class AssetCatalogGenerator:
             </table>
         </div>
 '''
-        
+
         html += self.generate_html_footer()
-        
+
         with open(self.output_dir / "chr_tiles.html", 'w', encoding='utf-8') as f:
             f.write(html)
-    
+
     def generate_items_page(self):
         """Generate items catalog page"""
         items_json = self.extracted_dir / "json" / "items.json"
-        
+
         if not items_json.exists():
             return
-        
+
         with open(items_json, 'r') as f:
             items = json.load(f)
-        
+
         html = self.generate_html_header("Items")
         html += """
         <h1>⚔️ Item Catalog</h1>
         <p class="subtitle">Weapons, armor, tools, and consumables</p>
 """
         html += self.generate_navigation()
-        
+
         # Group items by type
         weapons = {}
         armor = {}
         shields = {}
         tools = {}
-        
+
         for item_id, item in items.items():
             item_type = item.get('type', 'tool')
             if 'sword' in item.get('name', '').lower() or 'club' in item.get('name', '').lower():
@@ -534,39 +534,39 @@ class AssetCatalogGenerator:
                 shields[item_id] = item
             else:
                 tools[item_id] = item
-        
+
         html += '<div class="section"><h2>⚔️ Weapons</h2><div class="grid">'
         for item_id, item in weapons.items():
             html += self._generate_item_card(item)
         html += '</div></div>'
-        
+
         html += '<div class="section"><h2>🛡️ Armor</h2><div class="grid">'
         for item_id, item in armor.items():
             html += self._generate_item_card(item)
         html += '</div></div>'
-        
+
         html += '<div class="section"><h2>🛡️ Shields</h2><div class="grid">'
         for item_id, item in shields.items():
             html += self._generate_item_card(item)
         html += '</div></div>'
-        
+
         html += '<div class="section"><h2>🔧 Tools & Items</h2><div class="grid">'
         for item_id, item in tools.items():
             html += self._generate_item_card(item)
         html += '</div></div>'
-        
+
         html += self.generate_html_footer()
-        
+
         with open(self.output_dir / "items.html", 'w', encoding='utf-8') as f:
             f.write(html)
-    
+
     def _generate_item_card(self, item: dict) -> str:
         """Generate HTML card for an item"""
         name = item.get('name', 'Unknown')
         price = item.get('price', 0)
         attack = item.get('attack_bonus', 0)
         defense = item.get('defense_bonus', 0)
-        
+
         return f'''
         <div class="card">
             <div class="card-title">{name}</div>
@@ -586,23 +586,23 @@ class AssetCatalogGenerator:
             </div>
         </div>
 '''
-    
+
     def generate_all(self):
         """Generate all catalog pages"""
         print("Generating Dragon Warrior Asset Catalog...")
-        
+
         self.generate_index_page()
         print("✓ Generated index.html")
-        
+
         self.generate_monsters_page()
         print("✓ Generated monsters.html")
-        
+
         self.generate_chr_tiles_page()
         print("✓ Generated chr_tiles.html")
-        
+
         self.generate_items_page()
         print("✓ Generated items.html")
-        
+
         print(f"\n✓ Catalog complete! Open {self.output_dir / 'index.html'} in a browser")
 
 
@@ -611,7 +611,7 @@ def main():
     repo_root = Path(__file__).parent.parent
     extracted_dir = repo_root / "extracted_assets"
     output_dir = repo_root / "docs" / "asset_catalog"
-    
+
     generator = AssetCatalogGenerator(str(extracted_dir), str(output_dir))
     generator.generate_all()
 

@@ -263,7 +263,7 @@ L80AF:  .byte $10               ;Stone.
 ;$5-Stairs Up, $6-Brick, $7-Stairs Down, $8-Trees, $9-Poison, $A-Force Field,
 ;$B-Door, $C-Weapon Shop Sign, $D-Inn Sign, $E-Bridge, $F-Large Tile.
 DLCstlGFDat:
-L80B0:  .byte $99, $44, $49, $94, $44, $44, $44, $44, $44, $99 
+L80B0:  .byte $99, $44, $49, $94, $44, $44, $44, $44, $44, $99
 L80BA:  .byte $94, $46, $44, $94, $AA, $7A, $A4, $66, $64, $49
 L80C4:  .byte $44, $66, $64, $44, $AF, $FF, $A4, $64, $66, $44
 L80CE:  .byte $46, $64, $66, $64, $AF, $6F, $A4, $66, $66, $64
@@ -646,8 +646,8 @@ L8DB0:  .byte $46, $64, $64, $64, $66
 L8DB5:  .byte $46, $66, $66, $66, $66
 
 ;Dragonlord's castle - sublevel 1. Map #$0F.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 DgnLrdSL1Dat:
 L8DBA:  .byte $22, $22, $22, $22, $01, $02, $22, $02, $22, $22
@@ -672,8 +672,8 @@ L8E6E:  .byte $20, $00, $02, $20, $00, $20, $00, $02, $22, $02
 L8E78:  .byte $22, $22, $22, $22, $30, $22, $22, $22, $02, $22
 
 ;Dragonlord's castle - sublevel 2. Map #$10.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 DgnLrdSL2Dat:
 L8E82:  .byte $12, $03, $01, $20, $12
@@ -688,8 +688,8 @@ L8EAA:  .byte $30, $02, $00, $20, $01
 L8EAF:  .byte $23, $02, $22, $20, $12
 
 ;Dragonlord's castle - sublevel 3. Map #$11.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 DgnLrdSL3Dat:
 L8EB4:  .byte $2A, $AA, $AA, $81, $22
@@ -732,8 +732,8 @@ L8EE1:  .byte $12, $02, $22, $22, $22
 ;----------------------------------------------------------------------------------------------------
 
 ;Dragonlord's castle - sublevel 4. Map #$12.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 DgnLrdSL4Dat:
 L8EE6:  .byte $22, $22, $22, $22, $22
@@ -748,8 +748,8 @@ L8F0E:  .byte $AA, $A8, $8A, $88, $8A
 L8F13:  .byte $9A, $88, $AA, $AA, $AA
 
 ;Dragonlord's castle - sublevel 5. Map #$13.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 DgnLrdSL5Dat:
 L8F18:  .byte $B8, $A8, $9A, $AA, $89
@@ -764,8 +764,8 @@ L8F40:  .byte $A8, $88, $88, $88, $8A
 L8F45:  .byte $AA, $AA, $AA, $AA, $AA
 
 ;Dragonlord's castle - sublevel 6. Map #$14.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 DgnLrdSL6Dat:
 L8F4A:  .byte $12, $22, $22, $22, $23
@@ -818,8 +818,8 @@ L8F77:  .byte $00, $00, $00, $00, $00
 ;----------------------------------------------------------------------------------------------------
 
 ;Swamp cave. Map #$15.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 SwampCaveDat:
 L8F7C:  .byte $12, $22, $22
@@ -854,8 +854,8 @@ L8FD0:  .byte $22, $02, $02
 L8FD3:  .byte $12, $22, $02
 
 ;Rock mountain cave - B1. Map #$16.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 RckMtnB1Dat:
 L8FD6:  .byte $32, $22, $00, $88, $A2, $2A, $AA
@@ -874,8 +874,8 @@ L902A:  .byte $20, $20, $20, $00, $20, $22, $32
 L9031:  .byte $22, $22, $22, $22, $20, $22, $22
 
 ;Rock mountain cave - B2. Map #$17.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 RckMtnB2Dat:
 L9038:  .byte $12, $02, $22, $22, $22, $22, $22
@@ -894,8 +894,8 @@ L908C:  .byte $20, $00, $00, $00, $20, $20, $12
 L9093:  .byte $22, $2A, $AA, $AA, $A8, $A2, $22
 
 ;Cave of garinham - B1. Map #$18.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 GarinCaveB1Dat:
 L909A:  .byte $22, $22, $22, $22, $02, $04, $44, $02, $22, $28
@@ -958,8 +958,8 @@ L9158:  .byte $22, $22, $22, $22, $22, $22, $20, $22, $20, $22
 ;----------------------------------------------------------------------------------------------------
 
 ;Cave of garinham - B3. Map #$1A.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 GarinCaveB3Dat:
 L9162:  .byte $22, $20, $22, $20, $22, $22, $22, $22, $02, $22
@@ -984,8 +984,8 @@ L9216:  .byte $20, $00, $00, $00, $00, $00, $00, $02, $00, $02
 L9220:  .byte $22, $22, $22, $22, $22, $22, $22, $22, $22, $22
 
 ;Cave of garinham - B4. Map #$1B.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 GarinCaveB4Dat:
 L922A:  .byte $00, $00, $02, $00, $00
@@ -1000,8 +1000,8 @@ L9252:  .byte $00, $00, $02, $00, $00
 L9257:  .byte $00, $00, $00, $00, $00
 
 ;Cave of garinham - B2. Map #$19.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 GarinCaveB2Dat:
 L925C:  .byte $22, $22, $22, $22, $22, $22, $22
@@ -1018,8 +1018,8 @@ L92A2:  .byte $A3, $02, $22, $22, $22, $20, $32
 L92A9:  .byte $22, $22, $22, $AA, $AA, $AA, $AA
 
 ;Erdrick's cave - B1. Map #$1C.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 ErdCaveB1Dat:
 L92B0:  .byte $9A, $82, $22, $20, $02
@@ -1034,14 +1034,14 @@ L92D8:  .byte $02, $AA, $AA, $8A, $8A
 L92DD:  .byte $8A, $82, $02, $22, $03
 
 ;Erdrick's cave - B2. Map #$1D.
-;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down, 
-;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up, 
+;Tile mapping: $0-Stone, $1-Stairs Up, $2-Brick, $3-Stairs Down,
+;$4-Treasure Chest, $5-Door, $6-Gwaelin, $7-Blank, $8-Stone, $9-Stairs Up,
 ;$A-Brick, $B-Stairs Down, $C-Treasure Chest, $D-Door, $E-Gwaelin, $F-Blank.
 ErdCaveB2Dat:
 L92E2:  .byte $22, $22, $22, $22, $22
 L92E7:  .byte $20, $88, $88, $A8, $88
 L92EC:  .byte $AA, $A2, $20, $20, $22
-L92F1:  .byte $00, $02, $00, $22, $24 
+L92F1:  .byte $00, $02, $00, $22, $24
 L92F6:  .byte $22, $AA, $8A, $88, $AA
 L92FB:  .byte $A8, $A0, $02, $02, $00
 L9300:  .byte $20, $02, $02, $22, $22
@@ -1058,7 +1058,7 @@ L9324:  .byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $
 ;----------------------------------------------------------------------------------------------------
 
 ;The following table contains all the sprites that compose the characters in the game.
-;There are two bytes assiciated with each sprite.  The first byte is the tile pattern number 
+;There are two bytes assiciated with each sprite.  The first byte is the tile pattern number
 ;and the second byte is the sprite attribute byte and controls the palette, mirroring and
 ;background/foreground attributes.
 
@@ -1087,7 +1087,7 @@ L934A:  .byte $DB, $03
 ;Fighter, facing back, left side extended.
 L934C:  .byte $D8, $03
 L934E:  .byte $DC, $03
-L9350:  .byte $DD, $03 
+L9350:  .byte $DD, $03
 L9352:  .byte $DE, $03
 
 ;Guard, facing back, right side extended.
@@ -2121,7 +2121,7 @@ L9913:  .byte $FF               ;
 ;Each entry in this table corresponds to an entry in MapTargetTbl.
 ;Player's facing direction: 0-up, 1-right, 2-down, 3-left.
 
-MapEntryDirTbl: 
+MapEntryDirTbl:
 L9914:  .byte DIR_RIGHT, DIR_DOWN, DIR_UP,    DIR_RIGHT, DIR_UP,   DIR_RIGHT, DIR_UP,   DIR_RIGHT
 L991C:  .byte DIR_RIGHT, DIR_LEFT, DIR_RIGHT, DIR_DOWN,  DIR_DOWN, DIR_RIGHT, DIR_DOWN, DIR_DOWN
 L9924:  .byte DIR_DOWN,  DIR_DOWN, DIR_RIGHT, DIR_DOWN,  DIR_DOWN, DIR_DOWN,  DIR_DOWN, DIR_DOWN
@@ -2229,7 +2229,7 @@ L99C5:  .byte $11, $13, $16, $FD
 L99C9:  .byte $11, $13, $FD
 
 ;Cantlin item shop 2.
-L99CC:  .byte $16, $15, $FD 
+L99CC:  .byte $16, $15, $FD
 
 ;----------------------------------------------------------------------------------------------------
 ;This table contains weapon bonuses added to the
@@ -2565,7 +2565,7 @@ L9D0D:  .byte $C1, $C3, $C5, $C6, $CD, $CD, $CD, $CD, $CD, $CD, $C6, $C8, $CD, $
 L9D1B:  .byte $D9, $CD, $C7, $C6, $CD, $CD, $CD, $CD, $C6, $C6, $CD, $CD, $CD, $D5
 L9D29:  .byte $D9, $CD, $C6, $C8, $CD, $CD, $CD, $CD, $C6, $C6, $CD, $CD, $CD, $D5
 L9D37:  .byte $D9, $CD, $CD, $CD, $CD, $CD, $CD, $CD, $CD, $CD, $CD, $CD, $CD, $D5
-L9D45:  .byte $D8, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $D6 
+L9D45:  .byte $D8, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $DA, $D6
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -2610,560 +2610,560 @@ L9D5C:  .byte $05               ;Hurtmore  5MP.
 ;E - N/A.
 ;F - N/A.
 
-Row000:      ;W02  G06  W12  G07  W15  G08  W16  W09  F05  G03  W14  G10  W13  
+Row000:      ;W02  G06  W12  G07  W15  G08  W16  W09  F05  G03  W14  G10  W13
 L9D5D:  .byte $41, $05, $4B, $06, $4E, $07, $4F, $48, $64, $02, $4D, $09, $4C
 
-Row001:      ;W01  G03  F04  G02  W08  G11  W11  G06  H08  W16  W02  F08  G01  S01  G01  W09  
+Row001:      ;W01  G03  F04  G02  W08  G11  W11  G06  H08  W16  W02  F08  G01  S01  G01  W09
 L9D6A:  .byte $40, $02, $63, $01, $47, $0A, $4A, $05, $27, $4F, $41, $67, $00, $C0, $00, $48
-;             M07  H05  G07  W09  
+;             M07  H05  G07  W09
 L9D7A:  .byte $36, $24, $06, $48
 
-Row002:      ;G02  T01  F06  G02  W05  G06  F05  G03  W09  G06  F05  H06  W14  F09  G03  W09  
+Row002:      ;G02  T01  F06  G02  W05  G06  F05  G03  W09  G06  F05  H06  W14  F09  G03  W09
 L9D7E:  .byte $01, $80, $65, $01, $44, $05, $64, $02, $48, $05, $64, $25, $4D, $68, $02, $48
-;             M04  H10  G07  W08  
+;             M04  H10  G07  W08
 L9D8E:  .byte $33, $29, $06, $47
 
-Row003:      ;G01  F09  G11  F08  G02  W08  G05  F09  H04  W12  F10  M02  W09  M03  H13  G09  
+Row003:      ;G01  F09  G11  F08  G02  W08  G05  F09  H04  W12  F10  M02  W09  M03  H13  G09
 L9D92:  .byte $00, $68, $0A, $67, $01, $47, $04, $68, $23, $4B, $69, $31, $48, $32, $2C, $08
-;             W05  
+;             W05
 L9DA2:  .byte $44
 
-Row004:      ;F06  H05  M03  G06  F10  G02  W06  G05  F10  H05  W11  F09  M03  W07  M03  H09  
+Row004:      ;F06  H05  M03  G06  F10  G02  W06  G05  F10  H05  W11  F09  M03  W07  M03  H09
 L9DA3:  .byte $65, $24, $32, $05, $69, $01, $45, $04, $69, $24, $4A, $68, $32, $46, $32, $28
-;             F08  G08  W04  
+;             F08  G08  W04
 L9DB3:  .byte $67, $07, $43
 
-Row005:      ;F05  H05  M05  G05  F10  G04  W02  G05  F05  W03  F05  H04  W10  F09  M03  W07  
+Row005:      ;F05  H05  M05  G05  F10  G04  W02  G05  F05  W03  F05  H04  W10  F09  M03  W07
 L9DB6:  .byte $64, $24, $34, $04, $69, $03, $41, $04, $64, $42, $64, $23, $49, $68, $32, $46
-;             M03  H08  F12  G07  W03  
+;             M03  H08  F12  G07  W03
 L9DC6:  .byte $32, $27, $6B, $06, $42
 
-Row006:      ;F03  H05  M08  G03  F13  G09  F04  W05  F03  H04  W09  M03  F07  M03  W07  H11  
+Row006:      ;F03  H05  M08  G03  F13  G09  F04  W05  F03  H04  W09  M03  F07  M03  W07  H11
 L9DCB:  .byte $62, $24, $37, $02, $6C, $08, $63, $44, $62, $23, $48, $32, $66, $32, $46, $2A
-;             F14  G06  W03  
+;             F14  G06  W03
 L9DDB:  .byte $6D, $05, $42
 
-Row007:      ;H06  M05  F04  M04  F12  G09  F06  W03  H07  W09  M03  F09  M03  W07  H09  F06  
+Row007:      ;H06  M05  F04  M04  F12  G09  F06  W03  H07  W09  M03  F09  M03  W07  H09  F06
 L9DDE:  .byte $25, $34, $63, $33, $6B, $08, $65, $42, $26, $48, $32, $68, $32, $46, $28, $65
-;             M05  F06  G05  W02  
+;             M05  F06  G05  W02
 L9DEE:  .byte $34, $65, $04, $41
 
-Row008:      ;H04  M04  F09  M03  F13  G06  F06  W03  H08  W10  M03  F09  M03  W05  H08  F06  
+Row008:      ;H04  M04  F09  M03  F13  G06  F06  W03  H08  W10  M03  F09  M03  W05  H08  F06
 L9DF2:  .byte $23, $33, $68, $32, $6C, $05, $65, $42, $27, $49, $32, $68, $32, $44, $27, $65
-;             M03  F03  M03  F06  G03  W02  
+;             M03  F03  M03  F06  G03  W02
 L9E02:  .byte $32, $62, $32, $65, $02, $41
 
-Row009:      ;H04  M02  F12  M02  F06  D04  F05  G05  F07  H08  W09  F03  M03  F10  M02  W04  
+Row009:      ;H04  M02  F12  M02  F06  D04  F05  G05  F07  H08  W09  F03  M03  F10  M02  W04
 L9E08:  .byte $23, $31, $6B, $31, $65, $13, $64, $04, $66, $27, $48, $62, $32, $69, $31, $43
-;             H08  F05  M02  F06  M02  F07  G03  W01  
+;             H08  F05  M02  F06  M02  F07  G03  W01
 L9E18:  .byte $27, $64, $31, $65, $31, $66, $02, $40
 
-Row010:      ;H02  G03  F12  M03  F05  D06  F06  G05  F06  H06  W09  F03  M04  F11  M02  W04  
+Row010:      ;H02  G03  F12  M03  F05  D06  F06  G05  F06  H06  W09  F03  M04  F11  M02  W04
 L9E20:  .byte $21, $02, $6B, $32, $64, $15, $65, $04, $65, $25, $48, $62, $33, $6A, $31, $43
-;             H07  F10  T01  F03  M02  F08  
+;             H07  F10  T01  F03  M02  F08
 L9E30:  .byte $26, $69, $80, $62, $31, $67
 
-Row011:      ;W02  G04  F12  M03  F03  D08  F06  G05  F07  H03  W10  F04  M04  F10  M02  W05  
+Row011:      ;W02  G04  F12  M03  F03  D08  F06  G05  F07  H03  W10  F04  M04  F10  M02  W05
 L9E36:  .byte $41, $03, $6B, $32, $62, $17, $65, $04, $66, $22, $49, $63, $33, $69, $31, $44
-;             H07  F16  F08  
+;             H07  F16  F08
 L9E46:  .byte $26, $6F, $67
 
-Row012:      ;W03  G05  F10  M04  F02  D04  U01  D03  F05  G06  F07  H05  W07  F05  M04  F11  
+Row012:      ;W03  G05  F10  M04  F02  D04  U01  D03  F05  G06  F07  H05  W07  F05  M04  F11
 L9E49:  .byte $42, $04, $69, $33, $61, $13, $90, $12, $64, $05, $66, $24, $46, $64, $33, $6A
-;             M01  W05  H08  F16  F08  
+;             M01  W05  H08  F16  F08
 L9E59:  .byte $30, $44, $27, $6F, $67
 
-Row013:      ;W04  G08  F07  M04  F02  D07  F06  G06  F07  H05  W05  F07  M06  F08  M02  W04  
+Row013:      ;W04  G08  F07  M04  F02  D07  F06  G06  F07  H05  W05  F07  M06  F08  M02  W04
 L9E5E:  .byte $43, $07, $66, $33, $61, $16, $65, $05, $66, $24, $44, $66, $35, $67, $31, $43
-;             H10  F16  F06  
+;             H10  F16  F06
 L9E6E:  .byte $29, $6F, $65
 
-Row014:      ;W05  F04  G05  F06  M04  F03  D04  F08  G04  F08  H04  G02  W03  F09  M06  F07  
+Row014:      ;W05  F04  G05  F06  M04  F03  D04  F08  G04  F08  H04  G02  W03  F09  M06  F07
 L9E71:  .byte $44, $63, $04, $65, $33, $62, $13, $67, $03, $67, $23, $01, $42, $68, $35, $66
-;             M03  W04  H07  G04  F16  F04  
+;             M03  W04  H07  G04  F16  F04
 L9E81:  .byte $32, $43, $26, $03, $6F, $63
 
-Row015:      ;W04  F05  G06  F07  M03  F13  G06  F08  H02  G03  W02  F07  G07  M03  F07  M03  
+Row015:      ;W04  F05  G06  F07  M03  F13  G06  F08  H02  G03  W02  F07  G07  M03  F07  M03
 L9E87:  .byte $43, $64, $05, $66, $32, $6C, $05, $67, $21, $02, $41, $66, $06, $32, $66, $32
-;             W04  H05  G06  F16  
+;             W04  H05  G06  F16
 L9E97:  .byte $43, $24, $05, $6F
 
-Row016:      ;W06  F02  G07  F06  G04  F13  G05  F10  G04  W02  F04  G12  M04  F05  M03  W05  
+Row016:      ;W06  F02  G07  F06  G04  F13  G05  F10  G04  W02  F04  G12  M04  F05  M03  W05
 L9E9B:  .byte $45, $61, $06, $65, $03, $6C, $04, $69, $03, $41, $63, $0B, $33, $64, $32, $44
-;             F02  G07  F12  W07  
+;             F02  G07  F12  W07
 L9EAB:  .byte $61, $06, $6B, $46
 
-Row017:      ;W03  F06  G07  F04  G05  F12  G05  F10  G06  W02  G16  G01  M03  F05  M03  W02  
+Row017:      ;W03  F06  G07  F04  G05  F12  G05  F10  G06  W02  G16  G01  M03  F05  M03  W02
 L9EAF:  .byte $42, $65, $06, $63, $04, $6B, $04, $69, $05, $41, $0F, $00, $32, $64, $32, $41
-;             F03  G07  F08  M04  W08  
+;             F03  G07  F08  M04  W08
 L9EBF:  .byte $62, $06, $67, $33, $47
 
-Row018:      ;W02  F09  G13  F13  G06  F08  G08  W02  G16  G01  M04  F04  W03  F04  G07  F04  
+Row018:      ;W02  F09  G13  F13  G06  F08  G08  W02  G16  G01  M04  F04  W03  F04  G07  F04
 L9EC4:  .byte $41, $68, $0C, $6C, $05, $67, $07, $41, $0F, $00, $33, $63, $42, $63, $06, $63
-;             M06  F04  W06  
+;             M06  F04  W06
 L9ED4:  .byte $35, $63, $45
 
-Row019:      ;W02  F09  G13  F14  G06  F06  G10  B01  G06  F06  G06  M04  F09  G07  F02  M07  
+Row019:      ;W02  F09  G13  F14  G06  F06  G10  B01  G06  F06  G06  M04  F09  G07  F02  M07
 L9ED7:  .byte $41, $68, $0C, $6D, $05, $65, $09, $B0, $05, $65, $05, $33, $68, $06, $61, $36
-;             F03  D04  W05  
+;             F03  D04  W05
 L9EE7:  .byte $62, $13, $44
 
-Row020:      ;W01  F11  G14  F12  G07  F03  G12  W02  G04  F08  G06  M10  F02  W01  G05  F02  
+Row020:      ;W01  F11  G14  F12  G07  F03  G12  W02  G04  F08  G06  M10  F02  W01  G05  F02
 L9EEA:  .byte $40, $6A, $0D, $6B, $06, $62, $0B, $41, $03, $67, $05, $39, $61, $40, $04, $61
-;             M05  F05  D07  W03  
+;             M05  F05  D07  W03
 L9EFA:  .byte $34, $64, $16, $42
 
-Row021:      ;F12  G15  F10  G16  G08  W01  G03  F10  G05  F02  M09  W02  G05  F01  M06  D13  
+Row021:      ;F12  G15  F10  G16  G08  W01  G03  F10  G05  F02  M09  W02  G05  F01  M06  D13
 L9EFE:  .byte $6B, $0E, $69, $0F, $07, $40, $02, $69, $04, $61, $38, $41, $04, $60, $35, $1C
-;             W02  
+;             W02
 L9F0E:  .byte $41
 
-Row022:      ;F13  G12  H04  F07  G16  G09  W01  G02  F05  H04  F03  G03  F07  H03  W05  G05  
+Row022:      ;F13  G12  H04  F07  G16  G09  W01  G02  F05  H04  F03  G03  F07  H03  W05  G05
 L9F0F:  .byte $6C, $0B, $23, $66, $0F, $08, $40, $01, $64, $23, $62, $02, $66, $22, $44, $04
-;             M05  D16  
+;             M05  D16
 L9F1F:  .byte $34, $1F
 
-Row023:      ;F14  G07  W03  H07  F04  G15  F04  G07  W02  F04  H06  F04  G03  F05  H05  W04  
+Row023:      ;F14  G07  W03  H07  F04  G15  F04  G07  W02  F04  H06  F04  G03  F05  H05  W04
 L9F21:  .byte $6D, $06, $42, $26, $63, $0E, $63, $06, $41, $63, $25, $63, $02, $64, $24, $43
-;             G06  M03  D10  F02  D05  
+;             G06  M03  D10  F02  D05
 L9F31:  .byte $05, $32, $19, $61, $14
 
-Row024:      ;F15  G04  W07  H06  F04  G10  F09  G07  W02  F03  H07  F04  G04  F02  H07  W04  
+Row024:      ;F15  G04  W07  H06  F04  G10  F09  G07  W02  F03  H07  F04  G04  F02  H07  W04
 L9F36:  .byte $6E, $03, $46, $25, $63, $09, $68, $06, $41, $62, $26, $63, $03, $61, $26, $43
-;             G08  D09  F04  D04  
+;             G08  D09  F04  D04
 L9F46:  .byte $07, $18, $63, $13
 
-Row025:      ;F16  G02  W09  H05  F04  G08  F10  H03  G06  W02  F03  H07  F04  G06  H07  W04  
+Row025:      ;F16  G02  W09  H05  F04  G08  F10  H03  G06  W02  F03  H07  F04  G06  H07  W04
 L9F4A:  .byte $6F, $01, $48, $24, $63, $07, $69, $22, $05, $41, $62, $26, $63, $05, $26, $43
-;             G07  D09  F04  D04  
+;             G07  D09  F04  D04
 L9F5A:  .byte $06, $18, $63, $13
 
-Row026:      ;F16  F01  W10  H04  F04  G08  F10  H06  G05  W02  F03  H05  F05  G07  F07  W03  
+Row026:      ;F16  F01  W10  H04  F04  G08  F10  H06  G05  W02  F03  H05  F05  G07  F07  W03
 L9F5E:  .byte $6F, $60, $49, $23, $63, $07, $69, $25, $04, $41, $62, $24, $64, $06, $66, $42
-;             G07  D10  F02  D05  
+;             G07  D10  F02  D05
 L9F6E:  .byte $06, $19, $61, $14
 
-Row027:      ;W02  F15  W09  M03  F06  G07  F10  H08  G05  W05  F10  G05  F07  W05  G07  D15  
+Row027:      ;W02  F15  W09  M03  F06  G07  F10  H08  G05  W05  F10  G05  F07  W05  G07  D15
 L9F72:  .byte $41, $6E, $48, $32, $65, $06, $69, $27, $04, $44, $69, $04, $66, $44, $06, $1E
 
-Row028:      ;W03  F13  W09  M07  F02  G06  F12  H09  G07  W05  F08  G05  F05  W05  G09  D13  
+Row028:      ;W03  F13  W09  M07  F02  G06  F12  H09  G07  W05  F08  G05  F05  W05  G09  D13
 L9F82:  .byte $42, $6C, $48, $36, $61, $05, $6B, $28, $06, $44, $67, $04, $64, $44, $08, $1C
 
-Row029:      ;W08  F07  W06  M12  G07  F13  H08  G04  M04  W05  F07  G06  F03  W05  G11  D11  
+Row029:      ;W08  F07  W06  M12  G07  F13  H08  G04  M04  W05  F07  G06  F03  W05  G11  D11
 L9F92:  .byte $47, $66, $45, $3B, $06, $6C, $27, $03, $33, $44, $66, $05, $62, $44, $0A, $1A
 
-Row030:      ;W04  H03  W03  F04  W05  M15  G05  F09  M06  H06  G03  M05  W07  F07  G06  W06  
+Row030:      ;W04  H03  W03  F04  W05  M15  G05  F09  M06  H06  G03  M05  W07  F07  G06  W06
 L9FA2:  .byte $43, $22, $42, $63, $44, $3E, $04, $68, $35, $25, $02, $34, $46, $66, $05, $45
-;             G14  D07  W05  
+;             G14  D07  W05
 L9FB2:  .byte $0D, $16, $44
 
-Row031:      ;W03  H06  B01  F02  W03  M16  M01  G06  F07  M10  H06  M06  W09  F06  G07  W06  
+Row031:      ;W03  H06  B01  F02  W03  M16  M01  G06  F07  M10  H06  M06  W09  F06  G07  W06
 L9FB5:  .byte $42, $25, $B0, $61, $42, $3F, $30, $05, $66, $39, $25, $35, $48, $65, $06, $45
-;             G13  H06  W06  
+;             G13  H06  W06
 L9FC5:  .byte $0C, $25, $45
 
-Row032:      ;W02  H07  W05  H04  M12  G09  F03  M14  H05  M07  W07  F06  G08  W07  G10  H10  
+Row032:      ;W02  H07  W05  H04  M12  G09  F03  M14  H05  M07  W07  F06  G08  W07  G10  H10
 L9FC8:  .byte $41, $26, $44, $23, $3B, $08, $62, $3D, $24, $36, $46, $65, $07, $46, $09, $29
-;             W04  
+;             W04
 L9FD8:  .byte $43
 
-Row033:      ;W02  H16  H03  M07  G12  M07  H04  M06  F03  M09  W05  F08  G08  W05  G10  H08  
+Row033:      ;W02  H16  H03  M07  G12  M07  H04  M06  F03  M09  W05  F08  G08  W05  G10  H08
 L9FD9:  .byte $41, $2F, $22, $36, $0B, $36, $23, $35, $62, $38, $44, $67, $07, $44, $09, $27
-;             F04  W03  
+;             F04  W03
 L9FE9:  .byte $63, $42
 
-Row034:      ;W02  H16  H05  M04  G12  M04  H11  M02  F10  M04  W03  F10  G08  W03  G10  H07  
+Row034:      ;W02  H16  H05  M04  G12  M04  H11  M02  F10  M04  W03  F10  G08  W03  G10  H07
 L9FEB:  .byte $41, $2F, $24, $33, $0B, $33, $2A, $31, $69, $33, $42, $69, $07, $42, $09, $26
-;             F07  
+;             F07
 L9FFB:  .byte $66
 
-Row035:      ;W03  H10  G04  H07  M02  G14  H15  M02  F05  D05  M07  F08  G09  W02  G10  H07  
+Row035:      ;W03  H10  G04  H07  M02  G14  H15  M02  F05  D05  M07  F08  G09  W02  G10  H07
 L9FFC:  .byte $42, $29, $03, $26, $31, $0D, $2E, $31, $64, $14, $36, $67, $08, $41, $09, $26
-;             F09  
+;             F09
 LA00C:  .byte $68
 
-Row036:      ;W04  H03  F04  G08  H05  W02  G13  F07  H08  M04  F02  D09  M06  F06  G09  W02  
+Row036:      ;W04  H03  F04  G08  H05  W02  G13  F07  H08  M04  F02  D09  M06  F06  G09  W02
 LA00D:  .byte $43, $22, $63, $07, $24, $41, $0C, $66, $27, $33, $61, $18, $35, $65, $08, $41
-;             G05  M04  H08  F11  
+;             G05  M04  H08  F11
 LA01D:  .byte $04, $33, $27, $6A
 
-Row037:      ;W02  F08  G10  H03  W04  G11  F11  H06  M04  D09  P03  F09  G10  B01  G03  F02  
+Row037:      ;W02  F08  G10  H03  W04  G11  F11  H06  M04  D09  P03  F09  G10  B01  G03  F02
 LA021:  .byte $41, $67, $09, $22, $43, $0A, $6A, $25, $33, $18, $72, $68, $09, $B0, $02, $61
-;             M06  H06  F11  
+;             M06  H06  F11
 LA031:  .byte $35, $25, $6A
 
-Row038:      ;W01  F07  G11  H04  W05  G08  F14  H08  W04  D05  P05  F09  G06  W04  F05  M07  
+Row038:      ;W01  F07  G11  H04  W05  G08  F14  H08  W04  D05  P05  F09  G06  W04  F05  M07
 LA034:  .byte $40, $66, $0A, $23, $44, $07, $6D, $27, $43, $14, $74, $68, $05, $43, $64, $36
-;             H04  F12  W01  
+;             H04  F12  W01
 LA044:  .byte $23, $6B, $40
 
-Row039:      ;F07  G10  F05  W05  G08  F14  G04  H04  W08  P08  F07  G04  W07  F08  M05  H02  
+Row039:      ;F07  G10  F05  W05  G08  F14  G04  H04  W08  P08  F07  G04  W07  F08  M05  H02
 LA047:  .byte $66, $09, $64, $44, $07, $6D, $03, $23, $47, $77, $66, $03, $46, $67, $34, $21
-;             F12  W02  
+;             F12  W02
 LA057:  .byte $6B, $41
 
-Row040:      ;F05  G09  F07  W06  G07  F11  G10  W09  P08  F07  W13  F04  P04  M04  F13  W03  
+Row040:      ;F05  G09  F07  W06  G07  F11  G10  W09  P08  F07  W13  F04  P04  M04  F13  W03
 LA059:  .byte $64, $08, $66, $45, $06, $6A, $09, $48, $77, $66, $4C, $63, $73, $33, $6C, $42
 
-Row041:      ;F04  G07  F08  W09  G07  F07  G06  T01  G05  W12  P05  F06  W16  W01  P08  M05  
+Row041:      ;F04  G07  F08  W09  G07  F07  G06  T01  G05  W12  P05  F06  W16  W01  P08  M05
 LA069:  .byte $63, $06, $67, $48, $06, $66, $05, $80, $04, $4B, $74, $65, $4F, $40, $77, $34
-;             F06  W07  
+;             F06  W07
 LA079:  .byte $65, $46
 
-Row042:      ;F05  G05  F05  W10  G11  F04  G09  W16  W04  F05  W16  W07  P06  M07  W10  
+Row042:      ;F05  G05  F05  W10  G11  F04  G09  W16  W04  F05  W16  W07  P06  M07  W10
 LA07B:  .byte $64, $04, $64, $49, $0A, $63, $08, $4F, $43, $64, $4F, $46, $75, $36, $49
 
-Row043:      ;W01  F05  G03  F04  W11  G16  G03  C01  G03  W16  W16  W16  W04  P07  M03  W11  
+Row043:      ;W01  F05  G03  F04  W11  G16  G03  C01  G03  W16  W16  W16  W04  P07  M03  W11
 LA08A:  .byte $40, $64, $02, $63, $4A, $0F, $02, $A0, $02, $4F, $4F, $4F, $43, $76, $32, $4A
 
-Row044:      ;W02  F10  W09  G16  G08  W16  W16  W16  W10  P01  U01  P01  M02  W12  
+Row044:      ;W02  F10  W09  G16  G08  W16  W16  W16  W10  P01  U01  P01  M02  W12
 LA09A:  .byte $41, $69, $48, $0F, $07, $4F, $4F, $4F, $49, $70, $90, $70, $31, $4B
 
-Row045:      ;W02  F09  W09  F06  G16  G01  W08  M03  W16  W15  F06  W16  W13  
+Row045:      ;W02  F09  W09  F06  G16  G01  W08  M03  W16  W15  F06  W16  W13
 LA0A8:  .byte $41, $68, $48, $65, $0F, $00, $47, $32, $4F, $4E, $65, $4F, $4C
 
-Row046:      ;W04  F09  W06  F08  G14  W08  M06  W16  W08  F11  G05  W16  W04  H04  
+Row046:      ;W04  F09  W06  F08  G14  W08  M06  W16  W08  F11  G05  W16  W04  H04
 LA0B5:  .byte $43, $68, $45, $67, $0D, $47, $35, $4F, $47, $6A, $04, $4F, $43, $23
 
-Row047:      ;W03  F11  W08  F07  G11  W07  P03  M07  W16  W01  F15  G09  W16  H06  
+Row047:      ;W03  F11  W08  F07  G11  W07  P03  M07  W16  W01  F15  G09  W16  H06
 LA0C3:  .byte $42, $6A, $47, $66, $0A, $46, $72, $36, $4F, $40, $6E, $08, $4F, $25
 
-Row048:      ;W02  F13  W08  F08  G08  W07  M01  P01  C01  P01  M08  W13  D04  F14  G12  W12  
+Row048:      ;W02  F13  W08  F08  G08  W07  M01  P01  C01  P01  M08  W13  D04  F14  G12  W12
 LA0D1:  .byte $41, $6C, $47, $67, $07, $46, $30, $70, $A0, $70, $37, $4C, $13, $6D, $0B, $4B
-;             H07  
+;             H07
 LA0E1:  .byte $26
 
-Row049:      ;W03  F11  W10  F08  G08  W05  M02  P03  D02  M07  W02  D03  W01  D03  W02  D07  
+Row049:      ;W03  F11  W10  F08  G08  W05  M02  P03  D02  M07  W02  D03  W01  D03  W02  D07
 LA0E2:  .byte $42, $6A, $49, $67, $07, $44, $31, $72, $11, $36, $41, $12, $40, $12, $41, $16
-;             F13  G13  P01  U01  P01  W06  H08  
+;             F13  G13  P01  U01  P01  W06  H08
 LA0F2:  .byte $6C, $0C, $70, $90, $70, $45, $27
 
-Row050:      ;W03  F10  M04  W05  F11  G07  W04  M07  D02  M04  D06  W04  D11  F14  G11  P03  
+Row050:      ;W03  F10  M04  W05  F11  G07  W04  M07  D02  M04  D06  W04  D11  F14  G11  P03
 LA0F9:  .byte $42, $69, $33, $44, $6A, $06, $43, $36, $11, $33, $15, $43, $1A, $6D, $0A, $72
-;             W05  F04  H05  
+;             W05  F04  H05
 LA109:  .byte $44, $63, $24
 
-Row051:      ;W05  F06  M13  F08  G08  W05  M04  D04  M03  D05  M02  W04  M02  D10  F16  F01  
+Row051:      ;W05  F06  M13  F08  G08  W05  M04  D04  M03  D05  M02  W04  M02  D10  F16  F01
 LA10C:  .byte $44, $65, $3C, $67, $07, $44, $33, $13, $32, $14, $31, $43, $31, $19, $6F, $60
-;             G06  H06  W02  F10  
+;             G06  H06  W02  F10
 LA11C:  .byte $05, $25, $41, $69
 
-Row052:      ;W04  G02  F02  M16  M01  F08  G06  W05  M04  D04  M05  D03  M02  W06  M03  D10  
+Row052:      ;W04  G02  F02  M16  M01  F08  G06  W05  M04  D04  M05  D03  M02  W06  M03  D10
 LA120:  .byte $43, $01, $61, $3F, $30, $67, $05, $44, $33, $13, $34, $12, $31, $45, $32, $19
-;             F15  M03  H10  F11  
+;             F15  M03  H10  F11
 LA130:  .byte $6E, $32, $29, $6A
 
-Row053:      ;W02  G04  M16  M04  F08  G04  W07  M02  D06  M05  D01  M02  W08  M04  D09  F07  
+Row053:      ;W02  G04  M16  M04  F08  G04  W07  M02  D06  M05  D01  M02  W08  M04  D09  F07
 LA134:  .byte $41, $03, $3F, $33, $67, $03, $46, $31, $15, $34, $10, $31, $47, $33, $18, $66
-;             W04  M06  H09  F12  
+;             W04  M06  H09  F12
 LA144:  .byte $43, $35, $28, $6B
 
-Row054:      ;W01  G04  M04  F07  M13  F05  H03  W08  M03  D06  M04  H02  M02  W09  M03  D08  
+Row054:      ;W01  G04  M04  F07  M13  F05  H03  W08  M03  D06  M04  H02  M02  W09  M03  D08
 LA148:  .byte $40, $03, $33, $66, $3C, $64, $22, $47, $32, $15, $33, $21, $31, $48, $32, $17
-;             F05  W07  M07  H08  F11  
+;             F05  W07  M07  H08  F11
 LA158:  .byte $64, $46, $36, $27, $6A
 
-Row055:      ;G04  M03  F10  M14  F04  H03  W08  M02  D06  M03  H02  M03  W10  M04  D05  F04  
+Row055:      ;G04  M03  F10  M14  F04  H03  W08  M02  D06  M03  H02  M03  W10  M04  D05  F04
 LA15D:  .byte $03, $32, $69, $3D, $63, $22, $47, $31, $15, $32, $21, $32, $49, $33, $14, $63
-;             W08  M13  H03  F11  
+;             W08  M13  H03  F11
 LA16D:  .byte $47, $3C, $22, $6A
 
-Row056:      ;G04  F07  P04  F04  M13  F04  H03  W07  M02  D05  M03  H03  M02  W13  M03  H05  
+Row056:      ;G04  F07  P04  F04  M13  F04  H03  W07  M02  D05  M03  H03  M02  W13  M03  H05
 LA171:  .byte $03, $66, $73, $63, $3C, $63, $22, $46, $31, $14, $32, $22, $31, $4C, $32, $24
-;             F04  W04  M04  F05  M08  F12  W01  
+;             F04  W04  M04  F05  M08  F12  W01
 LA181:  .byte $63, $43, $33, $64, $37, $6B, $40
 
-Row057:      ;G03  F06  P07  F05  M04  G04  U01  M02  F03  H04  W07  M03  D03  M03  H04  M02  
+Row057:      ;G03  F06  P07  F05  M04  G04  U01  M02  F03  H04  W07  M03  D03  M03  H04  M02
 LA188:  .byte $02, $65, $76, $64, $33, $03, $90, $31, $62, $23, $46, $32, $12, $32, $23, $31
-;             W13  M02  H08  F16  M10  F07  W03  
+;             W13  M02  H08  F16  M10  F07  W03
 LA198:  .byte $4C, $31, $27, $6F, $39, $66, $42
 
-Row058:      ;G04  F04  P08  F06  G06  M03  H08  W08  M02  D02  M03  H06  M02  W11  M03  H08  
+Row058:      ;G04  F04  P08  F06  G06  M03  H08  W08  M02  D02  M03  H06  M02  W11  M03  H08
 LA19F:  .byte $03, $63, $77, $65, $05, $32, $27, $47, $31, $11, $32, $25, $31, $4A, $32, $27
-;             F16  M09  D03  F04  W04  
+;             F16  M09  D03  F04  W04
 LA1AF:  .byte $6F, $38, $12, $63, $43
 
-Row059:      ;G03  F06  P06  F07  G05  M03  H08  W09  M02  P01  M06  H01  M05  W12  M02  H06  
+Row059:      ;G03  F06  P06  F07  G05  M03  H08  W09  M02  P01  M06  H01  M05  W12  M02  H06
 LA1B4:  .byte $02, $65, $75, $66, $04, $32, $27, $48, $31, $70, $35, $20, $34, $4B, $31, $25
-;             G09  F08  M08  D06  F02  W05  
+;             G09  F08  M08  D06  F02  W05
 LA1C4:  .byte $08, $67, $37, $15, $61, $44
 
-Row060:      ;G03  F07  P04  F07  G06  M04  H06  W09  M02  P02  M05  G03  M03  W14  M02  H04  
+Row060:      ;G03  F07  P04  F07  G06  M04  H06  W09  M02  P02  M05  G03  M03  W14  M02  H04
 LA1CA:  .byte $02, $66, $73, $66, $05, $33, $25, $48, $31, $71, $34, $02, $32, $4D, $31, $23
-;             G14  F11  D08  F02  W04  
+;             G14  F11  D08  F02  W04
 LA1DA:  .byte $0D, $6A, $17, $61, $43
 
-Row061:      ;G03  F16  F01  M15  W12  M02  P02  M03  G03  M03  W14  M03  H03  G16  F09  D08  
+Row061:      ;G03  F16  F01  M15  W12  M02  P02  M03  G03  M03  W14  M03  H03  G16  F09  D08
 LA1DF:  .byte $02, $6F, $60, $3E, $4B, $31, $71, $32, $02, $32, $4D, $32, $22, $0F, $68, $17
-;             F04  W03  
+;             F04  W03
 LA1EF:  .byte $63, $42
 
-Row062:      ;G04  F14  M11  F04  W15  M02  P02  M03  G03  M03  W14  M03  H03  G15  F10  D06  
+Row062:      ;G04  F14  M11  F04  W15  M02  P02  M03  G03  M03  W14  M03  H03  G15  F10  D06
 LA1F1:  .byte $03, $6D, $3A, $63, $4E, $31, $71, $32, $02, $32, $4D, $32, $22, $0E, $69, $15
-;             F05  W03  
+;             F05  W03
 LA201:  .byte $64, $42
 
-Row063:      ;W01  G04  F09  H03  M06  F09  G02  W14  M02  P04  M02  G03  M02  W15  M03  H08  
+Row063:      ;W01  G04  F09  H03  M06  F09  G02  W14  M02  P04  M02  G03  M02  W15  M03  H08
 LA203:  .byte $40, $03, $68, $22, $35, $68, $01, $4D, $31, $73, $31, $02, $31, $4E, $32, $27
-;             F03  G05  F12  D04  F07  
+;             F03  G05  F12  D04  F07
 LA213:  .byte $62, $04, $6B, $13, $66
 
-Row064:      ;W02  G04  F07  H06  M03  F09  G05  W13  M02  P06  M03  W16  W01  M02  H07  F05  
+Row064:      ;W02  G04  F07  H06  M03  F09  G05  W13  M02  P06  M03  W16  W01  M02  H07  F05
 LA218:  .byte $41, $03, $66, $25, $32, $68, $04, $4C, $31, $75, $32, $4F, $40, $31, $26, $64
-;             G03  F04  M08  F13  
+;             G03  F04  M08  F13
 LA228:  .byte $02, $63, $37, $6C
 
-Row065:      ;W04  G04  F08  H05  F09  G07  W13  M03  P02  M03  W16  W06  H05  F11  M03  G05  
+Row065:      ;W04  G04  F08  H05  F09  G07  W13  M03  P02  M03  W16  W06  H05  F11  M03  G05
 LA22C:  .byte $43, $03, $67, $24, $68, $06, $4C, $32, $71, $32, $4F, $45, $24, $6A, $32, $04
-;             M06  F10  
+;             M06  F10
 LA23C:  .byte $35, $69
 
-Row066:      ;W06  G04  F07  H06  F05  G08  W16  M04  W16  W10  F13  M03  G09  M04  F09  
+Row066:      ;W06  G04  F07  H06  F05  G08  W16  M04  W16  W10  F13  M03  G09  M04  F09
 LA23E:  .byte $45, $03, $66, $25, $64, $07, $4F, $33, $4F, $49, $6C, $32, $08, $33, $68
 
-Row067:      ;W07  G05  F06  H03  F06  G08  W16  W16  W16  W01  F11  M02  G03  F05  G03  M05  
+Row067:      ;W07  G05  F06  H03  F06  G08  W16  W16  W16  W01  F11  M02  G03  F05  G03  M05
 LA24D:  .byte $46, $04, $65, $22, $65, $07, $4F, $4F, $4F, $40, $6A, $31, $02, $64, $02, $34
-;             F07  
+;             F07
 LA25D:  .byte $66
 
-Row068:      ;W08  G06  F12  G07  W05  F07  W16  W16  W09  F08  G05  F07  G04  M03  F07  
+Row068:      ;W08  G06  F12  G07  W05  F07  W16  W16  W09  F08  G05  F07  G04  M03  F07
 LA25E:  .byte $47, $05, $6B, $06, $44, $66, $4F, $4F, $48, $67, $04, $66, $03, $32, $66
 
-Row069:      ;W09  G06  F10  G05  W06  F07  W16  W16  W09  F09  G05  F02  W05  F02  G04  M03  
+Row069:      ;W09  G06  F10  G05  W06  F07  W16  W16  W09  F09  G05  F02  W05  F02  G04  M03
 LA26D:  .byte $48, $05, $69, $04, $45, $66, $4F, $4F, $48, $68, $04, $61, $44, $61, $03, $32
-;             F06  
+;             F06
 LA27D:  .byte $65
 
-Row070:      ;W11  G06  F08  G06  W04  G02  F05  W16  W16  W08  F10  G05  F02  W07  F02  G03  
+Row070:      ;W11  G06  F08  G06  W04  G02  F05  W16  W16  W08  F10  G05  F02  W07  F02  G03
 LA27E:  .byte $4A, $05, $67, $05, $43, $01, $64, $4F, $4F, $47, $69, $04, $61, $46, $61, $02
-;             M02  F07  
+;             M02  F07
 LA28E:  .byte $31, $66
 
-Row071:      ;W12  G07  F08  G11  F03  W16  W16  W10  F10  G03  F02  W03  G03  W03  F02  G02  
+Row071:      ;W12  G07  F08  G11  F03  W16  W16  W10  F10  G03  F02  W03  G03  W03  F02  G02
 LA290:  .byte $4B, $06, $67, $0A, $62, $4F, $4F, $49, $69, $02, $61, $42, $02, $42, $61, $01
-;             M03  F06  
+;             M03  F06
 LA2A0:  .byte $32, $65
 
-Row072:      ;W14  G06  F09  G10  W16  W16  W15  F08  G02  F02  W03  G01  T01  G01  D03  F02  
+Row072:      ;W14  G06  F09  G10  W16  W16  W15  F08  G02  F02  W03  G01  T01  G01  D03  F02
 LA2A2:  .byte $4D, $05, $68, $09, $4F, $4F, $4E, $67, $01, $61, $42, $00, $80, $00, $12, $61
-;             G02  M02  F07  
+;             G02  M02  F07
 LA2B2:  .byte $01, $31, $66
 
-Row073:      ;W06  M06  W09  F12  G04  W16  W16  W16  F13  W03  G03  W03  F02  G02  M02  F07  
+Row073:      ;W06  M06  W09  F12  G04  W16  W16  W16  F13  W03  G03  W03  F02  G02  M02  F07
 LA2B5:  .byte $45, $35, $48, $6B, $03, $4F, $4F, $4F, $6C, $42, $02, $42, $61, $01, $31, $66
 
-Row074:      ;W05  M03  F06  W09  F11  G04  W16  W16  W16  F13  W07  F02  G02  M02  F07  
+Row074:      ;W05  M03  F06  W09  F11  G04  W16  W16  W16  F13  W07  F02  G02  M02  F07
 LA2C5:  .byte $44, $32, $65, $48, $6A, $03, $4F, $4F, $4F, $6C, $46, $61, $01, $31, $66
 
-Row075:      ;W04  M03  F10  W05  F11  G06  W16  W15  M08  W09  F13  W05  F03  M04  F06  
+Row075:      ;W04  M03  F10  W05  F11  G06  W16  W15  M08  W09  F13  W05  F03  M04  F06
 LA2D4:  .byte $43, $32, $69, $44, $6A, $05, $4F, $4E, $37, $48, $6C, $44, $62, $33, $65
 
-Row076:      ;W03  M03  F08  G04  W06  F08  G10  W16  W10  M05  D07  W09  F09  M05  F15  
+Row076:      ;W03  M03  F08  G04  W06  F08  G10  W16  W10  M05  D07  W09  F09  M05  F15
 LA2E3:  .byte $42, $32, $67, $03, $45, $67, $09, $4F, $49, $34, $16, $48, $68, $34, $6E
 
-Row077:      ;W02  M03  F06  G10  W04  F07  G11  W16  W08  D08  M04  D02  W07  F11  M05  F13  
+Row077:      ;W02  M03  F06  G10  W04  F07  G11  W16  W08  D08  M04  D02  W07  F11  M05  F13
 LA2F2:  .byte $41, $32, $65, $09, $43, $66, $0A, $4F, $47, $17, $33, $11, $46, $6A, $34, $6C
-;             W03  
+;             W03
 LA302:  .byte $42
 
-Row078:      ;W01  M03  F06  G13  W01  F07  G06  F02  G05  W16  W06  M14  D02  W07  F12  M04  
+Row078:      ;W01  M03  F06  G13  W01  F07  G06  F02  G05  W16  W06  M14  D02  W07  F12  M04
 LA303:  .byte $40, $32, $65, $0C, $40, $66, $05, $61, $04, $4F, $45, $3D, $11, $46, $6B, $33
-;             H03  F08  G02  W02  
+;             H03  F08  G02  W02
 LA313:  .byte $22, $67, $01, $41
 
-Row079:      ;M03  F04  G09  F04  G03  B01  F07  G05  F04  G05  W14  M10  D06  M06  D01  W09  
+Row079:      ;M03  F04  G09  F04  G03  B01  F07  G05  F04  G05  W14  M10  D06  M06  D01  W09
 LA317:  .byte $32, $63, $08, $63, $02, $B0, $66, $04, $63, $04, $4D, $39, $15, $35, $10, $48
-;             F11  M03  H04  F06  G05  
+;             F11  M03  H04  F06  G05
 LA327:  .byte $6A, $32, $23, $65, $04
 
-Row080:      ;M03  F03  G08  F09  W02  F05  G05  F06  G04  W11  M08  D14  M03  D01  M02  W06  
+Row080:      ;M03  F03  G08  F09  W02  F05  G05  F06  G04  W11  M08  D14  M03  D01  M02  W06
 LA32C:  .byte $32, $62, $07, $68, $41, $64, $04, $65, $03, $4A, $37, $1D, $32, $10, $31, $45
-;             F14  M02  H03  F05  G06  
+;             F14  M02  H03  F05  G06
 LA33C:  .byte $6D, $31, $22, $64, $05
 
-Row081:      ;M02  F05  G05  F12  W02  F04  G04  F08  G04  W08  M09  D02  M12  D02  M02  D01  
+Row081:      ;M02  F05  G05  F12  W02  F04  G04  F08  G04  W08  M09  D02  M12  D02  M02  D01
 LA341:  .byte $31, $64, $04, $6B, $41, $63, $03, $67, $03, $47, $38, $11, $3B, $11, $31, $10
-;             M02  W07  F14  M02  H03  F05  G05  
+;             M02  W07  F14  M02  H03  F05  G05
 LA351:  .byte $31, $46, $6D, $31, $22, $64, $04
 
-Row082:      ;F05  G06  H02  F11  M04  F03  G04  F06  G05  W07  M09  D02  M04  D08  M02  D01  
+Row082:      ;F05  G06  H02  F11  M04  F03  G04  F06  G05  W07  M09  D02  M04  D08  M02  D01
 LA358:  .byte $64, $05, $21, $6A, $33, $62, $03, $65, $04, $46, $38, $11, $33, $17, $31, $10
-;             M02  D01  M03  W08  F13  M02  H02  F05  G05  
+;             M02  D01  M03  W08  F13  M02  H02  F05  G05
 LA368:  .byte $31, $10, $32, $47, $6C, $31, $21, $64, $04
 
-Row083:      ;F04  G06  H04  F09  M08  G05  F04  G06  W08  M08  D01  M09  D03  M03  D02  M01  
+Row083:      ;F04  G06  H04  F09  M08  G05  F04  G06  W08  M08  D01  M09  D03  M03  D02  M01
 LA371:  .byte $63, $05, $23, $68, $37, $04, $63, $05, $47, $37, $10, $38, $12, $32, $11, $30
-;             D01  M04  W07  F13  M03  H02  F05  G04  
+;             D01  M04  W07  F13  M03  H02  F05  G04
 LA381:  .byte $10, $33, $46, $6C, $32, $21, $64, $03
 
-Row084:      ;F05  G04  H04  F09  M11  G12  W11  H02  D05  M10  D01  M05  D04  M03  W08  F13  
+Row084:      ;F05  G04  H04  F09  M11  G12  W11  H02  D05  M10  D01  M05  D04  M03  W08  F13
 LA389:  .byte $64, $03, $23, $68, $3A, $0B, $4A, $21, $14, $39, $10, $34, $13, $32, $47, $6C
-;             M02  H03  F05  G02  W01  
+;             M02  H03  F05  G02  W01
 LA399:  .byte $31, $22, $64, $01, $40
 
-Row085:      ;F05  G02  H05  F09  M14  G08  W11  H05  M03  D02  M09  D01  M08  F01  M04  W08  
+Row085:      ;F05  G02  H05  F09  M14  G08  W11  H05  M03  D02  M09  D01  M08  F01  M04  W08
 LA39E:  .byte $64, $01, $24, $68, $3D, $07, $4A, $24, $32, $11, $38, $10, $37, $60, $33, $47
-;             F13  M02  F08  
+;             F13  M02  F08
 LA3AE:  .byte $6C, $31, $67
 
-Row086:      ;W02  F05  H06  F05  M05  D07  M07  G04  W09  F03  H07  M03  D05  M05  D01  M07  
+Row086:      ;W02  F05  H06  F05  M05  D07  M07  G04  W09  F03  H07  M03  D05  M05  D01  M07
 LA3B1:  .byte $41, $64, $25, $64, $34, $16, $36, $03, $48, $62, $26, $32, $14, $34, $10, $36
-;             F03  M03  W11  F08  H04  F08  
+;             F03  M03  W11  F08  H04  F08
 LA3C1:  .byte $62, $32, $4A, $67, $23, $67
 
-Row087:      ;W03  F05  H06  F02  M03  D12  M05  W13  F05  H05  M14  D07  F05  M03  W12  F05  
+Row087:      ;W03  F05  H06  F02  M03  D12  M05  W13  F05  H05  M14  D07  F05  M03  W12  F05
 LA3C7:  .byte $42, $64, $25, $61, $32, $1B, $34, $4C, $64, $24, $3D, $16, $64, $32, $4B, $64
-;             H05  F08  
+;             H05  F08
 LA3D7:  .byte $24, $67
 
-Row088:      ;W02  F06  H09  D15  M03  W12  F06  H06  M07  G03  M10  F07  M02  W13  F06  H04  
+Row088:      ;W02  F06  H09  D15  M03  W12  F06  H06  M07  G03  M10  F07  M02  W13  F06  H04
 LA3D9:  .byte $41, $65, $28, $1E, $32, $4B, $65, $25, $36, $02, $39, $66, $31, $4C, $65, $23
-;             F06  W03  
+;             F06  W03
 LA3E9:  .byte $65, $42
 
-Row089:      ;F09  H07  D09  T01  D05  M02  W12  F06  H08  M02  F03  G04  W04  M08  F05  M02  
+Row089:      ;F09  H07  D09  T01  D05  M02  W12  F06  H08  M02  F03  G04  W04  M08  F05  M02
 LA3EB:  .byte $68, $26, $18, $80, $14, $31, $4B, $65, $27, $31, $62, $03, $43, $37, $64, $31
-;             W15  F06  H04  F03  W05  
+;             W15  F06  H04  F03  W05
 LA3FB:  .byte $4E, $65, $23, $62, $44
 
-Row090:      ;F11  H05  D14  W06  F13  H09  M02  F05  G05  W03  P05  M04  F02  M02  W14  F07  
+Row090:      ;F11  H05  D14  W06  F13  H09  M02  F05  G05  W03  P05  M04  F02  M02  W14  F07
 LA400:  .byte $6A, $24, $1D, $45, $6C, $28, $31, $64, $04, $42, $74, $33, $61, $31, $4D, $66
-;             H06  F03  W04  
+;             H06  F03  W04
 LA410:  .byte $25, $62, $43
 
-Row091:      ;W01  F12  H02  D12  W07  F07  W07  H07  M04  F06  G05  B01  P05  G04  M03  F01  
+Row091:      ;W01  F12  H02  D12  W07  F07  W07  H07  M04  F06  G05  B01  P05  G04  M03  F01
 LA413:  .byte $40, $6B, $21, $1B, $46, $66, $46, $26, $33, $65, $04, $B0, $74, $03, $32, $60
-;             W16  W01  F07  H04  F05  
+;             W16  W01  F07  H04  F05
 LA423:  .byte $4F, $40, $66, $23, $64
 
-Row092:      ;W05  F09  D11  W07  F04  W04  F06  H07  M03  F10  G03  W02  P04  G06  M02  G02  
+Row092:      ;W05  F09  D11  W07  F04  W04  F06  H07  M03  F10  G03  W02  P04  G06  M02  G02
 LA428:  .byte $44, $68, $1A, $46, $63, $43, $65, $26, $32, $69, $02, $41, $73, $05, $31, $01
-;             W16  F07  H03  F05  
+;             W16  F07  H03  F05
 LA438:  .byte $4F, $66, $22, $64
 
-Row093:      ;W11  F02  D13  W05  F08  W08  H05  M02  F11  W04  P05  G06  M04  G02  W16  F04  
+Row093:      ;W11  F02  D13  W05  F08  W08  H05  M02  F11  W04  P05  G06  M04  G02  W16  F04
 LA43C:  .byte $4A, $61, $1C, $44, $67, $47, $24, $31, $6A, $43, $74, $05, $33, $01, $4F, $63
-;             H04  F05  
+;             H04  F05
 LA44C:  .byte $23, $64
 
-Row094:      ;W08  D15  W10  F15  H03  M02  F08  W07  P05  G06  M05  G01  W14  F02  W02  F04  
+Row094:      ;W08  D15  W10  F15  H03  M02  F08  W07  P05  G06  M05  G01  W14  F02  W02  F04
 LA44E:  .byte $47, $1E, $49, $6E, $22, $31, $67, $46, $74, $05, $34, $00, $4D, $61, $41, $63
-;             H04  F05  
+;             H04  F05
 LA45E:  .byte $23, $64
 
-Row095:      ;W04  D16  D05  W05  F08  W04  F07  M03  F05  W12  P03  G07  F02  M02  G03  W12  
+Row095:      ;W04  D16  D05  W05  F08  W04  F07  M03  F05  W12  P03  G07  F02  M02  G03  W12
 LA460:  .byte $43, $1F, $14, $44, $67, $43, $66, $32, $64, $4B, $72, $06, $61, $31, $02, $4B
-;             F04  W01  F05  H02  F05  W05  
+;             F04  W01  F05  H02  F05  W05
 LA470:  .byte $63, $40, $64, $21, $64, $44
 
-Row096:      ;W02  D06  H06  D11  F05  W13  F04  M03  F05  W13  G11  F03  M02  G03  W10  F05  
+Row096:      ;W02  D06  H06  D11  F05  W13  F04  M03  F05  W13  G11  F03  M02  G03  W10  F05
 LA476:  .byte $41, $15, $25, $1A, $64, $4C, $63, $32, $64, $4C, $0A, $62, $31, $02, $49, $64
-;             W02  F10  W06  
+;             W02  F10  W06
 LA486:  .byte $41, $69, $45
 
-Row097:      ;W03  D03  H04  F05  D09  F15  W03  F03  M02  F07  W11  F04  G09  F05  M03  G02  
+Row097:      ;W03  D03  H04  F05  D09  F15  W03  F03  M02  F07  W11  F04  G09  F05  M03  G02
 LA489:  .byte $42, $12, $23, $64, $18, $6E, $42, $62, $31, $66, $4A, $63, $08, $64, $32, $01
-;             W11  F04  W02  F09  W06  
+;             W11  F04  W02  F09  W06
 LA499:  .byte $4A, $63, $41, $68, $45
 
-Row098:      ;W02  H06  F10  D05  F16  F01  B01  F02  M03  F07  W07  F10  G07  F08  M02  G02  
+Row098:      ;W02  H06  F10  D05  F16  F01  B01  F02  M03  F07  W07  F10  G07  F08  M02  G02
 LA49E:  .byte $41, $25, $69, $14, $6F, $60, $B0, $61, $32, $66, $46, $69, $06, $67, $31, $01
-;             W09  F06  W02  F07  W07  
+;             W09  F06  W02  F07  W07
 LA4AE:  .byte $48, $65, $41, $66, $46
 
-Row099:      ;W01  H05  F14  D04  F14  W04  M02  F04  G04  W10  F09  G06  F07  M02  G03  W09  
+Row099:      ;W01  H05  F14  D04  F14  W04  M02  F04  G04  W10  F09  G06  F07  M02  G03  W09
 LA4B3:  .byte $40, $24, $6D, $13, $6D, $43, $31, $63, $03, $49, $68, $05, $66, $31, $02, $48
-;             F02  P01  F04  B01  F06  W08  
+;             F02  P01  F04  B01  F06  W08
 LA4C3:  .byte $61, $70, $63, $B0, $65, $47
 
-Row100:      ;H07  F14  D04  F11  W09  G06  W10  F10  R02  G01  R02  F07  M04  G03  W07  F02  
+Row100:      ;H07  F14  D04  F11  W09  G06  W10  F10  R02  G01  R02  F07  M04  G03  W07  F02
 LA4C9:  .byte $26, $6D, $13, $6A, $48, $05, $49, $69, $51, $00, $51, $66, $33, $02, $46, $61
-;             P03  F03  W02  F04  W09  
+;             P03  F03  W02  F04  W09
 LA4D9:  .byte $72, $62, $41, $63, $48
 
-Row101:      ;H05  M04  F12  D05  F07  W11  G06  W12  F09  R01  G03  R01  F07  M05  G03  W06  
+Row101:      ;H05  M04  F12  D05  F07  W11  G06  W12  F09  R01  G03  R01  F07  M05  G03  W06
 LA4DE:  .byte $24, $33, $6B, $14, $66, $4A, $05, $4B, $68, $50, $02, $50, $66, $34, $02, $45
-;             F03  P03  F02  W02  F03  W10  
+;             F03  P03  F02  W02  F03  W10
 LA4EE:  .byte $62, $72, $61, $41, $62, $49
 
-Row102:      ;H06  M05  F09  D07  F06  M02  W04  M05  G06  W14  F07  R01  G01  T01  G01  R01  
+Row102:      ;H06  M05  F09  D07  F06  M02  W04  M05  G06  W14  F07  R01  G01  T01  G01  R01
 LA4F4:  .byte $25, $34, $68, $16, $65, $31, $43, $34, $05, $4D, $66, $50, $00, $80, $00, $50
-;             F08  M05  H03  W06  F03  P02  F03  W14  
+;             F08  M05  H03  W06  F03  P02  F03  W14
 LA504:  .byte $67, $34, $22, $45, $62, $71, $62, $4D
 
-Row103:      ;H08  M05  F07  D08  F05  M03  W02  M04  F02  G05  W02  G04  W11  F05  R01  G03  
+Row103:      ;H08  M05  F07  D08  F05  M03  W02  M04  F02  G05  W02  G04  W11  F05  R01  G03
 LA50C:  .byte $27, $34, $66, $17, $64, $32, $41, $33, $61, $04, $41, $03, $4A, $64, $50, $02
-;             R01  F10  M02  H05  W05  F02  G04  F03  W13  
+;             R01  F10  M02  H05  W05  F02  G04  F03  W13
 LA51C:  .byte $50, $69, $31, $24, $44, $61, $03, $62, $4C
 
-Row104:      ;H07  M09  F04  D08  H02  F04  M07  F04  G04  B01  G05  F05  W07  F04  R05  F09  
+Row104:      ;H07  M09  F04  D08  H02  F04  M07  F04  G04  B01  G05  F05  W07  F04  R05  F09
 LA525:  .byte $26, $38, $63, $17, $21, $63, $36, $63, $03, $B0, $04, $64, $46, $63, $54, $68
-;             M03  H06  W05  F02  G03  H04  G03  W09  
+;             M03  H06  W05  F02  G03  H04  G03  W09
 LA535:  .byte $32, $25, $44, $61, $02, $23, $02, $48
 
-Row105:      ;H07  M02  F05  M07  D05  H06  F03  M05  F05  G03  W02  G04  F10  M04  F16  M03  
+Row105:      ;H07  M02  F05  M07  D05  H06  F03  M05  F05  G03  W02  G04  F10  M04  F16  M03
 LA53D:  .byte $26, $31, $64, $36, $14, $25, $62, $34, $64, $02, $41, $03, $69, $33, $6F, $32
-;             H06  W08  G02  H07  G06  W04  
+;             H06  W08  G02  H07  G06  W04
 LA54D:  .byte $25, $47, $01, $26, $05, $43
 
-Row106:      ;W01  H05  M02  F08  M07  D02  H08  M06  F07  W03  F03  G05  F08  M06  F10  M06  
+Row106:      ;W01  H05  M02  F08  M07  D02  H08  M06  F07  W03  F03  G05  F08  M06  F10  M06
 LA553:  .byte $40, $24, $31, $67, $36, $11, $27, $35, $66, $42, $62, $04, $67, $35, $69, $35
-;             H05  W10  H03  M05  H03  G05  
+;             H05  W10  H03  M05  H03  G05
 LA563:  .byte $24, $49, $22, $34, $22, $04
 
-Row107:      ;W03  H03  M02  F05  G05  M04  H12  M06  F05  W03  F05  G06  F08  M08  F04  M07  
+Row107:      ;W03  H03  M02  F05  G05  M04  H12  M06  F05  W03  F05  G06  F08  M08  F04  M07
 LA569:  .byte $42, $22, $31, $64, $04, $33, $2B, $35, $64, $42, $64, $05, $67, $37, $63, $36
-;             H07  W08  H03  M03  F02  M03  H02  G04  
+;             H07  W08  H03  M03  F02  M03  H02  G04
 LA579:  .byte $26, $47, $22, $32, $61, $32, $21, $03
 
-Row108:      ;W05  H02  M02  F03  G07  H13  M07  F05  W03  F07  G06  F08  M16  M01  H09  W06  
+Row108:      ;W05  H02  M02  F03  G07  H13  M07  F05  W03  F07  G06  F08  M16  M01  H09  W06
 LA581:  .byte $44, $21, $31, $62, $06, $2C, $36, $64, $42, $66, $05, $67, $3F, $30, $28, $45
-;             H03  M03  F04  M02  H03  G01  
+;             H03  M03  F04  M02  H03  G01
 LA591:  .byte $22, $32, $63, $31, $22, $00
 
-Row109:      ;W04  H04  M03  G07  H13  M07  F05  W04  F06  G09  F05  P03  M11  P05  H06  W07  
+Row109:      ;W04  H04  M03  G07  H13  M07  F05  W04  F06  G09  F05  P03  M11  P05  H06  W07
 LA597:  .byte $43, $23, $32, $06, $2C, $36, $64, $43, $65, $08, $64, $72, $3A, $74, $25, $46
-;             H03  M03  F03  S01  F02  M02  G02  W05  
+;             H03  M03  F03  S01  F02  M02  G02  W05
 LA5A7:  .byte $22, $32, $62, $C0, $61, $31, $01, $44
 
-Row110:      ;W03  H05  M02  G09  H10  M06  F08  W05  F04  G10  F03  P08  M07  P07  H06  W07  
+Row110:      ;W03  H05  M02  G09  H10  M06  F08  W05  F04  G10  F03  P08  M07  P07  H06  W07
 LA5AF:  .byte $42, $24, $31, $08, $29, $35, $67, $44, $63, $09, $62, $77, $36, $76, $25, $46
-;             H03  M02  F05  M04  G04  
+;             H03  M02  F05  M04  G04
 LA5BF:  .byte $22, $31, $64, $33, $03
 
-Row111:      ;W04  H04  M02  G10  H08  M06  F09  W04  F05  G10  F03  P09  M05  P09  H04  W09  
+Row111:      ;W04  H04  M02  G10  H08  M06  F09  W04  F05  G10  F03  P09  M05  P09  H04  W09
 LA5C4:  .byte $43, $23, $31, $09, $27, $35, $68, $43, $64, $09, $62, $78, $34, $78, $23, $48
-;             H03  M02  F04  M02  H03  G03  
+;             H03  M02  F04  M02  H03  G03
 LA5D4:  .byte $22, $31, $63, $31, $22, $02
 
-Row112:      ;W05  H05  G10  H09  M04  F09  W06  F05  G08  F03  P11  M03  P11  H02  W10  H03  
+Row112:      ;W05  H05  G10  H09  M04  F09  W06  F05  G08  F03  P11  M03  P11  H02  W10  H03
 LA5DA:  .byte $44, $24, $09, $28, $33, $68, $45, $64, $07, $62, $7A, $32, $7A, $21, $49, $22
-;             M03  F01  M03  H03  G03  
+;             M03  F01  M03  H03  G03
 LA5EA:  .byte $32, $60, $32, $22, $02
 
-Row113:      ;W07  H04  G08  H08  M05  F09  W07  F07  G06  F04  P16  P09  W12  H03  M02  F01  
+Row113:      ;W07  H04  G08  H08  M05  F09  W07  F07  G06  F04  P16  P09  W12  H03  M02  F01
 LA5EF:  .byte $46, $23, $07, $27, $34, $68, $46, $66, $05, $63, $7F, $78, $4B, $22, $31, $60
-;             M02  H03  G03  
+;             M02  H03  G03
 LA5FF:  .byte $31, $22, $02
 
-Row114:      ;W06  H06  G06  H04  W03  M08  F07  W09  F08  G03  F05  P11  W02  P11  W13  H09  
+Row114:      ;W06  H06  G06  H04  W03  M08  F07  W09  F08  G03  F05  P11  W02  P11  W13  H09
 LA602:  .byte $45, $25, $05, $23, $42, $37, $66, $48, $67, $02, $64, $7A, $41, $7A, $4C, $28
-;             G04  
+;             G04
 LA612:  .byte $03
 
-Row115:      ;W07  H06  G04  H04  W05  F13  W12  F13  P11  W04  P09  W14  H06  P03  W09  
+Row115:      ;W07  H06  G04  H04  W05  F13  W12  F13  P11  W04  P09  W14  H06  P03  W09
 LA613:  .byte $46, $25, $03, $23, $44, $6C, $4B, $6C, $7A, $43, $78, $4D, $25, $72, $48
 
-Row116:      ;W08  H14  W03  F12  W16  F10  P11  W08  P04  W16  W01  H04  P02  W11  
+Row116:      ;W08  H14  W03  F12  W16  F10  P11  W08  P04  W16  W01  H04  P02  W11
 LA622:  .byte $47, $2D, $42, $6B, $4F, $69, $7A, $47, $73, $4F, $40, $23, $71, $4A
 
-Row117:      ;W09  H13  B01  H06  F05  W16  W05  F05  P13  W16  W15  H02  P02  W12  
+Row117:      ;W09  H13  B01  H06  F05  W16  W05  F05  P13  W16  W15  H02  P02  W12
 LA630:  .byte $48, $2C, $B0, $25, $64, $4F, $44, $64, $7C, $4F, $4E, $21, $71, $4B
 
-Row118:      ;W11  H10  W03  H07  W16  W12  P13  W16  W16  P04  
+Row118:      ;W11  H10  W03  H07  W16  W12  P13  W16  W16  P04
 LA63E:  .byte $4A, $29, $42, $26, $4F, $4B, $7C, $4F, $4F, $73
 
-Row119:      ;W12  H07  W16  W16  W09  P10  W16  W16  W02  P03  W13  
+Row119:      ;W12  H07  W16  W16  W09  P10  W16  W16  W02  P03  W13
 LA648:  .byte $4B, $26, $4F, $4F, $48, $79, $4F, $4F, $41, $72, $4C
 
 ;Pointers to world map rows.
@@ -3257,14 +3257,14 @@ LA7A4:  BRK                     ;Get parameters for removing windows from the sc
 LA7A5:  .byte $00, $17          ;($AF24)WndEraseParams, bank 1.
 
 LA7A7:  LDA WndEraseWdth        ;
-LA7AA:  LSR                     ;Convert wiindow erase position from tiles to blocks. 
+LA7AA:  LSR                     ;Convert wiindow erase position from tiles to blocks.
 LA7AB:  ORA #$10                ;Does not appear to be used anywhere.
 LA7AD:  STA WndWidthTemp        ;
 
 LA7B0:  LDA WndEraseHght        ;
 LA7B3:  SEC                     ;
 LA7B4:  SBC #$01                ;
-LA7B6:  ASL                     ;Perform a calculation on the window erase height and 
+LA7B6:  ASL                     ;Perform a calculation on the window erase height and
 LA7B7:  ASL                     ;store it. It is referenced below but does no useful work.
 LA7B8:  ASL                     ;
 LA7B9:  ASL                     ;
@@ -3275,7 +3275,7 @@ LA7C0:  LDA WndErasePos         ;Get the X position of the window in blocks.
 LA7C3:  AND #$0F                ;
 
 LA7C5:  STA XPosFromLeft        ;
-LA7C7:  SEC                     ;Convert the X positon into a signed value. then, multiply 
+LA7C7:  SEC                     ;Convert the X positon into a signed value. then, multiply
 LA7C8:  SBC #$08                ;by 2 to convert to tiles.
 LA7CA:  ASL                     ;
 LA7CB:  STA StartSignedXPos     ;
@@ -3296,12 +3296,12 @@ LA7DD:  STA WndLineBufIdx       ;
 
 LA7DF:  PLA                     ;Get the height calculation again.
 
-LA7E0:  CLC                     ;Add the height of the window to the offset of 
+LA7E0:  CLC                     ;Add the height of the window to the offset of
 LA7E1:  ADC WndLineBufIdx       ;the window on the screen. Result is in blocks.
 LA7E3:  STA WndLineBufIdx       ;
 
 LA7E5:  SEC                     ;
-LA7E6:  SBC #$07                ;Convert the Y positon into a signed value. then, multiply 
+LA7E6:  SBC #$07                ;Convert the Y positon into a signed value. then, multiply
 LA7E8:  ASL                     ;by 2 to convert to tiles.
 LA7E9:  STA YPosFromCenter      ;
 
@@ -3386,7 +3386,7 @@ LA84E:  STA BlockAddrLB         ;This moves to the next block up.
 LA850:  BCS +                   ;
 LA852:  DEC BlockAddrUB         ;
 
-LA854:* LDA WndBlockWidth       ;Start at beginnig of row by converting block width 
+LA854:* LDA WndBlockWidth       ;Start at beginnig of row by converting block width
 LA856:  ASL                     ;into tiles.
 LA857:  STA XPosFromLeft        ;
 
@@ -3398,7 +3398,7 @@ LA860:  BCS +                   ;
 LA862:  DEC BlockAddrUB         ;
 
 LA864:* LDA _WndPosition        ;
-LA867:  SEC                     ;Decrement the Y position of the window by 1 block. 
+LA867:  SEC                     ;Decrement the Y position of the window by 1 block.
 LA868:  SBC #$10                ;Does not appear to be used for anything.
 LA86A:  STA _WndPosition        ;
 
@@ -3459,20 +3459,20 @@ LA8B2:  CLC                     ;Add signed location of block to unsigned nameta
 LA8B3:  ADC #$1E                ;Add Screen height in tiles to ensure result is always positive.
 LA8B5:  STA DivNum1LB           ;
 
-LA8B7:  LDA #$1E                ;Divide out tile height and get remainder. Result will be 
+LA8B7:  LDA #$1E                ;Divide out tile height and get remainder. Result will be
 LA8B9:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
 LA8BB:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LA8BE:  LDA DivRemainder        ;The final result is the unsigned Y position of the block 
+LA8BE:  LDA DivRemainder        ;The final result is the unsigned Y position of the block
 LA8C0:  STA YPosFromTop         ;to replace, measured in tiles. #$00-#$1E.
 LA8C2:  STA YFromTopTemp        ;
 
 LA8C4:  LDA NTBlockX            ;*2. Convert the block position to tile position.
 LA8C6:  ASL                     ;Calculate the nametable X block that needs to be replaced.
 LA8C7:  CLC                     ;Add signed location of block to unsigned nametable location.
-LA8C8:  ADC XPosFromCenter      ;Keep only lower 6 bits. The row is 64 tiles wide as it spans 
-LA8CA:  AND #$3F                ;both nametables. The final result is the unsigned X position 
-LA8CC:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No 
+LA8C8:  ADC XPosFromCenter      ;Keep only lower 6 bits. The row is 64 tiles wide as it spans
+LA8CA:  AND #$3F                ;both nametables. The final result is the unsigned X position
+LA8CC:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No
 LA8CE:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
 LA8D0:  JSR DoAddrCalc          ;($C5AA)Calculate destination address for GFX data.
@@ -3505,7 +3505,7 @@ LA8FB:  STA YPosFromTop         ;
 
 LA8FD:  LDY #$00                ;Zero out index.
 
-LA8FF:  LDA (BlockAddr),Y       ;Sets attribute table value for each block based on its 
+LA8FF:  LDA (BlockAddr),Y       ;Sets attribute table value for each block based on its
 LA901:  CMP #$C1                ;position in the pattern table.
 LA903:  BCS +                   ;Is this a sky tile in the battle scene? If not, branch.
 
@@ -3515,7 +3515,7 @@ LA907:  BEQ StoreAttribByte     ;
 LA909:* CMP #$CA                ;Is this a green covered mountain tile in the battle scene?
 LA90B:  BCS +                   ;If not, branch.
 
-LA90D:  LDA #$01                ;Set attribute table value for battle scene green covered 
+LA90D:  LDA #$01                ;Set attribute table value for battle scene green covered
 LA90F:  BNE StoreAttribByte     ;mountain tiles. Branch always.
 
 LA911:* CMP #$DE                ;Is this a foreground tile in the battle scene?
@@ -3542,26 +3542,26 @@ LA927:  CLC                     ;
 LA928:  ADC #$1E                ;Add Screen height in tiles to ensure result is always positive.
 LA92A:  STA DivNum1LB           ;
 
-LA92C:  LDA #$1E                ;Divide out tile height and get remainder. Result will be 
+LA92C:  LDA #$1E                ;Divide out tile height and get remainder. Result will be
 LA92E:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
 LA930:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LA933:  LDA DivRemainder        ;The final result is the unsigned Y position of the block 
+LA933:  LDA DivRemainder        ;The final result is the unsigned Y position of the block
 LA935:  STA YPosFromTop         ;to replace, measured in tiles. #$00-#$1E.
 LA937:  STA YFromTopTemp        ;
 
 LA939:  LDA NTBlockX            ;*2. Convert the block position to tile position.
 LA93B:  ASL                     ;Calculate the nametable X block that needs to be replaced.
 LA93C:  CLC                     ;Add signed location of block to unsigned nametable location.
-LA93D:  ADC XPosFromCenter      ;Keep only lower 6 bits. The row is 64 tiles wide as it spans 
-LA93F:  AND #$3F                ;both nametables. The final result is the unsigned X position 
-LA941:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No 
+LA93D:  ADC XPosFromCenter      ;Keep only lower 6 bits. The row is 64 tiles wide as it spans
+LA93F:  AND #$3F                ;both nametables. The final result is the unsigned X position
+LA941:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No
 LA943:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
 LA945:  JSR DoAddrCalc          ;($C5AA)Calculate destination address for GFX data.
 
 LA948:  LDA XPosFromCenter      ;
-LA94A:  ASL                     ;/2 with sign extension to convert block X location. 
+LA94A:  ASL                     ;/2 with sign extension to convert block X location.
 LA94B:  LDA XPosFromCenter      ;
 LA94D:  ROR                     ;
 
@@ -3601,7 +3601,7 @@ LA979:  LDA LightDiameter       ;Is target block outside the visible area in a d
 LA97B:  CMP GenByte3E           ;
 LA97D:  BCS ChkLightXEdge       ;If not, branch.
 
-LA97F:  LDA #BLK_BLANK          ;Target block is outside visible area. 
+LA97F:  LDA #BLK_BLANK          ;Target block is outside visible area.
 LA981:  STA TargetResults       ;Load a blank block.
 
 LA983:  LDA #$00                ;Remove no tiles from the current block.
@@ -3642,7 +3642,7 @@ LA9AB:  LDA LightDiameter       ;Is target block outside the visible area in a d
 LA9AD:  CMP GenByte3E           ;
 LA9AF:  BCS ChkLightYEdge       ;If not, branch.
 
-LA9B1:  LDA #BLK_BLANK          ;Target block is outside visible area. 
+LA9B1:  LDA #BLK_BLANK          ;Target block is outside visible area.
 LA9B3:  STA TargetResults       ;Load a blank block.
 
 LA9B5:  LDA #$00                ;Remove no tiles from the current block.
@@ -3820,9 +3820,9 @@ LAABB:  JMP PrepSPPalLoad       ;($C632)Wait for PPU buffer to be open.
 ;----------------------------------------------------------------------------------------------------
 
 CheckCoveredArea:
-LAABE:  LDA MapWidth            ;Convert the map width into the number of bytes used to 
-LAAC0:  CLC                     ;represent a map row. 1 nibble represents a block. The 
-LAAC1:  ADC #$01                ;increment starts the counting at 1 instead of 0. 2 blocks 
+LAABE:  LDA MapWidth            ;Convert the map width into the number of bytes used to
+LAAC0:  CLC                     ;represent a map row. 1 nibble represents a block. The
+LAAC1:  ADC #$01                ;increment starts the counting at 1 instead of 0. 2 blocks
 LAAC3:  LSR                     ;are represented in a single byte, hence the divide by 2.
 LAAC4:  STA MultNum1LB          ;
 
@@ -3830,18 +3830,18 @@ LAAC6:  LDA #$00                ;
 LAAC8:  STA MultNum1UB          ;Upper byte of first word is always 0.
 LAACA:  STA MultNum2UB          ;Upper byte of second word is always 0.
 
-LAACC:  LDA _TargetY            ;Target Y is player's Y position. Calculate number of map 
+LAACC:  LDA _TargetY            ;Target Y is player's Y position. Calculate number of map
 LAACE:  STA MultNum2LB          ;bytes to player's current row.
 LAAD0:  JSR WordMultiply        ;($C1C9)Multiply 2 words.
 
 LAAD3:  LDA _TargetX            ;Target X is player's X position. Add offset in current row
-LAAD5:  LSR                     ;to byte count value for exact byte offset in covered area 
+LAAD5:  LSR                     ;to byte count value for exact byte offset in covered area
 LAAD6:  CLC                     ;map data.
 LAAD7:  ADC MultRsltLB          ;
 
 LAAD9:  STA GenWord3ELB         ;
-LAADB:  LDA MultRsltUB          ;The player's index into the covered map data is now 
-LAADD:  ADC #$00                ;stored in GenWord3E. This is byte level. Nibble level 
+LAADB:  LDA MultRsltUB          ;The player's index into the covered map data is now
+LAADD:  ADC #$00                ;stored in GenWord3E. This is byte level. Nibble level
 LAADF:  STA GenWord3EUB         ;is required and calculated below.
 
 HasCoverData:
@@ -3864,8 +3864,8 @@ LAAF6:  BCC NoCover             ;
 
 LAAF8:  LDA GenWord3ELB         ;
 LAAFA:  CLC                     ;
-LAAFB:  ADC CoverDatLB          ;Add the player's index into the covered map data 
-LAAFD:  STA GenWord3ELB         ;to the base address of the covered map data for 
+LAAFB:  ADC CoverDatLB          ;Add the player's index into the covered map data
+LAAFD:  STA GenWord3ELB         ;to the base address of the covered map data for
 LAAFF:  LDA GenWord3EUB         ;the current map.
 LAB01:  ADC CoverDatUB          ;
 LAB03:  STA GenWord3EUB         ;
@@ -3880,7 +3880,7 @@ LAB0B:  STA CoveredStsNext      ;
 LAB0D:  PLA                     ;Restore the previous value of Y from the stack.
 LAB0E:  TAY                     ;
 
-LAB0F:  LDA _TargetX            ;Odd X position stores data in lower nibble while even position 
+LAB0F:  LDA _TargetX            ;Odd X position stores data in lower nibble while even position
 LAB11:  AND #$01                ;stores data in upper nibble.
 LAB13:  BNE FinishCoverCheck    ;Does upper nibble need to be accessed? If not, branch.
 
@@ -3891,7 +3891,7 @@ LAB1B:  LSR CoveredStsNext      ;
 
 FinishCoverCheck:
 LAB1D:  LDA CoveredStsNext      ;
-LAB1F:  AND #$08                ;Keep only bit 3. This bit determines if the player 
+LAB1F:  AND #$08                ;Keep only bit 3. This bit determines if the player
 LAB21:  STA CoveredStsNext      ;is under cover or not.
 LAB23:  RTS                     ;
 
@@ -3922,7 +3922,7 @@ LAB3A:  ADC #$04                ;of the current water block.
 LAB3C:  TAX                     ;
 
 PrepBlockLeft:
-LAB3D:  LDY GenByte2C           ;Restore the original block X coord. Is target first block row? 
+LAB3D:  LDY GenByte2C           ;Restore the original block X coord. Is target first block row?
 LAB3F:  BEQ ChkWtrBlkLft        ;If so, branch. Block to left is always another water block.
 
 LAB41:  DEY                     ;Get block ID of block to the left of target block.
@@ -4276,9 +4276,9 @@ LACE4:  LDA #$0F                ;16 possible tiles in towns.
 
 GetBaseBlockID:
 LACE6:  AND XTarget             ;
-LACE8:  CLC                     ;Add in the proper offset for the block to find. 
-LACE9:  ADC MapType             ;The offset can either point to town blocks or dungeon 
-LACEB:  TAY                     ;blocks. A now contains the block ID but special blocks 
+LACE8:  CLC                     ;Add in the proper offset for the block to find.
+LACE9:  ADC MapType             ;The offset can either point to town blocks or dungeon
+LACEB:  TAY                     ;blocks. A now contains the block ID but special blocks
 LACEC:  LDA GenBlkConvTbl,Y     ;have not yet been considered. That happens next.
 LACEF:  STA TargetResults       ;
 
@@ -4301,7 +4301,7 @@ LAD05:  LDA MapNumber           ;Is the player in the ground floor of the dragon
 LAD07:  CMP #MAP_DLCSTL_GF      ;
 LAD09:  BNE ReturnBlockID       ;If not, branch to return stair down block ID.
 
-LAD0B:  LDA _TargetX            ;Is the target X,Y position that of the secret passage 
+LAD0B:  LDA _TargetX            ;Is the target X,Y position that of the secret passage
 LAD0D:  CMP #$0A                ;behind the dragonlord's throne?
 LAD0F:  BNE ReturnBlockID       ;
 LAD11:  LDA _TargetY            ;
@@ -4312,7 +4312,7 @@ LAD17:  LDA ModsnSpells         ;Has the secret paggase already been found?
 LAD19:  AND #F_PSG_FOUND        ;
 LAD1B:  BNE ReturnBlockID       ;If so, branch to return stairs down block ID.
 
-LAD1D:  LDA #BLK_FFIELD         ;Hidden stairs have not been found yet. 
+LAD1D:  LDA #BLK_FFIELD         ;Hidden stairs have not been found yet.
 LAD1F:  STA TargetResults       ;Return force field block ID.
 LAD21:  BNE ReturnBlockID       ;Branch always.
 
@@ -4392,26 +4392,26 @@ LAD6C:  CLC                     ;
 LAD6D:  ADC #$1E                ;Add Screen height in tiles to ensure result is always positive.
 LAD6F:  STA DivNum1LB           ;
 
-LAD71:  LDA #$1E                ;Divide out tile height and get remainder. Result will be 
+LAD71:  LDA #$1E                ;Divide out tile height and get remainder. Result will be
 LAD73:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
 LAD75:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LAD78:  LDA DivRemainder        ;The final result is the unsigned Y position of the block 
+LAD78:  LDA DivRemainder        ;The final result is the unsigned Y position of the block
 LAD7A:  STA YPosFromTop         ;to replace, measured in tiles. #$00-#$1E.
 LAD7C:  STA YFromTopTemp        ;
 
 LAD7E:  LDA NTBlockX            ;*2. Convert the block position to tile position.
 LAD80:  ASL                     ;Calculate the nametable X block that needs to be replaced.
 LAD81:  CLC                     ;Add signed location of block to unsigned nametable location.
-LAD82:  ADC XPosFromCenter      ;Keep only lower 6 bits. The row is 64 tiles wide as it spans 
-LAD84:  AND #$3F                ;both nametables. The final result is the unsigned X position 
-LAD86:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No 
+LAD82:  ADC XPosFromCenter      ;Keep only lower 6 bits. The row is 64 tiles wide as it spans
+LAD84:  AND #$3F                ;both nametables. The final result is the unsigned X position
+LAD86:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No
 LAD88:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
 LAD8A:  JSR DoAddrCalc          ;($C5AA)Calculate destination address for GFX data.
 
 LAD8D:  LDA XPosFromCenter      ;
-LAD8F:  ASL                     ;/2 with sign extension to convert block X location. 
+LAD8F:  ASL                     ;/2 with sign extension to convert block X location.
 LAD90:  LDA XPosFromCenter      ;
 LAD92:  ROR                     ;
 
@@ -4451,7 +4451,7 @@ LADBE:  LDA LightDiameter       ;Is target block outside the visible area in a d
 LADC0:  CMP GenByte3E           ;
 LADC2:  BCS ChkLightXEdge2      ;If not, branch.
 
-LADC4:  LDA #BLK_BLANK          ;Target block is outside visible area. 
+LADC4:  LDA #BLK_BLANK          ;Target block is outside visible area.
 LADC6:  STA TargetResults       ;Load a blank block.
 
 LADC8:  LDA #$00                ;Remove no tiles from the current block.
@@ -4491,7 +4491,7 @@ LADF0:  LDA LightDiameter       ;Is target block outside the visible area in a d
 LADF2:  CMP GenByte3E           ;
 LADF4:  BCS ChkLightYEdge2      ;If not, branch.
 
-LADF6:  LDA #BLK_BLANK          ;Target block is outside visible area. 
+LADF6:  LDA #BLK_BLANK          ;Target block is outside visible area.
 LADF8:  STA TargetResults       ;Load a blank block.
 
 LADFA:  LDA #$00                ;Remove no tiles from the current block.
@@ -4707,7 +4707,7 @@ LAF14:  CMP #MAP_DLCSTL_SL1     ;
 LAF16:  BCS ChkThRoomMap        ;If not, branch.
 
 LAF18:  LDA #$01                ;
-LAF1A:  STA LightDiameter       ;Player entered a dungeon. Minimize light diameter 
+LAF1A:  STA LightDiameter       ;Player entered a dungeon. Minimize light diameter
 LAF1C:  LSR                     ;and clear the radiant timer.
 LAF1D:  STA RadiantTimer        ;
 
@@ -4804,7 +4804,7 @@ LAFA8:  LDA MapNumber           ;Is player on the ground floor of Tantagel castl
 LAFAA:  CMP #MAP_TANTCSTL_GF    ;
 LAFAC:  BNE ChkMapDungeon       ;If not, branch.
 
-LAFAE:  LDA #$0B                ;Special NPC data pointer index for Tantagel castle 
+LAFAE:  LDA #$0B                ;Special NPC data pointer index for Tantagel castle
 LAFB0:  BNE GetNPCDataPointer   ;ground floor after end boss defeated. Branch always.
 
 ChkMapDungeon:
@@ -5111,7 +5111,7 @@ LB140:  STA PPUDataByte         ;
 
 LB142:  LDA #$0F                ;Prepare to clear 15 rows of blocks.
 LB144:  STA RowCounter          ;
-        
+
 NTClearLoop:
 LB146:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -5120,8 +5120,8 @@ LB149:  LDY PPUBufCount         ;Get current index into block RAM buffer.
 LB14B:  LDA #$80                ;Indicate background tiles need to be updated.
 LB14D:  STA UpdateBGTiles       ;
 
-LB150:  LDA PPUAddrUB           ;Set PPU control byte. Tell PPU to do row writes. 
-LB152:  ORA #$80                ;That means increment address by 1 after every  
+LB150:  LDA PPUAddrUB           ;Set PPU control byte. Tell PPU to do row writes.
+LB152:  ORA #$80                ;That means increment address by 1 after every
 LB154:  STA BlockRAM,Y          ;tile write. This byte also stores PPU address upper byte.
 
 LB157:  LDA #$1C                ;Prepare to clear 27 tiles in the current nametable row.
@@ -5148,8 +5148,8 @@ LB172:  STA PPUAddrLB           ;
 LB174:  BCC +                   ;
 LB176:  INC PPUAddrUB           ;
 
-LB178:* LDA PPUAddrUB           ;Set PPU control byte. Tell PPU to do row writes. 
-LB17A:  ORA #$80                ;That means increment address by 1 after every  
+LB178:* LDA PPUAddrUB           ;Set PPU control byte. Tell PPU to do row writes.
+LB17A:  ORA #$80                ;That means increment address by 1 after every
 LB17C:  STA BlockRAM+3,Y        ;tile write. This byte also stores PPU address upper byte.
 
 LB17F:  LDA #$1C                ;Prepare to clear 27 tiles in the current nametable row.
@@ -5169,8 +5169,8 @@ LB191:  BNE -                   ;More blank tiles to store? if so, branch to sto
 
 LB193:  INC PPUEntCount         ;Increment PPU buffer entry count.
 
-LB195:  TYA                     ;This should not be necessary as the buffer gets emptied 
-LB196:  CLC                     ;out every vblank. It moves ahead 2 entries for all PPU 
+LB195:  TYA                     ;This should not be necessary as the buffer gets emptied
+LB196:  CLC                     ;out every vblank. It moves ahead 2 entries for all PPU
 LB197:  ADC #$06                ;data that does not have control bits set.
 LB199:  STA PPUBufCount         ;
 
@@ -5184,7 +5184,7 @@ LB1A4:  INC PPUAddrUB           ;
 LB1A6:* DEC RowCounter          ;Have all 15 rows of blocks been cleared?
 LB1A8:  BNE NTClearLoop         ;If not, branch to clear another row of blocks.
 
-LB1AA:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt. This loads last row of 
+LB1AA:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt. This loads last row of
 LB1AD:  RTS                     ;blocks onto the screen.
 
 ;----------------------------------------------------------------------------------------------------
@@ -5227,7 +5227,7 @@ LB1CB:  .byte MSC_DUNGEON2      ;Erdrick's cave B2.                   Resume dun
 ;----------------------------------------------------------------------------------------------------
 
 CheckCollision:
-LB1CC:  LDA _CharXPos           ;Get potential new position of character and transfer 
+LB1CC:  LDA _CharXPos           ;Get potential new position of character and transfer
 LB1CE:  STA XTarget             ;it to thx and y target registers.
 LB1D0:  LDA _CharYPos           ;
 LB1D2:  STA YTarget             ;Check to see what kind of block is at the destination.
@@ -5347,7 +5347,7 @@ LB255:  LDA FrameCounter        ;
 LB257:  AND #$0F                ;
 LB259:  BEQ RightSynced         ;Only move if on the first frame of the frame counter.
 
-LB25B:  PLA                     ;Not on first frame. Remove return address from stack and 
+LB25B:  PLA                     ;Not on first frame. Remove return address from stack and
 LB25C:  PLA                     ;update the idle status instead.
 LB25D:  JMP IdleUpdate          ;($CB30)Update NPC movement and pop-up window.
 
@@ -5366,7 +5366,7 @@ LB270:  LDA CharXPixelsLB       ;
 LB272:  CLC                     ;
 LB273:  ADC #$08                ;Move player 8 pixels to the right.
 LB275:  STA CharXPixelsLB       ;
-LB277:  BCC +                   ;Update upper byte of X position, if necessary. 
+LB277:  BCC +                   ;Update upper byte of X position, if necessary.
 LB279:  INC CharXPixelsUB       ;
 
 LB27B:* JSR PostMoveUpdate      ;($B30E)Update nametables after player moves.
@@ -5375,14 +5375,14 @@ LB27E:  LDA CharXPixelsLB       ;
 LB280:  CLC                     ;
 LB281:  ADC #$08                ;Move player 8 pixels to the right.
 LB283:  STA CharXPixelsLB       ;
-LB285:  BCC +                   ;Update upper byte of X position, if necessary. 
+LB285:  BCC +                   ;Update upper byte of X position, if necessary.
 LB287:  INC CharXPixelsUB       ;
 
 LB289:* JMP DoSprites           ;($B6DA)Update player and NPC sprites.
 
 UpdtRNonDungeon:
-LB28C:  LDA #$12                ;Prepare to write a nametable column starting 18 
-LB28E:  STA XPosFromCenter      ;tiles right(#$12) and -14 tiles up(#$F2) from 
+LB28C:  LDA #$12                ;Prepare to write a nametable column starting 18
+LB28E:  STA XPosFromCenter      ;tiles right(#$12) and -14 tiles up(#$F2) from
 LB290:  LDA #$F2                ;player's current location.
 LB292:  STA YPosFromCenter      ;
 
@@ -5408,7 +5408,7 @@ LB2AD:  CMP #$10                ;
 LB2AF:  BNE RightColumnLoop     ;If not, branch to write another block to the map.
 
 LB2B1:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-LB2B4:  INC ScrollX             ;Increment scroll register and switch to 
+LB2B4:  INC ScrollX             ;Increment scroll register and switch to
 LB2B6:  BNE UpdtRNTBlock        ;other nametable, if necessary.
 
 LB2B8:  LDA ActiveNmTbl         ;
@@ -5416,7 +5416,7 @@ LB2BA:  EOR #$01                ;Swap to other nametable.
 LB2BC:  STA ActiveNmTbl         ;
 
 UpdtRNTBlock:
-LB2BE:  INC NTBlockX            ;Move pointer for the nametable blocks 1 block 
+LB2BE:  INC NTBlockX            ;Move pointer for the nametable blocks 1 block
 LB2C0:  LDA #$1F                ;position to the right.
 LB2C2:  AND NTBlockX            ;Ensure position wraps around, if necessary.
 LB2C4:  STA NTBlockX            ;
@@ -5530,7 +5530,7 @@ LB34F:  LDA FrameCounter        ;
 LB351:  AND #$0F                ;
 LB353:  BEQ LeftSynced          ;Only move if on the first frame of the frame counter.
 
-LB355:  PLA                     ;Not on first frame. Remove return address from stack and 
+LB355:  PLA                     ;Not on first frame. Remove return address from stack and
 LB356:  PLA                     ;update the idle status instead.
 LB357:  JMP IdleUpdate          ;($CB30)Update NPC movement and pop-up window.
 
@@ -5549,7 +5549,7 @@ LB36A:  LDA CharXPixelsLB       ;
 LB36C:  SEC                     ;
 LB36D:  SBC #$08                ;Move player 8 pixels to the left.
 LB36F:  STA CharXPixelsLB       ;
-LB371:  BCS +                   ;Update upper byte of X position, if necessary. 
+LB371:  BCS +                   ;Update upper byte of X position, if necessary.
 LB373:  DEC CharXPixelsUB       ;
 
 LB375:* JSR PostMoveUpdate      ;($B30E)Update nametables after player moves.
@@ -5558,14 +5558,14 @@ LB378:  LDA CharXPixelsLB       ;
 LB37A:  SEC                     ;
 LB37B:  SBC #$08                ;Move player 8 pixels to the left.
 LB37D:  STA CharXPixelsLB       ;
-LB37F:  BCS +                   ;Update upper byte of X position, if necessary. 
+LB37F:  BCS +                   ;Update upper byte of X position, if necessary.
 LB381:  DEC CharXPixelsUB       ;
 
 LB383:* JMP DoSprites           ;($B6DA)Update player and NPC sprites.
 
 UpdtLNonDungeon:
-LB386:  LDA #$EC                ;Prepare to write a nametable column starting -20 
-LB388:  STA XPosFromCenter      ;tiles left(#$EC) and -14 tiles up(#$F2) from 
+LB386:  LDA #$EC                ;Prepare to write a nametable column starting -20
+LB388:  STA XPosFromCenter      ;tiles left(#$EC) and -14 tiles up(#$F2) from
 LB38A:  LDA #$F2                ;player's current location.
 LB38C:  STA YPosFromCenter      ;
 
@@ -5582,7 +5582,7 @@ LB39A:  INC YPosFromCenter      ;Move to next block position in the column.
 LB39C:  INC YPosFromCenter      ;
 
 LB39E:  LDA ScrollX             ;
-LB3A0:  SEC                     ;Decrement scroll register and switch to 
+LB3A0:  SEC                     ;Decrement scroll register and switch to
 LB3A1:  SBC #$01                ;other nametable, if necessary.
 LB3A3:  STA ScrollX             ;
 LB3A5:  BCS UpdtLNTBlock
@@ -5594,7 +5594,7 @@ LB3AB:  STA ActiveNmTbl         ;
 UpdtLNTBlock:
 LB3AD:  LDA CharXPixelsLB       ;
 LB3AF:  SEC                     ;
-LB3B0:  SBC #$01                ;Move pointer for the nametable blocks 1 block 
+LB3B0:  SBC #$01                ;Move pointer for the nametable blocks 1 block
 LB3B2:  STA CharXPixelsLB       ;position to the left.
 LB3B4:  BCS +                   ;
 LB3B6:  DEC CharXPixelsUB       ;
@@ -5608,7 +5608,7 @@ LB3BF:  BNE UpdateLeftLoop      ;If not, branch to update another row.
 LB3C1:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LB3C4:  DEC ScrollX             ;Decrement scroll register.
 
-LB3C6:  DEC NTBlockX            ;Move pointer for the nametable blocks 1 block 
+LB3C6:  DEC NTBlockX            ;Move pointer for the nametable blocks 1 block
 LB3C8:  LDA #$1F                ;position to the left.
 LB3CA:  AND NTBlockX            ;Ensure position wraps around, if necessary.
 LB3CC:  STA NTBlockX            ;
@@ -5627,7 +5627,7 @@ LB3DB:  LDA FrameCounter        ;
 LB3DD:  AND #$0F                ;
 LB3DF:  BEQ DownSynced          ;Only move if on the first frame of the frame counter.
 
-LB3E1:  PLA                     ;Not on first frame. Remove return address from stack and 
+LB3E1:  PLA                     ;Not on first frame. Remove return address from stack and
 LB3E2:  PLA                     ;update the idle status instead.
 LB3E3:  JMP IdleUpdate          ;($CB30)Update NPC movement and pop-up window.
 
@@ -5646,7 +5646,7 @@ LB3F6:  LDA CharYPixelsLB       ;
 LB3F8:  CLC                     ;
 LB3F9:  ADC #$08                ;Move player 8 pixels down.
 LB3FB:  STA CharYPixelsLB       ;
-LB3FD:  BCC +                   ;Update upper byte of Y position, if necessary. 
+LB3FD:  BCC +                   ;Update upper byte of Y position, if necessary.
 LB3FF:  INC CharYPixelsUB       ;
 
 LB401:* JSR PostMoveUpdate      ;($B30E)Update nametables after player moves.
@@ -5655,7 +5655,7 @@ LB404:  LDA CharYPixelsLB       ;
 LB406:  CLC                     ;
 LB407:  ADC #$08                ;Move player 8 pixels down.
 LB409:  STA CharYPixelsLB       ;
-LB40B:  BCC +                   ;Update upper byte of Y position, if necessary. 
+LB40B:  BCC +                   ;Update upper byte of Y position, if necessary.
 LB40D:  INC CharYPixelsUB       ;
 
 LB40F:* JMP DoSprites           ;($B6DA)Update player and NPC sprites.
@@ -5760,7 +5760,7 @@ LB49E:  BNE VertRowLoop1        ;If not, branch to do more.
 LB4A0:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LB4A3:  INC ScrollY             ;
-LB4A5:  LDA ScrollY             ;Increment vertical scroll register and make sure 
+LB4A5:  LDA ScrollY             ;Increment vertical scroll register and make sure
 LB4A7:  CMP #$F0                ;It doesn't go too far.
 LB4A9:  BNE +                   ;
 
@@ -5768,7 +5768,7 @@ LB4AB:  LDA #$00                ;Loop scrool register back to top.
 LB4AD:  STA ScrollY             ;
 
 LB4AF:* INC NTBlockY            ;
-LB4B1:  LDA NTBlockY            ;Increment nametable Y block position and make sure 
+LB4B1:  LDA NTBlockY            ;Increment nametable Y block position and make sure
 LB4B3:  CMP #$0F                ;It doesn't go too far.
 LB4B5:  BNE +                   ;
 
@@ -5837,7 +5837,7 @@ LB507:  LDA FrameCounter        ;
 LB509:  AND #$0F                ;
 LB50B:  BEQ UpSynced            ;Only move if on the first frame of the frame counter.
 
-LB50D:  PLA                     ;Not on first frame. Remove return address from stack and 
+LB50D:  PLA                     ;Not on first frame. Remove return address from stack and
 LB50E:  PLA                     ;update the idle status instead.
 LB50F:  JMP IdleUpdate          ;($CB30)Update NPC movement and pop-up window.
 
@@ -5856,7 +5856,7 @@ LB522:  LDA CharYPixelsLB       ;
 LB524:  SEC                     ;
 LB525:  SBC #$08                ;Move player 8 pixels down.
 LB527:  STA CharYPixelsLB       ;
-LB529:  BCS +                   ;Update upper byte of Y position, if necessary. 
+LB529:  BCS +                   ;Update upper byte of Y position, if necessary.
 LB52B:  DEC CharYPixelsUB       ;
 
 LB52D:* JSR PostMoveUpdate      ;($B30E)Update nametables after player moves.
@@ -5865,7 +5865,7 @@ LB530:  LDA CharYPixelsLB       ;
 LB532:  SEC                     ;
 LB533:  SBC #$08                ;Move player 8 pixels up.
 LB535:  STA CharYPixelsLB       ;
-LB537:  BCS +                   ;Update upper byte of Y position, if necessary. 
+LB537:  BCS +                   ;Update upper byte of Y position, if necessary.
 LB539:  DEC CharYPixelsUB       ;
 
 LB53B:* JMP DoSprites           ;($B6DA)Update player and NPC sprites.
@@ -5875,7 +5875,7 @@ LB53E:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LB541:  DEC ScrollY             ;Decrement vertical scroll.
 LB543:  LDA ScrollY             ;
-LB545:  CMP #$FF                ;If the scroll value rolls over, set it 
+LB545:  CMP #$FF                ;If the scroll value rolls over, set it
 LB547:  BNE +                   ;to the proper maximum value.
 LB549:  LDA #$EF                ;
 LB54B:  STA ScrollY             ;
@@ -5985,7 +5985,7 @@ LB5E2:  DEC ScrollY             ;Decrement vertical scroll register.
 
 LB5E4:  DEC NTBlockY            ;
 LB5E6:  LDA NTBlockY            ;
-LB5E8:  CMP #$FF                ;Decrement Y block position on nametable. 
+LB5E8:  CMP #$FF                ;Decrement Y block position on nametable.
 LB5EA:  BNE +                   ;If it rolls over, make sure its set to the proper value.
 LB5EC:  LDA #$0E                ;
 LB5EE:  STA NTBlockY            ;
@@ -5999,8 +5999,8 @@ LB5F7:  JMP DoCoveredArea       ;($B5FA)Handle covered areas of the map, if nece
 ;----------------------------------------------------------------------------------------------------
 
 DoCoveredArea:
-LB5FA:  LDA CharXPos            ;Make a copy of the player's X and Y position. 
-LB5FC:  STA _TargetX            ;It will be used to calculate an index into the 
+LB5FA:  LDA CharXPos            ;Make a copy of the player's X and Y position.
+LB5FC:  STA _TargetX            ;It will be used to calculate an index into the
 LB5FE:  LDA CharYPos            ;covered map data.
 LB600:  STA _TargetY            ;
 LB602:  JSR CheckCoveredArea    ;($AABE)Check if player is in a covered map area.
@@ -6017,13 +6017,13 @@ LB610:  BEQ PrepToggleCover     ;If not, branch to skip hiding player.
 LB612:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LB615:  LDA #$F0                ;
-LB617:  STA SpriteRAM           ;Hide the player as they enter a covered area. 
+LB617:  STA SpriteRAM           ;Hide the player as they enter a covered area.
 LB61A:  STA SpriteRAM+4         ;This simulates the player going under the covered area.
 LB61D:  STA SpriteRAM+8         ;
 LB620:  STA SpriteRAM+12        ;
 
 PrepToggleCover:
-LB623:  LDA NTBlockX            ;Prepare to add/remove blocks from opposite one screen 
+LB623:  LDA NTBlockX            ;Prepare to add/remove blocks from opposite one screen
 LB625:  CLC                     ;over from the active area of the nametab;es.
 LB626:  ADC #$10                ;
 LB628:  AND #$1F                ;Ensure result does not go past 31 blocks.
@@ -6129,8 +6129,8 @@ LB6B0:  LDA YPosFromCenter      ;Has the lower half of the column been changed?
 LB6B2:  CMP #$10                ;
 LB6B4:  BNE CoverLoColumnLoop   ;If not, branch to change another block.
 
-LB6B6:  LDA XPosFromCenter      ;This has to loop 3 times.  Not sure why.  Maybe the 
-LB6B8:  CLC                     ;time it takes to change all the blocks is too long so 
+LB6B6:  LDA XPosFromCenter      ;This has to loop 3 times.  Not sure why.  Maybe the
+LB6B8:  CLC                     ;time it takes to change all the blocks is too long so
 LB6B9:  ADC #$22                ;it has to be broken up into multiple passes.
 LB6BB:  STA XPosFromCenter      ;
 
@@ -6310,7 +6310,7 @@ LB796:* LDA StopNPCMove         ;Can NPC move?
 LB798:  BEQ SetNPCDir           ;If so, branch to choose random facing direction.
 
 HaltNPCMoveCalcs:
-LB79A:  ASL NPCYPos,X           ;Clear MSB to indicate movement is stopped for NPC. 
+LB79A:  ASL NPCYPos,X           ;Clear MSB to indicate movement is stopped for NPC.
 LB79C:  LSR NPCYPos,X           ;
 LB79E:  JMP EndNPCMoveLoop      ;($B8EA)Check for next NPC movement.
 
@@ -6542,15 +6542,15 @@ LB8F1:  JMP NPCMoveLoop         ;($B77C)Calculate movement for an NPC.
 UpdateNPCs2:
 LB8F4:  LDX #$00                ;Zero out index into NPC data.
 
-LB8F6:  LDA #$10                ;Skip first 16 bytes of sprite RAM. This RAM is reserved 
+LB8F6:  LDA #$10                ;Skip first 16 bytes of sprite RAM. This RAM is reserved
 LB8F8:  STA SpriteRAMIndex      ;for the player's sprites.
 
 NPCSpritesLoop:
-LB8FA:  LDA NPCXPos,X           ;Get the NPC X and Y position data. If both are not 0, 
-LB8FC:  AND #$1F                ;the NPC is valid and and should be drawn on the screen. 
-LB8FE:  BNE CalcNPCSprites      ;Branch to draw NPC sprites. An intersting effect is that 
-LB900:  LDA NPCYPos,X           ;An NPC can be pushed to 0,0 on the map and they will 
-LB902:  AND #$1F                ;disappear. This can only happen in Rimuldar as position 
+LB8FA:  LDA NPCXPos,X           ;Get the NPC X and Y position data. If both are not 0,
+LB8FC:  AND #$1F                ;the NPC is valid and and should be drawn on the screen.
+LB8FE:  BNE CalcNPCSprites      ;Branch to draw NPC sprites. An intersting effect is that
+LB900:  LDA NPCYPos,X           ;An NPC can be pushed to 0,0 on the map and they will
+LB902:  AND #$1F                ;disappear. This can only happen in Rimuldar as position
 LB904:  BNE CalcNPCSprites      ;0,0 can only be reached in this town.
 
 LB906:  JMP NextNPCSprites      ;($B9DF)Increment to next NPC.
@@ -6604,8 +6604,8 @@ LB94A:  BEQ +                   ;If not, branch.
 
 LB94C:  JMP NextNPCSprites      ;($B9DF)Increment to next NPC.
 
-LB94F:* LDA ThisNPCXPos         ;Store a copy of the NPC's X and Y block location 
-LB951:  STA GenByte3C           ;Has no apparent use as it is overwritten in the 
+LB94F:* LDA ThisNPCXPos         ;Store a copy of the NPC's X and Y block location
+LB951:  STA GenByte3C           ;Has no apparent use as it is overwritten in the
 LB953:  LDA ThisNPCYPos         ;CheckCoveredArea function below.
 LB955:  STA GenByte3E           ;
 
@@ -6636,7 +6636,7 @@ LB97A:  STA NPCSpriteXOfst      ;
 
 NPCSpriteColLoop:
 LB97C:  LDA NPCXPixelsLB        ;
-LB97E:  CLC                     ;Find X position of this NPC sprite by adding 
+LB97E:  CLC                     ;Find X position of this NPC sprite by adding
 LB97F:  ADC NPCSpriteXOfst      ;together the NPC position with the current tile X offset.
 LB981:  STA ThisNPCXPos         ;
 
@@ -6664,7 +6664,7 @@ LB99B:  LDY NPCOffset           ;
 LB99D:  LDA ThisNPCXPos         ;Save updated X position of NPC sprite.
 LB99F:  STA SpriteRAM+3,X       ;
 
-LB9A2:  LDA NPCYPixelsLB        ;Find Y position of this NPC sprite by adding 
+LB9A2:  LDA NPCYPixelsLB        ;Find Y position of this NPC sprite by adding
 LB9A4:  CLC                     ;together the NPC position with the current tile Y offset.
 LB9A5:  ADC NPCSpriteYOfst      ;
 
@@ -6837,15 +6837,15 @@ LBA6A:  ROR NPCXPixelsLB        ;
 
 LBA6C:  LDA NPCXPixelsLB        ;
 LBA6E:  SEC                     ;
-LBA6F:  SBC CharXPixelsLB       ;Subtract player's X pixel location from the NPC's X pixel 
-LBA71:  STA NPCXPixelsLB        ;location. Save the result in the NPC's X pixel location. 
-LBA73:  LDA NPCXPixelsUB        ;The NPC's X location is a signed value of the difference 
+LBA6F:  SBC CharXPixelsLB       ;Subtract player's X pixel location from the NPC's X pixel
+LBA71:  STA NPCXPixelsLB        ;location. Save the result in the NPC's X pixel location.
+LBA73:  LDA NPCXPixelsUB        ;The NPC's X location is a signed value of the difference
 LBA75:  SBC CharXPixelsUB       ;between the player and NPC X coordinates.
 LBA77:  STA NPCXPixelsUB        ;
 
 LBA79:  LDA NPCXPixelsLB        ;
 LBA7B:  EOR #$80                ;A wierd way of adding 128. Saves 1 instruction(CLC).
-LBA7D:  STA NPCXPixelsLB        ;Add 128 to the result. If the number is between 0 and 256 
+LBA7D:  STA NPCXPixelsLB        ;Add 128 to the result. If the number is between 0 and 256
 LBA7F:  BMI +                   ;then the NPC may be visible.
 LBA81:  INC NPCXPixelsUB        ;
 
@@ -6877,15 +6877,15 @@ LBAA2:  ORA NPCYPixelsLB        ;Add in the NPC mid-movement Y pixel position.
 LBAA4:  STA NPCYPixelsLB        ;
 
 LBAA6:  SEC                     ;
-LBAA7:  SBC CharYPixelsLB       ;Subtract player's Y pixel location from the NPC's Y pixel 
-LBAA9:  STA NPCYPixelsLB        ;location. Save the result in the NPC's Y pixel location. 
-LBAAB:  LDA NPCYPixelsUB        ;The NPC's Y location is a signed value of the difference 
+LBAA7:  SBC CharYPixelsLB       ;Subtract player's Y pixel location from the NPC's Y pixel
+LBAA9:  STA NPCYPixelsLB        ;location. Save the result in the NPC's Y pixel location.
+LBAAB:  LDA NPCYPixelsUB        ;The NPC's Y location is a signed value of the difference
 LBAAD:  SBC CharYPixelsUB       ;between the player and NPC X coordinates.
 LBAAF:  STA NPCYPixelsUB        ;
 
 LBAB1:  LDA NPCYPixelsLB        ;
 LBAB3:  CLC                     ;
-LBAB4:  ADC #$6F                ;Add 111 to the result. If the number is between 0 and 240 
+LBAB4:  ADC #$6F                ;Add 111 to the result. If the number is between 0 and 240
 LBAB6:  STA NPCYPixelsLB        ;then the NPC may be visible.
 LBAB8:  BCC +                   ;
 LBABA:  INC NPCYPixelsUB        ;
@@ -6981,7 +6981,7 @@ LBB42:  BNE EBTileLoadLoop
 LBB44:  LDX #$00                ;Zero out index for sprite data table.
 
 EBSpriteLoadLoop:
-LBB46:  LDA EndBossSPTiles,X    ;   
+LBB46:  LDA EndBossSPTiles,X    ;
 LBB49:  CMP #$FF                ;Look for end #$FF to see if at end of sprites.
 LBB4B:  BNE EBSpriteSave        ;#$FF found? If not, branch to get next byte.
 
@@ -7105,7 +7105,7 @@ LBBF7:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 ;The following table contains the background tiles used to make the end boss.
-;There are three bytes per tile.  The first byte is the tile pattern.  The 
+;There are three bytes per tile.  The first byte is the tile pattern.  The
 ;next two bytes are the PPU address for the tile pattern.
 
 EndBossBGTiles:
@@ -7215,7 +7215,7 @@ LBD41:  .byte $30, $0E, $30, $17, $15, $30, $21, $22, $27, $0F, $27, $27
 EndBossPal2Ptr:
 LBD4D:  .word EndBossPal2       ;($BD4F)Pointer to palette data below.
 EndBossPal2:
-LBD4F:  .byte $21, $22, $27, $17, $0C, $30, $07, $15, $30, $21, $27, $15 
+LBD4F:  .byte $21, $22, $27, $17, $0C, $30, $07, $15, $30, $21, $27, $15
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -7243,7 +7243,7 @@ IntroGFXLoop:
 LBD81:  JSR IntroGFXPtrInc      ;($BDBF)Get nametable data.
 LBD84:  CMP #END_TXT_END        ;Check for end of data block indicator.
 LBD86:  BEQ ChkNTEnd            ;If found, branch to check if done.
-    
+
 LBD88:  CMP #END_RPT            ;Check for repeated data indicator.
 LBD8A:  BNE IncToNextByte       ;Branch to skip if not repeating data.
 
@@ -7361,12 +7361,12 @@ LBF41:  .byte $F7, $20, $5F, $FC    ;1 row of blank tiles.
 ;----------------------------------------------------------------------------------------------------
 
 LBF45:  .byte $F7, $0B, $5F         ;11 blank tiles.
-;             COPY  1    9    8    6    _    E    N    I    X 
+;             COPY  1    9    8    6    _    E    N    I    X
 LBF48:  .byte $62, $01, $09, $08, $06, $5F, $28, $31, $2C, $3B
 LBF52:  .byte $F7, $0B, $5F, $FC    ;11 blank tiles.
 
 ;----------------------------------------------------------------------------------------------------
- 
+
 LBF56:  .byte $F7, $20, $5F, $FC    ;1 row of blank tiles.
 
 ;----------------------------------------------------------------------------------------------------
@@ -7385,7 +7385,7 @@ LBF6B:  .byte $F7, $20, $5F, $FC    ;1 row of blank tiles.
 LBF6F:  .byte $F7, $06, $5F         ;6 blank tiles.
 ;              L    I    C    E    N    S    E    D    _    T    O    _    N    I    N    T
 LBF72:  .byte $2F, $2C, $26, $28, $31, $36, $28, $27, $5F, $37, $32, $5F, $31, $2C, $31, $37
-;              E    N    D    O 
+;              E    N    D    O
 LBF82:  .byte $28, $31, $27, $32
 LBF86:  .byte $F7, $06, $5F, $FC    ;6 blank tiles.
 
@@ -7434,7 +7434,7 @@ LBFDC:  JMP _DoReset            ;($FF8E)Continue with the reset process.
 
 ;                   D    R    A    G    O    N    _    W    A    R    R    I    O    R    _
 LBFDF:  .byte $80, $44, $52, $41, $47, $4F, $4E, $20, $57, $41, $52, $52, $49, $4F, $52, $20
-LBFEF:  .byte $20, $56, $DE, $30, $70, $01, $04, $01, $0F, $07, $00 
+LBFEF:  .byte $20, $56, $DE, $30, $70, $01, $04, $01, $0F, $07, $00
 
 LBFFA:  .word NMI               ;($BFD8)NMI vector.
 LBFFC:  .word RESET             ;($BFD8)Reset vector.

@@ -109,7 +109,7 @@
 .alias MapDatPtrLB      $11     ;Pointer to base address of map data, lower byte.
 .alias MapDatPtrUB      $12     ;Pointer to base address of map data, upper byte.
 .alias MapWidth         $13     ;Width of current map in blocks.
-.alias MapHeight        $14     ;Height of current map in blocks. 
+.alias MapHeight        $14     ;Height of current map in blocks.
 .alias BoundryBlock     $15     ;Block ID of for blocks beyond the map boundaries.
 .alias MapType          $16     ;#$00-over world, #$10-town/castle, #$20-cave.
 
@@ -221,8 +221,8 @@
 
 .alias CoveredStsNext   $3D     ;Indicates the covered status after player movement.
 
-.alias XPosFromLeft     $3C     ;Tile X position with respect to top left of display. 
-.alias YPosFromTop      $3E     ;Tile Y position with respect to top left of display. 
+.alias XPosFromLeft     $3C     ;Tile X position with respect to top left of display.
+.alias YPosFromTop      $3E     ;Tile Y position with respect to top left of display.
 
 .alias TargetResults    $3C     ;Stores results byte for target check.
 .alias XTarget          $3C     ;X position to check for item, door, etc.
@@ -311,7 +311,7 @@
 .alias ThisNPCXPos      $42     ;Copy of current NPCs X block position on map.
 .alias ThisNPCYPos      $43     ;Copy of current NPCs y block position on map.
 
-.alias StatBonus        $42     ;When stat penalties are applied, any value here will 
+.alias StatBonus        $42     ;When stat penalties are applied, any value here will
                                 ;be added in as a bonus. Potential bonus of 0-3 points.
 .alias StatPenalty      $43     ;Lower 2 bits only. stat penalties work as follows:
                                 ;If bit 0 is clear -> strength is reduced by 10%.
@@ -332,7 +332,7 @@
                                 ;1-upper left, 2-upper right, 4-lower left, 8-lower right.
 .alias BridgeFlashCntr  $4C     ;Used to count palette flash cycles when rainbow bridge is created.
 .alias TileCounter      $4D     ;Used to count tiles when modifying blocks.
-.alias RowCounter       $4D     ;Used to count block rows when clearing out nametable on map change. 
+.alias RowCounter       $4D     ;Used to count block rows when clearing out nametable on map change.
 .alias BlockClear       $4D     ;Is always 0. Maybe had some other function in Dragon's Quest.
 .alias WndForeBack      $4D     ;#$FF=Background window, #$00=Foreground window(over another window).
 .alias NPCLoopCounter   $4E     ;Counter for controlling NPC update loops.
@@ -431,12 +431,12 @@
                                 ; 101   Broad Sword      Full Plate       N/A
                                 ; 110   Flame Sword      Magic Armor      N/A
                                 ; 111   Erdrick's Sword  Erdrick's Armor  N/A
-                                
+
                                 ;Inventory
                                 ;$00=None, $01=Torch, $02=Fairy Water, $03=Wings
                                 ;$04=Dragon's Scale, $05=Fairy Flute, $06=Fighter's Ring
                                 ;$07=Erdrick's Token, $08=Gwaelin's Love, $09=Cursed Belt
-                                ;$0A=Slver Harp, $0B=Death Necklace, $0C=Stones of Sunlight                          
+                                ;$0A=Slver Harp, $0B=Death Necklace, $0C=Stones of Sunlight
                                 ;$0D=Staff of Rain, $0E=Rainbow Drop, $0F=Herb(can't be used).
                                 ;--------------------------------------------------------------------
 .alias InventoryKeys    $BF     ;Magic key count. Not part of regular inventory.
@@ -474,15 +474,15 @@
                                 ;%01000000-Wearing Cursed belt.
                                 ;%10000000-Wearing Death necklace.
 
-.alias LightDiameter    $D0     ;Diameter in blocks of light around player in dungeons.                             
+.alias LightDiameter    $D0     ;Diameter in blocks of light around player in dungeons.
 .alias PPUHorzVert      $D1     ;#$00=Write PPU data in vertical column(add #$20 every write).
-                                ;non-zero=Write PPU data horizontally. 
+                                ;non-zero=Write PPU data horizontally.
 .alias AddAttribData    $D1     ;#$00=Move attrib data to buffer. Non-zero=skip attrib table data.
-                               
-.alias WndTxtXCoord     $D2     ;X coordinant of current text byte relative to the window.  
-.alias WndTxtYCoord     $D3     ;Y coordinant of current text byte relative to the window.                      
 
-.alias RepeatCounter    $D6     ;Counts repeated PPU entry bytes.                           
+.alias WndTxtXCoord     $D2     ;X coordinant of current text byte relative to the window.
+.alias WndTxtYCoord     $D3     ;Y coordinant of current text byte relative to the window.
+
+.alias RepeatCounter    $D6     ;Counts repeated PPU entry bytes.
 .alias SpellToCast      $D7     ;Spell player or enemy is attempting to cast.
 .alias WndSelResults    $D7     ;Stores selection results from a window.
 
@@ -507,10 +507,10 @@
 
 .alias EnNumber         $E0     ;Enemy number. $00 through $27.
 .alias ThisTile         $E0     ;Current block type player is standing on.
-                                
+
 .alias EnCurntHP        $E2     ;Enemy's current hit points.
 .alias MjArmrHP         $E3     ;Increments every movement and increments HP every
-                                ;3 steps if wearing magic armor.            
+                                ;3 steps if wearing magic armor.
 .alias StoryFlags       $E4     ;Flags that keep track of major game events.
                                 ;%00000001-
                                 ;%00000010-Golem defeated.
@@ -557,7 +557,7 @@
 .alias SQ2Config        $FF     ;Hold config byte for SQ2 control register $4004.
 
 ;----------------------------------------------------------------------------------------------------
-                                
+
 .alias EnBaseAtt        $0100   ;Enemy base attack attibute.
 .alias EnBaseDef        $0101   ;Enemy base defense attribute.
 .alias EnBaseHP         $0102   ;Enemy base hit points.
@@ -578,19 +578,19 @@
                                 ;00=hurt, 01=hurtmore, 10=fire1, 11=fire2.
 
 .alias BankFuncDatLB    $0103   ;Pointer to bank function data after BRK command, lower byte.
-.alias BankFuncDatUB    $0104   ;Pointer to bank function data after BRK command, upper byte.                               
-                                
+.alias BankFuncDatUB    $0104   ;Pointer to bank function data after BRK command, upper byte.
+
 .alias EnBaseAgi        $0104   ;Enemy base agility.
 .alias EnBaseMDef       $0105   ;Enemy base magic defense.
 .alias EnBaseExp        $0106   ;Enemy base experience.
 .alias EnBaseGld        $0107   ;Enemy base gold.
-                                
+
 .alias Stack            $0110   ;Through $01FF. CPU stack.
 .alias SpriteRAM        $0200   ;Through $02FF. Sprite DMA RAM.
 .alias BlockRAM         $0300   ;Through $03FF. Multipurpose RAM for buffering.
 .alias TrsrArray        $0320   ;Through $039B. Array of all trasure chest data.
 .alias EnPalData        $03A0   ;Through $03AB. Palette data for current enemy.
-.alias WinBufRAM        $0400   ;Through $07BF. Window data buffer. 32 by 30 bytes.  
+.alias WinBufRAM        $0400   ;Through $07BF. Window data buffer. 32 by 30 bytes.
 
 ;--------------------------------------[Hardware defines]--------------------------------------------
 
@@ -649,14 +649,14 @@
 .alias DoorYPos         $600D   ;Through $601B. opened on the current map.
 .alias TrsrXPos         $601C   ;Through $602A. X and y positions of treasure
 .alias TrsrYPos         $601D   ;Through $602B. chests picked up on the current map.
-                                
+
 .alias UpdateBGTiles    $602C   ;MSB set = update on-screen background tiles.
 
 .alias MusicTrigger     $602E   ;Certain music spots trigger events. Only used in intro routine.
 .alias CharDirection    $602F   ;Player's facing direction, 0-up, 1-right, 2-down, 3-left.
 .alias SaveSelected     $6030   ;Save slot selected(0-2).
 .alias OpnSltSelected   $6031   ;Open game slot selected for copying a saved game into.
-.alias SaveGameCntr     $6032   
+.alias SaveGameCntr     $6032
 
 .alias _SaveBitMask     $6034   ;Working copy of saved games bitmasks.
 .alias ValidSave1       $6035   ;#$C8=valid saved data, slot 1, #$00=not valid.
