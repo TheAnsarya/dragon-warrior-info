@@ -61,7 +61,7 @@ NES_PALETTE = [
 
 class PaletteAnalyzer:
     """Analyze NES palettes"""
-    
+
     # Dragon Warrior palette definitions (from ROM)
     DW_PALETTES = {
         "background": {
@@ -81,11 +81,11 @@ class PaletteAnalyzer:
             7: [0x0F, 0x14, 0x24, 0x34],  # Monsters (pink)
         }
     }
-    
+
     def __init__(self, rom_path: str, output_dir: str):
         """
         Initialize palette analyzer
-        
+
         Args:
             rom_path: ROM file path
             output_dir: Output directory
@@ -93,38 +93,38 @@ class PaletteAnalyzer:
         self.rom_path = Path(rom_path)
         self.output_dir = Path(output_dir)
         self.rom_data = None
-        
+
     def load_rom(self) -> bool:
         """Load ROM file"""
         if not self.rom_path.exists():
             print(f"❌ ROM not found: {self.rom_path}")
             return False
-        
+
         with open(self.rom_path, 'rb') as f:
             self.rom_data = bytearray(f.read())
-        
+
         print(f"✓ Loaded ROM: {len(self.rom_data)} bytes")
         return True
-    
+
     def extract_palettes(self) -> Dict[str, List[List[int]]]:
         """
         Extract palette data from ROM
-        
+
         Returns:
             Dictionary of palette types and values
         """
         if not self.rom_data:
             return {}
-        
+
         # For Dragon Warrior, palettes are at specific addresses
         # Background palettes: 0x1CDD0 - 0x1CDDF
         # Sprite palettes: 0x1CDE0 - 0x1CDFF
-        
+
         palettes = {
             'background': [],
             'sprite': []
         }
-        
+
         # Extract background palettes (4 palettes × 4 bytes)
         bg_offset = 0x1CDD0
         for i in range(4):
@@ -132,7 +132,7 @@ class PaletteAnalyzer:
             for j in range(4):
                 palette.append(self.rom_data[bg_offset + i * 4 + j])
             palettes['background'].append(palette)
-        
+
         # Extract sprite palettes (8 palettes × 4 bytes)
         spr_offset = 0x1CDE0
         for i in range(8):
@@ -140,16 +140,16 @@ class PaletteAnalyzer:
             for j in range(4):
                 palette.append(self.rom_data[spr_offset + i * 4 + j])
             palettes['sprite'].append(palette)
-        
+
         return palettes
-    
+
     def get_color_name(self, nes_color: int) -> str:
         """
         Get descriptive name for NES color
-        
+
         Args:
             nes_color: NES palette index (0-63)
-            
+
         Returns:
             Color name string
         """
@@ -179,36 +179,36 @@ class PaletteAnalyzer:
             0x24: "Light Pink",
             0x34: "Lightest Pink",
         }
-        
+
         return color_names.get(nes_color, f"Color ${nes_color:02X}")
-    
+
     def analyze_color_usage(self, palettes: Dict[str, List[List[int]]]) -> Dict:
         """
         Analyze color usage across all palettes
-        
+
         Args:
             palettes: Palette dictionary
-            
+
         Returns:
             Analysis results
         """
         all_colors = []
-        
+
         for pal_type, pal_list in palettes.items():
             for palette in pal_list:
                 all_colors.extend(palette)
-        
+
         color_counts = Counter(all_colors)
-        
+
         # Find most/least common
         most_common = color_counts.most_common(5)
         least_common = color_counts.most_common()[-5:]
-        
+
         # Find unused colors (from NES palette)
         used_colors = set(all_colors)
         all_nes_colors = set(range(64))
         unused_colors = all_nes_colors - used_colors
-        
+
         return {
             'total_colors_used': len(used_colors),
             'total_color_slots': len(all_colors),
@@ -217,19 +217,19 @@ class PaletteAnalyzer:
             'unused_nes_colors': sorted(unused_colors),
             'color_frequency': dict(color_counts)
         }
-    
+
     def find_duplicate_palettes(self, palettes: Dict[str, List[List[int]]]) -> List:
         """
         Find duplicate palette definitions
-        
+
         Args:
             palettes: Palette dictionary
-            
+
         Returns:
             List of duplicate palette pairs
         """
         duplicates = []
-        
+
         for pal_type, pal_list in palettes.items():
             for i, pal1 in enumerate(pal_list):
                 for j, pal2 in enumerate(pal_list[i+1:], start=i+1):
@@ -240,29 +240,29 @@ class PaletteAnalyzer:
                             'palette2': j,
                             'colors': pal1
                         })
-        
+
         return duplicates
-    
+
     def suggest_optimizations(self, palettes: Dict, analysis: Dict) -> List[str]:
         """
         Suggest palette optimizations
-        
+
         Args:
             palettes: Palette dictionary
             analysis: Analysis results
-            
+
         Returns:
             List of suggestions
         """
         suggestions = []
-        
+
         # Check for unused colors
         if analysis['unused_nes_colors']:
             suggestions.append(
                 f"• {len(analysis['unused_nes_colors'])} NES colors never used - "
                 f"consider using for new graphics"
             )
-        
+
         # Check for duplicate palettes
         duplicates = self.find_duplicate_palettes(palettes)
         if duplicates:
@@ -270,7 +270,7 @@ class PaletteAnalyzer:
                 f"• {len(duplicates)} duplicate palette(s) found - "
                 f"could merge to free slots"
             )
-        
+
         # Check color frequency
         least_used = [c for c, count in analysis['most_common'][-3:] if count == 1]
         if least_used:
@@ -278,7 +278,7 @@ class PaletteAnalyzer:
                 f"• {len(least_used)} color(s) used only once - "
                 f"consider consolidating"
             )
-        
+
         # Palette slot usage
         bg_used = len(palettes.get('background', []))
         spr_used = len(palettes.get('sprite', []))
@@ -290,108 +290,108 @@ class PaletteAnalyzer:
             suggestions.append(
                 f"• {8 - spr_used} unused sprite palette slot(s) available"
             )
-        
+
         return suggestions
-    
+
     def export_palette_swatch(self, palettes: Dict[str, List[List[int]]]):
         """
         Export palette swatches as images
-        
+
         Args:
             palettes: Palette dictionary
         """
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Swatch dimensions
         swatch_size = 40
         padding = 5
-        
+
         for pal_type, pal_list in palettes.items():
             # Calculate image size
             width = 4 * swatch_size + 5 * padding
             height = len(pal_list) * (swatch_size + padding) + padding
-            
+
             # Create image
             img = Image.new('RGB', (width, height), (255, 255, 255))
             draw = ImageDraw.Draw(img)
-            
+
             # Draw each palette
             for i, palette in enumerate(pal_list):
                 y = i * (swatch_size + padding) + padding
-                
+
                 for j, color_idx in enumerate(palette):
                     x = j * (swatch_size + padding) + padding
-                    
+
                     # Get RGB color
                     if color_idx < len(NES_PALETTE):
                         rgb = NES_PALETTE[color_idx]
                     else:
                         rgb = (0, 0, 0)
-                    
+
                     # Draw swatch
                     draw.rectangle(
                         [x, y, x + swatch_size, y + swatch_size],
                         fill=rgb,
                         outline=(0, 0, 0)
                     )
-            
+
             # Save
             output_file = self.output_dir / f"{pal_type}_palettes.png"
             img.save(output_file)
             print(f"✓ Exported {pal_type} palette swatch: {output_file}")
-    
+
     def export_color_usage_chart(self, analysis: Dict):
         """
         Export color usage chart
-        
+
         Args:
             analysis: Analysis results
         """
         # Create bar chart of color usage
         freq = analysis['color_frequency']
-        
+
         # Sort by frequency
         sorted_colors = sorted(freq.items(), key=lambda x: x[1], reverse=True)
-        
+
         # Chart dimensions
         bar_width = 10
         bar_max_height = 200
         padding = 20
-        
+
         width = len(sorted_colors) * (bar_width + 2) + 2 * padding
         height = bar_max_height + 2 * padding + 30
-        
+
         img = Image.new('RGB', (width, height), (255, 255, 255))
         draw = ImageDraw.Draw(img)
-        
+
         max_count = max(freq.values())
-        
+
         for i, (color, count) in enumerate(sorted_colors):
             x = i * (bar_width + 2) + padding
             bar_height = int((count / max_count) * bar_max_height)
             y = height - padding - 30 - bar_height
-            
+
             # Get color
             if color < len(NES_PALETTE):
                 rgb = NES_PALETTE[color]
             else:
                 rgb = (128, 128, 128)
-            
+
             # Draw bar
             draw.rectangle(
                 [x, y, x + bar_width, height - padding - 30],
                 fill=rgb,
                 outline=(0, 0, 0)
             )
-        
+
         output_file = self.output_dir / "color_usage.png"
         img.save(output_file)
         print(f"✓ Exported color usage chart: {output_file}")
-    
+
     def generate_report(self, palettes: Dict, analysis: Dict, suggestions: List[str]):
         """
         Generate analysis report
-        
+
         Args:
             palettes: Palette dictionary
             analysis: Analysis results
@@ -400,20 +400,20 @@ class PaletteAnalyzer:
         print("\n" + "=" * 70)
         print("NES Palette Analysis Report")
         print("=" * 70)
-        
+
         print("\n--- Palette Counts ---")
         for pal_type, pal_list in palettes.items():
             print(f"{pal_type.capitalize()}: {len(pal_list)} palette(s)")
-        
+
         print("\n--- Color Usage ---")
         print(f"Total unique colors used: {analysis['total_colors_used']} / 64")
         print(f"Total color slots: {analysis['total_color_slots']}")
-        
+
         print("\n--- Most Common Colors ---")
         for color, count in analysis['most_common']:
             name = self.get_color_name(color)
             print(f"  ${color:02X} ({name}): {count} times")
-        
+
         print("\n--- Palette Definitions ---")
         for pal_type, pal_list in palettes.items():
             print(f"\n{pal_type.capitalize()} Palettes:")
@@ -422,12 +422,12 @@ class PaletteAnalyzer:
                 names = ' / '.join([self.get_color_name(c) for c in palette])
                 print(f"  Palette {i}: [{colors}]")
                 print(f"             [{names}]")
-        
+
         if suggestions:
             print("\n--- Optimization Suggestions ---")
             for suggestion in suggestions:
                 print(suggestion)
-        
+
         print("\n" + "=" * 70)
 
 
@@ -440,75 +440,75 @@ def main():
 Examples:
   # Basic analysis
   python tools/palette_analyzer.py
-  
+
   # Export palette swatches
   python tools/palette_analyzer.py --export-swatches
-  
+
   # Show optimization suggestions
   python tools/palette_analyzer.py --suggest-optimizations
         """
     )
-    
+
     parser.add_argument(
         '--rom',
         default=DEFAULT_ROM,
         help=f'ROM file path (default: {DEFAULT_ROM})'
     )
-    
+
     parser.add_argument(
         '--output',
         default=DEFAULT_OUTPUT,
         help=f'Output directory (default: {DEFAULT_OUTPUT})'
     )
-    
+
     parser.add_argument(
         '--export-swatches',
         action='store_true',
         help='Export palette swatches as images'
     )
-    
+
     parser.add_argument(
         '--export-chart',
         action='store_true',
         help='Export color usage chart'
     )
-    
+
     parser.add_argument(
         '--suggest-optimizations',
         action='store_true',
         help='Show optimization suggestions'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Initialize analyzer
     analyzer = PaletteAnalyzer(args.rom, args.output)
-    
+
     # Load ROM
     if not analyzer.load_rom():
         return 1
-    
+
     # Extract palettes
     palettes = analyzer.extract_palettes()
-    
+
     # Analyze
     analysis = analyzer.analyze_color_usage(palettes)
-    
+
     # Generate suggestions
     suggestions = []
     if args.suggest_optimizations:
         suggestions = analyzer.suggest_optimizations(palettes, analysis)
-    
+
     # Generate report
     analyzer.generate_report(palettes, analysis, suggestions)
-    
+
     # Export visuals
     if args.export_swatches:
         analyzer.export_palette_swatch(palettes)
-    
+
     if args.export_chart:
         analyzer.export_color_usage_chart(analysis)
-    
+
     return 0
 
 

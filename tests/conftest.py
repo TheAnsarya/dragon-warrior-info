@@ -18,7 +18,7 @@ def test_rom():
     """Create a minimal test ROM file"""
     temp_dir = Path(tempfile.mkdtemp())
     rom_path = temp_dir / "test.nes"
-    
+
     # NES header (16 bytes)
     header = bytes([
         0x4E, 0x45, 0x53, 0x1A,  # "NES" + DOS EOF
@@ -27,18 +27,18 @@ def test_rom():
         0x00, 0x00,  # Flags
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     ])
-    
+
     # PRG-ROM (32KB)
     prg_rom = bytes([0xFF] * (2 * 16384))
-    
+
     # CHR-ROM (8KB)
     chr_rom = bytes([0xAA] * (1 * 8192))
-    
+
     with open(rom_path, 'wb') as f:
         f.write(header + prg_rom + chr_rom)
-    
+
     yield rom_path
-    
+
     # Cleanup
     shutil.rmtree(temp_dir)
 
@@ -120,16 +120,16 @@ def test_item_data():
 def temp_workspace():
     """Create temporary workspace directory"""
     temp_dir = Path(tempfile.mkdtemp())
-    
+
     # Create directory structure
     (temp_dir / "extracted_assets" / "json").mkdir(parents=True)
     (temp_dir / "extracted_assets" / "binary").mkdir(parents=True)
     (temp_dir / "extracted_assets" / "graphics").mkdir(parents=True)
     (temp_dir / "build").mkdir(parents=True)
     (temp_dir / "roms").mkdir(parents=True)
-    
+
     yield temp_dir
-    
+
     # Cleanup
     shutil.rmtree(temp_dir)
 
@@ -138,19 +138,19 @@ def temp_workspace():
 def sample_json_files(temp_workspace, test_monster_data, test_spell_data, test_item_data):
     """Create sample JSON files"""
     json_dir = temp_workspace / "extracted_assets" / "json"
-    
+
     # Save monsters
     with open(json_dir / "monsters.json", 'w') as f:
         json.dump(test_monster_data, f, indent=2)
-    
+
     # Save spells
     with open(json_dir / "spells.json", 'w') as f:
         json.dump(test_spell_data, f, indent=2)
-    
+
     # Save items
     with open(json_dir / "items.json", 'w') as f:
         json.dump(test_item_data, f, indent=2)
-    
+
     return json_dir
 
 
@@ -158,13 +158,13 @@ def sample_json_files(temp_workspace, test_monster_data, test_spell_data, test_i
 def sample_binary_files(temp_workspace):
     """Create sample .dwdata files"""
     binary_dir = temp_workspace / "extracted_assets" / "binary"
-    
+
     # Create monster binary
     monster_data = struct.pack('<BBBBBBBHH', 0, 3, 5, 2, 3, 0, 0, 1, 2)
-    
+
     import zlib
     crc = zlib.crc32(monster_data)
-    
+
     header = struct.pack(
         '<4sBBHIIHHI',
         b'DWDT',  # Magic
@@ -177,10 +177,10 @@ def sample_binary_files(temp_workspace):
         0,        # Reserved
         0         # Timestamp
     )
-    
+
     with open(binary_dir / "monsters.dwdata", 'wb') as f:
         f.write(header + monster_data)
-    
+
     return binary_dir
 
 
