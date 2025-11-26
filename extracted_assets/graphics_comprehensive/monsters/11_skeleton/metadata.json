@@ -1,0 +1,56 @@
+{
+  "id": 11,
+  "name": "Skeleton",
+  "palette_nes": [
+    0,
+    48,
+    14,
+    14
+  ],
+  "palette_rgb": [
+    [
+      84,
+      84,
+      84
+    ],
+    [
+      236,
+      238,
+      236
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0
+    ]
+  ],
+  "sprite_tiles": 4,
+  "sprite_data": [
+    {
+      "tile": 14,
+      "attr": 14,
+      "x": 14
+    },
+    {
+      "tile": 14,
+      "attr": 14,
+      "x": 14
+    },
+    {
+      "tile": 14,
+      "attr": 14,
+      "x": 48
+    },
+    {
+      "tile": 16,
+      "attr": 17,
+      "x": 16
+    }
+  ],
+  "rom_pointer_offset": "0x005A0A"
+}
