@@ -63,23 +63,67 @@ python tools/analysis/rom_analyzer.py strings dragon_warrior.nes --min-length 4
 python tools/analysis/rom_analyzer.py report dragon_warrior.nes
 ```
 
-### Asset Extraction & Editing Pipeline
+### Asset Extraction & Modification Pipeline
 
 ```bash
-# Extract all assets using the complete pipeline
-python dragon_warrior_build.py --rom dragon_warrior.nes extract
+# STEP 1: Extract all assets from ROM
+python tools/organize_chr_tiles.py      # Extract & organize CHR sprite sheets
+python tools/extract_all_data.py        # Extract monsters, spells, items (verified)
+python tools/extract_maps_npcs.py       # Extract interior maps & NPCs
+python tools/extract_text_dialogs.py    # Extract text encoding system
 
-# Run the interactive asset pipeline
-python tools/asset_pipeline.py dragon_warrior.nes
+# STEP 2: Edit extracted JSON files
+# Edit files in extracted_assets/data/:
+#   - monsters.json (39 monsters with attack, defense, HP, etc.)
+#   - spells.json (10 spells with MP costs)
+#   - items_equipment.json (32 items: tools, weapons, armor, shields)
 
-# Extract specific data types
-python tools/extraction/data_extractor.py dragon_warrior.nes
-python tools/extraction/graphics_extractor.py dragon_warrior.nes
+# STEP 3: Reinsert changes into ROM
+python tools/reinsert_assets.py
+# Or use programmatically:
+from tools.reinsert_assets import DragonWarriorROMModifier
+modifier = DragonWarriorROMModifier(
+    "roms/Dragon Warrior (U) (PRG1) [!].nes",
+    "output/dragon_warrior_modified.nes"
+)
+modifier.create_backup()
+modifier.modify_monster_stats("extracted_assets/data/monsters.json")
+modifier.modify_spell_data("extracted_assets/data/spells.json")
+modifier.modify_equipment_stats("extracted_assets/data/items_equipment.json")
+modifier.save_modified_rom()
+modifier.generate_modification_report(Path("output/reports"))
 
-# Edit assets with interactive editors
-python tools/editors/monster_editor.py extracted_assets/json/monsters.json
-python tools/editors/item_editor.py extracted_assets/json/items.json
+# STEP 4: Test modified ROM in emulator
+# Load output/dragon_warrior_modified.nes in FCEUX, Mesen, or Nestopia
 ```
+
+### Extracted Assets Overview
+
+**Graphics (CHR Tiles)**
+- 18 organized sprite sheets (replaces 1024 individual tiles)
+- Grouped by purpose: heroes, monsters, NPCs, items, UI, fonts, terrain, towns, dungeons, battle backgrounds
+- Proper NES palettes applied per category
+- Location: `extracted_assets/chr_organized/`
+
+**Game Data (JSON Format)**
+- 39 monsters: attack, defense, HP, spell, agility, magic defense, experience, gold
+- 10 spells: MP costs, effects, formulas, targets, battle/field usage
+- 32 items/equipment: tools (15), weapons (7), armor (7), shields (3) with prices and stats
+- All data verified byte-perfect against ROM
+- Location: `extracted_assets/data/`
+
+**Interior Maps**
+- 22 interior locations: towns, castles, caves
+- Map dimensions, tile data, ASCII visualizations
+- NPC positions and treasure chest locations
+- Location: `extracted_assets/maps/`
+
+**Text System**
+- Complete character encoding table (0x00-0x7F)
+- Word substitution compression (0x80-0x8F: "the", "thou", "thy", etc.)
+- Control codes (0xF0-0xFF: HERO, WAIT, LINE, PAGE, CHOICE, etc.)
+- Text decoder for dialog strings
+- Location: `extracted_assets/text/`
 
 ### Building ROM
 
@@ -96,31 +140,68 @@ python tools/editors/item_editor.py extracted_assets/json/items.json
 
 ## 📊 Current Status
 
-### ✅ Completed Foundation
+### ✅ Completed - Asset Extraction & Modification Toolkit
 
-- **Project Structure** - Based on proven FFMQ patterns
-- **Build System** - PowerShell scripts with Ophis assembler integration
-- **Python Environment** - Virtual environment with comprehensive dependencies
-- **Documentation Framework** - Structured docs with DataCrystal compatibility
-- **ROM Analysis Tools** - Hex dump, pattern analysis, string extraction
-- **Asset Extraction** - Basic graphics, text, and data extraction
-- **Testing Framework** - Pytest-based validation and testing
-- **GitHub Integration** - Issues management and project automation
+**Graphics Extraction**
+- ✅ 18 organized sprite sheets from 1024 CHR tiles
+- ✅ Proper NES palette application per category
+- ✅ Scale factors for visual editing (2x-4x)
+- ✅ Metadata JSON with tile ranges and descriptions
+- Tool: `tools/organize_chr_tiles.py`
+
+**Game Data Extraction**
+- ✅ 39 monsters with 8 stats each (verified byte-perfect)
+- ✅ 10 spells with MP costs, effects, formulas
+- ✅ 32 items/equipment with stats and prices
+- ✅ ROM verification system (all data PASSED)
+- Tool: `tools/extract_all_data.py`
+
+**Map Extraction**
+- ✅ 22 interior locations (towns, castles, caves)
+- ✅ Map dimensions and tile data
+- ✅ ASCII visualizations
+- ✅ NPC positions (partial)
+- ✅ Treasure chest locations
+- Tool: `tools/extract_maps_npcs.py`
+
+**Text System**
+- ✅ Complete character encoding table (0x00-0x7F)
+- ✅ Word compression system (0x80-0x8F)
+- ✅ Control codes documented (0xF0-0xFF)
+- ✅ Text decoder implementation
+- ✅ Item/spell/monster name lists
+- Tool: `tools/extract_text_dialogs.py`
+
+**ROM Modification**
+- ✅ Asset reinsertion framework
+- ✅ Monster stat modification
+- ✅ Spell MP cost modification
+- ✅ Equipment stat modification
+- ✅ Validation system (range checks)
+- ✅ Automatic ROM backup
+- ✅ Modification logging and reports
+- Tool: `tools/reinsert_assets.py`
+
+**Documentation**
+- ✅ Visual asset catalog (HTML)
+- ✅ ROM offset reference tables
+- ✅ Tool usage documentation
+- ✅ Quick start guides
+- Location: `docs/asset_catalog/toolkit.html`
 
 ### 🔄 In Active Development
 
-- **Detailed ROM Mapping** - Complete memory layout documentation
-- **Graphics Tools** - CHR-ROM extraction and PNG conversion
-- **Text System** - Character encoding and dialog extraction
-- **Data Editors** - Character stats, items, monsters
-- **Music Tools** - Audio extraction and analysis
+- **Dialog Extraction** - Full dialog pointer table analysis
+- **NPC Data Enhancement** - Complete NPC format documentation
+- **Overworld Map** - Extraction of world map data
+- **Battle System** - Combat mechanics and formulas
 
 ### ⏳ Planned Features
 
-- **Visual Editors** - GUI tools for data modification
-- **Advanced Modding** - Complex ROM modifications
-- **Emulator Integration** - Testing and debugging support
-- **Distribution System** - Package management and releases
+- **Visual Editors** - GUI tools for sprite and map editing
+- **Advanced Text Editing** - Dialog editor with compression support
+- **CHR Reinsertion** - Modified sprite sheet reinsertion
+- **Map Reinsertion** - Edited map tile reinsertion
 
 ## 📁 Project Structure
 
@@ -145,14 +226,65 @@ dragon-warrior-info/
 
 ## 🛠️ Tools Overview
 
-### Build System
+### Extraction Tools
 
-- **dragon_warrior_build.py** - Complete master build system
-- **tools/asset_pipeline.py** - Unified asset extraction, editing, and reinsertion
-- **tools/asset_reinserter.py** - Generate assembly code for ROM reintegration
-- Complete authentic ROM data extraction (not sample data)
-- Interactive visual editors for all asset types
-- Assembly generation with proper Dragon Warrior data structures
+**organize_chr_tiles.py**
+- Extracts 1024 CHR tiles from ROM offset 0x10010
+- Organizes into 18 purposeful sprite sheets
+- Categories: heroes, monsters, NPCs, items, UI, fonts, terrain, towns, dungeons, battle, extended
+- Applies correct NES palettes per category
+- Output: `extracted_assets/chr_organized/`
+
+**extract_all_data.py**
+- Comprehensive data extraction with verification
+- Monsters: 39 from offset 0x5E5B (Bank01:0x1E4B)
+  - Format: 8 bytes stats (Att Def HP Spel Agi Mdef Exp Gld) + 8 unused
+- Spells: 10 from offset 0x7CFD with MP costs
+- Items: 32 total (tools, weapons, armor, shields) from offsets 0x7CF5+
+- Byte-perfect ROM verification
+- Output: `extracted_assets/data/`
+
+**extract_maps_npcs.py**
+- Interior map extraction from MapDatTbl at ROM 0x801A
+- 22 interior locations with dimensions and tile data
+- Map format: 5 bytes per map (pointer, width, height, boundary)
+- NPC position data and treasure chest locations
+- ASCII map visualizations
+- Output: `extracted_assets/maps/`
+
+**extract_text_dialogs.py**
+- Complete text encoding documentation
+- Character map (0x00-0x7F): A-Z, a-z, 0-9, punctuation
+- Word substitution (0x80-0x8F): "the", "thou", "thy", "art", etc.
+- Control codes (0xF0-0xFF): HERO, WAIT, LINE, PAGE, CHOICE, etc.
+- Text decoder for compressed dialog strings
+- Output: `extracted_assets/text/`
+
+### Modification Tools
+
+**reinsert_assets.py**
+- ROM modification framework for edited JSON data
+- Features:
+  - Modify monster stats (attack, defense, HP, agility, magic defense, exp, gold)
+  - Modify spell MP costs
+  - Modify equipment stats (weapon attack, armor/shield defense)
+  - Automatic ROM backup before modifications
+  - Validation (0-255 range checks for all stats)
+  - Modification logging with before/after comparisons
+  - Detailed JSON reports
+- Output: `output/dragon_warrior_modified.nes`
+
+### ROM Offset Reference
+
+| Data Type | ROM Offset | Bank:Offset | Format | Count |
+|-----------|-----------|-------------|--------|-------|
+| Monster Stats | $5E5B | Bank01:$1E4B | 16 bytes (8 stats + 8 unused) | 39 |
+| Spell MP Costs | $7CFD | Bank01:$3CED | 1 byte per spell | 10 |
+| Weapons | $7CF5 | Bank01:$3CE5 | 1 byte attack | 7 |
+| Armor | $7D05 | Bank01:$3CF5 | 1 byte defense | 7 |
+| Shields | $7D0D | Bank01:$3CFD | 1 byte defense | 3 |
+| Map Table | $801A | Bank00:$000A | 5 bytes (ptr, w, h, boundary) | 24 |
+| CHR Tiles | $10010 | After PRG-ROM | 16 bytes per tile (NES 2bpp) | 1024 |
 
 ### Asset Extraction & Editing
 
