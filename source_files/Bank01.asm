@@ -211,7 +211,7 @@ L80F2:  BCS ChnlQuietTime       ;Add quiet time between notes? if so branch to g
 L80F4:  CMP #MCTL_NOISE_CFG     ;Is byte a noise channel config byte?
 L80F6:  BCS LoadNoise           ;If so, branch to configure noise channel.
 
-L80F8:  CMP #MCTL_NOTE          ;Is byte a musical note? 
+L80F8:  CMP #MCTL_NOTE          ;Is byte a musical note?
 L80FA:  BCS LoadMusicNote       ;If so, branch to load note.
 
 ;If no control bytes match the cases above, byte Is note length counter.
@@ -419,10 +419,10 @@ L8204:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-;The LSB of the length counter is always written when loading the frequency data into the 
+;The LSB of the length counter is always written when loading the frequency data into the
 ;counter registers.  This plays the note for the longest possible time if the halt flag is
 ;cleared.  The first byte contains the low bits of the timer while the second byte contains
-;the upper 3 bits.  The formula for figuring out the frequency is as follows: 
+;the upper 3 bits.  The formula for figuring out the frequency is as follows:
 ;1790000/16/(hhhllllllll + 1).
 
 MusicalNotesTbl:
@@ -2349,9 +2349,9 @@ L8E3F:  .byte $98, $13              ;C4, 19 counts.
 L8E41:  .byte $9D, $05              ;F4,  5 counts.
 L8E43:  .byte MCTL_ADD_SPACE, $0C   ;12 counts between notes.
 L8E45:  .byte $9D, $98, $98, $98    ;F4,  C4,  C4,  C4.
-L8E49:  .byte $95, $98, $9D, $9F    ;A3,  C4,  F4,  G4. 
-L8E4D:  .byte $9D, $98, $9D, $9F    ;F4,  C4,  F4,  G4. 
-L8E51:  .byte $A1, $A2, $A6, $A2    ;A4,  A#4, D5,  A#4. 
+L8E49:  .byte $95, $98, $9D, $9F    ;A3,  C4,  F4,  G4.
+L8E4D:  .byte $9D, $98, $9D, $9F    ;F4,  C4,  F4,  G4.
+L8E51:  .byte $A1, $A2, $A6, $A2    ;A4,  A#4, D5,  A#4.
 L8E55:  .byte $A1, $9F, $9D         ;A4,  G4,  F4.
 L8E58:  .byte MCTL_END_SPACE        ;Disable counts between notes.
 L8E59:  .byte $98, $13              ;C4, 19 counts.
@@ -2424,14 +2424,14 @@ L8ECD:  .byte $A5, $A5, $A5         ;C#5, C#5, C#5.
 L8ED0:  .byte MCTL_CNTRL0,    $7F   ;25% duty, len counter no, env no, vol=15.
 L8ED2:  .byte $A6                   ;D5.
 L8ED3:  .byte $24                   ;36 counts.
-L8ED4:  .byte $A1                   ;A4. 
+L8ED4:  .byte $A1                   ;A4.
 L8ED5:  .byte $0C                   ;12 counts.
-L8ED6:  .byte $A1                   ;A4. 
+L8ED6:  .byte $A1                   ;A4.
 L8ED7:  .byte $0C                   ;12 counts.
-L8ED8:  .byte $A6                   ;D5. 
+L8ED8:  .byte $A6                   ;D5.
 L8ED9:  .byte $30                   ;48 counts.
 L8EDA:  .byte MCTL_CNTRL0,    $4F   ;25% duty, len counter yes, env yes, vol=15.
-L8EDC:  .byte $A3, $A3, $A3         ;B4,  B4, B4. 
+L8EDC:  .byte $A3, $A3, $A3         ;B4,  B4, B4.
 L8EDF:  .byte MCTL_CNTRL0,    $7F   ;25% duty, len counter no, env no, vol=15.
 L8EE1:  .byte $A2                   ;A#4.
 L8EE2:  .byte $24                   ;36 counts.
@@ -2442,12 +2442,12 @@ L8EE6:  .byte $0C                   ;12 counts.
 L8EE7:  .byte $AA                   ;F#5.
 L8EE8:  .byte $30                   ;48 counts.
 L8EE9:  .byte MCTL_CNTRL0,    $4F   ;25% duty, len counter yes, env yes, vol=15.
-L8EEB:  .byte $AA, $AB, $AD         ;F#5, G5,  A5.  
+L8EEB:  .byte $AA, $AB, $AD         ;F#5, G5,  A5.
 L8EEE:  .byte MCTL_CNTRL0,    $7F   ;25% duty, len counter no, env no, vol=15.
 L8EF0:  .byte $AE                   ;A#5.
 L8EF1:  .byte $30                   ;48 counts.
 L8EF2:  .byte MCTL_CNTRL0,    $4F   ;25% duty, len counter yes, env yes, vol=15.
-L8EF4:  .byte $A2, $A4, $A6         ;A#4, C5,  D5.  
+L8EF4:  .byte $A2, $A4, $A6         ;A#4, C5,  D5.
 L8EF7:  .byte MCTL_END_SPACE        ;Disable counts between notes.
 L8EF8:  .byte MCTL_CNTRL0,    $7F   ;25% duty, len counter no, env no, vol=15.
 L8EFA:  .byte $A6, $30              ;D5, 48 counts.
@@ -2472,7 +2472,7 @@ L8F0F:  .byte MCTL_CNTRL0,    $60   ;25% duty, len counter no, env yes, vol=0.
 L8F11:  .byte MCTL_ADD_SPACE, $18   ;24 counts between notes.
 
 TRIIntroLoop:
-L8F13:  .byte $9D, $9C, $9B, $9A    ;F4,  E4,  D#4, D4.  
+L8F13:  .byte $9D, $9C, $9B, $9A    ;F4,  E4,  D#4, D4.
 L8F17:  .byte MCTL_CNTRL0,    $7F   ;25% duty, len counter no, env no, vol=15.
 L8F19:  .byte $95                   ;A3.
 L8F1A:  .byte $18                   ;24 counts.
@@ -3145,7 +3145,7 @@ L93D1:  STA PPUDataByte         ;
 
 L93D3:  LDY #$08                ;Load 8 bytes of attribute table data.
 L93D5:* JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
-L93D8:  DEY                     ;Done loading attribute table bytes? 
+L93D8:  DEY                     ;Done loading attribute table bytes?
 L93D9:  BNE -                   ;If not, branch to load more.
 
 L93DB:  LDA #$AA                ;Load different attribute table data.
@@ -3153,7 +3153,7 @@ L93DD:  STA PPUDataByte         ;
 
 L93DF:  LDY #$20                ;Fill the remainder of the attribute table with the data.
 L93E1:* JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
-L93E4:  DEY                     ;Done loading attribute table bytes? 
+L93E4:  DEY                     ;Done loading attribute table bytes?
 L93E5:  BNE -                   ;If not, branch to load more.
 
 L93E7:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
@@ -3296,9 +3296,9 @@ L948B:  .word EndCreditDat      ;($948D)Start of data below.
 
 EndCreditDat:
 L948D:  .word $20E8             ;PPU address.
-;              C    O    N    G    R    A    T    U    L    A    T    I    O    N    S    _   
+;              C    O    N    G    R    A    T    U    L    A    T    I    O    N    S    _
 L948F:  .byte $26, $32, $31, $2A, $35, $24, $37, $38, $2F, $24, $37, $2C, $32, $31, $36, $60
-;             END  
+;             END
 L949F:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3306,15 +3306,15 @@ L949F:  .byte $FC
 L94A0:  .word $2147             ;PPU address.
 ;              T    H    O    U    _    H    A    S    T    _    R    E    S    T    O    R
 L94A2:  .byte $37, $2B, $32, $38, $5F, $2B, $24, $36, $37, $5F, $35, $28, $36, $37, $32, $35
-;              E    D   END  
+;              E    D   END
 L94B2:  .byte $28, $27, $FC
 
 ;----------------------------------------------------------------------------------------------------
-    
+
 L94B5:  .word $2186             ;PPU address.
 ;              P    E    A    C    E    _    U    N    T    O    _    T    H    E    _    W
 L94B7:  .byte $33, $28, $24, $26, $28, $5F, $38, $31, $37, $32, $5F, $37, $2B, $28, $5F, $3A
-;              O    R    L    D    _   END  
+;              O    R    L    D    _   END
 L94C7:  .byte $32, $35, $2F, $27, $60, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3322,23 +3322,23 @@ L94C7:  .byte $32, $35, $2F, $27, $60, $FC
 L94CD:  .word $21E4             ;PPU address.
 ;              B    U    T    _    T    H    E    R    E    _    A    R    E    _    M    A
 L94CF:  .byte $25, $38, $37, $5F, $37, $2B, $28, $35, $28, $5F, $24, $35, $28, $5F, $30, $24
-;              N    Y    _    R    O    A    D    S   END  
+;              N    Y    _    R    O    A    D    S   END
 L94DF:  .byte $31, $3C, $5F, $35, $32, $24, $27, $36, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L94E8:  .word $2229             ;PPU address.
 ;              Y    E    T    _    T    O    _    T    R    A    V    E    L    .   END
 L94EA:  .byte $3C, $28, $37, $5F, $37, $32, $5F, $37, $35, $24, $39, $28, $2F, $61, $FC
 
 ;----------------------------------------------------------------------------------------------------
-     
+
 L94F9:  .word $2289             ;PPU address.
-;              M    A    Y    _    T    H    E    _    L    I    G    H    T   END 
+;              M    A    Y    _    T    H    E    _    L    I    G    H    T   END
 L94FB:  .byte $30, $24, $3C, $5F, $37, $2B, $28, $5F, $2F, $2C, $2A, $2B, $37, $FC
 
 ;----------------------------------------------------------------------------------------------------
- 
+
 L9509:  .word $22C8             ;PPU address.
 ;              S    H    I    N    E    _    U    P    O    N    _    T    H    E    E    .
 L950B:  .byte $36, $2B, $2C, $31, $28, $5F, $38, $33, $32, $31, $5F, $37, $2B, $28, $28, $61
@@ -3346,15 +3346,15 @@ L950B:  .byte $36, $2B, $2C, $31, $28, $5F, $38, $33, $32, $31, $5F, $37, $2B, $
 L951B:  .byte $FD
 
 ;----------------------------------------------------------------------------------------------------
-   
+
 L951C:  .word $2188             ;PPU address.
-;              D    R    A    G    O    N    _    W    A    R    R    I    O    R   END  
+;              D    R    A    G    O    N    _    W    A    R    R    I    O    R   END
 L951E:  .byte $27, $35, $24, $2A, $32, $31, $5F, $3A, $24, $35, $35, $2C, $32, $35, $FC
 
 ;----------------------------------------------------------------------------------------------------
-   
+
 L952D:  .word $21ED             ;PPU address.
-;              S    T    A    F    F   END  
+;              S    T    A    F    F   END
 L952F:  .byte $36, $37, $24, $29, $29, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3368,17 +3368,17 @@ L9537:  .byte $F7, $20, $FF, $FD
 L953B:  .word $2186             ;PPU address.
 ;              S    C    E    N    A    R    I    O    _    W    R    I    T    T    E    N
 L953D:  .byte $36, $26, $28, $31, $24, $35, $2C, $32, $5F, $3A, $35, $2C, $37, $37, $28, $31
-;              _    B    Y   END  
+;              _    B    Y   END
 L954D:  .byte $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L9551:  .word $21EB             ;PPU address.
-;              Y    U    J    I    _    H    O    R    I    I   END  
+;              Y    U    J    I    _    H    O    R    I    I   END
 L9553:  .byte $3C, $38, $2D, $2C, $5F, $2B, $32, $35, $2C, $2C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L955E:  .word $23C0             ;PPU address.
 ;1 row of attribute table data.
 L9560:  .byte $F7, $20, $05, $FD
@@ -3388,17 +3388,17 @@ L9560:  .byte $F7, $20, $05, $FD
 L9564:  .word $2185             ;PPU address.
 ;              C    H    A    R    A    C    T    E     R   _    D    E    S    I    G    N
 L9566:  .byte $26, $2B, $24, $35, $24, $26, $37, $28, $35, $5F, $27, $28, $36, $2C, $2A, $31
-;              E    D    _    B    Y   END  
+;              E    D    _    B    Y   END
 L9576:  .byte $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-   
+
 L957C:  .word $21E9             ;PPU address.
 ;              A    K    I    R    A    _    T    O    R    I    Y    A    M    A   END
 L957E:  .byte $24, $2E, $2C, $35, $24, $5F, $37, $32, $35, $2C, $3C, $24, $30, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
-     
+
 L958D:  .word $23C0             ;PPU address.
 ;1 row of attribute table data.
 L958F:  .byte $F7, $20, $0A, $FD
@@ -3408,13 +3408,13 @@ L958F:  .byte $F7, $20, $0A, $FD
 L9593:  .word $2187             ;PPU address.
 ;              M    U    S    I    C    _    C    O    M    P    O    S    E    D    _    B
 L9595:  .byte $30, $38, $36, $2C, $26, $5F, $26, $32, $30, $33, $32, $36, $28, $27, $5F, $25
-;              Y   END  
+;              Y   END
 L95A5:  .byte $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L95A7:  .word $21E8             ;PPU address
-;              K    O    I    C    H    I    _    S    U    G    I    Y    A    M    A   END  
+;              K    O    I    C    H    I    _    S    U    G    I    Y    A    M    A   END
 L95A9:  .byte $2E, $32, $2C, $26, $2B, $2C, $5F, $36, $38, $2A, $2C, $3C, $24, $30, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3426,27 +3426,27 @@ L95BB:  .byte $F7, $20, $0F, $FD
 ;----------------------------------------------------------------------------------------------------
 
 L95BF:  .word $212A             ;PPU address.
-;              P    R    O    G    R    A    M    E    D    _    B    Y   END  
+;              P    R    O    G    R    A    M    E    D    _    B    Y   END
 L95C1:  .byte $33, $35, $32, $2A, $35, $24, $30, $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L95CE:  .word $21A8             ;PPU address.
-;              K    O    I    C    H    I    _    N    A    K    A    M    U    R    A   END  
+;              K    O    I    C    H    I    _    N    A    K    A    M    U    R    A   END
 L95D0:  .byte $2E, $32, $2C, $26, $2B, $2C, $5F, $31, $24, $2E, $24, $30, $38, $35, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L95E0:  .word $220A             ;PPU address.
-;              K    O    J    I    _    Y    O    S    H    I    D    A   END 
+;              K    O    J    I    _    Y    O    S    H    I    D    A   END
 L95E2:  .byte $2E, $32, $2D, $2C, $5F, $3C, $32, $36, $2B, $2C, $27, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L95EF:  .word $2267             ;PPU address.
-;              T    A    K    E    N    O    R    I    _    Y    A    M    A    M    O    R    
+;              T    A    K    E    N    O    R    I    _    Y    A    M    A    M    O    R
 L95F1:  .byte $37, $24, $2E, $28, $31, $32, $35, $2C, $5F, $3C, $24, $30, $24, $30, $32, $35
-;              I   END  
+;              I   END
 L9601:  .byte $2C, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3458,11 +3458,11 @@ L9605:  .byte $F7, $08, $05, $F7, $10, $00, $FD
 ;----------------------------------------------------------------------------------------------------
 
 L960C:  .word $2189             ;PPU address.
-;              C    G    _    D    E    S    I    G    N    E    D    _    B    Y   END  
+;              C    G    _    D    E    S    I    G    N    E    D    _    B    Y   END
 L960E:  .byte $26, $2A, $5F, $27, $28, $36, $2C, $2A, $31, $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-   
+
 L961D:  .word $21E9             ;PPU address.
 ;              T    A    K    A    S    H    I    _    Y    A    S    U    N    O   END
 L961F:  .byte $37, $24, $2E, $24, $36, $2B, $2C, $5F, $3C, $24, $36, $38, $31, $32, $FC
@@ -3478,13 +3478,13 @@ L9630:  .byte $F7, $08, $0A, $FD
 L9634:  .word $2186             ;PPU address.
 ;              S    C    E    N    A    R    I    O    _    A    S    S    I    S    T    E
 L9636:  .byte $36, $26, $28, $31, $24, $35, $2C, $32, $5F, $24, $36, $36, $2C, $36, $37, $28
-;              D    _    B    Y   END  
+;              D    _    B    Y   END
 L963E:  .byte $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L964B:  .word $21E8             ;PPU address.
-;              H    I    R    O    S    H    I    _    M    I    Y    A    O    K    A   END  
+;              H    I    R    O    S    H    I    _    M    I    Y    A    O    K    A   END
 L964D:  .byte $2B, $2C, $35, $32, $36, $2B, $2C, $5F, $30, $2C, $3C, $24, $32, $2E, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3502,7 +3502,7 @@ L9665:  .byte $24, $36, $36, $2C, $36, $37, $28, $27, $5F, $25, $3C, $FC
 ;----------------------------------------------------------------------------------------------------
 
 L9671:  .word $21CA             ;PPU address.
-;              R    I    K    A    _    S    U    Z    U    K    I   END  
+;              R    I    K    A    _    S    U    Z    U    K    I   END
 L9673:  .byte $35, $2C, $2E, $24, $5F, $36, $38, $3D, $38, $2E, $2C, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3510,7 +3510,7 @@ L9673:  .byte $35, $2C, $2E, $24, $5F, $36, $38, $3D, $38, $2E, $2C, $FC
 L967F:  .word $2228             ;PPU address.
 ;              T    A    D    A    S    H    I    _    F    U    K    U    Z    A    W    A
 L9681:  .byte $37, $24, $27, $24, $36, $2B, $2C, $5F, $29, $38, $2E, $38, $3D, $24, $3A, $24
-;             END  
+;             END
 L9691:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3524,7 +3524,7 @@ L9694:  .byte $F7, $08, $50, $F7, $10, $00, $FD
 L969B:  .word $2187             ;PPU address.
 ;              S    P    E    C    I    A    L    _    T    H    A    N    K    S    _    T
 L969D:  .byte $36, $33, $28, $26, $2C, $24, $2F, $5F, $37, $2B, $24, $31, $2E, $36, $5F, $37
-;              O   END  
+;              O   END
 L96AD:  .byte $32, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3532,11 +3532,11 @@ L96AD:  .byte $32, $FC
 L96AF:  .word $21E7             ;PPU address.
 ;              K    A    Z    U    H    I    K    O    _    T    O    R    I    S    H    I
 L96B1:  .byte $2E, $24, $3D, $38, $2B, $2C, $2E, $32, $5F, $37, $32, $35, $2C, $36, $2B, $2C
-;              M    A   END  
+;              M    A   END
 L96C1:  .byte $30, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L96C4:  .word $23C0             ;PPU address.
 ;1 row of attribute table data.
 L96C6:  .byte $F7, $20, $05, $FD
@@ -3544,13 +3544,13 @@ L96C6:  .byte $F7, $20, $05, $FD
 ;----------------------------------------------------------------------------------------------------
 
 L96CA:  .word $218A             ;PPU address.
-;              T    R    A    N    S    L    A    T    I    O    N   END  
+;              T    R    A    N    S    L    A    T    I    O    N   END
 L96CC:  .byte $37, $35, $24, $31, $36, $2F, $24, $37, $2C, $32, $31, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L96D8:  .word $21ED             ;PPU address.
-;              S    T    A    F    F   END  
+;              S    T    A    F    F   END
 L96DA:  .byte $36, $37, $24, $29, $29, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3566,21 +3566,21 @@ L96E6:  .word $20C6             ;PPU address.
 L96E8:  .byte $37, $35, $24, $31, $36, $2F, $24, $37, $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L96F6:  .word $2108             ;PPU address.
-;              T    O    S    H    I    K    O    _    W    A    T    S    O    N   END  
+;              T    O    S    H    I    K    O    _    W    A    T    S    O    N   END
 L96F8:  .byte $37, $32, $36, $2B, $2C, $2E, $32, $5F, $3A, $24, $37, $36, $32, $31, $FC
 
 ;----------------------------------------------------------------------------------------------------
-   
+
 L9707:  .word $2186             ;PPU address.
-;              R    E    V    I    S    E    D    _    T    E    X    T    _    B    Y   END  
+;              R    E    V    I    S    E    D    _    T    E    X    T    _    B    Y   END
 L9709:  .byte $35, $28, $39, $2C, $36, $28, $27, $5F, $37, $28, $3B, $37, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L9719:  .word $21C8             ;PPU address.
-;              S    C    O    T    T    _    P    E    L    L    A    N    D   END  
+;              S    C    O    T    T    _    P    E    L    L    A    N    D   END
 L971B:  .byte $36, $26, $32, $37, $37, $5F, $33, $28, $2F, $2F, $24, $31, $27, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3588,13 +3588,13 @@ L971B:  .byte $36, $26, $32, $37, $37, $5F, $33, $28, $2F, $2F, $24, $31, $27, $
 L9729:  .word $2246             ;PPU address.
 ;              T    E    C    H    N    I    C    A    L    _    S    U    P    P    O    R
 L972B:  .byte $37, $28, $26, $2B, $31, $2C, $26, $24, $2F, $5F, $36, $38, $33, $33, $32, $35
-;              T    _    B    Y   END  
+;              T    _    B    Y   END
 L973B:  .byte $37, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L9740:  .word $2288             ;PPU address.
-;              D    O    U    G    _    B    A    K    E    R   END  
+;              D    O    U    G    _    B    A    K    E    R   END
 L9742:  .byte $27, $32, $38, $2A, $5F, $25, $24, $2E, $28, $35, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3606,19 +3606,19 @@ L974F:  .byte $F7, $10, $FF, $F7, $08, $00, $F7, $08, $0F, $F7, $10, $F0, $FD
 ;----------------------------------------------------------------------------------------------------
 
 L975C:  .word $2148             ;PPU address.
-;              P    R    O    G    R    A    M    E    D    _    B    Y   END  
+;              P    R    O    G    R    A    M    E    D    _    B    Y   END
 L975E:  .byte $33, $35, $32, $2A, $35, $24, $30, $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L976B:  .word $21CA             ;PPU address.
-;              K    E    N    I    C    H    I    _    M    A    S    U    T    A   END  
+;              K    E    N    I    C    H    I    _    M    A    S    U    T    A   END
 L976D:  .byte $2E, $28, $31, $2C, $26, $2B, $2C, $5F, $30, $24, $36, $38, $37, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
-   
+
 L977C:  .word $222A             ;PPU address.
-;              M    A    N    A    B    U    _    Y    A    M    A    N    A   END  
+;              M    A    N    A    B    U    _    Y    A    M    A    N    A   END
 L977E:  .byte $30, $24, $31, $24, $25, $38, $5F, $3C, $24, $30, $24, $31, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3634,7 +3634,7 @@ L9795:  .word $2125             ;PPU address.
 L9797:  .byte $26, $2A, $5F, $27, $28, $36, $2C, $2A, $31, $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L97A6:  .word $218A             ;PPU address.
 ;              S    A    T    O    S    H    I    _    F    U    D    A    B    A   END
 L97A8:  .byte $36, $24, $37, $32, $36, $2B, $2C, $5F, $29, $38, $27, $24, $25, $24, $FC
@@ -3644,16 +3644,16 @@ L97A8:  .byte $36, $24, $37, $32, $36, $2B, $2C, $5F, $29, $38, $27, $24, $25, $
 L97B7:  .word $2205             ;PPU address.
 ;              S    P    E    C    I    A    L    _    T    H    A    N    K    S    _    T
 L97B9:  .byte $36, $33, $28, $26, $2C, $24, $2F, $5F, $37, $2B, $24, $31, $2E, $36, $5F, $37
-;              O   END  
+;              O   END
 L97C9:  .byte $32, $FC
 ;----------------------------------------------------------------------------------------------------
- 
+
 L97CB:  .word $226A             ;PPU address.
 ;              H    O    W    A    R    D    _    P    H    I    L    L    I    P    S   END
 L97CD:  .byte $2B, $32, $3A, $24, $35, $27, $5F, $33, $2B, $2C, $2F, $2F, $2C, $33, $36, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L97DD:  .word $23D0             ;PPU address.
 ;Attribute table data.
 L97DF:  .byte $F7, $08, $0A, $F7, $08, $00, $F7, $08, $0F, $FD
@@ -3661,13 +3661,13 @@ L97DF:  .byte $F7, $08, $0A, $F7, $08, $00, $F7, $08, $0F, $FD
 ;----------------------------------------------------------------------------------------------------
 
 L97E9:  .word $218A             ;PPU address.
-;              D    I    R    E    C    T    E    D    _    B    Y   END  
+;              D    I    R    E    C    T    E    D    _    B    Y   END
 L97EB:  .byte $27, $2C, $35, $28, $26, $37, $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L97F7:  .word $21E8             ;PPU address.
-;              K    O    I    C    H    I    _    N    A    K    A    M    U    R    A   END  
+;              K    O    I    C    H    I    _    N    A    K    A    M    U    R    A   END
 L97F9:  .byte $2E, $32, $2C, $26, $2B, $2C, $5F, $31, $24, $2E, $24, $30, $38, $35, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3679,7 +3679,7 @@ L980B:  .byte $F7, $20, $0A, $FD
 ;----------------------------------------------------------------------------------------------------
 
 L980F:  .word $218A             ;PPU address.
-;              P    R    O    D    U    C    E    D    _    B    Y   END  
+;              P    R    O    D    U    C    E    D    _    B    Y   END
 L9811:  .byte $33, $35, $32, $27, $38, $26, $28, $27, $5F, $25, $3C, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3698,37 +3698,37 @@ L9830:  .byte $F7, $20, $0F, $FD
 L9834:  .word $2085             ;PPU address.
 ;              B    A    S    E    D    _    O    N    _    D    R    A    G    O    N    _
 L9836:  .byte $25, $24, $36, $28, $27, $5F, $32, $31, $5F, $27, $35, $24, $2A, $32, $31, $5F
-;              Q    U    E    S    T   END  
+;              Q    U    E    S    T   END
 L9846:  .byte $34, $38, $28, $36, $37, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L984C:  .word $210B             ;PPU address.
-;              C    O    P    Y    R    I    G    H    T   END  
+;              C    O    P    Y    R    I    G    H    T   END
 L984E:  .byte $26, $32, $33, $3C, $35, $2C, $2A, $2B, $37, $FC
 
 ;----------------------------------------------------------------------------------------------------
- 
+
 L9858:  .word $2163             ;PPU address.
-;              A    R    M    O    R    _    P    R    O    J    E    C    T   END  
+;              A    R    M    O    R    _    P    R    O    J    E    C    T   END
 L985A:  .byte $24, $35, $30, $32, $35, $5F, $33, $35, $32, $2D, $28, $26, $37, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L9868:  .word $2174             ;PPU address.
-;              1    9    8    6    _    1    9    8    9   END  
+;              1    9    8    6    _    1    9    8    9   END
 L986A:  .byte $01, $09, $08, $06, $5F, $01, $09, $08, $09, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L9874:  .word $21C3             ;PPU address.
-;              B    I    R    D    _    S    T    U    D    I    O   END  
+;              B    I    R    D    _    S    T    U    D    I    O   END
 L9876:  .byte $25, $2C, $35, $27, $5F, $36, $37, $38, $27, $2C, $32, $FC
 
 ;----------------------------------------------------------------------------------------------------
- 
+
 L9882:  .word $21D4             ;PPU address.
-;              1    9    8    6    _    1    9    8    9   END  
+;              1    9    8    6    _    1    9    8    9   END
 L9884:  .byte $01, $09, $08, $06, $5F, $01, $09, $08, $09, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -3738,33 +3738,33 @@ L988E:  .word $2223             ;PPU address.
 L9890:  .byte $2E, $32, $2C, $26, $2B, $2C, $5F, $36, $38, $2A, $2C, $3C, $24, $30, $24, $FC
 
 ;----------------------------------------------------------------------------------------------------
-   
+
 L98A0:  .word $2234             ;PPU address.
-;              1    9    8    6    _    1    9    8    9   END  
+;              1    9    8    6    _    1    9    8    9   END
 L98A2:  .byte $01, $09, $08, $06, $5F, $01, $09, $08, $09, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L98AC:  .word $2283             ;PPU address.
-;                            CHUN  _    S    O    F    T   END  
+;                            CHUN  _    S    O    F    T   END
 L98AE:  .byte $0C, $0D, $0E, $0F, $5F, $36, $32, $29, $37, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L98B8:  .word $2294             ;PPU address.
-;              1    9    8    6    _    1    9    8    9   END  
+;              1    9    8    6    _    1    9    8    9   END
 L98BA:  .byte $01, $09, $08, $06, $5F, $01, $09, $08, $09, $FC
 
 ;----------------------------------------------------------------------------------------------------
-  
+
 L98C4:  .word $2309             ;PPU address.
-;              E    N    I    X   END  
+;              E    N    I    X   END
 L98C6:  .byte $28, $31, $2C, $3B, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 L98CB:  .word $2310             ;PPU address.
-;              1    9    8    6    _    1    9    8    9   END  
+;              1    9    8    6    _    1    9    8    9   END
 L98CD:  .byte $01, $09, $08, $06, $5F, $01, $09, $08, $09, $FC
 
 ;----------------------------------------------------------------------------------------------------
@@ -4021,7 +4021,7 @@ L9A30:  .word DgLdSprts  -$8000 ;($1B67)Dragonlord, initial form.
 
 ;TTTTTTTT-Tile pattern number for sprite.
 ;YYYYYY-Y position of sprite.
-;XXXXXX-X position of sprite. 
+;XXXXXX-X position of sprite.
 ;V-Vertical mirroring bit.
 ;H-Horizontal mirroring bit.
 ;PP-Palette number.
@@ -4687,7 +4687,7 @@ LA1B4:  JSR GetWndConfig        ;($A1E4)Get window configuration data.
 LA1B7:  JSR WindowEngine        ;($A230)The guts of the window engine.
 
 LA1BA:  BIT WndBuildPhase       ;Finishing up the first phase?
-LA1BD:  BMI WndConstructDone    ;If so, branch to 
+LA1BD:  BMI WndConstructDone    ;If so, branch to
 
 LA1BF:  LDA WindowType          ;
 LA1C2:  CMP #WND_SPELL1         ;Special case. Don't destroy these windows when done.
@@ -4873,7 +4873,7 @@ LA2B6:* RTS                     ;
 
 GetNxtWndByte:
 LA2B7:  LDA WorkTile            ;
-LA2BA:  CMP #TL_BLANK_TILE1     ;Is current working byte not a blank tile? 
+LA2BA:  CMP #TL_BLANK_TILE1     ;Is current working byte not a blank tile?
 LA2BC:  BNE WorkTileNotBlank    ;if so, branch, nothing to do right now.
 
 LA2BE:  LDA WndOptions          ;Is this a single spaced window?
@@ -5252,7 +5252,7 @@ LA4CC:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 ;When a spell is cast, the description buffer is loaded with pointers for the descriptions
-;of spells that the player has.  The buffer is terminated with #$FF.  For example, if the 
+;of spells that the player has.  The buffer is terminated with #$FF.  For example, if the
 ;player has the first three spells, the buffer will contain: #$01, #$02, #$03, #$FF.
 ;If the item list is for an inventory window, The window will start with #$01 and end with #$FF.
 
@@ -5312,7 +5312,7 @@ LA508:  STA WndParam            ;Prepare to place blank tiles to end of row.
 LA50B:  LDA WndYPos             ;If Y position of window line is even, add 2 to the position
 LA50E:  AND #$01                ;and make it the window height.
 LA510:  EOR #$01                ;
-LA512:  CLC                     ;If Y position of window line is odd, add 1 to the position 
+LA512:  CLC                     ;If Y position of window line is odd, add 1 to the position
 LA513:  ADC #$01                ;and make it the window height.
 LA515:  ADC WndYPos             ;
 LA518:  STA WndHeight           ;Required to properly form inventory windows.
@@ -5649,7 +5649,7 @@ LA6BF:  .byte DSC_NONE,      DSC_SM_SHLD,   DSC_LG_SHLD,   DSC_SLVR_SHLD
 ;            |                                      | 4 = Saved player, full name.                |
 ;            |                                      | 5-7 = saved player, lower 4 letters.        |
 ;  $B8-$BF   | Show item/weapon/armor description.  | 0 = weapon, 1 = armor, 2 = shield,          |
-;            |                                      | 3 = player's inventory, 4 = shop inventory. |                                      
+;            |                                      | 3 = player's inventory, 4 = shop inventory. |
 ;  $C0-$C7   | Show description for selected spell. | None.                                       |
 ;  $C8-$CF   | Show item cost.                      | None.                                       |
 ;  $D0-$D7   | Calculate variable window height.    | None.                                       |
@@ -5946,7 +5946,7 @@ LA82F:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 DescPtrTbl:
-LA830:  .word WndwDataPtrTbl    ;($AF6C)Pointers to window type data bytes. 
+LA830:  .word WndwDataPtrTbl    ;($AF6C)Pointers to window type data bytes.
 LA832:  .word SpellNameTbl      ;($BE56)Spell names.
 LA834:  .word ItemNames11TbL    ;($BAB7)Item descriptions, first table, first half.
 LA836:  .word ItemNames12TbL    ;($BBB7)Item descriptions, first table, second half.
@@ -6442,7 +6442,7 @@ LAAB4:  JSR WndClearCursor      ;($AB30)Blank out cursor tile.
 LAAB7:  LDA #$03                ;
 LAAB9:  STA WndRow              ;Update cursor row.
 
-LAABB:  LDA #$01                ;Update cursor X position.          
+LAABB:  LDA #$01                ;Update cursor X position.
 LAABD:  STA WndCursorXPos       ;
 
 LAAC0:  LDA #$04                ;Update cursor Y position.
@@ -6605,7 +6605,7 @@ LAB93:  STA WndColLB            ;Save only lower 4 bits of window row.
 LAB95:  LDA #$00                ;
 LAB97:  STA WndColUB            ;
 
-LAB99:  LDX #WndColLB           ;Multiply the current selected row       
+LAB99:  LDX #WndColLB           ;Multiply the current selected row
 LAB9B:  LDA WndSelNumCols       ;with the total window columns.
 LAB9E:  JSR IndexedMult         ;($A6EB)Get multiplied value.
 
@@ -7384,7 +7384,7 @@ LAFB4:  .byte $89               ;Horizontal border, 1 space.
 LAFB5:  .byte $B0               ;Show name, 4 characters.
 LAFB6:  .byte $88               ;Horizontal border, remainder of row.
 ;              L    V
-LAFB7:  .byte $2F, $39 
+LAFB7:  .byte $2F, $39
 LAFB9:  .byte $82               ;Blank tiles, 2 spaces.
 LAFBA:  .byte $A0               ;Show level.
 ;              H    P
@@ -7429,7 +7429,7 @@ LAFEB:  .byte $84               ;Blank tiles, 4 spaces.
 ;              M    A    X    I    M    U    M
 LAFEC:  .byte $30, $24, $3B, $2C, $30, $38, $30
 LAFF3:  .byte $81               ;Blank tile, 1 space.
-;              H    P    :    
+;              H    P    :
 LAFF4:  .byte $2B, $33, $44
 LAFF7:  .byte $DC               ;Show maximum hit points.
 LAFF8:  .byte $80               ;Blank tiles, remainder of row.
@@ -7516,14 +7516,14 @@ LB06E:  .byte $81               ;Blank tile, 1 space.
 LB06F:  .byte $36, $37, $24, $37, $38, $36
 LB075:  .byte $82               ;Blank tiles, 2 spaces.
 ;              I    T    E    M
-LB076:  .byte $2C, $37, $28, $30 
+LB076:  .byte $2C, $37, $28, $30
 LB07A:  .byte $80               ;Blank tiles, remainder of row.
 LB07B:  .byte $81               ;Blank tile, 1 space.
 ;              S    T    A    I    R    S
 LB07C:  .byte $36, $37, $24, $2C, $35, $36
 LB082:  .byte $82               ;Blank tiles, 2 spaces.
 ;              D    O    O    R
-LB083:  .byte $27, $32, $32, $35 
+LB083:  .byte $27, $32, $32, $35
 LB087:  .byte $80               ;Blank tiles, remainder of row.
 LB088:  .byte $81               ;Blank tile, 1 space.
 ;              S    E    A    R    C    H
@@ -8540,7 +8540,7 @@ LB739:  DEX                     ;
 LB73A:  BPL -                   ;
 
 LB73C:  LDA GenWrd00UB          ;
-LB73E:  BNE +                   ;Is number to convert to BCD greater than 1? 
+LB73E:  BNE +                   ;Is number to convert to BCD greater than 1?
 LB740:  LDX GenWrd00LB          ;If so, add an "s" to the end of "Point".
 LB742:  DEX                     ;
 LB743:  BEQ ++                  ;
@@ -9216,249 +9216,249 @@ LBAB6:  RTS                     ;
 
 ;Item descriptions, first table, first half.
 ItemNames11TbL:
-;              B    a    m    b    o    o  
-LBAB7:  .byte $25, $0A, $16, $0B, $18, $18, $FF        
-;              C    l    u    b   
+;              B    a    m    b    o    o
+LBAB7:  .byte $25, $0A, $16, $0B, $18, $18, $FF
+;              C    l    u    b
 LBABE:  .byte $26, $15, $1E, $0B, $FF
-;              C    o    p    p    e    r   
+;              C    o    p    p    e    r
 LBAC3:  .byte $26, $18, $19, $19, $0E, $1B, $FF
-;              H    a    n    d   
+;              H    a    n    d
 LBACA:  .byte $2B, $0A, $17, $0D, $FF
-;              B    r    o    a    d   
+;              B    r    o    a    d
 LBACF:  .byte $25, $1B, $18, $0A, $0D, $FF
-;              F    l    a    m    e   
+;              F    l    a    m    e
 LBAD5:  .byte $29, $15, $0A, $16, $0E, $FF
-;              E    r    d    r    i    c    k    '    s   
+;              E    r    d    r    i    c    k    '    s
 LBADB:  .byte $28, $1B, $0D, $1B, $12, $0C, $14, $40, $1C, $FF
-;              C    l    o    t    h    e    s   
+;              C    l    o    t    h    e    s
 LBAE5:  .byte $26, $15, $18, $1D, $11, $0E, $1C, $FF
-;              L    e    a    t    h    e    r   
+;              L    e    a    t    h    e    r
 LBAED:  .byte $2F, $0E, $0A, $1D, $11, $0E, $1B, $FF
-;              C    h    a    i    n   
+;              C    h    a    i    n
 LBAF5:  .byte $26, $11, $0A, $12, $17, $FF
-;              H    a    l    f   
+;              H    a    l    f
 LBAFB:  .byte $2B, $0A, $15, $0F, $FF
-;              F    u    l    l   
+;              F    u    l    l
 LBB00:  .byte $29, $1E, $15, $15, $FF
-;              M    a    g    i    c   
+;              M    a    g    i    c
 LBB05:  .byte $30, $0A, $10, $12, $0C, $FF
-;              E    r    d    r    i    c    k    '    s   
+;              E    r    d    r    i    c    k    '    s
 LBB0B:  .byte $28, $1B, $0D, $1B, $12, $0C, $14, $40, $1C, $FF
-;              S    m    a    l    l   
+;              S    m    a    l    l
 LBB15:  .byte $36, $16, $0A, $15, $15, $FF
-;              L    a    r    g    e   
+;              L    a    r    g    e
 LBB1B:  .byte $2F, $0A, $1B, $10, $0E, $FF
-;              S    i    l    v    e    r   
+;              S    i    l    v    e    r
 LBB21:  .byte $36, $12, $15, $1F, $0E, $1B, $FF
-;              H    e    r    b   
+;              H    e    r    b
 LBB28:  .byte $2B, $0E, $1B, $0B, $FF
-;              T    o    r    c    h   
+;              T    o    r    c    h
 LBB2D:  .byte $37, $18, $1B, $0C, $11, $FF
-;              D    r    a    g    o    n    '    s   
+;              D    r    a    g    o    n    '    s
 LBB33:  .byte $27, $1B, $0A, $10, $18, $17, $40, $1C, $FF
-;              W    i    n    g    s   
+;              W    i    n    g    s
 LBB3C:  .byte $3A, $12, $17, $10, $1C, $FF
-;              M    a    g    i    c   
+;              M    a    g    i    c
 LBB42:  .byte $30, $0A, $10, $12, $0C, $FF
-;              F    a    i    r    y   
+;              F    a    i    r    y
 LBB48:  .byte $29, $0A, $12, $1B, $22, $FF
-;              B    a    l    l    _    o    f   
+;              B    a    l    l    _    o    f
 LBB4E:  .byte $25, $0A, $15, $15, $5F, $18, $0F, $FF
-;              T    a    b    l    e    t   
+;              T    a    b    l    e    t
 LBB56:  .byte $37, $0A, $0B, $15, $0E, $1D, $FF
-;              F    a    i    r    y   
+;              F    a    i    r    y
 LBB5D:  .byte $29, $0A, $12, $1B, $22, $FF
-;              S    i    l    v    e    r   
+;              S    i    l    v    e    r
 LBB63:  .byte $36, $12, $15, $1F, $0E, $1B, $FF
-;              S    t    a    f    f    _    o    f   
+;              S    t    a    f    f    _    o    f
 LBB6A:  .byte $36, $1D, $0A, $0F, $0F, $5F, $18, $0F, $FF
-;              S    t    o    n    e    s    _    o    f   
+;              S    t    o    n    e    s    _    o    f
 LBB73:  .byte $36, $1D, $18, $17, $0E, $1C, $5F, $18, $0F, $FF
-;              G    w    a    e    l    i    n    '    s   
+;              G    w    a    e    l    i    n    '    s
 LBB7D:  .byte $2A, $20, $0A, $0E, $15, $12, $17, $40, $1C, $FF
-;              R    a    i    n    b    o    w   
+;              R    a    i    n    b    o    w
 LBB87:  .byte $35, $0A, $12, $17, $0B, $18, $20, $FF
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Item descriptions, second table, first half.
 ItemNames21TbL:
-;              C    u    r    s    e    d   
+;              C    u    r    s    e    d
 LBB8F:  .byte $26, $1E, $1B, $1C, $0E, $0D, $FF
-;              D    e    a    t    h   
+;              D    e    a    t    h
 LBB96:  .byte $27, $0E, $0A, $1D, $11, $FF
-;              F    i    g    h    t    e    r    '    s   
+;              F    i    g    h    t    e    r    '    s
 LBB9C:  .byte $29, $12, $10, $11, $1D, $0E, $1B, $40, $1C, $FF
-;              E    r    d    r    i    c    k    '    s   
+;              E    r    d    r    i    c    k    '    s
 LBBA6:  .byte $28, $1B, $0D, $1B, $12, $0C, $14, $40, $1C, $FF
-;              S    e    c    r    e    t   
+;              S    e    c    r    e    t
 LBBB0:  .byte $36, $0E, $0C, $1B, $0E, $1D, $FF
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Item descriptions, first table, second half.
 ItemNames12TbL:
-;              P    o    l    e   
+;              P    o    l    e
 LBBB7:  .byte $33, $18, $15, $0E, $FF
 ;             None
 LBBBC:  .byte $FF
-;              S    w    o    r    d   
+;              S    w    o    r    d
 LBBBD:  .byte $36, $20, $18, $1B, $0D, $FF
-;              A    x    e   
+;              A    x    e
 LBBC3:  .byte $24, $21, $0E, $FF
-;              S    w    o    r    d   
+;              S    w    o    r    d
 LBBC7:  .byte $36, $20, $18, $1B, $0D, $FF
-;              S    w    o    r    d   
+;              S    w    o    r    d
 LBBCD:  .byte $36, $20, $18, $1B, $0D, $FF
-;              S    w    o    r    d   
+;              S    w    o    r    d
 LBBD3:  .byte $36, $20, $18, $1B, $0D, $FF
 ;             None
 LBBD4:  .byte $FF
-;              A    r    m    o    r   
+;              A    r    m    o    r
 LBBDA:  .byte $24, $1B, $16, $18, $1B, $FF
-;              M    a    i    l   
+;              M    a    i    l
 LBBE0:  .byte $30, $0A, $12, $15, $FF
-;              P    l    a    t    e   
+;              P    l    a    t    e
 LBBE5:  .byte $33, $15, $0A, $1D, $0E, $FF
-;              P    l    a    t    e   
+;              P    l    a    t    e
 LBBEB:  .byte $33, $15, $0A, $1D, $0E, $FF
-;              A    r    m    o    r   
+;              A    r    m    o    r
 LBBF1:  .byte $24, $1B, $16, $18, $1B, $FF
-;              A    r    m    o    r   
+;              A    r    m    o    r
 LBBF7:  .byte $24, $1B, $16, $18, $1B, $FF
-;              S    h    i    e    l    d   
+;              S    h    i    e    l    d
 LBBFD:  .byte $36, $11, $12, $0E, $15, $0D, $FF
-;              S    h    i    e    l    d   
+;              S    h    i    e    l    d
 LBC04:  .byte $36, $11, $12, $0E, $15, $0D, $FF
-;              S    h    i    e    l    d   
+;              S    h    i    e    l    d
 LBC0B:  .byte $36, $11, $12, $0E, $15, $0D, $FF
 ;             None
 LBC12:  .byte $FF
 ;             None
 LBC13:  .byte $FF
-;              S    c    a    l    e   
+;              S    c    a    l    e
 LBC14:  .byte $36, $0C, $0A, $15, $0E, $FF
 ;             None
 LBC1A:  .byte $FF
-;              K    e    y   
+;              K    e    y
 LBC1B:  .byte $2E, $0E, $22, $FF
-;              W    a    t    e    r   
+;              W    a    t    e    r
 LBC1F:  .byte $3A, $0A, $1D, $0E, $1B, $FF
-;              L    i    g    h    t   
+;              L    i    g    h    t
 LBC25:  .byte $2F, $12, $10, $11, $1D, $FF
 ;             None
 LBC2B:  .byte $FF
-;              F    l    u    t    e   
+;              F    l    u    t    e
 LBC2C:  .byte $29, $15, $1E, $1D, $0E, $FF
-;              H    a    r    p   
+;              H    a    r    p
 LBC32:  .byte $2B, $0A, $1B, $19, $FF
-;              R    a    i    n   
+;              R    a    i    n
 LBC37:  .byte $35, $0A, $12, $17, $FF
-;              S    u    n    l    i    g    h    t   
+;              S    u    n    l    i    g    h    t
 LBC3C:  .byte $36, $1E, $17, $15, $12, $10, $11, $1D, $FF
-;              L    o    v    e   
+;              L    o    v    e
 LBC45:  .byte $2F, $18, $1F, $0E, $FF
-;              D    r    o    p   
+;              D    r    o    p
 LBC4A:  .byte $27, $1B, $18, $19, $FF
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Item descriptions, second table, second half.
 ItemNames22TbL:
-;              B    e    l    t   
+;              B    e    l    t
 LBC4F:  .byte $25, $0E, $15, $1D, $FF
-;              N    e    c    k    l    a    c    e   
+;              N    e    c    k    l    a    c    e
 LBC54:  .byte $31, $0E, $0C, $14, $15, $0A, $0C, $0E, $FF
-;              R    i    n    g   
+;              R    i    n    g
 LBC5D:  .byte $35, $12, $17, $10, $FF
-;              T    o    k    e    n   
+;              T    o    k    e    n
 LBC62:  .byte $37, $18, $14, $0E, $17, $FF
-;              P    a    s    s    a    g    e   
+;              P    a    s    s    a    g    e
 LBC68:  .byte $33, $0A, $1C, $1C, $0A, $10, $0E, $FF
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Enemy names, first half.
 EnNames1Tbl:
-;              S    l    i    m    e   
+;              S    l    i    m    e
 LBC70:  .byte $36, $15, $12, $16, $0E, $FF
-;              R    e    d   
+;              R    e    d
 LBC76:  .byte $35, $0E, $0D, $FF
-;              D    r    a    k    e    e   
+;              D    r    a    k    e    e
 LBC7A:  .byte $27, $1B, $0A, $14, $0E, $0E, $FF
-;              G    h    o    s    t   
+;              G    h    o    s    t
 LBC81:  .byte $2A, $11, $18, $1C, $1D, $FF
-;              M    a    g    i    c    i    a    n   
+;              M    a    g    i    c    i    a    n
 LBC87:  .byte $30, $0A, $10, $12, $0C, $12, $0A, $17, $FF
-;              M    a    g    i    d    r    a    k    e    e   
+;              M    a    g    i    d    r    a    k    e    e
 LBC90:  .byte $30, $0A, $10, $12, $0D, $1B, $0A, $14, $0E, $0E, $FF
-;              S    c    o    r    p    i    o    n   
+;              S    c    o    r    p    i    o    n
 LBC9B:  .byte $36, $0C, $18, $1B, $19, $12, $18, $17, $FF
-;              D    r    u    i    n   
+;              D    r    u    i    n
 LBCA4:  .byte $27, $1B, $1E, $12, $17, $FF
-;              P    o    l    t    e    r    g    e    i    s    t   
+;              P    o    l    t    e    r    g    e    i    s    t
 LBCAA:  .byte $33, $18, $15, $1D, $0E, $1B, $10, $0E, $12, $1C, $1D, $FF
-;              D    r    o    l    l   
+;              D    r    o    l    l
 LBCB6:  .byte $27, $1B, $18, $15, $15, $FF
-;              D    r    a    k    e    e    m    a   
+;              D    r    a    k    e    e    m    a
 LBCBC:  .byte $27, $1B, $0A, $14, $0E, $0E, $16, $0A, $FF
-;              S    k    e    l    e    t    o    n   
+;              S    k    e    l    e    t    o    n
 LBCC5:  .byte $36, $14, $0E, $15, $0E, $1D, $18, $17, $FF
-;              W    a    r    l    o    c    k   
+;              W    a    r    l    o    c    k
 LBCCE:  .byte $3A, $0A, $1B, $15, $18, $0C, $14, $FF
-;              M    e    t    a    l   
+;              M    e    t    a    l
 LBCD6:  .byte $30, $0E, $1D, $0A, $15, $FF
-;              W    o    l    f   
+;              W    o    l    f
 LBCDC:  .byte $3A, $18, $15, $0F, $FF
-;              W    r    a    i    t    h   
+;              W    r    a    i    t    h
 LBCE1:  .byte $3A, $1B, $0A, $12, $1D, $11, $FF
-;              M    e    t    a    l   
+;              M    e    t    a    l
 LBCE8:  .byte $30, $0E, $1D, $0A, $15, $FF
-;              S    p    e    c    t    e    r   
+;              S    p    e    c    t    e    r
 LBCEE:  .byte $36, $19, $0E, $0C, $1D, $0E, $1B, $FF
-;              W    o    l    f    l    o    r    d   
+;              W    o    l    f    l    o    r    d
 LBCF6:  .byte $3A, $18, $15, $0F, $15, $18, $1B, $0D, $FF
-;              D    r    u    i    n    l    o    r    d   
+;              D    r    u    i    n    l    o    r    d
 LBCFF:  .byte $27, $1B, $1E, $12, $17, $15, $18, $1B, $0D, $FF
-;              D    r    o    l    l    m    a    g    i   
+;              D    r    o    l    l    m    a    g    i
 LBD09:  .byte $27, $1B, $18, $15, $15, $16, $0A, $10, $12, $FF
-;              W    y    v    e    r    n   
+;              W    y    v    e    r    n
 LBD13:  .byte $3A, $22, $1F, $0E, $1B, $17, $FF
-;              R    o    g    u    e   
+;              R    o    g    u    e
 LBD1A:  .byte $35, $18, $10, $1E, $0E, $FF
-;              W    r    a    i    t    h   
+;              W    r    a    i    t    h
 LBD20:  .byte $3A, $1B, $0A, $12, $1D, $11, $FF
-;              G    o    l    e    m   
+;              G    o    l    e    m
 LBD27:  .byte $2A, $18, $15, $0E, $16, $FF
-;              G    o    l    d    m    a    n   
+;              G    o    l    d    m    a    n
 LBD2D:  .byte $2A, $18, $15, $0D, $16, $0A, $17, $FF
-;              K    n    i    g    h    t   
+;              K    n    i    g    h    t
 LBD35:  .byte $2E, $17, $12, $10, $11, $1D, $FF
-;              M    a    g    i    w    y    v    e    r    n   
+;              M    a    g    i    w    y    v    e    r    n
 LBD3C:  .byte $30, $0A, $10, $12, $20, $22, $1F, $0E, $1B, $17, $FF
-;              D    e    m    o    n   
+;              D    e    m    o    n
 LBD47:  .byte $27, $0E, $16, $18, $17, $FF
-;              W    e    r    e    w    o    l    f   
+;              W    e    r    e    w    o    l    f
 LBD4D:  .byte $3A, $0E, $1B, $0E, $20, $18, $15, $0F, $FF
-;              G    r    e    e    n   
+;              G    r    e    e    n
 LBD56:  .byte $2A, $1B, $0E, $0E, $17, $FF
-;              S    t    a    r    w    y    v    e    r    n   
+;              S    t    a    r    w    y    v    e    r    n
 LBD5C:  .byte $36, $1D, $0A, $1B, $20, $22, $1F, $0E, $1B, $17, $FF
-;              W    i    z    a    r    d   
+;              W    i    z    a    r    d
 LBD67:  .byte $3A, $12, $23, $0A, $1B, $0D, $FF
-;              A    x    e   
+;              A    x    e
 LBD6E:  .byte $24, $21, $0E, $FF
-;              B    l    u    e   
+;              B    l    u    e
 LBD72:  .byte $25, $15, $1E, $0E, $FF
-;              S    t    o    n    e    m    a    n   
+;              S    t    o    n    e    m    a    n
 LBD77:  .byte $36, $1D, $18, $17, $0E, $16, $0A, $17, $FF
-;              A    r    m    o    r    e    d   
+;              A    r    m    o    r    e    d
 LBD80:  .byte $24, $1B, $16, $18, $1B, $0E, $0D, $FF
-;              R    e    d   
+;              R    e    d
 LBD88:  .byte $35, $0E, $0D, $FF
-;              D    r    a    g    o    n    l    o    r    d   
+;              D    r    a    g    o    n    l    o    r    d
 LBD8C:  .byte $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $FF
-;              D    r    a    g    o    n    l    o    r    d   
+;              D    r    a    g    o    n    l    o    r    d
 LBD97:  .byte $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $FF
 
 ;----------------------------------------------------------------------------------------------------
@@ -9467,7 +9467,7 @@ LBD97:  .byte $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $FF
 EnNames2Tbl:
 ;             None
 LBDA2:  .byte $FF
-;              S    l    i    m    e   
+;              S    l    i    m    e
 LBDA3:  .byte $36, $15, $12, $16, $0E, $FF
 ;             None
 LBDA9:  .byte $FF
@@ -9491,13 +9491,13 @@ LBDB1:  .byte $FF
 LBDB2:  .byte $FF
 ;             None
 LBDB3:  .byte $FF
-;              S    c    o    r    p    i    o    n   
+;              S    c    o    r    p    i    o    n
 LBDB4:  .byte $36, $0C, $18, $1B, $19, $12, $18, $17, $FF
 ;             None
 LBDBD:  .byte $FF
 ;             None
 LBDBE:  .byte $FF
-;              S    l    i    m    e   
+;              S    l    i    m    e
 LBDBF:  .byte $36, $15, $12, $16, $0E, $FF
 ;             None
 LBDC5:  .byte $FF
@@ -9509,9 +9509,9 @@ LBDC7:  .byte $FF
 LBDC8:  .byte $FF
 ;             None
 LBDC9:  .byte $FF
-;              S    c    o    r    p    i    o    n   
+;              S    c    o    r    p    i    o    n
 LBDCA:  .byte $36, $0C, $18, $1B, $19, $12, $18, $17, $FF
-;              K    n    i    g    h    t   
+;              K    n    i    g    h    t
 LBDD3:  .byte $2E, $17, $12, $10, $11, $1D, $FF
 ;             None
 LBDDA:  .byte $FF
@@ -9521,25 +9521,25 @@ LBDDB:  .byte $FF
 LBDDC:  .byte $FF
 ;             None
 LBDDD:  .byte $FF
-;              K    n    i    g    h    t   
+;              K    n    i    g    h    t
 LBDDE:  .byte $2E, $17, $12, $10, $11, $1D, $FF
 ;             None
 LBDE5:  .byte $FF
-;              D    r    a    g    o    n   
+;              D    r    a    g    o    n
 LBDE6:  .byte $27, $1B, $0A, $10, $18, $17, $FF
 ;             None
 LBDED:  .byte $FF
 ;             None
 LBDEE:  .byte $FF
-;              K    n    i    g    h    t   
+;              K    n    i    g    h    t
 LBDEF:  .byte $2E, $17, $12, $10, $11, $1D, $FF
-;              D    r    a    g    o    n   
+;              D    r    a    g    o    n
 LBDF6:  .byte $27, $1B, $0A, $10, $18, $17, $FF
 ;             None
 LBDFD:  .byte $FF
-;              K    n    i    g    h    t   
+;              K    n    i    g    h    t
 LBDFE:  .byte $2E, $17, $12, $10, $11, $1D, $FF
-;              D    r    a    g    o    n   
+;              D    r    a    g    o    n
 LBE05:  .byte $27, $1B, $0A, $10, $18, $17, $FF
 ;             None
 LBE0C:  .byte $FF
@@ -9617,7 +9617,7 @@ LBE96:  .byte $2B, $38, $35, $37, $30, $32, $35, $28, $FF
 ;----------------------------------------------------------------------------------------------------
 
 ;Unused.
-LBE9F:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF 
+LBE9F:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 LBEAF:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 LBEBF:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 LBECF:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
@@ -9649,7 +9649,7 @@ LBFDC:  JMP _DoReset            ;($FF8E)Continue with the reset process.
 
 ;                   D    R    A    G    O    N    _    W    A    R    R    I    O    R    _
 LBFDF:  .byte $80, $44, $52, $41, $47, $4F, $4E, $20, $57, $41, $52, $52, $49, $4F, $52, $20
-LBFEF:  .byte $20, $56, $DE, $30, $70, $01, $04, $01, $0F, $07, $00 
+LBFEF:  .byte $20, $56, $DE, $30, $70, $01, $04, $01, $0F, $07, $00
 
 LBFFA:  .word NMI               ;($BFD8)NMI vector.
 LBFFC:  .word RESET             ;($BFD8)Reset vector.

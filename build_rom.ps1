@@ -55,21 +55,21 @@ $bankFiles = @()
 foreach ($bank in $banks) {
 	$stepNum = $banks.IndexOf($bank) + 2
 	Write-Host "[$stepNum/6] Assembling $bank..." -ForegroundColor Yellow
-	
+
 	$bankOutput = Join-Path $BuildDir "$($bank.ToLower()).bin"
 	Push-Location $SourceDir
 	& $OpopisExe "$bank.asm" $bankOutput 2>&1 | Out-Null
 	Pop-Location
-	
+
 	$bankSize = (Get-Item $bankOutput).Length
 	$expectedSize = 16384  # 16KB
-	
+
 	if ($bankSize -ne $expectedSize) {
 		Write-Host "   ⚠️  Warning: $bank is $bankSize bytes (expected $expectedSize)" -ForegroundColor Yellow
 	} else {
 		Write-Host "   ✓ ${bank}: $bankSize bytes" -ForegroundColor Green
 	}
-	
+
 	$bankFiles += $bankOutput
 }
 
@@ -90,14 +90,14 @@ if (Test-Path $sourceChrRom) {
 	$chrStart = 0x10010
 	$chrSize = 0x4000  # 16KB
 	$chrData = $romData[$chrStart..($chrStart + $chrSize - 1)]
-	
+
 	$chrOutput = Join-Path $BuildDir "chr_rom.bin"
 	[System.IO.File]::WriteAllBytes($chrOutput, $chrData)
 	Write-Host "   ✓ CHR-ROM: $chrSize bytes" -ForegroundColor Green
 } else {
 	Write-Host "   ⚠️  No CHR-ROM source found" -ForegroundColor Yellow
 	Write-Host "   Using placeholder CHR-ROM" -ForegroundColor Yellow
-	
+
 	# Create empty CHR-ROM
 	$chrData = New-Object byte[] 16384
 	$chrOutput = Join-Path $BuildDir "chr_rom.bin"
@@ -130,16 +130,16 @@ Write-Host "   ✓ Final ROM: $totalSize bytes ($([math]::Round($totalSize/1024,
 # Step 8: Compare with reference
 if (Test-Path $ReferenceROM) {
 	Write-Host "`n📊 Comparing with reference ROM..." -ForegroundColor Cyan
-	
+
 	$refData = [System.IO.File]::ReadAllBytes($ReferenceROM)
 	$builtData = [System.IO.File]::ReadAllBytes($OutputROM)
-	
+
 	if ($refData.Length -ne $builtData.Length) {
 		Write-Host "   ⚠️  Size mismatch: Reference=$($refData.Length) Built=$($builtData.Length)" -ForegroundColor Yellow
 	} else {
 		$differences = 0
 		$firstDiff = -1
-		
+
 		for ($i = 0; $i -lt $refData.Length; $i++) {
 			if ($refData[$i] -ne $builtData[$i]) {
 				$differences++
@@ -148,7 +148,7 @@ if (Test-Path $ReferenceROM) {
 				}
 			}
 		}
-		
+
 		if ($differences -eq 0) {
 			Write-Host "   ✅ PERFECT MATCH! ROM is identical to reference." -ForegroundColor Green
 		} else {

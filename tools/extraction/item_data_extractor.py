@@ -18,7 +18,7 @@ ITEMS = [
     {'id': 0x04, 'name': 'Broad Sword', 'type': 'weapon', 'cost': 1500, 'attack_bonus': 20},
     {'id': 0x05, 'name': 'Flame Sword', 'type': 'weapon', 'cost': 9800, 'attack_bonus': 28},
     {'id': 0x06, 'name': "Erdrick's Sword", 'type': 'weapon', 'cost': 2, 'attack_bonus': 40, 'note': 'Quest item'},
-    
+
     {'id': 0x07, 'name': 'Clothes', 'type': 'armor', 'cost': 20, 'defense_bonus': 2},
     {'id': 0x08, 'name': 'Leather Armor', 'type': 'armor', 'cost': 70, 'defense_bonus': 4},
     {'id': 0x09, 'name': 'Chain Mail', 'type': 'armor', 'cost': 300, 'defense_bonus': 10},
@@ -26,18 +26,18 @@ ITEMS = [
     {'id': 0x0B, 'name': 'Full Plate', 'type': 'armor', 'cost': 3000, 'defense_bonus': 24},
     {'id': 0x0C, 'name': 'Magic Armor', 'type': 'armor', 'cost': 7700, 'defense_bonus': 24, 'note': 'Regenerates HP while walking'},
     {'id': 0x0D, 'name': "Erdrick's Armor", 'type': 'armor', 'cost': 2, 'defense_bonus': 28, 'note': 'Quest item, resists damage floors'},
-    
+
     {'id': 0x0E, 'name': 'Small Shield', 'type': 'shield', 'cost': 90, 'defense_bonus': 4},
     {'id': 0x0F, 'name': 'Large Shield', 'type': 'shield', 'cost': 800, 'defense_bonus': 10},
     {'id': 0x10, 'name': 'Silver Shield', 'type': 'shield', 'cost': 14800, 'defense_bonus': 20},
-    
+
     {'id': 0x11, 'name': 'Herb', 'type': 'consumable', 'cost': 24, 'effect': 'Restores 30-40 HP'},
     {'id': 0x12, 'name': 'Torch', 'type': 'consumable', 'cost': 8, 'effect': 'Lights dungeon'},
     {'id': 0x13, 'name': "Dragon's Scale", 'type': 'consumable', 'cost': 20, 'effect': 'Reduces dragon breath damage (single use)'},
     {'id': 0x14, 'name': 'Wings', 'type': 'consumable', 'cost': 70, 'effect': 'Return to Tantegel Castle'},
     {'id': 0x15, 'name': 'Magic Key', 'type': 'consumable', 'cost': 53, 'effect': 'Opens one locked door'},
     {'id': 0x16, 'name': 'Fairy Water', 'type': 'consumable', 'cost': 38, 'effect': 'Prevents enemy encounters (like Repel spell)'},
-    
+
     {'id': 0x17, 'name': 'Ball of Light', 'type': 'key_item', 'cost': 0, 'note': 'Quest item for Princess Gwaelin'},
     {'id': 0x18, 'name': 'Tablet', 'type': 'key_item', 'cost': 0, 'note': 'Quest item'},
     {'id': 0x19, 'name': 'Fairy Flute', 'type': 'key_item', 'cost': 0, 'note': 'Quest item, puts Golem to sleep'},
@@ -46,10 +46,10 @@ ITEMS = [
     {'id': 0x1C, 'name': 'Stones of Sunlight', 'type': 'key_item', 'cost': 0, 'note': 'Quest item'},
     {'id': 0x1D, 'name': "Gwaelin's Love", 'type': 'key_item', 'cost': 0, 'note': 'Shows distance/direction to Tantegel'},
     {'id': 0x1E, 'name': 'Stones of Sunlight', 'type': 'key_item', 'cost': 0, 'note': 'Duplicate entry in ROM'},
-    
+
     {'id': 0x1F, 'name': 'Cursed Belt', 'type': 'cursed', 'cost': 360, 'note': 'Cursed item, cannot be removed except by priest'},
     {'id': 0x20, 'name': 'Death Necklace', 'type': 'cursed', 'cost': 2400, 'note': 'Cursed item, cannot be removed except by priest'},
-    
+
     {'id': 0x21, 'name': "Fighter's Ring", 'type': 'accessory', 'cost': 30, 'note': 'Unknown effect'},
     {'id': 0x22, 'name': "Erdrick's Token", 'type': 'key_item', 'cost': 0, 'note': 'Quest item, proves royal lineage'},
 ]
@@ -132,7 +132,7 @@ def generate_item_database(output_dir):
     """Generate comprehensive item database JSON file."""
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
-    
+
     # Organize items by type
     database = {
         'metadata': {
@@ -155,13 +155,13 @@ def generate_item_database(output_dir):
         'spells': SPELLS,
         'shops': []
     }
-    
+
     # Process items
     for item in ITEMS:
         item_type = item['type']
         database['items'][item['name']] = item
         database['items_by_type'][item_type].append(item)
-    
+
     # Process shops
     for shop_name, shop_data in SHOPS.items():
         shop_inventory = []
@@ -174,7 +174,7 @@ def generate_item_database(output_dir):
                     'name': item['name'],
                     'cost': item['cost']
                 })
-        
+
         database['shops'].append({
             'name': shop_name,
             'location': shop_data['location'],
@@ -182,14 +182,14 @@ def generate_item_database(output_dir):
             'inventory': shop_inventory,
             'total_items': len(shop_inventory)
         })
-    
+
     # Save to JSON
     output_file = output_path / 'item_database.json'
     with open(output_file, 'w') as f:
         json.dump(database, f, indent=2)
-    
+
     print(f"✅ Item database saved: {output_file}")
-    
+
     # Generate summary report
     print(f"\n📊 Item Database Summary:")
     print(f"   Total Items: {len(ITEMS)}")
@@ -197,7 +197,7 @@ def generate_item_database(output_dir):
         print(f"   - {item_type.title()}: {len(items)}")
     print(f"\n   Total Spells: {len(SPELLS)}")
     print(f"   Total Shops: {len(SHOPS)}")
-    
+
     # Generate shop summary
     print(f"\n🏪 Shop Locations:")
     shop_locations = {}
@@ -206,12 +206,12 @@ def generate_item_database(output_dir):
         if loc not in shop_locations:
             shop_locations[loc] = []
         shop_locations[loc].append(f"{shop['type']} ({shop['total_items']} items)")
-    
+
     for location, shops in sorted(shop_locations.items()):
         print(f"   {location}:")
         for shop in shops:
             print(f"      - {shop}")
-    
+
     return database
 
 

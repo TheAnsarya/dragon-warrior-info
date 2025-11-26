@@ -19,7 +19,7 @@
 ; Move to Bank 1 file position
 .advance $4010
 
-; PRG Bank 1: CPU $8000-$BFFF when assembled (file $4010-$800F) - Switchable bank  
+; PRG Bank 1: CPU $8000-$BFFF when assembled (file $4010-$800F) - Switchable bank
 .include "Bank01.asm"
 
 ; Move to Bank 2 file position
@@ -28,7 +28,7 @@
 ; PRG Bank 2: CPU $8000-$BFFF when assembled (file $8010-$C00F) - Switchable bank
 .include "Bank02.asm"
 
-; Move to Bank 3 file position  
+; Move to Bank 3 file position
 .advance $C010
 
 ; PRG Bank 3: CPU $C000-$FFFF when assembled (file $C010-$1000F) - Switchable bank

@@ -42,7 +42,7 @@ NES_PALETTE = [
     (0, 0, 0),        # 0x0D - Black
     (0, 0, 0),        # 0x0E - Black
     (0, 0, 0),        # 0x0F - Black
-    
+
     (152, 150, 152),  # 0x10 - Light gray
     (8, 76, 196),     # 0x11 - Blue
     (48, 50, 236),    # 0x12 - Light purple-blue
@@ -59,7 +59,7 @@ NES_PALETTE = [
     (0, 0, 0),        # 0x1D - Black
     (0, 0, 0),        # 0x1E - Black
     (0, 0, 0),        # 0x1F - Black
-    
+
     (236, 238, 236),  # 0x20 - White
     (76, 154, 236),   # 0x21 - Sky blue
     (120, 124, 236),  # 0x22 - Light blue
@@ -76,7 +76,7 @@ NES_PALETTE = [
     (60, 60, 60),     # 0x2D - Dark gray
     (0, 0, 0),        # 0x2E - Black
     (0, 0, 0),        # 0x2F - Black
-    
+
     (236, 238, 236),  # 0x30 - White
     (168, 204, 236),  # 0x31 - Pale blue
     (188, 188, 236),  # 0x32 - Pale purple
@@ -108,40 +108,40 @@ class CHRExtractor:
         self.rom_path = Path(rom_path)
         self.chr_offset = chr_offset
         self.chr_size = chr_size
-        
+
         # Read ROM
         with open(self.rom_path, 'rb') as f:
             f.seek(chr_offset)
             self.chr_data = f.read(chr_size)
-        
+
         # Calculate tile count (16 bytes per tile)
         self.tile_count = len(self.chr_data) // 16
         print(f"Loaded CHR-ROM: {len(self.chr_data)} bytes, {self.tile_count} tiles")
-    
+
     def decode_tile(self, tile_index, palette_indices):
         """
         Decode a single 8x8 tile from CHR-ROM.
-        
+
         Args:
             tile_index: Tile number (0-511)
             palette_indices: List of 4 NES palette indices for colors 0-3
-        
+
         Returns:
             PIL Image of the tile
         """
         offset = tile_index * 16
         if offset + 16 > len(self.chr_data):
             raise ValueError(f"Tile {tile_index} out of range")
-        
+
         # Get tile data
         tile_data = self.chr_data[offset:offset+16]
         low_plane = tile_data[0:8]
         high_plane = tile_data[8:16]
-        
+
         # Create 8x8 image
         img = Image.new('RGB', (8, 8))
         pixels = img.load()
-        
+
         # Decode each pixel
         for y in range(8):
             for x in range(8):
@@ -149,34 +149,34 @@ class CHRExtractor:
                 bit_pos = 7 - x
                 low_bit = (low_plane[y] >> bit_pos) & 1
                 high_bit = (high_plane[y] >> bit_pos) & 1
-                
+
                 # Combine to get palette index (0-3)
                 color_index = (high_bit << 1) | low_bit
-                
+
                 # Get NES palette color
                 nes_color = palette_indices[color_index]
                 rgb = NES_PALETTE[nes_color]
-                
+
                 pixels[x, y] = rgb
-        
+
         return img
-    
+
     def extract_tile_range(self, start_tile, end_tile, palette_name, output_dir, category_name):
         """Extract a range of tiles and save as individual images."""
         output_path = Path(output_dir) / category_name
         output_path.mkdir(parents=True, exist_ok=True)
-        
+
         palette = DW_PALETTES.get(palette_name, DW_PALETTES['background'])
-        
+
         tiles_extracted = []
         for tile_idx in range(start_tile, end_tile + 1):
             try:
                 tile_img = self.decode_tile(tile_idx, palette)
-                
+
                 # Save individual tile
                 tile_file = output_path / f"tile_{tile_idx:03X}.png"
                 tile_img.save(tile_file)
-                
+
                 tiles_extracted.append({
                     'index': tile_idx,
                     'hex': f"0x{tile_idx:03X}",
@@ -184,7 +184,7 @@ class CHRExtractor:
                 })
             except Exception as e:
                 print(f"Error extracting tile {tile_idx:03X}: {e}")
-        
+
         # Save metadata
         metadata = {
             'category': category_name,
@@ -199,59 +199,59 @@ class CHRExtractor:
             'tiles': tiles_extracted,
             'total_tiles': len(tiles_extracted)
         }
-        
+
         with open(output_path / 'metadata.json', 'w') as f:
             json.dump(metadata, f, indent=2)
-        
+
         print(f"Extracted {len(tiles_extracted)} tiles to {output_path}")
         return metadata
-    
+
     def create_tile_sheet(self, start_tile, end_tile, palette_name, output_file, tiles_per_row=16):
         """Create a tile sheet showing multiple tiles in a grid."""
         palette = DW_PALETTES.get(palette_name, DW_PALETTES['background'])
-        
+
         tile_count = end_tile - start_tile + 1
         rows = (tile_count + tiles_per_row - 1) // tiles_per_row
-        
+
         # Create sheet image (8px tiles + 1px borders)
         sheet_width = tiles_per_row * 9 + 1
         sheet_height = rows * 9 + 1
         sheet = Image.new('RGB', (sheet_width, sheet_height), color=(0, 0, 0))
-        
+
         for idx, tile_idx in enumerate(range(start_tile, end_tile + 1)):
             try:
                 tile_img = self.decode_tile(tile_idx, palette)
-                
+
                 # Calculate position
                 row = idx // tiles_per_row
                 col = idx % tiles_per_row
                 x = col * 9 + 1
                 y = row * 9 + 1
-                
+
                 # Paste tile
                 sheet.paste(tile_img, (x, y))
             except Exception as e:
                 print(f"Error in tile sheet for tile {tile_idx:03X}: {e}")
-        
+
         sheet.save(output_file)
         print(f"Created tile sheet: {output_file} ({tile_count} tiles)")
         return sheet
-    
+
     def extract_all_tiles(self, output_dir):
         """Extract all tiles organized by category."""
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
-        
+
         categories = [
             # Pattern Table 0 (0x000-0x0FF)
-            {'name': 'background', 'start': 0x00, 'end': 0xFF, 'palette': 'background', 
+            {'name': 'background', 'start': 0x00, 'end': 0xFF, 'palette': 'background',
              'description': 'Background tiles: terrain, walls, objects'},
-            
+
             # Pattern Table 1 (0x100-0x1FF)
             {'name': 'font_and_ui', 'start': 0x100, 'end': 0x1FF, 'palette': 'background',
              'description': 'Text font, numbers, UI elements'},
         ]
-        
+
         extraction_report = {
             'rom': str(self.rom_path),
             'chr_offset': f"0x{self.chr_offset:X}",
@@ -259,32 +259,32 @@ class CHRExtractor:
             'total_tiles': self.tile_count,
             'categories': []
         }
-        
+
         for cat in categories:
             print(f"\nExtracting {cat['name']}: tiles ${cat['start']:03X}-${cat['end']:03X}")
-            
+
             # Extract individual tiles
             metadata = self.extract_tile_range(
-                cat['start'], cat['end'], 
+                cat['start'], cat['end'],
                 cat['palette'], output_dir, cat['name']
             )
-            
+
             # Create tile sheet
             sheet_file = output_path / f"{cat['name']}_sheet.png"
             self.create_tile_sheet(
                 cat['start'], cat['end'],
                 cat['palette'], sheet_file
             )
-            
+
             metadata['description'] = cat['description']
             metadata['sheet'] = str(sheet_file.name)
             extraction_report['categories'].append(metadata)
-        
+
         # Save overall report
         report_file = output_path / 'extraction_report.json'
         with open(report_file, 'w') as f:
             json.dump(extraction_report, f, indent=2)
-        
+
         print(f"\n✅ CHR extraction complete!")
         print(f"Report: {report_file}")
         return extraction_report
@@ -294,15 +294,15 @@ def main():
     # Paths
     rom_path = Path(__file__).parent.parent.parent / 'roms' / 'Dragon Warrior (U) (PRG0) [!].nes'
     output_dir = Path(__file__).parent.parent.parent / 'extracted_assets' / 'chr_tiles'
-    
+
     if not rom_path.exists():
         print(f"❌ ROM not found: {rom_path}")
         sys.exit(1)
-    
+
     # Extract all tiles
     extractor = CHRExtractor(rom_path)
     extractor.extract_all_tiles(output_dir)
-    
+
     print(f"\n📁 Output directory: {output_dir}")
 
 

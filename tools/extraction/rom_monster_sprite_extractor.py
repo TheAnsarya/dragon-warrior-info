@@ -93,29 +93,29 @@ class ROMMonsterSpriteExtractor:
 			self.rom_data = f.read()
 
 		self.nes_palette = NESPalette()
-		
+
 		# ROM structure for MMC1 mapper
 		self.header_size = 16
 		self.prg_rom_start = self.header_size
 		self.prg_rom_size = 0x10000  # 64KB (4 banks of 16KB each)
 		self.chr_rom_start = self.header_size + self.prg_rom_size
 		self.chr_rom_size = 0x4000  # 16KB
-		
+
 		# PRG-ROM bank layout (MMC1):
 		# Bank 0: file 0x000010-0x00400F, CPU 0x8000-0xBFFF (fixed)
 		# Bank 1: file 0x004010-0x00800F, CPU 0xC000-0xFFFF (switchable)
 		# Bank 2: file 0x008010-0x00C00F, CPU 0xC000-0xFFFF (switchable)
 		# Bank 3: file 0x00C010-0x01000F, CPU 0xC000-0xFFFF (switchable)
-		
+
 		# EnSpritesPtrTbl is at CPU 0x99E4 (in Bank00)
 		# File offset = 0x10 + (0x99E4 - 0x8000) = 0x59F4
 		self.sprite_ptr_table_offset = self.header_size + 0x59E4
-		
+
 		# Bank01.asm uses .org $8000 but represents the switchable bank
 		# Pointers with "-$8000" are offsets into Bank01 data
 		# Bank01 file offset = 0x4010
 		self.bank01_file_offset = self.header_size + 0x4000
-		
+
 		self.chr_tiles = self.extract_chr_tiles()
 
 	def extract_chr_tiles(self) -> List[bytes]:
@@ -148,28 +148,28 @@ class ROMMonsterSpriteExtractor:
 
 	def read_sprite_data(self, sprite_ptr_offset: int) -> List[Tuple[int, int, int]]:
 		"""Read sprite data from ROM using pointer
-		
+
 		Returns list of (tile, attr_byte, x_pos) tuples
 		Sprite data format: TTTTTTTT VHYYYYYY XXXXXXPP
 		"""
 		# Read pointer (little-endian word)
 		ptr_value = self.read_word_le(sprite_ptr_offset)
-		
+
 		# Debug logging for troublesome monsters
 		debug_ids = [3, 8, 17]  # Ghost, Poltergeist, Specter
 		monster_id = (sprite_ptr_offset - self.sprite_ptr_table_offset) // 2
 		if monster_id in debug_ids:
 			console.print(f"[dim]Debug monster {monster_id}: ptr_offset=0x{sprite_ptr_offset:06X}, ptr_value=0x{ptr_value:04X}[/dim]")
-		
+
 		# The pointers in EnSpritesPtrTbl have two formats:
 		# 1. Values < 0x8000: These are offsets into Bank01 (the .asm uses "-$8000")
 		#    Example: SlimeSprts -$8000 ;($1B0E) → pointer stores 0x1B0E
 		#    File location: Bank01_base + offset = 0x4010 + 0x1B0E = 0x5B1E
-		# 
-		# 2. Values >= 0x8000: These are CPU addresses in Bank00  
+		#
+		# 2. Values >= 0x8000: These are CPU addresses in Bank00
 		#    Example: SkelSprts ;($9A3E) → pointer stores 0x9A3E
 		#    File location: header + (CPU_addr - 0x8000) = 0x10 + 0x1A3E = 0x1A4E
-		
+
 		if ptr_value < 0x8000:
 			# It's an offset into Bank01 (switchable bank at 0xC000-0xFFFF)
 			# Bank01 file offset is 0x4010
@@ -177,41 +177,41 @@ class ROMMonsterSpriteExtractor:
 		else:
 			# It's a CPU address in Bank00 (fixed bank at 0x8000-0xBFFF)
 			file_offset = self.header_size + (ptr_value - 0x8000)
-		
+
 		if file_offset >= len(self.rom_data):
 			console.print(f"[yellow]Warning: sprite file offset {file_offset:06X} outside ROM[/yellow]")
 			return []
-		
+
 		# Debug logging
 		if monster_id in debug_ids:
 			console.print(f"[dim]  file_offset=0x{file_offset:06X}, first_byte=0x{self.rom_data[file_offset]:02X}[/dim]")
-		
+
 		# Read sprite entries until we hit $00 terminator
 		sprites = []
 		offset = file_offset
 		max_sprites = 50  # Safety limit
-		
+
 		while offset < len(self.rom_data) and len(sprites) < max_sprites:
 			tile = self.rom_data[offset]
-			
+
 			# Check for terminator
 			if tile == 0x00:
 				break
-			
+
 			attr_byte = self.rom_data[offset + 1]
 			x_pos = self.rom_data[offset + 2]
-			
+
 			sprites.append((tile, attr_byte, x_pos))
 			offset += 3
-		
+
 		return sprites
-	
+
 	def _read_sprite_data_at_offset(self, file_offset: int) -> List[Tuple[int, int, int]]:
 		"""Read sprite data directly from a file offset (for fallback/debug)"""
 		sprites = []
 		offset = file_offset
 		max_sprites = 50
-		
+
 		while offset < len(self.rom_data) and len(sprites) < max_sprites:
 			tile = self.rom_data[offset]
 			if tile == 0x00:
@@ -220,7 +220,7 @@ class ROMMonsterSpriteExtractor:
 			x_pos = self.rom_data[offset + 2]
 			sprites.append((tile, attr_byte, x_pos))
 			offset += 3
-		
+
 		return sprites
 
 	def decode_tile(self, tile_data: bytes) -> List[List[int]]:
@@ -268,10 +268,10 @@ class ROMMonsterSpriteExtractor:
 
 	def parse_sprite_byte(self, byte: int) -> dict:
 		"""Parse sprite attribute byte
-		
+
 		Format: VHPPPPPP (for Dragon Warrior - differs from standard NES)
 		V = V flip
-		H = H flip  
+		H = H flip
 		PPPPPP = Y offset (6 bits)
 		"""
 		return {
@@ -285,7 +285,7 @@ class ROMMonsterSpriteExtractor:
 		"""Render complete monster sprite from tile data"""
 		if not sprite_data:
 			return None
-			
+
 		palette_rgb = self.palette_to_rgb(monster['palette'])
 
 		# Calculate bounding box from sprite positions
@@ -331,33 +331,33 @@ class ROMMonsterSpriteExtractor:
 	def extract_all_monsters(self):
 		"""Extract all 39 monsters from ROM"""
 		console.print("[cyan]Extracting all 39 Dragon Warrior monsters from ROM...[/cyan]\n")
-		
+
 		# Show ROM structure info
 		table = Table(title="ROM Structure Analysis")
 		table.add_column("Component", style="cyan")
 		table.add_column("File Offset", style="green")
 		table.add_column("CPU Address", style="yellow")
 		table.add_column("Size", style="magenta")
-		
+
 		table.add_row("iNES Header", f"0x{0:06X}", "N/A", "16 bytes")
 		table.add_row("PRG-ROM", f"0x{self.prg_rom_start:06X}", "0x8000-0xFFFF", f"{self.prg_rom_size} bytes")
 		table.add_row("CHR-ROM", f"0x{self.chr_rom_start:06X}", "N/A (CHR)", f"{self.chr_rom_size} bytes")
 		table.add_row("EnSpritesPtrTbl", f"0x{self.sprite_ptr_table_offset:06X}", "0x99E4", "78 bytes (39 ptrs)")
-		
+
 		console.print(table)
 		console.print()
 
 		metadata = []
 		success_count = 0
 		ghost_sprite_data = None  # Cache for fallback
-		
+
 		for i, monster in enumerate(track(MONSTER_DATA, description="Extracting monsters")):
 			# Calculate pointer offset for this monster
 			ptr_offset = self.sprite_ptr_table_offset + (i * 2)
-			
+
 			# Read sprite data from ROM
 			sprite_data = self.read_sprite_data(ptr_offset)
-			
+
 			# Special case: Specter (#17) has a buggy pointer in both PRG0 and PRG1
 			# It points to 0x9BAA (Bank00) but sprite data doesn't exist there
 			# Should use GhstSprts like Ghost (#3) and Poltergeist (#8)
@@ -376,15 +376,15 @@ class ROMMonsterSpriteExtractor:
 					if sprite_data:
 						ghost_sprite_data = sprite_data
 						console.print(f"[dim]Using fallback location for Ghost sprites[/dim]")
-			
+
 			# Cache Ghost sprite data for Poltergeist and Specter
 			if monster['name'] == 'Ghost' and sprite_data and ghost_sprite_data is None:
 				ghost_sprite_data = sprite_data
-			
+
 			if not sprite_data:
 				console.print(f"[yellow]Warning: No sprite data for {monster['name']}[/yellow]")
 				continue
-			
+
 			# Create monster directory
 			monster_dir = self.output_dir / f"{monster['id']:02d}_{monster['name'].lower().replace(' ', '_')}"
 			monster_dir.mkdir(exist_ok=True)
@@ -413,7 +413,7 @@ class ROMMonsterSpriteExtractor:
 
 			with open(monster_dir / "metadata.json", 'w') as f:
 				json.dump(monster_meta, f, indent=2)
-			
+
 			success_count += 1
 
 		# Save complete monster database
@@ -421,17 +421,17 @@ class ROMMonsterSpriteExtractor:
 			json.dump(metadata, f, indent=2)
 
 		console.print(f"\n[green]✓ Successfully extracted {success_count}/39 monsters to {self.output_dir}[/green]")
-		
+
 		# Show statistics
 		stats = Table(title="Extraction Statistics")
 		stats.add_column("Metric", style="cyan")
 		stats.add_column("Value", style="green")
-		
+
 		stats.add_row("Total Monsters", str(len(MONSTER_DATA)))
 		stats.add_row("Successfully Extracted", str(success_count))
 		stats.add_row("Total Sprite Tiles", str(sum(m['sprite_tiles'] for m in metadata)))
 		stats.add_row("Average Tiles per Monster", f"{sum(m['sprite_tiles'] for m in metadata) / len(metadata):.1f}")
-		
+
 		console.print()
 		console.print(stats)
 
