@@ -3251,10 +3251,10 @@ LA7A1:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 RemoveWindow:
-LA7A2:  STA WndTypeCopy         ;Save a copy of the window type.
+LA7A2:  STA WindowTypeCopy         ;Save a copy of the window type.
 
 LA7A4:  BRK                     ;Get parameters for removing windows from the screen.
-LA7A5:  .byte $00, $17          ;($AF24)WndEraseParams, bank 1.
+LA7A5:  .byte $00, $17          ;($AF24)WindowEraseParams, bank 1.
 
 LA7A7:  LDA WindowEraseWidth        ;
 LA7AA:  LSR                     ;Convert wiindow erase position from tiles to blocks.
@@ -3319,7 +3319,7 @@ LA7FA:  STA BlockAddrLB         ;Copy PPU address pointer to block address point
 LA7FC:  LDA PPUAddrUB           ;
 LA7FE:  STA BlockAddrUB         ;
 
-LA800:  LDA WndTypeCopy         ;Get the window type.
+LA800:  LDA WindowTypeCopy         ;Get the window type.
 LA802:  BEQ SetWndBack          ;Is this the pop-up window? If so. branch. Background window.
 
 LA804:  CMP #WND_DIALOG         ;Is this a dialog window?
@@ -3342,9 +3342,9 @@ SetWndBack:
 LA818:  LDA #WND_BACKGROUND     ;Set the window as a background window(covered by other windows).
 
 SetWndBackFore:
-LA81A:  STA WndForeBack         ;Set window as foreground/background window.
+LA81A:  STA WindowForeBack         ;Set window as foreground/background window.
 
-WndRemoveRowLoop:
+WindowRemoveRowLoop:
 LA81C:  LDA #$00                ;
 LA81E:  STA AttribBufIndex      ;Reset buffer index to remove a new row.
 LA820:  STA WindowLineBufferIndex       ;
@@ -3355,7 +3355,7 @@ LA824:  STA XPosFromCenter      ;
 LA826:  LDA WindowBlockWidth       ;Set the width of the window in blocks.
 LA828:  STA WindowColumnPosition           ;
 
-WndRemoveBlockLoop:
+WindowRemoveBlockLoop:
 LA82A:  JSR ClearWndBuf         ;($A880)Clear window block from buffers and uncover windows.
 
 LA82D:  LDA BlockAddrLB         ;
@@ -3374,10 +3374,10 @@ LA83E:  INC XPosFromCenter      ;Increment to the next block in the row(2X2 tile
 LA840:  INC XPosFromCenter      ;
 
 LA842:  DEC WindowColumnPosition           ;Are there more blocks in this window row to process?
-LA844:  BNE WndRemoveBlockLoop  ;If so, branch to do another block.
+LA844:  BNE WindowRemoveBlockLoop  ;If so, branch to do another block.
 
 LA846:  BRK                     ;Show/hide window on the screen.
-LA847:  .byte $01, $17          ;($ABC4)WndShowHide.
+LA847:  .byte $01, $17          ;($ABC4)WindowShowHide.
 
 LA849:  LDA BlockAddrLB         ;
 LA84B:  CLC                     ;
@@ -3386,7 +3386,7 @@ LA84E:  STA BlockAddrLB         ;This moves to the next block up.
 LA850:  BCS +                   ;
 LA852:  DEC BlockAddrUB         ;
 
-LA854:* LDA WndBlockWidth       ;Start at beginnig of row by converting block width
+LA854:* LDA WindowBlockWidth       ;Start at beginnig of row by converting block width
 LA856:  ASL                     ;into tiles.
 LA857:  STA XPosFromLeft        ;
 
@@ -3405,8 +3405,8 @@ LA86A:  STA _WndPosition        ;
 LA86D:  DEC YPosFromCenter      ;Move to next block row down(2X2 tiles per block).
 LA86F:  DEC YPosFromCenter      ;
 
-LA871:  DEC WndRowPos           ;Move to next window row(in blocks).
-LA873:  BNE WndRemoveRowLoop    ;More rows to erase? If so, branch to do another row.
+LA871:  DEC WindowRowPos           ;Move to next window row(in blocks).
+LA873:  BNE WindowRemoveRowLoop    ;More rows to erase? If so, branch to do another row.
 
 LA875:  LDA StopNPCMove         ;Are NPCs moving?
 LA877:  BEQ DoneRemoveWindow    ;If so, branch to exit routine. Nothing left to do.
@@ -3420,7 +3420,7 @@ LA87F:  RTS                     ;Window is now removed. Exit.
 ;----------------------------------------------------------------------------------------------------
 
 ClearWndBuf:
-LA880:  LDA WndForeBack         ;Is this a background window?
+LA880:  LDA WindowForeBack         ;Is this a background window?
 LA882:  BNE ClrWindowBlock      ;If so, branch.
 
 LA884:  LDY #$00                ;Is this a foreground window over a blank block?
@@ -3477,26 +3477,26 @@ LA8CE:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
 LA8D0:  JSR DoAddressCalculation ;($C5AA)Calculate destination address for GFX data.
 
-LA8D3:  LDX WndLineBufIdx       ;Initialize indexes.
+LA8D3:  LDX WindowLineBufIdx       ;Initialize indexes.
 LA8D5:  LDY #$00                ;
 
 LA8D7:  LDA (BlockAddr),Y       ;
-LA8D9:  STA WndLineBuf,X        ;
+LA8D9:  STA WindowLineBuf,X        ;
 LA8DC:  INY                     ;Transfer upper row of block data into window line buffer.
 LA8DD:  LDA (BlockAddr),Y       ;
-LA8DF:  STA WndLineBuf+1,X      ;
+LA8DF:  STA WindowLineBuf+1,X      ;
 
 LA8E2:  TXA                     ;
 LA8E3:  CLC                     ;Move to next row in window line buffer.
-LA8E4:  ADC WndEraseWdth        ;
+LA8E4:  ADC WindowEraseWdth        ;
 LA8E7:  TAX                     ;
 
 LA8E8:  LDY #$20                ;
 LA8EA:  LDA (BlockAddr),Y       ;
-LA8EC:  STA WndLineBuf,X        ;
+LA8EC:  STA WindowLineBuf,X        ;
 LA8EF:  INY                     ;Transfer upper row of block data into window line buffer.
 LA8F0:  LDA (BlockAddr),Y       ;
-LA8F2:  STA WndLineBuf+1,X      ;
+LA8F2:  STA WindowLineBuf+1,X      ;
 
 LA8F5:  LDA XFromLeftTemp       ;
 LA8F7:  STA XPosFromLeft        ;Update X and Y position for next window block.
@@ -3692,18 +3692,18 @@ LA9F1:  LDA GFXTilesPtr+1       ;Calculate the address to the proper GFX block d
 LA9F4:  ADC #$00                ;
 LA9F6:  STA BlockDataPtrUB      ;
 
-LA9F8:  LDX WndLineBufIdx       ;Initialize indexes for transferring GFX block data.
+LA9F8:  LDX WindowLineBufIdx       ;Initialize indexes for transferring GFX block data.
 LA9FA:  LDY #$00                ;
 
 LA9FC:  LDA (BlockDataPtr),Y    ;
-LA9FE:  STA WndLineBuf,X        ;
+LA9FE:  STA WindowLineBuf,X        ;
 LAA01:  INY                     ;Transfer upper row of block data into window line buffer.
 LAA02:  LDA (BlockDataPtr),Y    ;
-LAA04:  STA WndLineBuf+1,X      ;
+LAA04:  STA WindowLineBuf+1,X      ;
 
 LAA07:  TXA                     ;
 LAA08:  CLC                     ;Move to the next row in the window line buffer.
-LAA09:  ADC WndEraseWdth        ;
+LAA09:  ADC WindowEraseWdth        ;
 LAA0C:  TAX                     ;
 
 LAA0D:  LDA PPUAddrLB           ;
@@ -3715,10 +3715,10 @@ LAA16:  INC PPUAddrUB           ;
 
 LAA18:* INY                     ;
 LAA19:  LDA (BlockDataPtr),Y    ;
-LAA1B:  STA WndLineBuf,X        ;
+LAA1B:  STA WindowLineBuf,X        ;
 LAA1E:  INY                     ;Transfer lower row of block data into window line buffer.
 LAA1F:  LDA (BlockDataPtr),Y    ;
-LAA21:  STA WndLineBuf+1,X      ;
+LAA21:  STA WindowLineBuf+1,X      ;
 LAA24:  INY                     ;
 
 LAA25:  LDA XFromLeftTemp       ;
@@ -6228,11 +6228,11 @@ LB72E:  CMP #$FF                ;If not, branch to hide player sprites.
 LB730:  BEQ +                   ;
 
 LB732:  LDA #$F0                ;Hide the player sprite.
-LB734:  BNE PlyrSetXCord        ;Branch always.
+LB734:  BNE PlayerSetXCord        ;Branch always.
 
 LB736:* LDA CharYScrPos         ;Load the player sprite Y position.
 
-PlyrSetXCord:
+PlayerSetXCord:
 LB738:  STA SpriteRAM,X         ;Store player sprite Y screen position.
 
 LB73B:  INX                     ;

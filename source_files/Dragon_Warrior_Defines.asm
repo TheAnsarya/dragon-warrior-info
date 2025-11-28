@@ -334,7 +334,7 @@
 .alias TileCounter      $4D     ;Used to count tiles when modifying blocks.
 .alias RowCounter       $4D     ;Used to count block rows when clearing out nametable on map change.
 .alias BlockClear       $4D     ;Is always 0. Maybe had some other function in Dragon's Quest.
-.alias WndForeBack      $4D     ;#$FF=Background window, #$00=Foreground window(over another window).
+.alias WindowForeBack      $4D     ;#$FF=Background window, #$00=Foreground window(over another window).
 .alias NPCLoopCounter   $4E     ;Counter for controlling NPC update loops.
 .alias SpriteRAMIndex   $4E     ;Index into sprite(OAM) RAM when updating NPC sprites.
 .alias NPCROMIndex      $4E     ;Index to NPC data in PRG currently being processed.
@@ -691,7 +691,7 @@
 .alias AttributeTableBuffer     $6496   ;Through $64A5. Attribute table buffer for 1 on-screen block row.
 
 .alias WindowWidthTemp     $64A6   ;Temp copy of WindowWidth.
-.alias _WndPosition     $64A7   ;Working copy of WndPosition.
+.alias _WndPosition     $64A7   ;Working copy of WindowPosition.
 
 .alias WindowBlockTileRow    $64A9   ;Either #$02 or #$01. Which row of block is being processed.
 .alias _WindowWidth        $64AA   ;Working copy of WindowWidth.

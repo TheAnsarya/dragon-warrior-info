@@ -166,7 +166,7 @@ LC088:  JMP CheckNPCPosition    ;
 
 ChkPlyrDown:
 LC08B:  CMP #DIR_DOWN           ;Is player facing down?
-LC08D:  BNE PlyrLeft            ;If not, branch. Player must be facing left.
+LC08D:  BNE PlayerLeft            ;If not, branch. Player must be facing left.
 
 LC08F:  TYA                     ;
 LC090:  CLC                     ;Player is facing down. Prepare to search for NPC data
@@ -174,7 +174,7 @@ LC091:  ADC #$10                ;that is below player.
 LC093:  TAY                     ;
 LC094:  JMP CheckNPCPosition    ;
 
-PlyrLeft:
+PlayerLeft:
 LC097:  TXA                     ;
 LC098:  SEC                     ;Player is facing left. Prepare to search for NPC data
 LC099:  SBC #$10                ;that is left of player.
@@ -2238,7 +2238,7 @@ LCF71:  STA StopNPCMove         ;Allow NPCs to start moving around again.
 LCF73:  RTS                     ;
 
 NCCmdSelected:
-LCF74:  LDA WndSelResults       ;Did player select STATUS?
+LCF74:  LDA WindowSelResults       ;Did player select STATUS?
 LCF76:  CMP #NCC_STATUS         ;If not, branch to check other selections.
 LCF78:  BNE CheckCmdWndResults  ;($CFAF)Check some command window selection results.
 
@@ -3412,7 +3412,7 @@ LD565:  .byte $2D               ;TextBlock3, entry 13.
 
 LD566:  JSR GetShopItems        ;($D672)Get items for sale in this shop.
 
-LD569:  LDA WndSelResults       ;Did the player abort the shop dialog?
+LD569:  LDA WindowSelResults       ;Did the player abort the shop dialog?
 LD56B:  CMP #WND_ABORT          ;
 LD56D:  BNE CheckBuyWeapon      ;If not, branch to try to buy weapon.
 
@@ -3518,7 +3518,7 @@ LD5E7:  .byte WND_YES_NO1       ;Yes/no selection window.
 LD5E8:  PLA                     ;Restore copy of the item index into the ItemCostTable.
 LD5E9:  TAX                     ;
 
-LD5EA:  LDA WndSelResults       ;Did player choose to buy the item?
+LD5EA:  LDA WindowSelResults       ;Did player choose to buy the item?
 LD5EC:  BEQ ComitWeapPurchase   ;If so, branch to commit to purchase.
 
 LD5EE:  JSR DoDialogLoBlock     ;($C7CB)Oh yes? That's too bad...
@@ -3673,7 +3673,7 @@ LD6A0:  .byte WND_INVTRY2       ;Shop inventory window.
 
 LD6A1:  PLA                     ;Restore base index into ShopItemsTbl.
 LD6A2:  CLC                     ;
-LD6A3:  ADC WndSelResults       ;Add selected item to value.
+LD6A3:  ADC WindowSelResults       ;Add selected item to value.
 LD6A5:  TAX                     ;
 LD6A6:  RTS                     ;The value in X is the index for the specific item in ShopItemsTbl.
 
@@ -3706,7 +3706,7 @@ LD6C4:  .byte $24               ;TextBlock3, entry 4.
 
 LD6C5:  JSR GetShopItems        ;($D672)Display items for sale in this shop.
 
-LD6C8:  LDA WndSelResults       ;Did player cancel out of item window?
+LD6C8:  LDA WindowSelResults       ;Did player cancel out of item window?
 LD6CA:  CMP #WND_ABORT          ;If so, branch to exit tool dialog.
 LD6CC:  BEQ ToolExitDialog      ;($D6BA)Exit tool buy/sell dialog.
 
@@ -4637,12 +4637,12 @@ LDB85:  STA SpellToCast         ;
 LDB87:  LDX SpellToCast         ;Does player have enough MP to cast the spell?
 LDB89:  LDA MagicPoints         ;
 LDB8B:  CMP SpellCostTbl,X      ;
-LDB8E:  BCS PlyrCastSpell       ;If so, branch.
+LDB8E:  BCS PlayerCastSpell       ;If so, branch.
 
 LDB90:  LDA #$32                ;TextBlock4, entry 2.
 LDB92:  RTS                     ;Player does not have enough MP. Return.
 
-PlyrCastSpell:
+PlayerCastSpell:
 LDB93:  SBC SpellCostTbl,X      ;Subtract the spell's required MP from player's MP.
 LDB96:  STA MagicPoints         ;
 
@@ -4681,15 +4681,15 @@ LDBBD:  AND #$07                ;Keep lower 3 bits.
 LDBBF:  CLC                     ;Add to 10.
 LDBC0:  ADC #$0A                ;Heal adds 10 to 17 points to HP.
 
-PlyrAddHP:
+PlayerAddHP:
 LDBC2:  CLC                     ;Did HP value roll over to 0?
 LDBC3:  ADC HitPoints           ;
-LDBC5:  BCS PlyrMaxHP           ;If so, branch to set maxHP.
+LDBC5:  BCS PlayerMaxHP           ;If so, branch to set maxHP.
 
 LDBC7:  CMP DisplayedMaxHP      ;Did HP value exceed player's max HP?
 LDBC9:  BCC +                   ;If not, branch to update HP.
 
-PlyrMaxHP:
+PlayerMaxHP:
 LDBCB:  LDA DisplayedMaxHP      ;Max out player's HP.
 
 LDBCD:* STA HitPoints           ;Store player's new HP value.
@@ -4705,7 +4705,7 @@ LDBDA:  LDA RandNumUB           ;
 LDBDC:  AND #$0F                ;Keep lower 4 bits.
 LDBDE:  CLC                     ;
 LDBDF:  ADC #$55                ;Add to 85
-LDBE1:  JMP PlyrAddHP           ;Healmore adds 85 to 100 points to HP.
+LDBE1:  JMP PlayerAddHP           ;Healmore adds 85 to 100 points to HP.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -6698,14 +6698,14 @@ LE5F2:  .byte $E8               ;TextBlock15, entry 8.
 LE5F3:  JSR Dowindow            ;($C6F0)display on-screen window.
 LE5F6:  .byte WND_CMD_CMB       ;Combat command window.
 
-LE5F7:  LDA WndSelResults       ;Is player choosing to attack enemy?
-LE5F9:  BEQ PlyrFight           ;If so, branch.
+LE5F7:  LDA WindowSelResults       ;Is player choosing to attack enemy?
+LE5F9:  BEQ PlayerFight           ;If so, branch.
 
 LE5FB:  JMP ChkPlyrSpell        ;($E6B6)Check if player attempted to cast a spell.
 
 ;----------------------------------------------------------------------------------------------------
 
-PlyrFight:
+PlayerFight:
 LE5FE:  LDA #WND_CMD_CMB        ;Remove combat window from screen.
 LE600:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
@@ -6759,7 +6759,7 @@ LE64C:  SBC MultRsltUB          ;
 LE64E:  JMP SetEnDmg1           ;($E664)Set the amount of damage player did to the enemy.
 
 ChkPlyrMiss:
-LE651:  JSR PlyrCalcHitDmg      ;($EFE5)Calculate the damage player will do to the enemy.
+LE651:  JSR PlayerCalcHitDmg      ;($EFE5)Calculate the damage player will do to the enemy.
 LE654:  LDA CalcDamage          ;Did player do damage to the enemy?
 LE656:  BNE SetEnDmg1           ;If so, branch.
 
@@ -6778,7 +6778,7 @@ LE666:  LDA #$00                ;Set the damage the player will do if enemy does
 LE668:  STA DmgNotUsed          ;
 
 LE66A:  BIT PlayerFlags         ;Is the enemy asleep?
-LE66C:  BVS PlyrHitEn           ;If so, branch. Enemy can't dodge.
+LE66C:  BVS PlayerHitEn           ;If so, branch. Enemy can't dodge.
 
 LE66E:  JSR UpdateRandNum       ;($C55B)Get random number.
 
@@ -6788,12 +6788,12 @@ LE675:  STA RandNumUB           ;
 
 LE677:  LDA EnBaseMDef          ;Does enemy have magic defense?
 LE67A:  AND #$0F                ;
-LE67C:  BEQ PlyrHitEn           ;If not, branch. Enemy can't dodge.
+LE67C:  BEQ PlayerHitEn           ;If not, branch. Enemy can't dodge.
 
 LE67E:  SEC                     ;Magic defense will be 0-14.
 LE67F:  SBC #$01                ;If random number is equal or greater than this, player will hit.
 LE681:  CMP RandNumUB           ;
-LE683:  BCC PlyrHitEn           ;22% chance enemy will dodge(14/63).
+LE683:  BCC PlayerHitEn           ;22% chance enemy will dodge(14/63).
 
 LE685:  JSR CopyEnUpperBytes    ;($DBE4)Copy enemy upper bytes to description RAM.
 
@@ -6811,7 +6811,7 @@ LE694:  STA EnDamage            ;
 LE696:  LDA #$00                ;Set the damage the player will do. Enemy can't dodge spells.
 LE698:  STA DmgNotUsed          ;
 
-PlyrHitEn:
+PlayerHitEn:
 LE69A:  LDA #SFX_ENMY_HIT       ;Enemy hit SFX.
 LE69C:  BRK                     ;
 LE69D:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
@@ -6833,11 +6833,11 @@ LE6B3:  JMP UpdateEnHP          ;($E95D)Subtract damage from enemy HP.
 
 ChkPlyrSpell:
 LE6B6:  CMP #CC_SPELL           ;Did player try to cast a spell?
-LE6B8:  BEQ PlyrSpell           ;If so, branch.
+LE6B8:  BEQ PlayerSpell           ;If so, branch.
 
 LE6BA:  JMP ChkPlyrItem         ;($E7A2)Check if player is trying to use an item.
 
-PlyrSpell:
+PlayerSpell:
 LE6BD:  LDA SpellFlags          ;
 LE6BF:  STA SpellFlagsLB        ;
 LE6C1:  LDA ModsnSpells         ;
@@ -6857,13 +6857,13 @@ LE6D4:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 ShowSpellWnd:
 LE6D7:  JSR ShowSpells          ;($DB56)Bring up the spell window.
 LE6DA:  CMP #WND_ABORT          ;Did player abort spell?
-LE6DC:  BNE PlyrSpellChosen     ;If not, branch.
+LE6DC:  BNE PlayerSpellChosen     ;If not, branch.
 
 LE6DE:  LDA #WND_CMD_CMB        ;Remove command window from the screen.
 LE6E0:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 LE6E3:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 
-PlyrSpellChosen:
+PlayerSpellChosen:
 LE6E6:  PHA                     ;Save a copy of the spell chosen on the stack.
 
 LE6E7:  LDA #WND_CMD_CMB        ;Remove the command window from the screen.
@@ -6899,14 +6899,14 @@ LE70E:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 LE711:* STA SpellToCast         ;Has stop spell been cast on player?
 LE713:  LDA PlayerFlags         ;
 LE715:  AND #F_PLR_STOPSPEL     ;
-LE717:  BEQ PlyrPrepSpell       ;If not, branch.
+LE717:  BEQ PlayerPrepSpell       ;If not, branch.
 
 LE719:  JSR DoDialogLoBlock     ;($C7CB)But that spell hath been blocked...
 LE71C:  .byte $EA               ;TextBlock15, entry 10.
 
 LE71D:  JMP StartEnemyTurn      ;($EB1B)It's the enemy's turn to attack.
 
-PlyrPrepSpell:
+PlayerPrepSpell:
 LE720:  LDA SpellToCast         ;Get cast spell.
 
 LE722:  CMP #SPL_HEAL           ;Was the heal spell cast?
@@ -6997,15 +6997,15 @@ LE79F:  JMP StartEnemyTurn      ;($EB1B)It's the enemy's turn to attack.
 
 ChkPlyrItem:
 LE7A2:  CMP #CC_ITEM            ;Is player trying to use an item?
-LE7A4:  BEQ PlyrItem            ;If so, branch.
+LE7A4:  BEQ PlayerItem            ;If so, branch.
 
 LE7A6:  JMP ChkPlyrRun          ;($E87F)Check if player is trying to run.
 
-PlyrItem:
+PlayerItem:
 LE7A9:  JSR CreateInvList       ;($DF77)Create inventory list in description buffer.
 
 LE7AC:  CPX #INV_NONE           ;Does the player have any inventory?
-LE7AE:  BNE PlyrShowInv         ;If so, branch to show inventory window.
+LE7AE:  BNE PlayerShowInv         ;If so, branch to show inventory window.
 
 LE7B0:  LDA #WND_CMD_CMB        ;Remove command window.
 LE7B2:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
@@ -7015,7 +7015,7 @@ LE7B8:  .byte $3D               ;TextBlock4, entry 13.
 
 LE7B9:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 
-PlyrShowInv:
+PlayerShowInv:
 LE7BC:  JSR Dowindow            ;($C6F0)display on-screen window.
 LE7BF:  .byte WND_INVTRY1       ;Player inventory window.
 
@@ -7173,11 +7173,11 @@ LE87C:  JMP InvalidCombatSpell  ;($E6FD)Tell player item cannot be used in comba
 
 ChkPlyrRun:
 LE87F:  CMP #CC_RUN             ;Did player try to run?
-LE881:  BEQ PlyrRun             ;If so, branch.
+LE881:  BEQ PlayerRun             ;If so, branch.
 
 LE883:  JMP ShowCombatCommand         ;($E5EF)Show command dialog.
 
-PlyrRun:
+PlayerRun:
 LE886:  LDA #WND_CMD_CMB        ;Remove the command window from the screen.
 LE888:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
@@ -7515,7 +7515,7 @@ LEA67:  LDA DisplayedMaxMP      ;
 LEA69:  PHA                     ;
 LEA6A:  LDA DisplayedMaxHP      ;
 LEA6C:  PHA                     ;
-LEA6D:  LDA DisplayedAgi        ;Save the player's current stats on the stack.
+LEA6D:  LDA DisplayedAgility        ;Save the player's current stats on the stack.
 LEA6F:  PHA                     ;
 LEA70:  LDA DisplayedStrength        ;
 LEA72:  PHA                     ;
@@ -7563,10 +7563,10 @@ LEAA6:  STA AmountUB
 
 ChkStrengthUp:
 LEAA8:  PLA                     ;
-LEAA9:  STA PlyrTempStat        ;
+LEAA9:  STA PlayerTempStat        ;
 LEAAB:  LDA DisplayedStr        ;Did the player's strength increase this level?
 LEAAD:  SEC                     ;
-LEAAE:  SBC PlyrTempStat        ;
+LEAAE:  SBC PlayerTempStat        ;
 LEAB0:  BEQ ChkAgilityUp        ;If not, branch.
 
 LEAB2:  STA AmountLB            ;Store the amount the player's strength increased.
@@ -7576,10 +7576,10 @@ LEAB7:  .byte $0E               ;TextBlock17, entry 14.
 
 ChkAgilityUp:
 LEAB8:  PLA                     ;
-LEAB9:  STA PlyrTempStat        ;
-LEABB:  LDA DisplayedAgi        ;Did the player's agility increase this level?
+LEAB9:  STA PlayerTempStat        ;
+LEABB:  LDA DisplayedAgility        ;Did the player's agility increase this level?
 LEABD:  SEC                     ;
-LEABE:  SBC PlyrTempStat        ;
+LEABE:  SBC PlayerTempStat        ;
 LEAC0:  BEQ ChkHPUp             ;If not, branch.
 
 LEAC2:  STA AmountLB            ;Store the amount the player's agility increased.
@@ -7589,10 +7589,10 @@ LEAC7:  .byte $0F               ;TextBlock17, entry 15.
 
 ChkHPUp:
 LEAC8:  PLA                     ;
-LEAC9:  STA PlyrTempStat        ;
+LEAC9:  STA PlayerTempStat        ;
 LEACB:  LDA DisplayedMaxHP      ;Player's HP goes up every level.
 LEACD:  SEC                     ;
-LEACE:  SBC PlyrTempStat        ;
+LEACE:  SBC PlayerTempStat        ;
 LEAD0:  STA AmountLB            ;Store the amount the player's HP increased.
 
 LEAD2:  JSR DoDialogHiBlock     ;($C7C5)Thy maximum hit points Increase by...
@@ -7600,10 +7600,10 @@ LEAD5:  .byte $10               ;TextBlock18, entry 0.
 
 ChkMPUp:
 LEAD6:  PLA                     ;
-LEAD7:  STA PlyrTempStat        ;
+LEAD7:  STA PlayerTempStat        ;
 LEAD9:  LDA DisplayedMaxMP      ;Did the player's MP increase this level?
 LEADB:  SEC                     ;
-LEADC:  SBC PlyrTempStat        ;
+LEADC:  SBC PlayerTempStat        ;
 LEADE:  BEQ ChkNewSpell         ;If not, branch.
 
 LEAE0:  STA AmountLB            ;Store the amount the player's MP increased.
@@ -7830,7 +7830,7 @@ LEC31:  CLC                     ;
 LEC32:  ADC #$03                ;Hurt spel will do between 7 and 10 damage.
 
 EnCalcSpllDmg:
-LEC34:  STA PlyrDamage          ;Store base damage player will take.
+LEC34:  STA PlayerDamage          ;Store base damage player will take.
 
 LEC36:  LDA EqippedItems        ;
 LEC38:  AND #AR_ARMOR           ;Does player have Erdrick's armor?
@@ -7841,7 +7841,7 @@ LEC3E:  CMP #AR_MAGIC_ARMR      ;Does player have magic armor?
 LEC40:  BNE DoPlyrDmg           ;If not, branch. Player takes regular damage.
 
 ReducedSpellDmg:
-LEC42:  LDA PlyrDamage          ;
+LEC42:  LDA PlayerDamage          ;
 LEC44:  STA DivNum1LB           ;Divide player damage by 3.
 LEC46:  LDA #$03                ;
 LEC48:  STA DivNum2             ;
@@ -7849,7 +7849,7 @@ LEC4A:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit numbe
 
 LEC4D:  LDA DivQuotient         ;
 LEC4F:  ASL                     ;Multiply player damage by 2. Result is 2/3 damage.
-LEC50:  STA PlyrDamage          ;
+LEC50:  STA PlayerDamage          ;
 
 DoPlyrDmg:
 LEC52:  JMP PlayerHit           ;($ED20)Player takes damage.
@@ -7962,7 +7962,7 @@ LECF2:  AND #$07                ;
 LECF4:  ORA #$10                ;Fire1 damage ranges from 16 to 23.
 
 CalcPlyrDmg:
-LECF6:  STA PlyrDamage          ;
+LECF6:  STA PlayerDamage          ;
 LECF8:  LDA #$00                ;Store base damage player will take.
 LECFA:  STA DmgNotUsed          ;
 
@@ -8002,7 +8002,7 @@ LED25:  LDA #$00                ;
 LED27:  STA DmgNotUsed          ;Subtract damage from player's HP.
 LED29:  LDA HitPoints           ;
 LED2B:  SEC                     ;
-LED2C:  SBC PlyrDamage          ;Did HP go below 0?
+LED2C:  SBC PlayerDamage          ;Did HP go below 0?
 LED2E:  BCS +                   ;If not, branch.
 
 LED30:  LDA #$00                ;Set player HP to zero. Player died.
@@ -8310,7 +8310,7 @@ LEEDF:  JSR UpdateRandNum       ;($C55B)Get random number.
 
 LEEE2:  LDA RandNumUB           ;Store random number as a multiplier.
 LEEE4:  STA MultNum1LB          ;
-LEEE6:  LDA DisplayedAgi        ;
+LEEE6:  LDA DisplayedAgility        ;
 LEEE8:  STA MultNum2LB          ;Multiply the random number by the player's agility.
 LEEEA:  LDA #$00                ;
 LEEEC:  STA MultNum1UB          ;
@@ -8488,16 +8488,16 @@ LEFE4:  RTS                     ;Enemy did not run away. Return.
 
 ;----------------------------------------------------------------------------------------------------
 
-PlyrCalcHitDmg:
+PlayerCalcHitDmg:
 LEFE5:  LSR DefenseStat         ;
 LEFE7:  LDA AttackStat          ;
 LEFE9:  SEC                     ; A = AttackStat - DefenseStat/2.
 LEFEA:  SBC DefenseStat         ;
-LEFEC:  BCC PlyrWeakAttack      ;
+LEFEC:  BCC PlayerWeakAttack      ;
 
 LEFEE:  CMP #$02                ;Did A go negative or is only 1 greater than enemy defense/2?
 LEFF0:  BCS NormalAttack        ;If so, branch to do a weak attack. enemy is strong!
-LEFF2:  BCC PlyrWeakAttack      ;Else branch to do a normal attack.
+LEFF2:  BCC PlayerWeakAttack      ;Else branch to do a normal attack.
 
 EnCalcHitDmg:
 LEFF4:  LSR DefenseStat         ;
@@ -8530,7 +8530,7 @@ LF01F:  LDA #$03                ;Damage=(((AttackStat-DefenseStat/2)*rnd(255))/2
 LF021:  STA DivNum2             ;
 LF023:  JMP ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-PlyrWeakAttack:
+PlayerWeakAttack:
 LF026:  JSR UpdateRandNum       ;($C55B)Get random number.
 
 LF029:  LDA RandNumUB           ;
@@ -8641,9 +8641,9 @@ LF0B6:  LDA StatPenalty         ;if bit 1 is set, penalize agility.
 LF0B8:  AND #$02                ;
 LF0BA:  BNE MaxHPPenalty        ;Penalize max HP? If so, branch.
 
-LF0BC:  LDA DisplayedAgi        ;Penalize agility by 10%.
+LF0BC:  LDA DisplayedAgility        ;Penalize agility by 10%.
 LF0BE:  JSR ReduceStat          ;($F10C)Multiply stat by 9/10.
-LF0C1:  STA DisplayedAgi        ;
+LF0C1:  STA DisplayedAgility        ;
 
 LF0C3:  JMP AddItemBonuses      ;($F0CD)Add bonuses for player's equipped items.
 
@@ -8667,7 +8667,7 @@ LF0D8:  CLC                     ;
 LF0D9:  ADC DisplayedStrength        ;Add bonus from weapons table to strength attribute.
 LF0DB:  STA DisplayedAttack      ;
 
-LF0DD:  LDA DisplayedAgi        ;
+LF0DD:  LDA DisplayedAgility        ;
 LF0DF:  LSR                     ;Divide agility by 2 and add to defense attribute.
 LF0E0:  STA DisplayedDefense      ;
 
@@ -9168,7 +9168,7 @@ LF684:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-WndLoadGameDat:
+WindowLoadGameDat:
 LF685:  LDA SaveSelected        ;Get selected saved game.
 LF688:  JSR Copy100Times        ;($FAC1)Make up to 100 copies of saved game to validate.
 LF68B:  JSR GetPlayerStatPtr    ;($C156)Get pointer to player's level base stats.
@@ -9552,7 +9552,7 @@ LF8AF:  LDA #$00                ;Prepare to get valid saved games.
 LF8B1:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
 LF8B4:  CMP #WND_ABORT          ;Was B button pressed?
 LF8B6:  BNE PrepContinueGame    ;If not, branch to continue saved game.
-LF8B8:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF8B8:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 PrepContinueGame:
 LF8BB:  STA SaveNumber          ;Get a copy of the selected saved game number.
@@ -9567,13 +9567,13 @@ LF8C4:  JSR ShowOpenLogs        ;($F983)Show open adventure log spots.
 LF8C7:  CMP #WND_ABORT          ;Was B button pressed?
 LF8C9:  BNE NewQuest            ;If not, branch to input character name of new game.
 
-LF8CB:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF8CB:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 NewQuest:
 LF8CE:  STA SaveNumber          ;Save the game slot for the new game.
 
 LF8D1:  BRK                     ;Do name entering functions.
-LF8D2:  .byte $11, $17          ;($AE02)WndEnterName, bank 1.
+LF8D2:  .byte $11, $17          ;($AE02)WindowEnterName, bank 1.
 
 LF8D4:  LDA #MSG_NORMAL         ;Set normal message speed.
 LF8D6:  STA MessageSpeed        ;
@@ -9584,7 +9584,7 @@ LF8DB:  .byte WND_MSG_SPEED     ;Message speed window.
 LF8DC:  CMP #WND_ABORT          ;Was B button pressed?
 LF8DE:  BNE InitNewGame         ;If not, branch to initialize the new game.
 
-LF8E0:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF8E0:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -9602,7 +9602,7 @@ LF8EE:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
 LF8F1:  CMP #WND_ABORT          ;Was B button pressed?
 LF8F3:  BNE ShowChngMsgSpeed    ;If not, branch to show change message speed window.
 
-LF8F5:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF8F5:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ShowChngMsgSpeed:
 LF8F8:  STA SaveNumber          ;Store desired game number.
@@ -9614,12 +9614,12 @@ LF901:  .byte WND_MSG_SPEED     ;Message speed window.
 LF902:  CMP #WND_ABORT          ;Was B button pressed?
 LF904:  BNE ChngMsgSpeed        ;If not, branch to change message speed.
 
-LF906:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF906:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ChngMsgSpeed:
 LF909:  STA MessageSpeed        ;Update message speed.
 LF90B:  JSR SaveCurrentGame     ;($F9DF)Save game data in the selected slot.
-LF90E:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF90E:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -9628,7 +9628,7 @@ LF911:  LDA #$00                ;Prepare to get used save game slots.
 LF913:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
 LF916:  CMP #WND_ABORT          ;Was B button pressed?
 LF918:  BNE VerifyErase         ;If not, branch to show verify window.
-LF91A:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF91A:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 VerifyErase:
 LF91D:  STA SaveNumber          ;Make copies of save slot selected(0 to 2).
@@ -9642,12 +9642,12 @@ LF92A:  .byte WND_YES_NO2       ;Yes/No selection window.
 
 LF92B:  CMP #WND_YES            ;Was chosen from selection window?
 LF92D:  BEQ EraseGame           ;If so, branch to erase selected game.
-LF92F:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF92F:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 EraseGame:
 LF932:  LDA SaveNumber          ;Get save slot to erase.
 LF935:  JSR ClearValidSaves     ;($F80F)Clear ValidSave variable for selected game.
-LF938:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF938:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -9657,7 +9657,7 @@ LF93D:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
 LF940:  CMP #WND_ABORT          ;Was B button pressed?
 LF942:  BNE ShowOpenSlots       ;If not, branch to show open save game slots.
 
-LF944:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF944:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ShowOpenSlots:
 LF947:  STA SaveNumber          ;Save a copy of the selected slot.
@@ -9666,7 +9666,7 @@ LF94C:  JSR ShowOpenLogs        ;($F983)Show open adventure log spots.
 LF94F:  CMP #WND_ABORT          ;Was B button pressed?
 LF951:  BNE ConfirmCopy         ;If not, branch to confirm save game copy.
 
-LF953:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF953:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ConfirmCopy:
 LF956:  STA OpnSltSelected      ;Save target slot to copy game into.
@@ -9677,13 +9677,13 @@ LF95C:  .byte WND_YES_NO2       ;Yes/No selection window.
 LF95D:  CMP #$00                ;was game copy finalized?
 LF95F:  BEQ DoCopyGameDat       ;If so, branch to copy game data.
 
-LF961:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF961:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 DoCopyGameDat:
 LF964:  JSR CopyGame            ;($F6BA)Copy game data from save slot to another.
-LF967:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF967:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
-WndBackToMain:
+WindowBackToMain:
 LF96A:  LDA #$FF                ;Prepare to remove window from screen.
 
 LF96C:  BRK                     ;Remove window from screen.
@@ -9724,7 +9724,7 @@ LF995:  BNE ShowOpenLogsExit    ;If not, exit with selected log results.
 NoOpenGames:
 LF997:  PLA                     ;Pull last return address.
 LF998:  PLA                     ;
-LF999:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF999:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ShowOpenLogsExit:
 LF99C:  JMP CalcSelectedSlot    ;($F9BB)Calculate save slot selected.
@@ -9749,7 +9749,7 @@ LF9B1:  BNE ShowUsedLogsExit    ;If not, exit with selected log results.
 NoSavedGames:
 LF9B3:  PLA                     ;Pull last return address.
 LF9B4:  PLA                     ;
-LF9B5:  JMP WndBackToMain       ;($F96A)Go back to main pre-game window.
+LF9B5:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
 ShowUsedLogsExit:
 LF9B8:  JMP CalcSelectedSlot    ;($F9BB)Calculate save slot selected.
