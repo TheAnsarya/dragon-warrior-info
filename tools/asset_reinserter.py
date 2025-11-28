@@ -35,7 +35,7 @@ class AssetReinserter:
 
 	def generate_all_assembly(self, extract_defaults: bool = False):
 		"""Generate all assembly files for asset reinsertion"""
-		console.print("[blue]🔧 Generating assembly code for asset reinsertion...[/blue]\n")
+		console.print("[blue]Generating assembly code for asset reinsertion...[/blue]\n")
 
 		generated_files = []
 
@@ -64,15 +64,19 @@ class AssetReinserter:
 		"""Generate assembly files for edited assets"""
 		generated_files = []
 
-		# Generate monster data assembly
-		monsters_file = self.json_dir / "monsters.json"
+		# Generate monster data assembly (prefer _verified version)
+		monsters_file = self.json_dir / "monsters_verified.json"
+		if not monsters_file.exists():
+			monsters_file = self.json_dir / "monsters.json"
 		if monsters_file.exists():
 			asm_file = self._generate_monster_assembly(monsters_file)
 			if asm_file:
 				generated_files.append(asm_file)
 
-		# Generate item data assembly
-		items_file = self.json_dir / "items.json"
+		# Generate item data assembly (prefer _corrected version)
+		items_file = self.json_dir / "items_corrected.json"
+		if not items_file.exists():
+			items_file = self.json_dir / "items.json"
 		if items_file.exists():
 			asm_file = self._generate_item_assembly(items_file)
 			if asm_file:
@@ -123,22 +127,22 @@ class AssetReinserter:
 		return generated_files
 
 	def _generate_monster_assembly(self, json_file: Path) -> Optional[Path]:
-		"""Generate monster data assembly that replaces EnStatTbl"""
+		"""Generate monster data assembly that replaces EnemyStatsTable"""
 		try:
 			with open(json_file, 'r', encoding='utf-8') as f:
 				monsters = json.load(f)
 
 			asm_lines = [
 				"; Dragon Warrior Monster Data Replacement",
-				"; This file replaces the original EnStatTbl in Bank01.asm",
+				"; This file replaces the original EnemyStatsTable in Bank01.asm",
 				"; Generated from edited JSON data",
 				"",
 				"; Monster Statistics Table",
 				"; Format matches original Dragon Warrior: Att(1), Def(1), HP(1), Spel(1), Agi(1), Mdef(1), Exp(1), Gld(1), + 8 unused bytes",
-				"EnStatTbl:"
+				"EnemyStatsTable:"
 			]
 
-				# Generate monster entries in original Dragon Warrior format
+			# Generate monster entries in original Dragon Warrior format
 			for monster_id in sorted([int(k) for k in monsters.keys()]):
 				monster = monsters[str(monster_id)]
 
