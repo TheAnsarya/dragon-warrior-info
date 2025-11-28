@@ -6443,7 +6443,7 @@ LE49E:  SBC #$1C                ;why data was formatted this way.
 LE4A0:  STA EnemySpriteXPosition          ;
 
 LE4A2:  LDA IsEnMirrored        ;Is the enemy mirrored?
-LE4A4:  BEQ SetEnSprtAttrib     ;If not, branch to skip inverting the X position of the sprite.
+LE4A4:  BEQ SetEnemySpriteAttribute     ;If not, branch to skip inverting the X position of the sprite.
 
 LE4A6:  LDA EnemySpriteXPosition          ;
 LE4A8:  EOR #$FF                ;Enemy is mirrored. 2's compliment the X position of the sprite.
@@ -6454,7 +6454,7 @@ LE4AE:  LDA EnemySpriteAttributeData     ;Since the enemy is mirrored in the X d
 LE4B0:  EOR #$40                ;horizontal mirroring of the sprite needs to be inverted.
 LE4B2:  STA EnemySpriteAttributeData     ;
 
-SetEnSprtAttrib:
+SetEnemySpriteAttribute:
 LE4B4:  LDA EnemySpriteAttributeData     ;Store the attribute data for the enemy sprite.
 LE4B6:  STA SpriteRAM+2,X       ;
 

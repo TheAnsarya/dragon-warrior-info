@@ -4829,7 +4829,7 @@ LA27D:  BEQ WindowUpperRightCorner      ;If so, branch to load upper right corne
 
 LA27F:  INX                     ;
 LA280:  CPX WindowHeight           ;In left most column. in bottom row?
-LA283:  BEQ WindowBotRightCrnr     ;If so, branch to load lower right corner tile.
+LA283:  BEQ WindowBotRightCorner     ;If so, branch to load lower right corner tile.
 
 LA285:  LDA #TL_RIGHT           ;Border pattern - right border.
 LA287:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
@@ -4838,25 +4838,25 @@ WindowUpperRightCorner:
 LA289:  LDA #TL_UPPER_RIGHT     ;Border pattern - upper right corner.
 LA28B:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
 
-WindowBotRightCrnr:
+WindowBotRightCorner:
 LA28D:  LDA #TL_BOT_RIGHT       ;Border pattern - lower right corner.
 LA28F:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
 
 CheckWndRow:
 LA291:  LDX WindowYPosition             ;In top row. In left most ccolumn?
-LA294:  BEQ WindowUpLeftCrnr       ;If so, branch to load upper left corner tile.
+LA294:  BEQ WindowUpperLeftCorner       ;If so, branch to load upper left corner tile.
 
 LA296:  INX                     ;
 LA297:  CPX WindowHeight           ;In top row.  In left most column?
-LA29A:  BEQ WindowBotLeftCrnr      ;If so, branch to load lower left corner tile.
+LA29A:  BEQ WindowBotLeftCorner      ;If so, branch to load lower left corner tile.
 LA29C:  LDA #TL_LEFT            ;Border pattern - left border.
 LA29E:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
 
-WindowUpLeftCrnr:
+WindowUpperLeftCorner:
 LA2A0:  LDA #TL_UPPER_LEFT      ;Border pattern - Upper left corner.
 LA2A2:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
 
-WindowBotLeftCrnr:
+WindowBotLeftCorner:
 LA2A4:  LDA #TL_BOT_LEFT        ;Border pattern - Lower left corner.
 LA2A6:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
 
@@ -5019,7 +5019,7 @@ WindowShowLevel:
 LA37E:  LDA WindowParam            ;Is parameter not 0? If so, get level from a saved game.
 LA381:  BNE WindowGetSavedGame     ;Branch to get saved game level.
 
-WindowConvertLvl:
+WindowConvertLevel:
 LA383:  LDA #$02                ;Set buffer length to 2.
 LA385:  STA SubBufLength        ;
 LA388:  LDX #DisplayedLevel     ;Load player's level.
@@ -5029,7 +5029,7 @@ LA38C:  JMP WindowBinToBCD         ;($A61C)Convert binary word to BCD.
 
 WindowGetSavedGame:
 LA38F:  JSR WindowLoadGameDat      ;($F685)Load selected game into memory.
-LA392:  JMP WindowConvertLvl        ;($A383)Convert player level to BCD.
+LA392:  JMP WindowConvertLevel        ;($A383)Convert player level to BCD.
 
 ;----------------------------------------------------------------------------------------------------
 
