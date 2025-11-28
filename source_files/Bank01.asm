@@ -5202,7 +5202,7 @@ LA483:  SBC #$01                ;
 
 LA485:  JSR WindowGetSpellDesc     ;($A7EB)Get spell description.
 LA488:  JSR WindowTempToLineBuf    ;($A62B)Transfer value from temp buf to window line buffer.
-LA48B:  INC WindowThisDesc         ;Increment pointer to next position in description buffer.
+LA48B:  INC WindowThisDescription         ;Increment pointer to next position in description buffer.
 LA48E:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
