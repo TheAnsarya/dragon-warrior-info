@@ -363,16 +363,16 @@ L81B0:  TAY                     ;Use Y as index into table.
 L81B1:  LDX #$04                ;Prepare to loop 3 times.
 
 ChannelInitializeLoop:
-L81B3:  LDA MscStrtIndxTbl+1,Y  ;Get upper byte of pointer from table.
+L81B3:  LDA MusicStartIndexTable+1,Y  ;Get upper byte of pointer from table.
 L81B6:  BNE +                   ;Is there a valid pointer? If so branch to save pointer.
 
-L81B8:  LDA MscStrtIndxTbl+1,X  ;
+L81B8:  LDA MusicStartIndexTable+1,X  ;
 L81BB:  STA SQ1IndexUB,X        ;No music data for this chnnel in the table.  Load
-L81BD:  LDA MscStrtIndxTbl,X    ;the "no sound" data instead.
+L81BD:  LDA MusicStartIndexTable,X    ;the "no sound" data instead.
 L81C0:  JMP ++                  ;
 
 L81C3:* STA SQ1IndexUB,X        ;
-L81C5:  LDA MscStrtIndxTbl,Y    ;Store pointer to audio data.
+L81C5:  LDA MusicStartIndexTable,Y    ;Store pointer to audio data.
 L81C8:* STA SQ1IndexLB,X        ;
 
 L81CA:  LDA #$01                ;Indicate the channel has valid sound data.
@@ -401,9 +401,9 @@ L81E3:  TAX                     ;
 L81E4:  LDA #$01                ;Indicate a SFX is active.
 L81E6:  STA SFXActive           ;
 
-L81E8:  LDA SFXStrtIndxTbl,X    ;
+L81E8:  LDA SFXStartIndexTable,X    ;
 L81EB:  STA NoisIndexLB         ;Get pointer to SFX data from table.
-L81ED:  LDA SFXStrtIndxTbl+1,X  ;
+L81ED:  LDA SFXStartIndexTable+1,X  ;
 L81F0:  STA NoisIndexUB         ;
 
 L81F2:  LDA #$08                ;Disable SQ2 sweep unit.
@@ -6672,7 +6672,7 @@ LABDA:  PLA                     ;Restore A. Always 0.
 LABDB:  JSR WindowStartRow         ;($AD10)Set nametable and X,Y start position of window line.
 
 LABDE:  LDA #$00                ;
-LABE0:  STA WindowLineBufIndex     ;Zero buffer indexes.
+LABE0:  STA WindowLineBufferIndex     ;Zero buffer indexes.
 LABE3:  STA WindowAtrbBufIndex     ;
 
 LABE6:  LDA WindowWidthTemp        ;
@@ -6793,17 +6793,17 @@ LAC99:  INX                     ;
 LAC9A:  LDA WindowThisNTRow        ;Save a copy of the count of tiles on this NT.
 LAC9D:  PHA                     ;
 
-LAC9E:  LDY WindowLineBufIndex     ;Load index into line buffer.
+LAC9E:  LDY WindowLineBufferIndex     ;Load index into line buffer.
 
 WindowBufLoadLoop:
-LACA1:  LDA WindowLineBuf,Y        ;
+LACA1:  LDA WindowLineBuffer,Y        ;
 LACA4:  STA BlockRAM,X          ;Load line buffer into PPU buffer.
 LACA7:  INX                     ;
 LACA8:  INY                     ;
 LACA9:  DEC WindowThisNTRow        ;Is there more buffer data for this nametable?
 LACAC:  BNE WindowBufLoadLoop      ;If so, branch to get the next byte.
 
-LACAE:  STY WindowLineBufIndex     ;Update line buffer index.
+LACAE:  STY WindowLineBufferIndex     ;Update line buffer index.
 
 LACB1:  PLA                     ;/2. Use this now to load attribute table bytes.
 LACB2:  LSR                     ;1 attribute table byte per 2X2 block.

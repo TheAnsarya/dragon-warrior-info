@@ -3477,14 +3477,14 @@ LA8CE:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
 LA8D0:  JSR DoAddressCalculation ;($C5AA)Calculate destination address for GFX data.
 
-LA8D3:  LDX WindowLineBufIdx       ;Initialize indexes.
+LA8D3:  LDX WindowLineBufferIndex       ;Initialize indexes.
 LA8D5:  LDY #$00                ;
 
 LA8D7:  LDA (BlockAddr),Y       ;
-LA8D9:  STA WindowLineBuf,X        ;
+LA8D9:  STA WindowLineBuffer,X        ;
 LA8DC:  INY                     ;Transfer upper row of block data into window line buffer.
 LA8DD:  LDA (BlockAddr),Y       ;
-LA8DF:  STA WindowLineBuf+1,X      ;
+LA8DF:  STA WindowLineBuffer+1,X      ;
 
 LA8E2:  TXA                     ;
 LA8E3:  CLC                     ;Move to next row in window line buffer.
@@ -3493,10 +3493,10 @@ LA8E7:  TAX                     ;
 
 LA8E8:  LDY #$20                ;
 LA8EA:  LDA (BlockAddr),Y       ;
-LA8EC:  STA WindowLineBuf,X        ;
+LA8EC:  STA WindowLineBuffer,X        ;
 LA8EF:  INY                     ;Transfer upper row of block data into window line buffer.
 LA8F0:  LDA (BlockAddr),Y       ;
-LA8F2:  STA WindowLineBuf+1,X      ;
+LA8F2:  STA WindowLineBuffer+1,X      ;
 
 LA8F5:  LDA XFromLeftTemp       ;
 LA8F7:  STA XPosFromLeft        ;Update X and Y position for next window block.
@@ -3692,14 +3692,14 @@ LA9F1:  LDA GFXTilesPtr+1       ;Calculate the address to the proper GFX block d
 LA9F4:  ADC #$00                ;
 LA9F6:  STA BlockDataPtrUB      ;
 
-LA9F8:  LDX WindowLineBufIdx       ;Initialize indexes for transferring GFX block data.
+LA9F8:  LDX WindowLineBufferIndex       ;Initialize indexes for transferring GFX block data.
 LA9FA:  LDY #$00                ;
 
 LA9FC:  LDA (BlockDataPtr),Y    ;
-LA9FE:  STA WindowLineBuf,X        ;
+LA9FE:  STA WindowLineBuffer,X        ;
 LAA01:  INY                     ;Transfer upper row of block data into window line buffer.
 LAA02:  LDA (BlockDataPtr),Y    ;
-LAA04:  STA WindowLineBuf+1,X      ;
+LAA04:  STA WindowLineBuffer+1,X      ;
 
 LAA07:  TXA                     ;
 LAA08:  CLC                     ;Move to the next row in the window line buffer.
@@ -3715,10 +3715,10 @@ LAA16:  INC PPUAddrUB           ;
 
 LAA18:* INY                     ;
 LAA19:  LDA (BlockDataPtr),Y    ;
-LAA1B:  STA WindowLineBuf,X        ;
+LAA1B:  STA WindowLineBuffer,X        ;
 LAA1E:  INY                     ;Transfer lower row of block data into window line buffer.
 LAA1F:  LDA (BlockDataPtr),Y    ;
-LAA21:  STA WindowLineBuf+1,X      ;
+LAA21:  STA WindowLineBuffer+1,X      ;
 LAA24:  INY                     ;
 
 LAA25:  LDA XFromLeftTemp       ;
