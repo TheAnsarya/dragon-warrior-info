@@ -31,16 +31,16 @@ SPELL_INFO = [
 
 def extract_spells(rom_path: Path) -> Dict[int, Dict]:
     """Extract all spell data from ROM"""
-    
+
     with open(rom_path, 'rb') as f:
         rom_data = f.read()
-    
+
     spells = {}
-    
+
     for spell_id, name, base_mp, effect, formula, target, battle, field in SPELL_INFO:
         # Extract MP cost from ROM (if available at known offset)
         mp_cost = base_mp  # Use known values for now
-        
+
         spell = {
             "id": spell_id,
             "name": name,
@@ -52,9 +52,9 @@ def extract_spells(rom_path: Path) -> Dict[int, Dict]:
             "usable_in_field": field,
             "description": _get_spell_description(name, formula, effect)
         }
-        
+
         spells[spell_id] = spell
-    
+
     return spells
 
 
@@ -78,25 +78,25 @@ def _get_spell_description(name: str, formula: str, effect: str) -> str:
 def main():
     """Main extraction function"""
     rom_path = Path("roms/Dragon Warrior (U) (PRG1) [!].nes")
-    
+
     if not rom_path.exists():
         print(f"❌ ROM not found: {rom_path}")
         print("Place Dragon Warrior (U) (PRG1) [!].nes in roms/ directory")
         return 1
-    
+
     print("Extracting spells from ROM...")
     spells = extract_spells(rom_path)
-    
+
     # Save to JSON
     output_dir = Path("assets/json")
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     output_file = output_dir / "spells.json"
     with open(output_file, 'w') as f:
         json.dump(spells, f, indent=2)
-    
+
     print(f"Extracted {len(spells)} spells to {output_file}")
-    
+
     # Display summary
     print("\nSpells extracted:")
     for spell_id, spell in spells.items():
@@ -105,7 +105,7 @@ def main():
         battle = "[B]" if spell['usable_in_battle'] else "   "
         field = "[F]" if spell['usable_in_field'] else "   "
         print(f"  {spell_id}: {name:12s} - {mp:2d} MP {battle}{field} - {spell['formula']}")
-    
+
     return 0
 
 
