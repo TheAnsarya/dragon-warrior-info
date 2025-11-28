@@ -5901,7 +5901,7 @@ LE1F2:  LDA TargetResults       ;Is player standing on a treasure chest?
 LE1F4:  CMP #BLK_CHEST          ;
 LE1F6:  BEQ FoundTreasure       ;If so, branch.
 
-NoTrsrChest:
+NoTreasureChest:
 LE1F8:  LDA #$D7                ;TextBlock14, entry 7.
 LE1FA:  JMP DoFinalDialog       ;($D242)There is nothing to take here...
 
@@ -5914,17 +5914,17 @@ LE200:  LDY #$00                ;Treasure table starts at address $0320.
 ChkTrsrTblLoop:
 LE202:  LDA MapNumber           ;Does player map match current treasure chest map?
 LE204:  CMP TrsrArray,Y         ;
-LE207:  BNE NextTrsrChest       ;If not, branch to increment to next treasure chest.
+LE207:  BNE NextTreasureChest       ;If not, branch to increment to next treasure chest.
 
 LE209:  LDA CharXPos            ;Does player X position match treasure chest X position?
 LE20B:  CMP TrsrArray+1,Y       ;
-LE20E:  BNE NextTrsrChest       ;If not, branch to increment to next treasure chest.
+LE20E:  BNE NextTreasureChest       ;If not, branch to increment to next treasure chest.
 
 LE210:  LDA CharYPos            ;Does player Y position match treasure chest X position?
 LE212:  CMP TrsrArray+2,Y       ;
 LE215:  BEQ ChkTrsrKey          ;If so, branch. Treasure chest found!
 
-NextTrsrChest:
+NextTreasureChest:
 LE217:  INY                     ;
 LE218:  INY                     ;Increment to next entry in treasure chest data array.
 LE219:  INY                     ;
@@ -5933,7 +5933,7 @@ LE21A:  INY                     ;
 LE21B:  CPY #$7C                ;Has the whole treasure chest data array been checked?
 LE21D:  BNE ChkTrsrTblLoop      ;If not, branch to check the next entry.
 
-LE21F:  BEQ NoTrsrChest         ;No treasure chest found at this location by the player.
+LE21F:  BEQ NoTreasureChest         ;No treasure chest found at this location by the player.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -6564,7 +6564,7 @@ LE545:  JSR GetBankDataByte     ;($FD1C)from PRG bank 1 and store in A.
 
 LE548:  CLC                     ;Add with carry does nothing.
 LE549:  ADC #$00                ;
-LE54B:  STA ROMSrcPtrLB         ;Store lower byte of enemy sprite data pointer.
+LE54B:  STA ROMSourcePtrLB         ;Store lower byte of enemy sprite data pointer.
 
 LE54D:  PHP                     ;Carry should always be clear.
 
@@ -6577,26 +6577,26 @@ LE554:  TAY                     ;Save a copy of upper byte to check enemy mirror
 LE555:  AND #$7F                ;
 LE557:  PLP                     ;Set MSB of upper byte if not already set.
 LE558:  ADC #$80                ;Carry should always be clear.
-LE55A:  STA ROMSrcPtrUB         ;
+LE55A:  STA ROMSourcePtrUB         ;
 
 LE55C:  TYA                     ;Store enemy mirroring bit on stack.
 LE55D:  PHA                     ;
 
-LE55E:  LDA ROMSrcPtrLB         ;
+LE55E:  LDA ROMSourcePtrLB         ;
 LE560:  STA NotUsed26           ;Save a copy of the ROM location of eney sprite data, lower byte.
 LE562:  PHA                     ;
 
-LE563:  LDA ROMSrcPtrUB         ;
+LE563:  LDA ROMSourcePtrUB         ;
 LE565:  STA NotUsed27           ;Save a copy of the ROM location of eney sprite data, upper byte.
 LE567:  PHA                     ;
 
 LE568:  JSR LoadCombatBckgrnd   ;($E3CD)Show combat scene background.
 
 LE56B:  PLA                     ;Restore ROM location of eney sprite data, upper byte.
-LE56C:  STA ROMSrcPtrUB         ;
+LE56C:  STA ROMSourcePtrUB         ;
 
 LE56E:  PLA                     ;Restore ROM location of eney sprite data, lower byte.
-LE56F:  STA ROMSrcPtrLB         ;
+LE56F:  STA ROMSourcePtrLB         ;
 
 LE571:  PLA                     ;
 LE572:  AND #$80                ;Get byte containing mirrored bit and keep only mirroring bit.
@@ -9816,9 +9816,9 @@ LF9F9:  JSR SaveData            ;($FA18)Save player's data to battery backed RAM
 LF9FC:  JSR GetCRC              ;($FBE0)Get CRC for selected game data.
 
 LF9FF:  LDA CrntGamePtr         ;
-LFA02:  STA ROMSrcPtrLB         ;Setup game data pointer to save game 10 times.
+LFA02:  STA ROMSourcePtrLB         ;Setup game data pointer to save game 10 times.
 LFA04:  LDA CrntGamePtr+1       ;
-LFA07:  STA ROMSrcPtrUB         ;
+LFA07:  STA ROMSourcePtrUB         ;
 
 LFA09:  LDA SaveNumber          ;Get saved game index.
 LFA0C:  JSR GetSaveGameBase     ;($FC00)Get base address of selected save game data.
@@ -9956,7 +9956,7 @@ LFAB6:  RTS                     ;If not, branch to write another copy of the sav
 
 StoreGamedData:
 LFAB7:  LDY #$1F                ;Prepare to write 32 bytes.  Each save game is 32 bytes.
-LFAB9:* LDA (ROMSrcPtr),Y       ;
+LFAB9:* LDA (ROMSourcePtr),Y       ;
 LFABB:  STA (GameDataPointer),Y      ;
 LFABD:  DEY                     ;
 LFABE:  BPL -                   ;Has 32 bytes been written?
@@ -10480,7 +10480,7 @@ LFD39:  RTS                     ;
 IRQ:
 LFD3A:  SEI                     ;Disable IRQs.
 LFD3B:  PHP                     ;Push processor status. Not necessary. Done by interrupt.
-LFD3C:  BIT APUCommonCntrl0     ;Appears to have no effect.
+LFD3C:  BIT APUCommonControl0     ;Appears to have no effect.
 
 LFD3F:  STA IRQStoreA           ;
 LFD41:  STX IRQStoreX           ;Save A, X, and Y.

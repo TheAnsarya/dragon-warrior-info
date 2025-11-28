@@ -73,9 +73,9 @@ L8043:  TXA                     ;Is SFX still processing?
 L8044:  BNE +                   ;If so, branch to continue or else reset noise and SQ2.
 
 L8046:  LDA #%00000101          ;Silence SQ2 and noise channels.
-L8048:  STA APUCommonCntrl0     ;
+L8048:  STA APUCommonControl0     ;
 L804B:  LDA #%00001111          ;Enable SQ1, SQ2, TRI and noise channels.
-L804D:  STA APUCommonCntrl0     ;
+L804D:  STA APUCommonControl0     ;
 
 L8050:  LDA SQ2Config           ;Update SQ2 control byte 0.
 L8052:  STA SQ2Cntrl0           ;
@@ -84,7 +84,7 @@ L8055:  LDA #%00001000          ;Disable sweep generator on SQ2.
 L8057:  STA SQ2Cntrl1           ;
 
 L805A:  LDA #%00110000          ;Turn off volume for noise channel.
-L805C:  STA NoiseCntrl0         ;
+L805C:  STA NoiseControl0         ;
 
 L805F:* LDA TempoCounter           ;Tempo counter has the effect of slowing down the length
 L8061:  CLC                     ;The music plays.  If the tempo is less than 150, the
@@ -194,9 +194,9 @@ L80DE:  BEQ ProcessAudioByte    ;If so, branch to get next byte.
 L80E0:  BCS MusicReturn         ;Check if need to jump back to previous music data adddress.
 
 L80E2:  CMP #MCTL_CNTRL1        ;Check if channel control 1 byte.
-L80E4:  BEQ ChnlCntrl1          ;If so, branch to load config byte.
+L80E4:  BEQ ChannelControl1          ;If so, branch to load config byte.
 
-L80E6:  BCS ChnlCntrl0          ;Check if channel control 0 byte.
+L80E6:  BCS ChannelControl0          ;Check if channel control 0 byte.
 
 L80E8:  CMP #MCTL_NOISE_VOL     ;Check if noise channel volume control byte.
 L80EA:  BEQ NoiseVolume         ;If so, branch to load noise volume.
@@ -248,7 +248,7 @@ L811D:  JMP ProcessAudioByte    ;($80D3)Determine what to do with music data byt
 
 ;----------------------------------------------------------------------------------------------------
 
-ChnlCntrl0:
+ChannelControl0:
 L8120:  JSR GetAudioData        ;($8155)Get next music data byte.
 L8123:  CPX #$02                ;Is SQ2 currently being handled?
 L8125:  BNE +                   ;If not, branch to load into corresponding SQ register.
@@ -262,16 +262,16 @@ L812C:  JMP ProcessAudioByte    ;($80D3)Determine what to do with music data byt
 
 NoiseVolume:
 L812F:  JSR GetAudioData        ;($8155)Get next music data byte.
-L8132:  STA NoiseCntrl0         ;Set noise volume byte.
+L8132:  STA NoiseControl0         ;Set noise volume byte.
 L8135:  JMP ProcessAudioByte    ;($80D3)Determine what to do with music data byte.
 
 ;----------------------------------------------------------------------------------------------------
 
 LoadNoise:
 L8138:  AND #$0F                ;Set noise period.
-L813A:  STA NoiseCntrl2         ;
+L813A:  STA NoiseControl2         ;
 L813D:  LDA #%00001000          ;Set length counter to 1.
-L813F:  STA NoiseCntrl3         ;
+L813F:  STA NoiseControl3         ;
 L8142:  BNE ProcessAudioByte    ;($80D3)Determine what to do with music data byte.
 
 ;----------------------------------------------------------------------------------------------------
@@ -283,7 +283,7 @@ L8149:  JMP ProcessAudioByte    ;($80D3)Determine what to do with music data byt
 
 ;----------------------------------------------------------------------------------------------------
 
-ChnlCntrl1:
+ChannelControl1:
 L814C:  JSR GetAudioData        ;($8155)Get next music data byte.
 L814F:  STA SQ1Cntrl1,Y         ;Store byte in square wave config register.
 L8152:  JMP ProcessAudioByte    ;($80D3)Determine what to do with music data byte.
@@ -323,9 +323,9 @@ ClearSoundRegisters:
 L8178:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 L817B:  LDA #$00                ;
-L817D:  STA DMCCntrl0           ;Clear hardware control registers.
-L8180:  STA APUCommonCntrl1     ;
-L8183:  STA APUCommonCntrl0     ;
+L817D:  STA DMCControl0           ;Clear hardware control registers.
+L8180:  STA APUCommonControl1     ;
+L8183:  STA APUCommonControl0     ;
 
 L8186:  STA SQ1Length           ;
 L8188:  STA SQ2Length           ;Indicate the channels are not in use.
@@ -334,7 +334,7 @@ L818A:  STA TRILength           ;
 L818C:  STA SFXActive           ;No SFX active.
 
 L818E:  LDA #%00001111          ;
-L8190:  STA APUCommonCntrl0     ;Enable sound channels.
+L8190:  STA APUCommonControl0     ;Enable sound channels.
 
 L8193:  LDA #$FF                ;Initialize tempo.
 L8195:  STA Tempo               ;
@@ -411,7 +411,7 @@ L81F4:  STA SQ2Cntrl1           ;
 
 L81F7:  LDA #$30                ;Disable length counter and set constant
 L81F9:  STA SQ2Cntrl0           ;volume for SQ2 and noise channels.
-L81FC:  STA NoiseCntrl0         ;
+L81FC:  STA NoiseControl0         ;
 
 L81FF:  LDA #$00                ;
 L8201:  STA SndEngineStat       ;Indicate sound engine finished.
@@ -3893,7 +3893,7 @@ L9988:  ORA CopyCounterUB       ;If so, branch.  Nothing to copy.
 L998A:  BEQ CopyROMDone         ;
 
 CopyROMLoop:
-L998C:  LDA (ROMSrcPtr),Y       ;Get byte from ROM and put it into RAM.
+L998C:  LDA (ROMSourcePtr),Y       ;Get byte from ROM and put it into RAM.
 L998E:  STA (RAMTrgtPtr),Y      ;
 
 L9990:  LDA CopyCounterLB       ;
@@ -3907,9 +3907,9 @@ L999B:  STA CopyCounterUB       ;
 L999D:  ORA CopyCounterLB       ;Is copy counter = 0?
 L999F:  BEQ CopyROMDone         ;If so, branch.  Done copying.
 
-L99A1:  INC ROMSrcPtrLB         ;
+L99A1:  INC ROMSourcePtrLB         ;
 L99A3:  BNE +                   ;Increment ROM source pointer.
-L99A5:  INC ROMSrcPtrUB         ;
+L99A5:  INC ROMSourcePtrUB         ;
 
 L99A7:* INC RAMTrgtPtrLB        ;
 L99A9:  BNE +                   ;Increment RAM target pointer.
@@ -4888,7 +4888,7 @@ LA2C9:  BCC GetNextWndByte      ;If so, branch to get next data byte, else nothi
 
 LA2CB:  LDA WindowBuildRow         ;Is the window being built and on the first block row?
 LA2CE:  CMP #$01                ;
-LA2D0:  BNE ClearWndCntrlByte   ;If not branch.
+LA2D0:  BNE ClearWindowControlByte   ;If not branch.
 
 LA2D2:  LDA #$00                ;Window just started being built.
 LA2D4:  STA WindowXPosition             ;
@@ -4900,9 +4900,9 @@ LA2DE:  PLA                     ;Remove last return address.
 LA2DF:  PLA                     ;
 LA2E0:  JMP BuildWindowLoop     ;($A233)continue building the window.
 
-ClearWndCntrlByte:
+ClearWindowControlByte:
 LA2E3:  LDA #$00                ;Prepare to load a row of empty tiles.
-LA2E5:  BEQ SeparateCntrlByte   ;
+LA2E5:  BEQ SeparateControlByte   ;
 
 GetNextWndByte:
 LA2E7:  LDY WindowDataIndex         ;
@@ -4910,7 +4910,7 @@ LA2EA:  INC WindowDataIndex         ;Get next byte from window data table and in
 LA2ED:  LDA (WindowDataPointer),Y       ;
 LA2EF:  BPL GotCharDat          ;Is retreived byte a control byte? if not branch.
 
-SeparateCntrlByte:
+SeparateControlByte:
 LA2F1:  AND #$7F                ;Control byte found.  Discard bit indicating its a control byte.
 LA2F3:  PHA                     ;
 
@@ -5964,26 +5964,26 @@ WindowBuildTempBuf:
 LA842:  TAX                     ;Transfer description table index to X.
 LA843:  LDY #$00                ;
 
-DescSrchOuterLoop:
+DescSearchOuterLoop:
 LA845:  DEX                     ;Subtract 1 as 0 was used to for no description.
 LA846:  BEQ BaseDescFound       ;At proper index? If so, no more searching required.
 
-DescSrchInnerLoop:
+DescSearchInnerLoop:
 LA848:  LDA (DescPtr),Y         ;Get next byte in ROM.
 LA84A:  CMP #$FF                ;Is it an end of description marker?
 LA84C:  BEQ NextDescription     ;If so, branch to update pointers.
 
 ThisDescription:
 LA84E:  INY                     ;Increment index.
-LA84F:  BNE DescSrchInnerLoop   ;Is it 0?
+LA84F:  BNE DescSearchInnerLoop   ;Is it 0?
 LA851:  INC DescPtrUB           ;If so, increment upper byte.
-LA853:  BNE DescSrchInnerLoop   ;Should always branch.
+LA853:  BNE DescSearchInnerLoop   ;Should always branch.
 
 NextDescription:
 LA855:  INY                     ;Increment index.
-LA856:  BNE DescSrchOuterLoop   ;Is it 0?
+LA856:  BNE DescSearchOuterLoop   ;Is it 0?
 LA858:  INC DescPtrUB           ;If so, increment upper byte.
-LA85A:  BNE DescSrchOuterLoop   ;Should always branch.
+LA85A:  BNE DescSearchOuterLoop   ;Should always branch.
 
 BaseDescFound:
 LA85C:* TYA                     ;
@@ -8290,7 +8290,7 @@ LB5EE:  LDA WordBuffer,X        ;Get next character in the word buffer.
 LB5F1:  INC WordBufferLength          ;
 
 LB5F4:  CMP #TXT_SUBEND         ;Is character a control character that will cause a newline?
-LB5F6:  BCS TxtCntrlChars       ;If so, branch to determine the character.
+LB5F6:  BCS TextControlChars       ;If so, branch to determine the character.
 
 LB5F8:  PHA                     ;
 LB5F9:  JSR TextToPPU           ;($B9C7)Send dialog text character to the screen.
@@ -8300,7 +8300,7 @@ LB5FD:  JSR CheckBetweenWords   ;($B8F9)Check for non-word character.
 LB600:  BCS -                   ;Was the character a text character?
 LB602:  RTS                     ;If so, branch to get another character.
 
-TxtCntrlChars:
+TextControlChars:
 LB603:  CMP #TXT_WAIT           ;Was wait found?
 LB605:  BEQ WaitFound           ;If so, branch to wait.
 
