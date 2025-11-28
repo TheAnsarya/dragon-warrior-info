@@ -1350,12 +1350,12 @@ LCA83:  JSR Dowindow            ;($C6F0)display on-screen window.
 LCA86:  .byte WND_DIALOG        ;Dialog window.
 
 LCA87:  LDA RepelTimer          ;If repel timer is odd, it is the repel spell. If it is
-LCA89:  BNE RepelEndMsg         ;even, it is from fairy water. Branch accordingly.
+LCA89:  BNE RepelEndMessage         ;even, it is from fairy water. Branch accordingly.
 
 LCA8B:  LDA #$37                ;TextBlock4, entry 7. The fairy water has lost its effect...
 LCA8D:  BNE +                   ;Branch always.
 
-RepelEndMsg:
+RepelEndMessage:
 LCA8F:  LDA #$34                ;TextBlock4, entry 4. Repel has lost its effect...
 LCA91:* JSR DoMidDialog         ;($C7BD)Do any number of Dialogs.
 
@@ -6670,9 +6670,9 @@ LE5CE:  JSR Dowindow            ;($C6F0)display on-screen window.
 LE5D1:  .byte WND_POPUP         ;Pop-up window.
 
 LE5D2:  LDA PlayerFlags         ;Is player asleep?
-LE5D4:  BPL ShowCmbtCmd         ;If not, branch.
+LE5D4:  BPL ShowCombatCommand         ;If not, branch.
 
-LE5D6:  JSR UpdateRandNum       ;($C55B)Get random number.
+LE5D6:  JSR UpdateRandNumber       ;($C55B)Get random number.
 LE5D9:  LDA RandNumUB           ;
 LE5DB:  LSR                     ;Player is asleep. 50% chance they wake up.
 LE5DC:  BCS PlayerAwakes        ;Did player wake up? If so, branch.
@@ -6691,7 +6691,7 @@ LE5E9:  STA PlayerFlags         ;
 LE5EB:  JSR DoDialogHiBlock     ;($C7C5)Player awakes...
 LE5EE:  .byte $08               ;TextBlock17, entry 8.
 
-ShowCmbtCmd:
+ShowCombatCommand:
 LE5EF:  JSR DoDialogLoBlock     ;($C7CB)Command?...
 LE5F2:  .byte $E8               ;TextBlock15, entry 8.
 
@@ -7175,7 +7175,7 @@ ChkPlyrRun:
 LE87F:  CMP #CC_RUN             ;Did player try to run?
 LE881:  BEQ PlyrRun             ;If so, branch.
 
-LE883:  JMP ShowCmbtCmd         ;($E5EF)Show command dialog.
+LE883:  JMP ShowCombatCommand         ;($E5EF)Show command dialog.
 
 PlyrRun:
 LE886:  LDA #WND_CMD_CMB        ;Remove the command window from the screen.
@@ -7517,7 +7517,7 @@ LEA6A:  LDA DisplayedMaxHP      ;
 LEA6C:  PHA                     ;
 LEA6D:  LDA DisplayedAgi        ;Save the player's current stats on the stack.
 LEA6F:  PHA                     ;
-LEA70:  LDA DisplayedStr        ;
+LEA70:  LDA DisplayedStrength        ;
 LEA72:  PHA                     ;
 LEA73:  LDA DisplayedLevel      ;
 LEA75:  PHA                     ;
@@ -8623,9 +8623,9 @@ LF09E:  LDA StatPenalty         ;If LSB is set, penalize max MP.
 LF0A0:  LSR                     ;
 LF0A1:  BCS MaxMPPenalty        ;Penalize max MP? If so, branch.
 
-LF0A3:  LDA DisplayedStr        ;Penalize strength by 10%.
+LF0A3:  LDA DisplayedStrength        ;Penalize strength by 10%.
 LF0A5:  JSR ReduceStat          ;($F10C)Multiply stat by 9/10.
-LF0A8:  STA DisplayedStr        ;
+LF0A8:  STA DisplayedStrength        ;
 
 LF0AA:  JMP ChkAgiPenalty       ;Check agility, max HP penalties.
 
@@ -8664,7 +8664,7 @@ LF0D4:  TAX                     ;Use the 3 bits above as index into the WeaponsB
 LF0D5:  LDA WeaponsBonusTable,X ;
 
 LF0D8:  CLC                     ;
-LF0D9:  ADC DisplayedStr        ;Add bonus from weapons table to strength attribute.
+LF0D9:  ADC DisplayedStrength        ;Add bonus from weapons table to strength attribute.
 LF0DB:  STA DisplayedAttck      ;
 
 LF0DD:  LDA DisplayedAgi        ;

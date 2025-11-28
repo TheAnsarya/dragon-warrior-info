@@ -3936,7 +3936,7 @@ L99BE:  STA PlayerDatPtrUB      ;
 L99C0:  LDY LevelDataPointer         ;Load offset for player's level in the table.
 
 L99C2:  LDA (PlayerDatPtr),Y    ;
-L99C4:  STA DisplayedStr        ;Load player's base strength.
+L99C4:  STA DisplayedStrength        ;Load player's base strength.
 L99C6:  INY                     ;
 
 L99C7:  LDA (PlayerDatPtr),Y    ;
@@ -5686,7 +5686,7 @@ LA6E3:  .word WndAddToBuf       ;($A543)Non-control character processing.
 ;----------------------------------------------------------------------------------------------------
 
 AttributeVariableTable:
-LA6E5:  .byte DisplayedStr,   DisplayedAgi,   DisplayedAttck
+LA6E5:  .byte DisplayedStrength,   DisplayedAgi,   DisplayedAttck
 LA6E8:  .byte DisplayedDefns, DisplayedMaxHP, DisplayedMaxMP
 
 ;----------------------------------------------------------------------------------------------------
