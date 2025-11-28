@@ -74,8 +74,8 @@
 .alias EnemyDamage         $00     ;Amount of damage player caused to the enemy. Subtracted from HP.
 .alias PlayerDamage       $00     ;Amount of damage enemy caused to the player. Subtracted from HP.
 .alias DmgNotUsed       $01     ;Always set to 0.
-.alias FightExpLB       $00     ;Experience gained from fight, lower byte.
-.alias FightExpUB       $01     ;Experience gained from fight, upper byte.
+.alias FightExperienceLB       $00     ;Experience gained from fight, lower byte.
+.alias FightExperienceUB       $01     ;Experience gained from fight, upper byte.
 .alias FightGoldLB      $00     ;Gold gained from fight, lower byte.
 .alias FightGoldUB      $01     ;Gold gained from fight, upper byte.
 .alias AmountLB         $00     ;Calculated amount used in text, lower byte.
@@ -84,7 +84,7 @@
 .alias TreasureGoldLB       $00     ;Lower byte of gold received from treasure chest.
 .alias TreasureGoldUB       $01     ;Upper byte of gold received from treasure chest.
 .alias NMIStatusus        $02     ;#$00 = in NMI(VBlank).
-.alias PPUEntCount      $03     ;Number of entries load from PPU buffer to PPU.
+.alias PPUEntryCount      $03     ;Number of entries load from PPU buffer to PPU.
 .alias PPUBufCount      $04     ;Number of bytes to load from PPU buffer to PPU.
 .alias ScrollX          $05     ;PPU scroll x position.
 .alias ActiveNameTable      $06     ;Active name table $#00= nametable0, #$01=nametable1.
@@ -119,7 +119,7 @@
 .alias CoverStatusus      $19     ;#$00=Not covered, #$08=Under cover.
 
 .alias ThisTempIndex    $1A     ;Working index into temp buffer.
-.alias DescEntry        $1A     ;Entry number for item description.
+.alias DescriptionEntry        $1A     ;Entry number for item description.
 
 .alias TextEntry        $1A     ;Entry number within text block(0-15).
 .alias TextBlock        $1B     ;Text block number(0-18).
@@ -199,8 +199,8 @@
 .alias CalcDamage       $3C     ;Calculated damage to player/enemy.
 .alias PlayerTempStat     $3C     ;Temporary register for the player's various stats.
 
-.alias CharYScrPos      $3C     ;Character sprite Y position on the screen.
-.alias CharXScrPos      $3D     ;Character sprite X position on the screen.
+.alias CharacterYScreenPosition      $3C     ;Character sprite Y position on the screen.
+.alias CharacterXScreenPosition      $3D     ;Character sprite X position on the screen.
 
 .alias ShopIndex        $3C     ;Index into ShopItemsTbl for current shop items list.
 .alias WrldMapXPos      $3D     ;World map X position calculation.
@@ -559,7 +559,7 @@
 ;----------------------------------------------------------------------------------------------------
 
 .alias EnemyBaseAttack        $0100   ;Enemy base attack attibute.
-.alias EnemyBaseDefense        $0101   ;Enemy base defense attribute.
+.alias EnemyBaseDefenseense        $0101   ;Enemy base defense attribute.
 .alias EnemyBaseHP         $0102   ;Enemy base hit points.
 
 .alias EnemySpell          $0103   ;Enemy spells.
@@ -580,9 +580,9 @@
 .alias BankFuncDatLB    $0103   ;Pointer to bank function data after BRK command, lower byte.
 .alias BankFuncDatUB    $0104   ;Pointer to bank function data after BRK command, upper byte.
 
-.alias EnemyBaseAgility        $0104   ;Enemy base agility.
+.alias EnemyBaseAgilitylity        $0104   ;Enemy base agility.
 .alias EnemyBaseMagicDefense        $0105   ;Enemy base magic defense.
-.alias EnemyBaseExperience        $0106   ;Enemy base experience.
+.alias EnemyBaseExperienceerience        $0106   ;Enemy base experience.
 .alias EnemyBaseGold        $0107   ;Enemy base gold.
 
 .alias Stack            $0110   ;Through $01FF. CPU stack.
@@ -700,7 +700,7 @@
 .alias WindowAttributeBufferIndex  $64AD   ;Current index into attribute table buffer.
 .alias WindowUnused64AE    $64AE   ;Written to but never used.
 
-.alias DescLength       $64AF   ;Length in bytes of description string.
+.alias DescriptionLength       $64AF   ;Length in bytes of description string.
 .alias IndMultByte      $64AF   ;Indexed multiplication multiplicand byte.
 .alias DialogScrollY      $64AF   ;Screen coords Y offset while scrolling dialog text.
 
@@ -872,36 +872,36 @@
 .alias NPC_LEFT         $60     ;NPC facing left.
 
 ;Player levels.
-.alias LVL_01           $01     ;Experience level 01.
-.alias LVL_02           $02     ;Experience level 02.
-.alias LVL_03           $03     ;Experience level 03.
-.alias LVL_04           $04     ;Experience level 04.
-.alias LVL_05           $05     ;Experience level 05.
-.alias LVL_06           $06     ;Experience level 06.
-.alias LVL_07           $07     ;Experience level 07.
-.alias LVL_08           $08     ;Experience level 08.
-.alias LVL_09           $09     ;Experience level 09.
-.alias LVL_10           $0A     ;Experience level 10.
-.alias LVL_11           $0B     ;Experience level 11.
-.alias LVL_12           $0C     ;Experience level 12.
-.alias LVL_13           $0D     ;Experience level 13.
-.alias LVL_14           $0E     ;Experience level 14.
-.alias LVL_15           $0F     ;Experience level 15.
-.alias LVL_16           $10     ;Experience level 16.
-.alias LVL_17           $11     ;Experience level 17.
-.alias LVL_18           $12     ;Experience level 18.
-.alias LVL_19           $13     ;Experience level 19.
-.alias LVL_20           $14     ;Experience level 20.
-.alias LVL_21           $15     ;Experience level 21.
-.alias LVL_22           $16     ;Experience level 22.
-.alias LVL_23           $17     ;Experience level 23.
-.alias LVL_24           $18     ;Experience level 24.
-.alias LVL_25           $19     ;Experience level 25.
-.alias LVL_26           $1A     ;Experience level 26.
-.alias LVL_27           $1B     ;Experience level 27.
-.alias LVL_28           $1C     ;Experience level 28.
-.alias LVL_29           $1D     ;Experience level 29.
-.alias LVL_30           $1E     ;Experience level 30.
+.alias LEVEL_01           $01     ;Experience level 01.
+.alias LEVEL_02           $02     ;Experience level 02.
+.alias LEVEL_03           $03     ;Experience level 03.
+.alias LEVEL_04           $04     ;Experience level 04.
+.alias LEVEL_05           $05     ;Experience level 05.
+.alias LEVEL_06           $06     ;Experience level 06.
+.alias LEVEL_07           $07     ;Experience level 07.
+.alias LEVEL_08           $08     ;Experience level 08.
+.alias LEVEL_09           $09     ;Experience level 09.
+.alias LEVEL_10           $0A     ;Experience level 10.
+.alias LEVEL_11           $0B     ;Experience level 11.
+.alias LEVEL_12           $0C     ;Experience level 12.
+.alias LEVEL_13           $0D     ;Experience level 13.
+.alias LEVEL_14           $0E     ;Experience level 14.
+.alias LEVEL_15           $0F     ;Experience level 15.
+.alias LEVEL_16           $10     ;Experience level 16.
+.alias LEVEL_17           $11     ;Experience level 17.
+.alias LEVEL_18           $12     ;Experience level 18.
+.alias LEVEL_19           $13     ;Experience level 19.
+.alias LEVEL_20           $14     ;Experience level 20.
+.alias LEVEL_21           $15     ;Experience level 21.
+.alias LEVEL_22           $16     ;Experience level 22.
+.alias LEVEL_23           $17     ;Experience level 23.
+.alias LEVEL_24           $18     ;Experience level 24.
+.alias LEVEL_25           $19     ;Experience level 25.
+.alias LEVEL_26           $1A     ;Experience level 26.
+.alias LEVEL_27           $1B     ;Experience level 27.
+.alias LEVEL_28           $1C     ;Experience level 28.
+.alias LEVEL_29           $1D     ;Experience level 29.
+.alias LEVEL_30           $1E     ;Experience level 30.
 
 ;Index to level 30 in the level up table.
 .alias LVL_TBL_LAST     $3A     ;2 bytes per level up table entry.

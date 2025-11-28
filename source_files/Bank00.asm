@@ -3457,10 +3457,10 @@ LA8AF:  ASL                     ;
 LA8B0:  ADC YPosFromCenter      ;Calculate the nametable Y block that needs to be replaced.
 LA8B2:  CLC                     ;Add signed location of block to unsigned nametable location.
 LA8B3:  ADC #$1E                ;Add Screen height in tiles to ensure result is always positive.
-LA8B5:  STA DivNum1LB           ;
+LA8B5:  STA DivideNumber1LB           ;
 
 LA8B7:  LDA #$1E                ;Divide out tile height and get remainder. Result will be
-LA8B9:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
+LA8B9:  STA DivideNumber2             ;between #$00-#$1E(height of screen in tiles).
 LA8BB:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
 LA8BE:  LDA DivideRemainder        ;The final result is the unsigned Y position of the block
@@ -3540,10 +3540,10 @@ LA924:  CLC                     ;Calculate the nametable Y block that needs to b
 LA925:  ADC YPosFromCenter      ;Add signed location of block to unsigned nametable location.
 LA927:  CLC                     ;
 LA928:  ADC #$1E                ;Add Screen height in tiles to ensure result is always positive.
-LA92A:  STA DivNum1LB           ;
+LA92A:  STA DivideNumber1LB           ;
 
 LA92C:  LDA #$1E                ;Divide out tile height and get remainder. Result will be
-LA92E:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
+LA92E:  STA DivideNumber2             ;between #$00-#$1E(height of screen in tiles).
 LA930:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
 LA933:  LDA DivideRemainder        ;The final result is the unsigned Y position of the block
@@ -3824,14 +3824,14 @@ LAABE:  LDA MapWidth            ;Convert the map width into the number of bytes 
 LAAC0:  CLC                     ;represent a map row. 1 nibble represents a block. The
 LAAC1:  ADC #$01                ;increment starts the counting at 1 instead of 0. 2 blocks
 LAAC3:  LSR                     ;are represented in a single byte, hence the divide by 2.
-LAAC4:  STA MultNum1LB          ;
+LAAC4:  STA MultiplyNumber1LB          ;
 
 LAAC6:  LDA #$00                ;
-LAAC8:  STA MultNum1UB          ;Upper byte of first word is always 0.
-LAACA:  STA MultNum2UB          ;Upper byte of second word is always 0.
+LAAC8:  STA MultiplyNumber1UB          ;Upper byte of first word is always 0.
+LAACA:  STA MultiplyNumber2UB          ;Upper byte of second word is always 0.
 
 LAACC:  LDA _TargetY            ;Target Y is player's Y position. Calculate number of map
-LAACE:  STA MultNum2LB          ;bytes to player's current row.
+LAACE:  STA MultiplyNumber2LB          ;bytes to player's current row.
 LAAD0:  JSR WordMultiply        ;($C1C9)Multiply 2 words.
 
 LAAD3:  LDA _TargetX            ;Target X is player's X position. Add offset in current row
@@ -4218,14 +4218,14 @@ LAC97:  RTS                     ;
 
 ChkOthrMaps:
 LAC98:  LDA #$00                ;Set upper bytes to 0 for multiplication prep.
-LAC9A:  STA MultNum1UB          ;
-LAC9C:  STA MultNum2UB          ;The lower byte of MultNum2 is TargetY.
+LAC9A:  STA MultiplyNumber1UB          ;
+LAC9C:  STA MultiplyNumber2UB          ;The lower byte of MultiplyNumber2 is TargetY.
 
 LAC9E:  LDA MapWidth            ;Divide by 2 as 1 byte represents 2 blocks.
 LACA0:  LSR                     ;
 
 LACA1:  ADC #$00                ;Prep multiplication.  The result is the start of the
-LACA3:  STA MultNum1LB          ;row that the target block is on.
+LACA3:  STA MultiplyNumber1LB          ;row that the target block is on.
 LACA5:  JSR WordMultiply        ;($C1C9)Multiply 2 words.
 
 LACA8:  LDA _TargetX            ;Divide by 2 as 1 byte represents 2 blocks.
@@ -4390,10 +4390,10 @@ LAD69:  CLC                     ;Calculate the nametable Y block that needs to b
 LAD6A:  ADC YPosFromCenter      ;Add signed location of block to unsigned nametable location.
 LAD6C:  CLC                     ;
 LAD6D:  ADC #$1E                ;Add Screen height in tiles to ensure result is always positive.
-LAD6F:  STA DivNum1LB           ;
+LAD6F:  STA DivideNumber1LB           ;
 
 LAD71:  LDA #$1E                ;Divide out tile height and get remainder. Result will be
-LAD73:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
+LAD73:  STA DivideNumber2             ;between #$00-#$1E(height of screen in tiles).
 LAD75:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
 LAD78:  LDA DivideRemainder        ;The final result is the unsigned Y position of the block
@@ -4569,7 +4569,7 @@ LAE5B:  DEC PPUBufCount         ;
 LAE5D:  DEC PPUBufCount         ;Each tile is 3 bytes. Remove those 3 bytes.
 LAE5F:  DEC PPUBufCount         ;
 
-LAE61:  DEC PPUEntCount         ;Remove a tile entry from the counter.
+LAE61:  DEC PPUEntryCount         ;Remove a tile entry from the counter.
 
 DoUpperRightTile:
 LAE63:  INY                     ;Store the Upper right tile data of block in buffer.
@@ -4596,7 +4596,7 @@ LAE81:  DEC PPUBufCount         ;
 LAE83:  DEC PPUBufCount         ;Each tile is 3 bytes. Remove those 3 bytes.
 LAE85:  DEC PPUBufCount         ;
 
-LAE87:  DEC PPUEntCount         ;Remove a tile entry from the counter.
+LAE87:  DEC PPUEntryCount         ;Remove a tile entry from the counter.
 
 DoLowerLeftTile:
 LAE89:  INY                     ;
@@ -4630,7 +4630,7 @@ LAEB2:  DEC PPUBufCount         ;
 LAEB4:  DEC PPUBufCount         ;Each tile is 3 bytes. Remove those 3 bytes.
 LAEB6:  DEC PPUBufCount         ;
 
-LAEB8:  DEC PPUEntCount         ;Remove a tile entry from the counter.
+LAEB8:  DEC PPUEntryCount         ;Remove a tile entry from the counter.
 
 DoLowerRightTile:
 LAEBA:  INY                     ;Store the lower right tile data of block in buffer.
@@ -4657,7 +4657,7 @@ LAED8:  DEC PPUBufCount         ;
 LAEDA:  DEC PPUBufCount         ;Each tile is 3 bytes. Remove those 3 bytes.
 LAEDC:  DEC PPUBufCount         ;
 
-LAEDE:  DEC PPUEntCount         ;Remove a tile entry from the counter.
+LAEDE:  DEC PPUEntryCount         ;Remove a tile entry from the counter.
 
 DoAttribByte:
 LAEE0:  INY                     ;Increment to attribute table byte.
@@ -5139,7 +5139,7 @@ LB167:  INY                     ;Save blank tile to PPU buffer.
 LB168:  DEX                     ;
 LB169:  BNE -                   ;More blank tiles to store? if so, branch to store another one.
 
-LB16B:  INC PPUEntCount         ;Increment PPU buffer entry count.
+LB16B:  INC PPUEntryCount         ;Increment PPU buffer entry count.
 
 LB16D:  LDA PPUAddrLB           ;
 LB16F:  CLC                     ;
@@ -5167,7 +5167,7 @@ LB18F:  INY                     ;Save blank tile to PPU buffer.
 LB190:  DEX                     ;
 LB191:  BNE -                   ;More blank tiles to store? if so, branch to store another one.
 
-LB193:  INC PPUEntCount         ;Increment PPU buffer entry count.
+LB193:  INC PPUEntryCount         ;Increment PPU buffer entry count.
 
 LB195:  TYA                     ;This should not be necessary as the buffer gets emptied
 LB196:  CLC                     ;out every vblank. It moves ahead 2 entries for all PPU
@@ -6140,7 +6140,7 @@ LB6C1:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-SprtFacingBaseAddr:
+SpriteFacingBaseAddress:
 LB6C2:  STA NPCCounter          ;Save a copy of character direction.
 
 LB6C4:  LDA CharSpriteTblPtr    ;
@@ -6213,14 +6213,14 @@ LB71A:  TAY                     ;
 LB71B:  LDX #$00                ;Index to first player sprite is 0.
 
 LB71D:  LDA #$6F                ;First sprite tile of player is 111 pixels from top of screen.
-LB71F:  STA CharYScrPos         ;
+LB71F:  STA CharacterYScreenPosition         ;
 
 LB721:  LDA CharDirection       ;Use character facing direction for char table index calc.
-LB724:  JSR SprtFacingBaseAddr  ;($B6C2)Calculate entry into char data table based on direction.
+LB724:  JSR SpriteFacingBaseAddress  ;($B6C2)Calculate entry into char data table based on direction.
 
 GetPlayerTileLoop1:
 LB727:  LDA #$80                ;First sprite tile of player is 128 pixels from left of screen.
-LB729:  STA CharXScrPos         ;
+LB729:  STA CharacterXScreenPosition         ;
 
 GetPlayerTileLoop2:
 LB72B:  LDA WindowBufferRAM+$1D0      ;Check if window is covering player's position.
@@ -6230,7 +6230,7 @@ LB730:  BEQ +                   ;
 LB732:  LDA #$F0                ;Hide the player sprite.
 LB734:  BNE PlayerSetXCord        ;Branch always.
 
-LB736:* LDA CharYScrPos         ;Load the player sprite Y position.
+LB736:* LDA CharacterYScreenPosition         ;Load the player sprite Y position.
 
 PlayerSetXCord:
 LB738:  STA SpriteRAM,X         ;Store player sprite Y screen position.
@@ -6246,23 +6246,23 @@ LB745:  STA SpriteRAM,X         ;
 
 LB748:  INX                     ;
 LB749:  INY                     ;Store player sprite X screen position.
-LB74A:  LDA CharXScrPos         ;
+LB74A:  LDA CharacterXScreenPosition         ;
 LB74C:  STA SpriteRAM,X         ;
 
 LB74F:  INX                     ;Move to next sprite.
 
-LB750:  LDA CharXScrPos         ;
+LB750:  LDA CharacterXScreenPosition         ;
 LB752:  CLC                     ;Next sprite is 8 pixels to the right.
 LB753:  ADC #$08                ;
-LB755:  STA CharXScrPos         ;
+LB755:  STA CharacterXScreenPosition         ;
 
 LB757:  CMP #$90                ;Have the 2 sprites in the row been processed?
 LB759:  BNE GetPlayerTileLoop2  ;If not, branch to process second sprite.
 
-LB75B:  LDA CharYScrPos         ;
+LB75B:  LDA CharacterYScreenPosition         ;
 LB75D:  CLC                     ;Move down 1 row for next player sprite tiles(8 pixels).
 LB75E:  ADC #$08                ;
-LB760:  STA CharYScrPos         ;
+LB760:  STA CharacterYScreenPosition         ;
 
 LB762:  CMP #$7F                ;Have all 4 sprite tiles for the player been placed?
 LB764:  BNE GetPlayerTileLoop1  ;If not, branch to place another tile.
@@ -6628,7 +6628,7 @@ LB970:  STX NPCROMIndex         ;Store index to current NPC being processed.
 LB972:  LDX GenByte3C           ;Load X with index into CharSpriteTbl for current NPC .
 
 LB974:  LDA #$00                ;Start a first sprite row in NPC.
-LB976:  STA CharYScrPos         ;
+LB976:  STA CharacterYScreenPosition         ;
 
 NPCSpriteRowLoop:
 LB978:  LDA #$00                ;Start a first sprite column in NPC.
@@ -6657,7 +6657,7 @@ LB995:  ROL                     ;Move facing direction to LSBs.
 LB996:  ROL                     ;
 LB997:  ROL                     ;
 
-LB998:  JSR SprtFacingBaseAddr  ;($B6C2)Calculate entry into char data table based on direction.
+LB998:  JSR SpriteFacingBaseAddress  ;($B6C2)Calculate entry into char data table based on direction.
 
 LB99B:  LDY NPCOffsetset           ;
 
@@ -6709,7 +6709,7 @@ LB9CE:  BNE NPCSpriteColLoop    ;If not, branch to do second tile.
 LB9D0:  LDA NPCSpriteYOfst      ;
 LB9D2:  CLC                     ;Move to next row in NPC sprite.
 LB9D3:  ADC #$08                ;
-LB9D5:  STA CharYScrPos         ;
+LB9D5:  STA CharacterYScreenPosition         ;
 
 LB9D7:  CMP #$10                ;ave both rows in this sprite been processed?
 LB9D9:  BNE NPCSpriteRowLoop    ;If not, branch to do second row.
@@ -7066,9 +7066,9 @@ LBBC1:  CLC                     ;
 LBBC2:  ADC YPosFromCenter      ;
 LBBC4:  CLC                     ;
 LBBC5:  ADC #$1E                ;
-LBBC7:  STA DivNum1LB           ;
+LBBC7:  STA DivideNumber1LB           ;
 LBBC9:  LDA #$1E                ;
-LBBCB:  STA DivNum2             ;Unused function.
+LBBCB:  STA DivideNumber2             ;Unused function.
 LBBCD:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 LBBD0:  LDA $40                 ;
 LBBD2:  STA $3E                 ;

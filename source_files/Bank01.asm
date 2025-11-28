@@ -5895,20 +5895,20 @@ LA7EB:  PHA                     ;
 LA7EC:  JSR ClearTempBuffer     ;($A776)Write blank tiles to buffer.
 LA7EF:  PLA                     ;
 
-LA7F0:  STA DescEntry           ;Store a copy of the description entry byte.
+LA7F0:  STA DescriptionEntry           ;Store a copy of the description entry byte.
 LA7F2:  CMP #$FF                ;Has the end of the buffer been reached?
 LA7F4:  BEQ +                   ;If so, branch to exit.
 
 LA7F6:  LDA #$01                ;Spell description table.
 LA7F8:  JSR GetDescPtr          ;($A823)Get pointer into description table.
-LA7FB:  LDA DescEntry           ;Get index into description table.
+LA7FB:  LDA DescriptionEntry           ;Get index into description table.
 LA7FD:  JMP WindowBuildTempBuf     ;($A842)Place description in temp buffer.
 LA800:* RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
 GetEnDescHalf:
-LA801:  STA DescEntry           ;Save index into enemy descriptions.
+LA801:  STA DescriptionEntry           ;Save index into enemy descriptions.
 
 LA803:  LDY #$07                ;Start at index to first half of enemy names.
 LA805:  LDA WindowDescriptionHalf         ;Get indicator to which name half to retreive.
@@ -5918,7 +5918,7 @@ LA809:  BCC +                   ;If so branch.
 
 LA80B:  INY                     ;We want second half of the enemy name. Increment index.
 
-LA80C:* LDA DescEntry           ;
+LA80C:* LDA DescriptionEntry           ;
 LA80E:  PHA                     ;
 LA80F:  CMP #$33                ;This part of the code should never be executed because
 LA811:  BCC +                   ;it is incrementing to another table entry for enemy
@@ -6659,7 +6659,7 @@ LABC9:  JMP WindowUpdateTiles      ;($ADFA)Update background tiles next NMI.
 
 WindowDoRow:
 LABCC:  PHA                     ;Save A. Always 0.
-LABCD:  .byte $AD, $03, $00     ;LDA $0003(PPUEntCount)Is PPU buffer empty?
+LABCD:  .byte $AD, $03, $00     ;LDA $0003(PPUEntryCount)Is PPU buffer empty?
 LABD0:  BEQ WindowDoRowReady       ;If so, branch to fill it with window row data.
 
 LABD2:  JSR WindowUpdateTiles      ;($ADFA)Wait until next NMI for buffer to be empty.
@@ -6856,7 +6856,7 @@ LACFA:  INY                     ;
 LACFB:  INC _WndPPUAddrLB       ;Increment to next window block.
 LACFE:  INC _WndPPUAddrLB       ;
 
-LAD01:  .byte $EE, $03, $00     ;INC $0003(PPUEntCount)Update buffer entry count.
+LAD01:  .byte $EE, $03, $00     ;INC $0003(PPUEntryCount)Update buffer entry count.
 
 LAD04:  DEC WindowThisNTRow        ;Is there still more attribute table data to load?
 LAD07:  BNE WindowLoadAttribLoop   ;If so, branch to do more.
@@ -6864,7 +6864,7 @@ LAD07:  BNE WindowLoadAttribLoop   ;If so, branch to do more.
 LAD09:  STY WindowAtrbBufIndex     ;Update attribute table buffer index.
 
 WindowLoadRowBufEnd:
-LAD0C:  .byte $EE, $03, $00     ;INC $0003(PPUEntCount)Update buffer entry count.
+LAD0C:  .byte $EE, $03, $00     ;INC $0003(PPUEntryCount)Update buffer entry count.
 LAD0F:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -8578,7 +8578,7 @@ LB76F:  PHA                     ;
 
 LB770:  INC WindowDescHalf         ;Do second half of description.
 LB773:  JSR PrepGetDesc         ;($B77E)Do some prep then locate description.
-LB776:  STY DescLength          ;Store length of description string.
+LB776:  STY DescriptionLength          ;Store length of description string.
 
 LB779:  PLA                     ;Restore current index into the work buffer.
 LB77A:  TAY                     ;
@@ -8705,13 +8705,13 @@ LB82A:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 UpdateDescBufferLen:
-LB82B:  STY DescLength          ;Save length of description buffer.
+LB82B:  STY DescriptionLength          ;Save length of description buffer.
 LB82E:  LDY #$00                ;Zero index.
 
 ;----------------------------------------------------------------------------------------------------
 
 XferTempToWork:
-LB830:  LDX DescLength          ;Is there data to transfer?
+LB830:  LDX DescriptionLength          ;Is there data to transfer?
 LB833:  BEQ NoXfer              ;If not, branch to exit.
 
 LB835:  LDA #$00                ;Start current index at 0.
@@ -8726,7 +8726,7 @@ LB843:  INY                     ;Update indexes.
 LB844:  INC ThisTempIndex       ;
 
 LB846:  LDA ThisTempIndex       ;At end of buffer?
-LB848:  CMP DescLength          ;
+LB848:  CMP DescriptionLength          ;
 LB84B:  BNE -                   ;If not, branch to get another byte.
 LB84D:  RTS                     ;
 
@@ -8835,7 +8835,7 @@ LB8C1:  INC WindowDescHalf         ;Move to second half of enemy name.
 LB8C4:  LDA #$09                ;Max buf length of second half of name is 9 characters.
 LB8C6:  STA SubBufLength        ;
 
-LB8C9:  LDA DescEntry           ;Not used in this set of functions.
+LB8C9:  LDA DescriptionEntry           ;Not used in this set of functions.
 LB8CB:  JSR GetEnDescHalf       ;($A801)Get second half of enemy name.
 
 LB8CE:  PLA                     ;Restore index to end of namme buffer.

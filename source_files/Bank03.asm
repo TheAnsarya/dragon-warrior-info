@@ -41,7 +41,7 @@
 .alias DoJoyLeft                $B34C
 .alias DoJoyDown                $B3D8
 .alias DoJoyUp                  $B504
-.alias SprtFacingBaseAddr       $B6C2
+.alias SpriteFacingBaseAddress       $B6C2
 .alias DoSprites                $B6DA
 .alias DoIntroGFX               $BD5B
 
@@ -223,7 +223,7 @@ LC0CE:  JSR GetNPCSpriteIndex   ;($C0F4)Get index into sprite pattern table for 
 
 LC0D1:  TAY                     ;Load index to NPC ROM data.
 LC0D2:  LDA NPCNewFace          ;Get new direction NPC will face.
-LC0D4:  JSR SprtFacingBaseAddr  ;($B6C2)Calculate entry into char data table based on direction.
+LC0D4:  JSR SpriteFacingBaseAddress  ;($B6C2)Calculate entry into char data table based on direction.
 LC0D7:  LDX NPCSpriteRAMIndex       ;Load sprite RAM index for current NPC sprite.
 
 NPCLoadNxtSprt:
@@ -344,7 +344,7 @@ LC155:  RTS                     ;
 
 GetPlayerStatPtr:
 LC156:  LDX #$3A                ;Start at level 30 and point to the end of LevelUpTable.
-LC158:  LDA #LVL_30             ;Work backwards to find the proper level.
+LC158:  LDA #LEVEL_30             ;Work backwards to find the proper level.
 LC15A:  STA DisplayedLevel      ;
 
 PlayerStatLoop:
@@ -441,21 +441,21 @@ LC1CB:  STA MultiplyResultLB          ;Clear results variables.
 LC1CD:  STA MultiplyResultUB          ;
 
 MultiplyLoop:
-LC1CF:  LDA MultNum1LB          ;
-LC1D1:  ORA MultNum1UB          ;
+LC1CF:  LDA MultiplyNumber1LB          ;
+LC1D1:  ORA MultiplyNumber1UB          ;
 LC1D3:  BEQ MultEnd             ;
-LC1D5:  LSR MultNum1UB          ;
-LC1D7:  ROR MultNum1LB          ;This function multiplies the two
+LC1D5:  LSR MultiplyNumber1UB          ;
+LC1D7:  ROR MultiplyNumber1LB          ;This function multiplies the two
 LC1D9:  BCC +                   ;16-bit numbers stored in $3C,$3D
-LC1DB:  LDA MultNum2LB          ;and $3E, $3F and stores the results
+LC1DB:  LDA MultiplyNumber2LB          ;and $3E, $3F and stores the results
 LC1DD:  CLC                     ;in $40,$41.
 LC1DE:  ADC MultiplyResultLB          ;
 LC1E0:  STA MultiplyResultLB          ;
-LC1E2:  LDA MultNum2UB          ;
+LC1E2:  LDA MultiplyNumber2UB          ;
 LC1E4:  ADC MultiplyResultUB          ;
 LC1E6:  STA MultiplyResultUB          ;
-LC1E8:* ASL MultNum2LB          ;
-LC1EA:  ROL MultNum2UB          ;
+LC1E8:* ASL MultiplyNumber2LB          ;
+LC1EA:  ROL MultiplyNumber2UB          ;
 LC1EC:  JMP MultiplyLoop        ;
 
 MultEnd:
@@ -465,24 +465,24 @@ LC1EF:  RTS                     ;Done multiplying.
 
 ByteDivide:
 LC1F0:  LDA #$00                ;Set upper byte of dividend to 0
-LC1F2:  STA DivNmu1UB           ;When only doing 8-bit division.
+LC1F2:  STA DivideNumber1UB           ;When only doing 8-bit division.
 
 WordDivide:
 LC1F4:  LDY #$10                ;
 LC1F6:  LDA #$00                ;
 
 DivLoop:
-LC1F8:  ASL DivNum1LB           ;
-LC1FA:  ROL DivNmu1UB           ;
+LC1F8:  ASL DivideNumber1LB           ;
+LC1FA:  ROL DivideNumber1UB           ;
 LC1FC:  STA DivideRemainder        ;
 LC1FE:  ADC DivideRemainder        ;
-LC200:  INC DivQuotient         ;This function takes a 16-bit dividend
+LC200:  INC DivideQuotient         ;This function takes a 16-bit dividend
 LC202:  SEC                     ;stored in $3C,$3D and divides it by
-LC203:  SBC DivNum2             ;an 8-bit number stored in $3E.
+LC203:  SBC DivideNumber2             ;an 8-bit number stored in $3E.
 LC205:  BCS +                   ;
 LC207:  CLC                     ;The 8-bit quotient is stored in $3C and
-LC208:  ADC DivNum2             ;the 8-bit remainder is stored in $40.
-LC20A:  DEC DivQuotient         ;
+LC208:  ADC DivideNumber2             ;the 8-bit remainder is stored in $40.
+LC20A:  DEC DivideQuotient         ;
 LC20C:* DEY                     ;
 LC20D:  BNE DivLoop             ;
 LC20F:  STA DivideRemainder        ;
@@ -541,9 +541,9 @@ LC251:  ADC YPosFromCenter      ;Row position(0-30).
 LC253:  CLC                     ;
 LC254:  ADC #$1E                ;Ensure dividend is positive since YPosFromCenter is signed.
 
-LC256:  STA DivNum1LB           ;
+LC256:  STA DivideNumber1LB           ;
 LC258:  LDA #$1E                ;Divide by 30 to get proper nametable row to update.
-LC25A:  STA DivNum2             ;
+LC25A:  STA DivideNumber2             ;
 LC25C:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
 LC25F:  LDA DivideRemainder        ;
@@ -929,7 +929,7 @@ LC6AA:  LDA PPUDataByte         ;
 LC6AC:  STA BlockRAM,X          ;Add data byte to write to PPU to the buffer.
 LC6AF:  INX                     ;
 
-LC6B0:  INC PPUEntCount         ;Increase PPU buffer entries by 1(3 bytes per entry).
+LC6B0:  INC PPUEntryCount         ;Increase PPU buffer entries by 1(3 bytes per entry).
 LC6B2:  STX PPUBufCount         ;Increase buffer count by 3 bytes.
 
 LC6B4:  INC PPUAddrLB           ;
@@ -1023,9 +1023,9 @@ LC736:  ASL                     ;
 LC737:  ADC YPosFromCenter      ;Get the target tile Y position and convert from a
 LC739:  CLC                     ;signed value to an unsigned value and store the results.
 LC73A:  ADC #$1E                ;
-LC73C:  STA DivNum1LB           ;
+LC73C:  STA DivideNumber1LB           ;
 LC73E:  LDA #$1E                ;
-LC740:  STA DivNum2             ;
+LC740:  STA DivideNumber2             ;
 LC742:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 LC745:  LDA DivideRemainder        ;
 LC747:  STA YPosFromTop         ;
@@ -1273,7 +1273,7 @@ LCA23:  JSR DoDialogHiBlock     ;($C7C5)I am glad thou hast returned...
 LCA26:  .byte $17               ;TextBlock18, entry 7.
 
 LCA27:  LDA DisplayedLevel      ;Is player level 30? If so, show a special message.
-LCA29:  CMP #LVL_30             ;
+LCA29:  CMP #LEVEL_30             ;
 LCA2B:  BNE KingExperienceCalculation         ;If not, branch for the regular message.
 
 LCA2D:  JSR DoDialogLoBlock     ;($C7CB)Though art strong enough...
@@ -1282,7 +1282,7 @@ LCA30:  .byte $02               ;TextBlock1, entry 2.
 LCA31:  JMP EndKingDialog       ;Jump to last king dialog segment.
 
 KingExperienceCalculation:
-LCA34:  JSR GetExpRemaining     ;($F134)Calculate experience needed for next level.
+LCA34:  JSR GetExperienceRemaining     ;($F134)Calculate experience needed for next level.
 
 LCA37:  JSR DoDialogLoBlock     ;($C7CB)Before reaching thy next level...
 LCA3A:  .byte $C1               ;TextBlock13, entry 1.
@@ -2054,18 +2054,18 @@ LCE80:  BNE ChkDungeonFights    ;If not, branch to check other maps.
 ;This section of code calculates the proper enemies for the player's world map position.
 
 LCE82:  LDA CharYPos            ;Divide player's Y location on overworkd map by 15.
-LCE84:  STA DivNum1LB           ;This gives a number ranging from 0 to 7.
+LCE84:  STA DivideNumber1LB           ;This gives a number ranging from 0 to 7.
 LCE86:  LDA #$0F                ;The enemy zones on the overworld map are an 8X8 grid.
-LCE88:  STA DivNum2             ;
+LCE88:  STA DivideNumber2             ;
 LCE8A:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LCE8D:  LDA DivNum1LB           ;Save Y data for enemy zone calculation.
+LCE8D:  LDA DivideNumber1LB           ;Save Y data for enemy zone calculation.
 LCE8F:  STA GenByte42           ;
 
 LCE91:  LDA CharXPos            ;Divide player's X location on overworkd map by 15.
-LCE93:  STA DivNum1LB           ;This gives a number ranging from 0 to 7.
+LCE93:  STA DivideNumber1LB           ;This gives a number ranging from 0 to 7.
 LCE95:  LDA #$0F                ;The enemy zones on the overworld map are an 8X8 grid.
-LCE97:  STA DivNum2             ;
+LCE97:  STA DivideNumber2             ;
 LCE99:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
 LCE9C:  LDA GenByte42           ;*4. 4 bytes per row in overworld enemy grid.
@@ -2073,7 +2073,7 @@ LCE9E:  ASL                     ;
 LCE9F:  ASL                     ;The proper row in OvrWrldEnGrid is now known.
 LCEA0:  STA EnemyOffsetset         ;Next, calculate the desired byte from the row.
 
-LCEA2:  LDA DivNum1LB           ;Get the X position again for the overworld enemy grid.
+LCEA2:  LDA DivideNumber1LB           ;Get the X position again for the overworld enemy grid.
 LCEA4:  LSR                     ;/2 at the enemy data is stored in nibble wide data.
 LCEA5:  CLC                     ;Add value to the Y position calculation.
 LCEA6:  ADC EnemyOffsetset         ;
@@ -2082,7 +2082,7 @@ LCEA8:  TAX                     ;We now have the proper byte index into OvrWrldE
 LCEA9:  LDA OvrWrldEnGrid,X     ;Get the enemy zone data from OvrWrldEnGrid.
 LCEAC:  STA EnemyOffsetset         ;
 
-LCEAE:  LDA DivNum1LB           ;Since the enemy zone data is stored in nibbles, we need
+LCEAE:  LDA DivideNumber1LB           ;Since the enemy zone data is stored in nibbles, we need
 LCEB0:  LSR                     ;to get the right nibble in the byte. Is this the right
 LCEB1:  BCS +                   ;byte? If so, branch.
 
@@ -3151,7 +3151,7 @@ LD41B:  JSR DoDialogLoBlock     ;($C7CB)I am greatly pleased that thou hast retu
 LD41E:  .byte $C0               ;TextBlock13, entry 0.
 
 LD41F:  LDA DisplayedLevel      ;Is the player level 30?
-LD421:  CMP #LVL_30             ;
+LD421:  CMP #LEVEL_30             ;
 LD423:  BNE CalculateExp        ;If not, branch.
 
 LD425:  JSR DoDialogLoBlock     ;($C7CB)Thou art strong enough...
@@ -3160,7 +3160,7 @@ LD428:  .byte $02               ;TextBlock1, entry 2.
 LD429:  JMP SaveDialog          ;($D433)Jump to save dialog.
 
 CalculateExp:
-LD42C:  JSR GetExpRemaining     ;($F134)Calculate experience needed for next level.
+LD42C:  JSR GetExperienceRemaining     ;($F134)Calculate experience needed for next level.
 
 LD42F:  JSR DoDialogLoBlock     ;($C7CB)Before reaching thy next level of experience...
 LD432:  .byte $C1               ;TextBlock13, entry 1.
@@ -5336,7 +5336,7 @@ LDF11:  JSR Dowindow            ;($C6F0)display on-screen window.
 LDF14:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDF15:  LDA DisplayedLevel      ;Is player at the max level?
-LDF17:  CMP #LVL_30             ;
+LDF17:  CMP #LEVEL_30             ;
 LDF19:  BNE DoLoveExp           ;If so, branch to skip showing experience for next level.
 
 LDF1B:  JSR DoDialogHiBlock     ;($C7C5)Know thou hast reached the final level...
@@ -5345,7 +5345,7 @@ LDF1E:  .byte $05               ;TextBlock17, entry 5.
 LDF1F:  JMP ChkLoveMap          ;Max level already reached. Skip experience dialog.
 
 DoLoveExp:
-LDF22:  JSR GetExpRemaining     ;($F134)Calculate experience needed for next level.
+LDF22:  JSR GetExperienceRemaining     ;($F134)Calculate experience needed for next level.
 
 LDF25:  JSR DoDialogLoBlock     ;($C7CB)To reach the next level...
 LDF28:  .byte $DB               ;TextBlock14, entry 11.
@@ -6629,14 +6629,14 @@ LE598:  .byte $E2               ;TextBlock15, entry 2.
 
 ModEnHitPoints:
 LE599:  LDA EnBaseHP            ;Prepare to multiply enemy HP by random number(0 to 255).
-LE59C:  STA MultNum2LB          ;
+LE59C:  STA MultiplyNumber2LB          ;
 LE59E:  JSR UpdateRandNum       ;($C55B)Get random number.
 
 LE5A1:  LDA RandomNumberUB           ;
-LE5A3:  STA MultNum1LB          ;
+LE5A3:  STA MultiplyNumber1LB          ;
 LE5A5:  LDA #$00                ;Multiply enemy HP by random byte.
-LE5A7:  STA MultNum1UB          ;
-LE5A9:  STA MultNum2UB          ;
+LE5A7:  STA MultiplyNumber1UB          ;
+LE5A9:  STA MultiplyNumber2UB          ;
 LE5AB:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LE5AE:  LDA MultiplyResultUB          ;
@@ -6744,13 +6744,13 @@ LE633:  .byte $04               ;TextBlock17, entry 4.
 
 LE634:  JSR UpdateRandNum       ;($C55B)Get random number.
 LE637:  LDA RandomNumberUB           ;
-LE639:  STA MultNum1LB          ;
+LE639:  STA MultiplyNumber1LB          ;
 LE63B:  LDA DisplayedAttack      ;
 LE63D:  LSR                     ;A = DisplayedAttack/2 * rnd(255).
-LE63E:  STA MultNum2LB          ;
+LE63E:  STA MultiplyNumber2LB          ;
 LE640:  LDA #$00                ;
-LE642:  STA MultNum1UB          ;
-LE644:  STA MultNum2UB          ;
+LE642:  STA MultiplyNumber1UB          ;
+LE644:  STA MultiplyNumber2UB          ;
 LE646:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LE649:  LDA DisplayedAttack      ;Total equation for excellent move damage:
@@ -7451,14 +7451,14 @@ LEA07:  JMP ChangeMaps          ;($D9E2)Load a new map.
 
 RegEnDefeated:
 LEA0A:  LDA EnBaseExp           ;
-LEA0D:  STA FightExpLB          ;Save the experience gained from the fight.
+LEA0D:  STA FightExperienceLB          ;Save the experience gained from the fight.
 LEA0F:  LDA #$00                ;
-LEA11:  STA FightExpUB          ;
+LEA11:  STA FightExperienceUB          ;
 
 LEA13:  JSR DoDialogLoBlock     ;($C7CB)Thy experience increases by...
 LEA16:  .byte $EF               ;TextBlock15, entry 15.
 
-LEA17:  LDA FightExpLB          ;
+LEA17:  LDA FightExperienceLB          ;
 LEA19:  CLC                     ;
 LEA1A:  ADC ExpLB               ;Add fight experience to player's total experience.
 LEA1C:  STA ExpLB               ;
@@ -7472,7 +7472,7 @@ LEA28:  STA ExpUB               ;
 
 CalcPlyrGold:
 LEA2A:  LDA EnBaseGld           ;Prepare to multiply enemy's base gold by a random number.
-LEA2D:  STA MultNum2LB          ;
+LEA2D:  STA MultiplyNumber2LB          ;
 
 LEA2F:  JSR UpdateRandNum       ;($C55B)Get random number.
 LEA32:  LDA RandomNumberUB           ;Keep only 6 bytes(0-63).
@@ -7480,11 +7480,11 @@ LEA34:  AND #$3F                ;
 
 LEA36:  CLC                     ;
 LEA37:  ADC #$C0                ;Add 192 to random number(63-255).
-LEA39:  STA MultNum1LB          ;
+LEA39:  STA MultiplyNumber1LB          ;
 
 LEA3B:  LDA #$00                ;Multiply enemy's base gold with random number.
-LEA3D:  STA MultNum1UB          ;
-LEA3F:  STA MultNum2UB          ;
+LEA3D:  STA MultiplyNumber1UB          ;
+LEA3F:  STA MultiplyNumber2UB          ;
 LEA41:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LEA44:  LDA MultiplyResultUB          ;
@@ -7613,25 +7613,25 @@ LEAE5:  .byte $11               ;TextBlock18, entry 1.
 
 ChkNewSpell:
 LEAE6:  LDA DisplayedLevel      ;
-LEAE8:  CMP #LVL_03             ;
+LEAE8:  CMP #LEVEL_03             ;
 LEAEA:  BEQ NewSpellDialog      ;
-LEAEC:  CMP #LVL_04             ;
+LEAEC:  CMP #LEVEL_04             ;
 LEAEE:  BEQ NewSpellDialog      ;
-LEAF0:  CMP #LVL_07             ;
+LEAF0:  CMP #LEVEL_07             ;
 LEAF2:  BEQ NewSpellDialog      ;
-LEAF4:  CMP #LVL_09             ;
+LEAF4:  CMP #LEVEL_09             ;
 LEAF6:  BEQ NewSpellDialog      ;A new spell has been learned.  New spells are
-LEAF8:  CMP #LVL_10             ;learned on levels 3, 4, 7, 9, 10, 12, 13, 15,
+LEAF8:  CMP #LEVEL_10             ;learned on levels 3, 4, 7, 9, 10, 12, 13, 15,
 LEAFA:  BEQ NewSpellDialog      ;17 and 19.
-LEAFC:  CMP #LVL_12             ;
+LEAFC:  CMP #LEVEL_12             ;
 LEAFE:  BEQ NewSpellDialog      ;
-LEB00:  CMP #LVL_13             ;
+LEB00:  CMP #LEVEL_13             ;
 LEB02:  BEQ NewSpellDialog      ;
-LEB04:  CMP #LVL_15             ;
+LEB04:  CMP #LEVEL_15             ;
 LEB06:  BEQ NewSpellDialog      ;
-LEB08:  CMP #LVL_17             ;
+LEB08:  CMP #LEVEL_17             ;
 LEB0A:  BEQ NewSpellDialog      ;
-LEB0C:  CMP #LVL_19             ;
+LEB0C:  CMP #LEVEL_19             ;
 
 LEB0E:  BNE +                   ;No new spell learned. Branch to skip new spell dialog.
 
@@ -7842,12 +7842,12 @@ LEC40:  BNE DoPlyrDmg           ;If not, branch. Player takes regular damage.
 
 ReducedSpellDmg:
 LEC42:  LDA PlayerDamage          ;
-LEC44:  STA DivNum1LB           ;Divide player damage by 3.
+LEC44:  STA DivideNumber1LB           ;Divide player damage by 3.
 LEC46:  LDA #$03                ;
-LEC48:  STA DivNum2             ;
+LEC48:  STA DivideNumber2             ;
 LEC4A:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LEC4D:  LDA DivQuotient         ;
+LEC4D:  LDA DivideQuotient         ;
 LEC4F:  ASL                     ;Multiply player damage by 2. Result is 2/3 damage.
 LEC50:  STA PlayerDamage          ;
 
@@ -7972,12 +7972,12 @@ LED00:  CMP #AR_ERDK_ARMR       ;If so, branch to reduce damage to 2/3.
 LED02:  BNE DoFireSFX           ;
 
 LED04:  LDA $00                 ;
-LED06:  STA DivNum1LB           ;Divide player damage by 3.
+LED06:  STA DivideNumber1LB           ;Divide player damage by 3.
 LED08:  LDA #$03                ;
-LED0A:  STA DivNum2             ;
+LED0A:  STA DivideNumber2             ;
 LED0C:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LED0F:  LDA DivQuotient         ;
+LED0F:  LDA DivideQuotient         ;
 LED11:  ASL                     ;Multiply player damage by 2. Result is 2/3 damage.
 LED12:  STA $00                 ;
 
@@ -8148,10 +8148,10 @@ LEDF2:  JSR DoDialogHiBlock     ;($C7C5)Death should not have taken thee...
 LEDF5:  .byte $0D               ;TextBlock17, entry 13.
 
 LEDF6:  LDA DisplayedLevel      ;Is player the maximum level?
-LEDF8:  CMP #LVL_30             ;
+LEDF8:  CMP #LEVEL_30             ;
 LEDFA:  BEQ NowGoText           ;If so, branch to skip experience dialog.
 
-LEDFC:  JSR GetExpRemaining     ;($F134)Calculate experience needed for next level.
+LEDFC:  JSR GetExperienceRemaining     ;($F134)Calculate experience needed for next level.
 
 LEDFF:  JSR DoDialogHiBlock     ;($C7C5)To reach the next level, thy experience must increase...
 LEE02:  .byte $12               ;TextBlock18, entry 2.
@@ -8277,12 +8277,12 @@ LEEAC:  BCC CalcWhoIsNext       ;If not, branch.
 
 LEEAE:  LDA RandomNumberUB           ;Get a random nuber and keep lower 6 bits.
 LEEB0:  AND #$3F                ;
-LEEB2:  STA MultNum2LB          ;
+LEEB2:  STA MultiplyNumber2LB          ;
 LEEB4:  JSR UpdateRandNum       ;($C55B)Get random number.
 
 LEEB7:  LDA RandomNumberUB           ;Get a random number and keep lower 5 bits. Add it to
 LEEB9:  AND #$1F                ;previous number to get a range of 0-95.
-LEEBB:  ADC MultNum2LB          ;
+LEEBB:  ADC MultiplyNumber2LB          ;
 LEEBD:  JMP CalcNextOdds        ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -8293,12 +8293,12 @@ LEEC3:  LDA RandomNumberUB           ;
 LEEC5:  AND #$3F                ;Keep only lower 6 bits(0-63).
 
 CalcNextOdds:
-LEEC7:  STA MultNum1LB          ;Store random number as a multiplier.
+LEEC7:  STA MultiplyNumber1LB          ;Store random number as a multiplier.
 LEEC9:  LDA EnBaseDef           ;
-LEECC:  STA MultNum2LB          ;
+LEECC:  STA MultiplyNumber2LB          ;
 LEECE:  LDA #$00                ;Multiply the random number by the enemy's defense.
-LEED0:  STA MultNum1UB          ;
-LEED2:  STA MultNum2UB          ;
+LEED0:  STA MultiplyNumber1UB          ;
+LEED2:  STA MultiplyNumber2UB          ;
 LEED4:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LEED7:  LDA MultiplyResultLB          ;
@@ -8309,12 +8309,12 @@ LEEDD:  STA GenWord42UB         ;
 LEEDF:  JSR UpdateRandNum       ;($C55B)Get random number.
 
 LEEE2:  LDA RandomNumberUB           ;Store random number as a multiplier.
-LEEE4:  STA MultNum1LB          ;
+LEEE4:  STA MultiplyNumber1LB          ;
 LEEE6:  LDA DisplayedAgility        ;
-LEEE8:  STA MultNum2LB          ;Multiply the random number by the player's agility.
+LEEE8:  STA MultiplyNumber2LB          ;Multiply the random number by the player's agility.
 LEEEA:  LDA #$00                ;
-LEEEC:  STA MultNum1UB          ;
-LEEEE:  STA MultNum2UB          ;
+LEEEC:  STA MultiplyNumber1UB          ;
+LEEEE:  STA MultiplyNumber2UB          ;
 LEEF0:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LEEF3:  LDA MultiplyResultLB          ;
@@ -8328,12 +8328,12 @@ LEEFC:  RTS                     ;
 
 LoadEnPalette:
 LEEFD:  LDA EnemyNumber            ;
-LEEFF:  STA MultNum1LB          ;
+LEEFF:  STA MultiplyNumber1LB          ;
 LEF01:  LDA #$0C                ;
-LEF03:  STA MultNum2LB          ;Multiply the enemy number by 12. There are 12 bytes of
+LEF03:  STA MultiplyNumber2LB          ;Multiply the enemy number by 12. There are 12 bytes of
 LEF05:  LDA #$00                ;palette data per enemy. The result contains the index to
-LEF07:  STA MultNum1UB          ;the desired enemy palette data.
-LEF09:  STA MultNum2UB          ;
+LEF07:  STA MultiplyNumber1UB          ;the desired enemy palette data.
+LEF09:  STA MultiplyNumber2UB          ;
 LEF0B:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LEF0E:  LDA MultiplyResultLB          ;
@@ -8503,31 +8503,31 @@ EnCalcHitDmg:
 LEFF4:  LSR DefenseStat         ;
 LEFF6:  LDA AttackStat          ;
 LEFF8:  LSR                     ;A = AttackStat - DefenseStat/2.
-LEFF9:  STA MultNum2LB          ;
-LEFFB:  INC MultNum2LB          ;
+LEFF9:  STA MultiplyNumber2LB          ;
+LEFFB:  INC MultiplyNumber2LB          ;
 LEFFD:  LDA AttackStat          ;Save a compy of AttackStat/2.
 LEFFF:  SEC                     ;
 LF000:  SBC DefenseStat         ;
 LF002:  BCC +                   ;Enemy will do a weak attack if player is much stronger.
 
-LF004:  CMP MultNum2LB          ;Is enemy AttackStat more than 2X player DefenseStat?
+LF004:  CMP MultiplyNumber2LB          ;Is enemy AttackStat more than 2X player DefenseStat?
 LF006:  BCS NormalAttack        ;If so, branch to do normal attack damage.
 
 EnWeakAttack:
 LF008:* JSR UpdateRandNum       ;($C55B)Get random number.
 LF00B:  LDA RandomNumberUB           ;
-LF00D:  STA MultNum1LB          ;
+LF00D:  STA MultiplyNumber1LB          ;
 LF00F:  LDA #$00                ;A = A * rnd(255).
-LF011:  STA MultNum1UB          ;
-LF013:  STA MultNum2UB          ;
+LF011:  STA MultiplyNumber1UB          ;
+LF013:  STA MultiplyNumber2UB          ;
 LF015:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LF018:  LDA MultiplyResultUB          ;
 LF01A:  CLC                     ;A = (A/256+2)/3.
 LF01B:  ADC #$02                ;
-LF01D:  STA DivNum1LB           ;Total equation for weak enemy attack:
+LF01D:  STA DivideNumber1LB           ;Total equation for weak enemy attack:
 LF01F:  LDA #$03                ;Damage=(((AttackStat-DefenseStat/2)*rnd(255))/256+2)/3.
-LF021:  STA DivNum2             ;
+LF021:  STA DivideNumber2             ;
 LF023:  JMP ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
 PlayerWeakAttack:
@@ -8540,15 +8540,15 @@ LF02F:  RTS                     ;
 
 NormalAttack:
 LF030:  STA BaseAttack          ;
-LF032:  STA MultNum2LB          ;A = A+1.
-LF034:  INC MultNum2LB          ;
+LF032:  STA MultiplyNumber2LB          ;A = A+1.
+LF034:  INC MultiplyNumber2LB          ;
 LF036:  JSR UpdateRandNum       ;($C55B)Get random number.
 
 LF039:  LDA RandomNumberUB           ;
-LF03B:  STA MultNum1LB          ;
+LF03B:  STA MultiplyNumber1LB          ;
 LF03D:  LDA #$00                ;A = rand(0-255) * A.
-LF03F:  STA MultNum1UB          ;
-LF041:  STA MultNum2UB          ;
+LF03F:  STA MultiplyNumber1UB          ;
+LF041:  STA MultiplyNumber2UB          ;
 LF043:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LF046:  LDA MultiplyResultUB          ;A = (A/256 + BaseAttack) / 4.
@@ -8563,7 +8563,7 @@ LF04F:  RTS                     ;
 
 LoadStats:
 LF050:  LDX #LVL_TBL_LAST       ;Point to level 30 in LevelUpTbl.
-LF052:  LDA #LVL_30             ;
+LF052:  LDA #LEVEL_30             ;
 LF054:  STA DisplayedLevel      ;Set displayed level to 30.
 
 GetLevelLoop:
@@ -8742,25 +8742,25 @@ LF10B:* RTS                     ;
 ;but give a bonus of 3 points to each. Strength and agility would have normal growth.
 
 ReduceStat:
-LF10C:  STA MultNum1LB          ;
+LF10C:  STA MultiplyNumber1LB          ;
 LF10E:  LDA #$09                ;
-LF110:  STA MultNum2LB          ;
+LF110:  STA MultiplyNumber2LB          ;
 LF112:  LDA #$00                ;Multiply stat by 9.
-LF114:  STA MultNum1UB          ;
-LF116:  STA MultNum2UB          ;
+LF114:  STA MultiplyNumber1UB          ;
+LF116:  STA MultiplyNumber2UB          ;
 LF118:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LF11B:  LDA MultiplyResultLB          ;
-LF11D:  STA DivNum1LB           ;Save results of multiplication.
+LF11D:  STA DivideNumber1LB           ;Save results of multiplication.
 LF11F:  LDA MultiplyResultUB          ;
-LF121:  STA DivNmu1UB           ;
+LF121:  STA DivideNumber1UB           ;
 
 LF123:  LDA #$0A                ;prepare to Divide stat by 10.
-LF125:  STA DivNum2             ;
+LF125:  STA DivideNumber2             ;
 LF127:  LDA #$00                ;
-LF129:  STA DivNum2NU           ;
+LF129:  STA DivideNumber2NU           ;
 LF12B:  JSR WordDivide          ;($C1F4)Divide a 16-bit word by an 8-bit byte.
-LF12E:  LDA DivQuotient         ;Net result is stat*9/10.
+LF12E:  LDA DivideQuotient         ;Net result is stat*9/10.
 
 LF130:  CLC                     ;Add in any stat bonus that may have been calculated.
 LF131:  ADC StatBonus           ;Stat bonus may be in the range of 0-3.
@@ -8768,7 +8768,7 @@ LF133:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-GetExpRemaining:
+GetExperienceRemaining:
 LF134:  LDA DisplayedLevel      ;Get player's current level.
 LF136:  ASL                     ;*2
 LF137:  TAX                     ;
@@ -10649,7 +10649,7 @@ LFE49:  STA PPUIOReg            ;Store byte in PPU.
 LFE4C:  DEY                     ;More data to load for this entry?
 LFE4D:  BNE -                   ;If so, branch to get next byte.
 
-LFE4F:  DEC PPUEntCount         ;Is there another PPU entry to load?
+LFE4F:  DEC PPUEntryCount         ;Is there another PPU entry to load?
 LFE51:  BNE UpdateBG            ;If so, branch to get the next entry.
 
 LFE53:  BEQ ProcessVBlank2      ;Done with Background updates. Move on.
@@ -10692,7 +10692,7 @@ ProcessVBlank:
 LFE7F:  LDA PPUStatusus           ;No effect.
 LFE82:  INC FrameCounter        ;Increment frame counter.
 
-LFE84:  LDA PPUEntCount         ;Are there PPU entries waiting to be loaded into the PPU?
+LFE84:  LDA PPUEntryCount         ;Are there PPU entries waiting to be loaded into the PPU?
 LFE86:  BEQ SetSprtRAM          ;If not, branch to do sprite stuff.
 
 LFE88:  CMP #$08                ;Are there more than 8 PPU entries to load?
@@ -10724,7 +10724,7 @@ LFEB3:  STA PPUAddress          ;
 
 LFEB6:  LDA #$00                ;
 LFEB8:  STA NMIStatusus           ;
-LFEBA:  STA PPUEntCount         ;Clear status variables.
+LFEBA:  STA PPUEntryCount         ;Clear status variables.
 LFEBC:  STA PPUBufCount         ;
 LFEBE:  STA UpdateBGTiles       ;
 
