@@ -91,19 +91,19 @@ LC031:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-NPCNewDir:
+NPCNewDirection:
 LC032:  CMP #DIR_UP             ;Is player facing up?
-LC034:  BNE ChkPlayerRight      ;If not, branch to check if facing right.
+LC034:  BNE CheckPlayerRight      ;If not, branch to check if facing right.
 LC036:  LDA #DIR_DOWN           ;Set NPC facing down.
 LC038:  RTS                     ;
 
-ChkPlayerRight:
+CheckPlayerRight:
 LC039:  CMP #DIR_RIGHT          ;Is player facing right?
-LC03B:  BNE ChkPlayerDown       ;If not, branch to check if facing down.
+LC03B:  BNE CheckPlayerDown       ;If not, branch to check if facing down.
 LC03D:  LDA #DIR_LEFT           ;Set NPC facing left.
 LC03F:  RTS                     ;
 
-ChkPlayerDown:
+CheckPlayerDown:
 LC040:  CMP #DIR_DOWN           ;Is player facing down?
 LC042:  BNE PlayerLeft          ;If not, branch. Player must be facing left.
 LC044:  LDA #DIR_UP             ;Set NPC facing up.
@@ -124,7 +124,7 @@ LC04F:  PHA                     ;
 
 LC050:  LDX NPCNumber           ;Get index to NPC data.
 LC052:  LDA CharDirection       ;Load player's direction.
-LC055:  JSR NPCNewDir           ;($C032)Get direction NPC should face to talk to player.
+LC055:  JSR NPCNewDirection           ;($C032)Get direction NPC should face to talk to player.
 LC058:  STA NPCNewFace          ;Save value of new NPC's direction.
 
 LC05A:  LSR                     ;
@@ -144,9 +144,9 @@ LC06A:  STA NPCSpriteCounter       ;and once for NPCs behind counters.
 LC06C:  LDY SpriteRAM           ;Get player's Y sprite position.
 LC06F:  LDX SpriteRAM+3         ;Get player's X sprite position.
 
-ChkPlyrDirection:
+CheckPlayerDirection:
 LC072:  LDA CharDirection       ;Is player facing up?
-LC075:  BNE ChkPlyrRight        ;If not, branch to check other player directions.
+LC075:  BNE CheckPlayerRight        ;If not, branch to check other player directions.
 
 LC077:  TYA                     ;
 LC078:  SEC                     ;Player is facing up. Prepare to search for NPC data
@@ -154,9 +154,9 @@ LC079:  SBC #$10                ;that is above player.
 LC07B:  TAY                     ;
 LC07C:  JMP CheckNPCPosition    ;
 
-ChkPlyrRight:
+CheckPlayerRight:
 LC07F:  CMP #DIR_RIGHT          ;Is player facing right?
-LC081:  BNE ChkPlyrDown         ;If not, branch to check other player directions.
+LC081:  BNE CheckPlayerDown         ;If not, branch to check other player directions.
 
 LC083:  TXA                     ;
 LC084:  CLC                     ;Player is facing right. Prepare to search for NPC data
@@ -164,7 +164,7 @@ LC085:  ADC #$10                ;that is right of player.
 LC087:  TAX                     ;
 LC088:  JMP CheckNPCPosition    ;
 
-ChkPlyrDown:
+CheckPlayerDown:
 LC08B:  CMP #DIR_DOWN           ;Is player facing down?
 LC08D:  BNE PlayerLeft            ;If not, branch. Player must be facing left.
 
@@ -210,7 +210,7 @@ LC0BD:  BNE NPCDirEnd           ;If so, branch to end. NPC not found.
 
 LC0BF:  LDA #$01                ;Prepare to run the loop a second time.
 LC0C1:  STA NPCSpriteCounter       ;
-LC0C3:  JMP ChkPlyrDirection    ;($C072)Need to check for NPCs behind counters.
+LC0C3:  JMP CheckPlayerDirection    ;($C072)Need to check for NPCs behind counters.
 
 NPCFound:
 LC0C6:  STY NPCSpriteRAMIndex       ;NPC sprites found. Save index to sprites.
@@ -437,8 +437,8 @@ LC1C8:  RTS                     ;
 
 WordMultiply:
 LC1C9:  LDA #$00                ;
-LC1CB:  STA MultRsltLB          ;Clear results variables.
-LC1CD:  STA MultRsltUB          ;
+LC1CB:  STA MultiplyResultLB          ;Clear results variables.
+LC1CD:  STA MultiplyResultUB          ;
 
 MultiplyLoop:
 LC1CF:  LDA MultNum1LB          ;
@@ -449,11 +449,11 @@ LC1D7:  ROR MultNum1LB          ;This function multiplies the two
 LC1D9:  BCC +                   ;16-bit numbers stored in $3C,$3D
 LC1DB:  LDA MultNum2LB          ;and $3E, $3F and stores the results
 LC1DD:  CLC                     ;in $40,$41.
-LC1DE:  ADC MultRsltLB          ;
-LC1E0:  STA MultRsltLB          ;
+LC1DE:  ADC MultiplyResultLB          ;
+LC1E0:  STA MultiplyResultLB          ;
 LC1E2:  LDA MultNum2UB          ;
-LC1E4:  ADC MultRsltUB          ;
-LC1E6:  STA MultRsltUB          ;
+LC1E4:  ADC MultiplyResultUB          ;
+LC1E6:  STA MultiplyResultUB          ;
 LC1E8:* ASL MultNum2LB          ;
 LC1EA:  ROL MultNum2UB          ;
 LC1EC:  JMP MultiplyLoop        ;
@@ -474,8 +474,8 @@ LC1F6:  LDA #$00                ;
 DivLoop:
 LC1F8:  ASL DivNum1LB           ;
 LC1FA:  ROL DivNmu1UB           ;
-LC1FC:  STA DivRemainder        ;
-LC1FE:  ADC DivRemainder        ;
+LC1FC:  STA DivideRemainder        ;
+LC1FE:  ADC DivideRemainder        ;
 LC200:  INC DivQuotient         ;This function takes a 16-bit dividend
 LC202:  SEC                     ;stored in $3C,$3D and divides it by
 LC203:  SBC DivNum2             ;an 8-bit number stored in $3E.
@@ -485,7 +485,7 @@ LC208:  ADC DivNum2             ;the 8-bit remainder is stored in $40.
 LC20A:  DEC DivQuotient         ;
 LC20C:* DEY                     ;
 LC20D:  BNE DivLoop             ;
-LC20F:  STA DivRemainder        ;
+LC20F:  STA DivideRemainder        ;
 LC211:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -546,7 +546,7 @@ LC258:  LDA #$1E                ;Divide by 30 to get proper nametable row to upd
 LC25A:  STA DivNum2             ;
 LC25C:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LC25F:  LDA DivRemainder        ;
+LC25F:  LDA DivideRemainder        ;
 LC261:  STA NTYPos              ;Store row position.
 LC263:  PLA                     ;Restore A from stack.
 
@@ -877,7 +877,7 @@ LC665:  BEQ ChkLowHPPal         ;If so, branch to see if HP is low for special c
 LC667:  CMP #$03                ;Is this the third palette color?
 LC669:  BNE ChkPalFade          ;If not, branch to move on.
 
-LC66B:  LDA EnNumber            ;Is player fighting the final boss?
+LC66B:  LDA EnemyNumber            ;Is player fighting the final boss?
 LC66D:  CMP #EN_DRAGONLORD2     ;If not, branch to move on.
 LC66F:  BNE ChkPalFade          ;Maybe this was used for a special palette no longer in the game?
 
@@ -1027,7 +1027,7 @@ LC73C:  STA DivNum1LB           ;
 LC73E:  LDA #$1E                ;
 LC740:  STA DivNum2             ;
 LC742:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
-LC745:  LDA DivRemainder        ;
+LC745:  LDA DivideRemainder        ;
 LC747:  STA YPosFromTop         ;
 LC749:  STA YFromTopTemp        ;
 
@@ -1303,7 +1303,7 @@ LCA49:  .byte $02               ;TextBlock17, entry 2.
 PlayerInitializeControl:
 LCA4A:  JSR WaitForBtnRelease   ;($CFE4)Wait for player to release then press joypad buttons.
 
-LCA4D:  LDA #WND_DIALOG         ;Remove the dialog window from the screen.
+LCA4D:  LDA #WINDOW_DIALOG         ;Remove the dialog window from the screen.
 LCA4F:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LCA52:  LDA #NPC_MOVE           ;Allow the NPCs to move.
@@ -1347,7 +1347,7 @@ LCA7F:  LDA #NPC_STOP           ;
 LCA81:  STA StopNPCMove         ;Stop NPC movement.
 
 LCA83:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCA86:  .byte WND_DIALOG        ;Dialog window.
+LCA86:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LCA87:  LDA RepelTimer          ;If repel timer is odd, it is the repel spell. If it is
 LCA89:  BNE RepelEndMessage         ;even, it is from fairy water. Branch accordingly.
@@ -1404,7 +1404,7 @@ LCAD7:  LDA JoypadBtns          ;Was A button pressed?
 LCAD9:  LSR                     ;If not, branch to check other buttons.
 LCADA:  BCC CheckJoyUp          ;
 
-LCADC:  JSR DoNCCmdWindow       ;($CF49)Bring up non-combat command window.
+LCADC:  JSR DoNonCombatCommandWindow       ;($CF49)Bring up non-combat command window.
 LCADF:  JMP JoypadCheckLoop     ;Loop again to keep checking user inputs.
 
 CheckJoyUp:
@@ -1457,7 +1457,7 @@ LCB35:  CMP #$31                ;
 LCB37:  BNE EngineLoopEnd       ;If not, branch to not bring up the pop-up window.
 
 LCB39:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCB3C:  .byte WND_POPUP         ;Pop-up window.
+LCB3C:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LCB3D:  LDA #$32                ;Indicate pop-up window is active.
 LCB3F:  STA FrameCounter        ;
@@ -1574,7 +1574,7 @@ LCBEE:* LDA #NPC_STOP           ;Stop NPCs from moving on the screen.
 LCBF0:  STA StopNPCMove         ;
 
 LCBF2:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCBF5:  .byte WND_DIALOG        ;Dialog window.
+LCBF5:  .byte WINDOW_DIALOG        ;Dialog window.
 LCBF6:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -1613,7 +1613,7 @@ LCC1E:  LDA #NPC_STOP           ;Stop the NPCs from moving.
 LCC20:  STA StopNPCMove         ;
 
 LCC22:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCC25:  .byte WND_DIALOG        ;Dialog window.
+LCC25:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LCC26:  JSR DoDialogHiBlock     ;($C7C5)The legends have proven true...
 LCC29:  .byte $1B               ;TextBlock18, entry 11.
@@ -1723,7 +1723,7 @@ LCCBE:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LCCC1:  DEX                     ;Has 120 frames passed?
 LCCC2:  BNE -                   ;If not, branch to wait another frame.
 
-LCCC4:  LDA #WND_DIALOG         ;Remove the dialog window.
+LCCC4:  LDA #WINDOW_DIALOG         ;Remove the dialog window.
 LCCC6:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LCCC9:  LDA #$01                ;Show the player facing right.
@@ -1816,7 +1816,7 @@ LCD42:  LDA #NPC_STOP           ;Stop the NPCs from moving.
 LCD44:  STA StopNPCMove         ;
 
 LCD46:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCD49:  .byte WND_DIALOG        ;Dialog window.
+LCD49:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LCD4A:  JSR DoDialogLoBlock     ;($C7CB)Cursed one, be gone...
 LCD4D:  .byte $44               ;TextBlock5, entry 4.
@@ -1941,7 +1941,7 @@ LCDF0:  LDA HitPoints           ;Is player still alive?
 LCDF2:  BNE ChkFight            ;If so, branch to check for random encounter.
 
 LCDF4:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCDF7:  .byte WND_POPUP         ;Pop-up window.
+LCDF7:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LCDF8:  JMP InitDeathSequence   ;($EDA7)Player has died.
 
@@ -2011,7 +2011,7 @@ LCE53:  BNE ChkRandomFight      ;($CE5F)Check for enemy encounter.
 LCE55:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LCE58:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCE5B:  .byte WND_POPUP         ;Pop-up window.
+LCE5B:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LCE5C:  JMP InitDeathSequence   ;($EDA7)Player has died.
 
@@ -2207,37 +2207,37 @@ LCF46:  JMP InitFight           ;($E4DF)Begin fight sequence.
 
 ;----------------------------------------------------------------------------------------------------
 
-DoNCCmdWindow:
+DoNonCombatCommandWindow:
 LCF49:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LCF4C:  LDA FrameCounter        ;
 LCF4E:  AND #$0F                ;Sync window with frame counter.
 LCF50:  CMP #$01                ;Is frame counter on the 16th frame?
 LCF52:  BEQ ShowNCCmdWindow     ;If so, branch to show the non-combat command window.
 LCF54:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
-LCF57:  JMP DoNCCmdWindow       ;($CF49)Loop until ready to show non-combat command window.
+LCF57:  JMP DoNonCombatCommandWindow       ;($CF49)Loop until ready to show non-combat command window.
 
 ShowNCCmdWindow:
 LCF5A:  LDA #NPC_STOP           ;Stop NPCs from moving.
 LCF5C:  STA StopNPCMove         ;
 
 LCF5E:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCF61:  .byte WND_POPUP         ;Pop-up window.
+LCF61:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LCF62:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCF65:  .byte WND_CMD_NONCMB    ;Command window, non-combat.
+LCF65:  .byte WINDOW_CMD_NONCMB    ;Command window, non-combat.
 
-LCF66:  CMP #WND_ABORT          ;Did player abort the menu?
-LCF68:  BNE NCCmdSelected       ;If not, branch.
+LCF66:  CMP #WINDOW_ABORT          ;Did player abort the menu?
+LCF68:  BNE NonCombatCommandSelected       ;If not, branch.
 
-ClrNCCmdWnd:
-LCF6A:  LDA #WND_CMD_NONCMB     ;Remove command window from screen.
+ClearNonCombatCommandWindow:
+LCF6A:  LDA #WINDOW_CMD_NONCMB     ;Remove command window from screen.
 LCF6C:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LCF6F:  LDA #NPC_MOVE           ;
 LCF71:  STA StopNPCMove         ;Allow NPCs to start moving around again.
 LCF73:  RTS                     ;
 
-NCCmdSelected:
+NonCombatCommandSelected:
 LCF74:  LDA WindowSelResults       ;Did player select STATUS?
 LCF76:  CMP #NCC_STATUS         ;If not, branch to check other selections.
 LCF78:  BNE CheckCmdWndResults  ;($CFAF)Check some command window selection results.
@@ -2270,13 +2270,13 @@ LCF9C:  ADC #$19                ;
 LCF9E:  STA DescBuf+$A          ;
 
 LCFA0:  JSR Dowindow            ;($C6F0)display on-screen window.
-LCFA3:  .byte WND_STATUS        ;Status window.
+LCFA3:  .byte WINDOW_STATUS        ;Status window.
 
 LCFA4:  JSR WaitForBtnRelease   ;($CFE4)Wait for player to release then press joypad buttons.
 
-LCFA7:  LDA #WND_STATUS         ;Remove status window from screen.
+LCFA7:  LDA #WINDOW_STATUS         ;Remove status window from screen.
 LCFA9:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LCFAC:  JMP ClrNCCmdWnd         ;($CF6A)Remove non-combat command window from screen.
+LCFAC:  JMP ClearNonCombatCommandWindow         ;($CF6A)Remove non-combat command window from screen.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -2308,9 +2308,9 @@ LCFD6:* JMP DoTake              ;($E1E3)Take selected from command window.
 
 ResumeGamePlay:
 LCFD9:  JSR WaitForBtnRelease   ;($CFE4)Wait for player to release then press joypad buttons.
-LCFDC:  LDA #WND_DIALOG         ;Remove dialog window from screen.
+LCFDC:  LDA #WINDOW_DIALOG         ;Remove dialog window from screen.
 LCFDE:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LCFE1:  JMP ClrNCCmdWnd         ;($CF6A)Remove non-combat command window from screen.
+LCFE1:  JMP ClearNonCombatCommandWindow         ;($CF6A)Remove non-combat command window from screen.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -2334,7 +2334,7 @@ LCFF9:  LDA CharDirection       ;Get current direction player is facing.
 LCFFC:  PHA                     ;
 
 LCFFD:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD000:  .byte WND_DIALOG        ;Dialog window.
+LD000:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LD001:  LDA CharXPos            ;
 LD003:  STA XTarget             ;Make a copy of the player's X and Y coordinates.
@@ -2923,7 +2923,7 @@ LD2DA:  LDA DisplayedMaxMP      ;
 LD2DC:  STA MagicPoints         ;Max out player's MP.
 
 LD2DE:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD2E1:  .byte WND_POPUP         ;Pop-up window.
+LD2E1:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LD2E2:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
 
@@ -3172,7 +3172,7 @@ LD436:  .byte $23               ;TextBlock19, entry 3.
 LD437:  JSR Dowindow            ;($C6F0)display on-screen window.
 LD43A:  .byte WND_YES_NO1       ;Yes/no selection window.
 
-LD43B:  CMP #WND_YES            ;Does the player wish to save their game?
+LD43B:  CMP #WINDOW_YES            ;Does the player wish to save their game?
 LD43D:  BNE ContQuestDialog     ;If not, branch.
 
 LD43F:  JSR PrepSaveGame        ;($F148)Prepare to save the current game.
@@ -3296,13 +3296,13 @@ LD4CD:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LD4D0:  DEX                     ;Has 40 frames passed?
 LD4D1:  BNE -                   ;If not, branch to wait more.
 
-LD4D3:  LDA #WND_DIALOG         ;Remove dialog window.
+LD4D3:  LDA #WINDOW_DIALOG         ;Remove dialog window.
 LD4D5:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
-LD4D8:  LDA #WND_CMD_NONCMB     ;Remove command window.
+LD4D8:  LDA #WINDOW_CMD_NONCMB     ;Remove command window.
 LD4DA:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
-LD4DD:  LDA #WND_POPUP          ;Remove pop-up window.
+LD4DD:  LDA #WINDOW_POPUP          ;Remove pop-up window.
 LD4DF:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LD4E2:  LDA #EN_DRAGONLORD1     ;Dragonlord, initial form.
@@ -3350,7 +3350,7 @@ LD523:  JSR PrepBGPalLoad       ;($C63D)Load background palette data into PPU bu
 LD526:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LD529:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD52C:  .byte WND_POPUP         ;Pop-up window.
+LD52C:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LD52D:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -3413,7 +3413,7 @@ LD565:  .byte $2D               ;TextBlock3, entry 13.
 LD566:  JSR GetShopItems        ;($D672)Get items for sale in this shop.
 
 LD569:  LDA WindowSelResults       ;Did the player abort the shop dialog?
-LD56B:  CMP #WND_ABORT          ;
+LD56B:  CMP #WINDOW_ABORT          ;
 LD56D:  BNE CheckBuyWeapon      ;If not, branch to try to buy weapon.
 
 LD56F:  JMP WeapNoDialog        ;($D66B)Finish weapons shop dialog.
@@ -3578,7 +3578,7 @@ LD631:  JSR DoDialogLoBlock     ;($C7CB)I thank thee...
 LD634:  .byte $2E               ;TextBlock3, entry 14.
 
 LD635:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD638:  .byte WND_POPUP         ;Pop-up window.
+LD638:  .byte WINDOW_POPUP         ;Pop-up window.
 LD639:  JMP NextWeapDialog      ;($D664)Jump to see if player wants to buy something else.
 
 ChkApplyArmor:
@@ -3686,11 +3686,11 @@ LD6A9:  JSR DoDialogLoBlock     ;($C7CB)Welcome. We deal in tools...
 LD6AC:  .byte $25               ;TextBlock3, entry 5.
 
 LD6AD:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD6B0:  .byte WND_BUY_SELL      ;Buy/sell window.
+LD6B0:  .byte WINDOW_BUY_SELL      ;Buy/sell window.
 
 LD6B1:  BEQ DoToolPurchase      ;Did player choose to buy something? if so, branch.
 
-LD6B3:  CMP #WND_SELL           ;Did player choose to sell something?
+LD6B3:  CMP #WINDOW_SELL           ;Did player choose to sell something?
 LD6B5:  BNE ToolExitDialog      ;If not, branch to exit tool dialog.
 LD6B7:  JMP DoToolSell          ;($D739)Sell tools routines.
 
@@ -3707,7 +3707,7 @@ LD6C4:  .byte $24               ;TextBlock3, entry 4.
 LD6C5:  JSR GetShopItems        ;($D672)Display items for sale in this shop.
 
 LD6C8:  LDA WindowSelResults       ;Did player cancel out of item window?
-LD6CA:  CMP #WND_ABORT          ;If so, branch to exit tool dialog.
+LD6CA:  CMP #WINDOW_ABORT          ;If so, branch to exit tool dialog.
 LD6CC:  BEQ ToolExitDialog      ;($D6BA)Exit tool buy/sell dialog.
 
 LD6CE:  LDA ShopItemsTbl,X      ;Load selected item from shop item table.
@@ -3761,7 +3761,7 @@ LD70E:  JSR DoDialogLoBlock     ;($C7CB)The item? Thank you very much...
 LD711:  .byte $23               ;TextBlock3, entry 3.
 
 LD712:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD715:  .byte WND_POPUP         ;Pop-up window.
+LD715:  .byte WINDOW_POPUP         ;Pop-up window.
 
 NextToolDialog:
 LD716:  JSR DoDialogLoBlock     ;($C7CB)Dost thou want anything else...
@@ -3808,7 +3808,7 @@ LD74A:  .byte $1D               ;TextBlock2, entry 13.
 LD74B:  JSR Dowindow            ;($C6F0)display on-screen window.
 LD74E:  .byte WND_INVTRY1       ;Player inventory window.
 
-LD74F:  CMP #WND_ABORT          ;Did player abort from inventory window?
+LD74F:  CMP #WINDOW_ABORT          ;Did player abort from inventory window?
 LD751:  BNE GetSellDesc         ;
 LD753:  JMP ToolExitDialog      ;($D6BA)Exit tool buy/sell dialog.
 
@@ -3884,7 +3884,7 @@ LD7B3:  STA GoldUB              ;
 
 DoneSellingTool:
 LD7B5:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD7B8:  .byte WND_POPUP         ;Pop-up window.
+LD7B8:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LD7B9:  JMP ItemSellLoop        ;($D77A)Branch to see if player wants to sell more.
 
@@ -3992,7 +3992,7 @@ LD834:  STA GoldUB              ;
 LD836:  INC InventoryKeys       ;
 
 LD838:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD83B:  .byte WND_POPUP         ;Pop-up window.
+LD83B:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LD83C:  JSR DoDialogLoBlock     ;($C7CB)Here, take this key...
 LD83F:  .byte $15               ;TextBlock2, entry 5.
@@ -4055,7 +4055,7 @@ LD886:  LDA GenWord3CUB         ;
 LD888:  STA GoldUB              ;
 
 LD88A:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD88D:  .byte WND_POPUP         ;Pop-up window.
+LD88D:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LD88E:  JSR DoDialogLoBlock     ;($C7CB)I thank thee. Won't thou buy another bottle...
 LD891:  .byte $10               ;TextBlock2, entry 0.
@@ -4112,7 +4112,7 @@ LD8CD:  LDA GenWord3CUB         ;
 LD8CF:  STA GoldUB              ;
 
 LD8D1:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD8D4:  .byte WND_POPUP         ;Pop-up window.
+LD8D4:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LD8D5:  JSR DoDialogLoBlock     ;($C7CB)Good night...
 LD8D8:  .byte $09               ;TextBlock1, entry 9.
@@ -4130,7 +4130,7 @@ LD8E8:  LDA DisplayedMaxMP      ;
 LD8EA:  STA MagicPoints         ;
 
 LD8EC:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD8EF:  .byte WND_POPUP         ;Pop-up window.
+LD8EF:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LD8F0:  JSR GetRegularPalPtrs       ;($D915)Get pointers to the standard palettes.
 
@@ -4236,7 +4236,7 @@ LD973:  STA CharYPixelsLB       ;Pixel value will be processed more later.
 LD975:  LDA GenByte2C           ;Did player just come down stairs?
 LD977:  BEQ StairsFaceRight     ;If so, branch to make player face right.
 
-LD979:  LDA MapEntryDirTbl,Y    ;Get player's new facing direction from table.
+LD979:  LDA MapEntryDirectionTable,Y    ;Get player's new facing direction from table.
 LD97C:  JMP SetPlyrPixelLoc     ;($D981)Set player's X and Y pixel location.
 
 StairsFaceRight:
@@ -4266,13 +4266,13 @@ LD99C:  INX                     ;
 LD99D:  INX                     ;Increment to next entry in MapEntryTbl.
 LD99E:  INX                     ;
 
-LD99F:  INY                     ;Increment to next entry in MapEntryDirTbl.
+LD99F:  INY                     ;Increment to next entry in MapEntryDirectionTable.
 
 LD9A0:  CPX #$99                ;Have all the entries been checked?
 LD9A2:  BNE MapCheckLoop1       ;If not, loop to check another entry.
 
 LD9A4:  JSR Dowindow            ;($C6F0)display on-screen window.
-LD9A7:  .byte WND_DIALOG        ;Dialog window.
+LD9A7:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LD9A8:  JSR DoDialogLoBlock     ;($C7CB)Thou cannot enter here...
 LD9AB:  .byte $0E               ;TextBlock 1, entry 14.
@@ -4339,14 +4339,14 @@ LD9FE:  INX                     ;
 LD9FF:  INX                     ;Increment to next entry in MapTargetTbl.
 LDA00:  INX                     ;
 
-LDA01:  INY                     ;Increment to next entry in MapEntryDirTbl.
+LDA01:  INY                     ;Increment to next entry in MapEntryDirectionTable.
 
 LDA02:  CPX #$99                ;Have all the entries been checked?
 LDA04:  BNE MapCheckLoop2       ;If not, loop to check another entry.
 
 NoStairsFound:
 LDA06:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDA09:  .byte WND_DIALOG        ;Dialog window.
+LDA09:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDA0A:  JSR DoDialogLoBlock     ;($C7CB)There are no stairs here...
 LDA0D:  .byte $0D               ;TextBlock1, entry 13.
@@ -4368,7 +4368,7 @@ LDA1B:  ORA SpellFlagsLB        ;Does the player have any spells at all?
 LDA1D:  BNE +                   ;If so, branch to bring up spell window.
 
 LDA1F:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDA22:  .byte WND_DIALOG        ;Dialog window.
+LDA22:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDA23:  JSR DoDialogLoBlock     ;($C7CB)Player cannot use the spell...
 LDA26:  .byte $31               ;TextBlock4, entry 1.
@@ -4377,15 +4377,15 @@ LDA27:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
 
 LDA2A:* JSR ShowSpells          ;($DB56)Bring up the spell window.
 
-LDA2D:  CMP #WND_ABORT          ;Was the spell cancelled?
+LDA2D:  CMP #WINDOW_ABORT          ;Was the spell cancelled?
 LDA2F:  BNE +                   ;If not, branch.
 
-LDA31:  JMP ClrNCCmdWnd         ;($CF6A)Remove non-combat command window from screen.
+LDA31:  JMP ClearNonCombatCommandWindow         ;($CF6A)Remove non-combat command window from screen.
 
 LDA34:* PHA                     ;Save the spell cast on the stack for now.
 
 LDA35:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDA38:  .byte WND_DIALOG        ;Dialog window.
+LDA38:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDA39:  PLA                     ;Load A with the spell cast.
 LDA3A:  JSR CheckMP             ;($DB85)Check if MP is high enough to cast the spell.
@@ -4426,11 +4426,11 @@ LDA68:  BNE SpellFizzle         ;If not, branch to indicate nothing happened.
 LDA6A:  LDA #$50                ;Set the radiant timer.
 LDA6C:  STA RadiantTimer        ;
 
-LDA6E:  LDA #WND_DIALOG         ;Remove the dialog window from the screen.
+LDA6E:  LDA #WINDOW_DIALOG         ;Remove the dialog window from the screen.
 LDA70:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDA73:  LDA #WND_CMD_NONCMB     ;Remove the command window from the screen.
+LDA73:  LDA #WINDOW_CMD_NONCMB     ;Remove the command window from the screen.
 LDA75:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDA78:  LDA #WND_POPUP          ;Remove the pop-up window from the screen.
+LDA78:  LDA #WINDOW_POPUP          ;Remove the pop-up window from the screen.
 LDA7A:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LightIncreaseLoop:
@@ -4619,7 +4619,7 @@ LDB74:  STA DescBuf,X           ;
 LDB76:  JSR Dowindow            ;($C6F0)display on-screen window.
 LDB79:  .byte WND_SPELL2        ;Spell window.
 
-LDB7A:  CMP #WND_ABORT          ;Did the player abort the spell selection?
+LDB7A:  CMP #WINDOW_ABORT          ;Did the player abort the spell selection?
 LDB7C:  BEQ ShowSpellEnd        ;If so, branch to exit.
 
 LDB7E:  TAX                     ;
@@ -4667,7 +4667,7 @@ LDBAF:  LDA SpellToCast         ;Save the cast spell number on the stack.
 LDBB1:  PHA                     ;
 
 LDBB2:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDBB5:  .byte WND_POPUP         ;Pop-up window.
+LDBB5:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LDBB6:  PLA                     ;Return with the cast spell number in the accumulator.
 LDBB7:  RTS                     ;
@@ -4696,7 +4696,7 @@ LDBCD:* STA HitPoints           ;Store player's new HP value.
 LDBCF:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LDBD2:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDBD5:  .byte WND_POPUP         ;Pop-up window.
+LDBD5:  .byte WINDOW_POPUP         ;Pop-up window.
 LDBD6:  RTS                     ;
 
 DoHealmore:
@@ -4762,7 +4762,7 @@ LDC1E:  CPX #INV_NONE           ;Does player have any inventory?
 LDC20:  BNE ShowInventory       ;If so, branch to show inventory.
 
 LDC22:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDC25:  .byte WND_DIALOG        ;Dialog window.
+LDC25:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDC26:  JSR DoDialogLoBlock     ;($C7CB)Nothing of use has yet been given to thee...
 LDC29:  .byte $3D               ;TextBlock4, entry 13.
@@ -4773,10 +4773,10 @@ ShowInventory:
 LDC2D:  JSR Dowindow            ;($C6F0)display on-screen window.
 LDC30:  .byte WND_INVTRY1       ;Player inventory window.
 
-LDC31:  CMP #WND_ABORT          ;Did player cancel out of inventory window?
+LDC31:  CMP #WINDOW_ABORT          ;Did player cancel out of inventory window?
 LDC33:  BNE ChkItemUsed         ;If not, branch to check item they selected.
 
-LDC35:  JMP ClrNCCmdWnd         ;($CF6A)Remove non-combat command window from screen.
+LDC35:  JMP ClearNonCombatCommandWindow         ;($CF6A)Remove non-combat command window from screen.
 
 ChkItemUsed:
 LDC38:  TAX                     ;Load item description byte into A.
@@ -4835,7 +4835,7 @@ LDC8A:  CMP #BLK_DOOR           ;
 LDC8C:  BEQ DoorFound           ;If so, branch.
 
 LDC8E:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDC91:  .byte WND_DIALOG        ;Dialog window.
+LDC91:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDC92:  JSR DoDialogHiBlock     ;($C7C5)There is no door here...
 LDC95:  .byte $0B               ;TextBlock17, entry 11.
@@ -4847,7 +4847,7 @@ LDC99:  LDA InventoryKeys       ;Does the player have a key to use?
 LDC9B:  BNE UseKey              ;If so, branch.
 
 LDC9D:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDCA0:  .byte WND_DIALOG        ;Dialog window.
+LDCA0:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDCA1:  JSR DoDialogHiBlock     ;($C7C5)Thou has not a key to use...
 LDCA4:  .byte $0C               ;TextBlock17, entry 12.
@@ -4901,7 +4901,7 @@ LDCE0:* JSR GetJoypadStatus     ;($C608)Get input button presses.
 LDCE3:  LDA JoypadBtns          ;Have any buttons been pressed?
 LDCE5:  BNE -                   ;If not, loop until something is pressed.
 
-LDCE7:  JMP ClrNCCmdWnd         ;($CF6A)Clear non-combat command window.
+LDCE7:  JMP ClearNonCombatCommandWindow         ;($CF6A)Clear non-combat command window.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -4910,7 +4910,7 @@ LDCEA:  CMP #INV_HERB           ;Did player use an herb?
 LDCEC:  BNE ChkTorch            ;If not, branch.
 
 LDCEE:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDCF1:  .byte WND_DIALOG        ;Dialog window.
+LDCF1:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDCF2:  JSR DoDialogLoBlock     ;($C7CB)Player used the herb.
 LDCF5:  .byte $F7               ;TextBlock16, entry 7.
@@ -4939,7 +4939,7 @@ LDD10:* STA HitPoints           ;Update player's HP.
 LDD12:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LDD15:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDD18:  .byte WND_POPUP         ;Pop-up window.
+LDD18:  .byte WINDOW_POPUP         ;Pop-up window.
 LDD19:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -4953,7 +4953,7 @@ LDD20:  CMP #MAP_DUNGEON        ;
 LDD22:  BEQ UseTorch            ;if so, branch.
 
 LDD24:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDD27:  .byte WND_DIALOG        ;Dialog window.
+LDD27:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDD28:  JSR DoDialogLoBlock     ;($C7CB)A torch can only be used in dark places...
 LDD2B:  .byte $35               ;TextBlock4, entry 5.
@@ -4967,11 +4967,11 @@ LDD31:  JSR RemoveInvItem       ;($E04B)Remove item from inventory.
 LDD34:  LDA #$00                ;Clear any remaining time in the radiant timer.
 LDD36:  STA RadiantTimer        ;
 
-LDD38:  LDA #WND_DIALOG         ;Remove the dialog window.
+LDD38:  LDA #WINDOW_DIALOG         ;Remove the dialog window.
 LDD3A:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDD3D:  LDA #WND_CMD_NONCMB     ;Remove command window.
+LDD3D:  LDA #WINDOW_CMD_NONCMB     ;Remove command window.
 LDD3F:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDD42:  LDA #WND_POPUP          ;Remove pop-up window.
+LDD42:  LDA #WINDOW_POPUP          ;Remove pop-up window.
 LDD44:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LDD47:  LDA #$03                ;Set the light diameter to 3 blocks.
@@ -4990,7 +4990,7 @@ LDD53:  CMP #INV_FAIRY          ;Did player use fairy water?
 LDD55:  BNE ChkWings            ;If not, branch.
 
 LDD57:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDD5A:  .byte WND_DIALOG        ;Dialog window.
+LDD5A:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDD5B:  JSR DoDialogLoBlock     ;($C7CB)Player sprinkled the fairy water over his body...
 LDD5E:  .byte $36               ;TextBlock4, entry 6.
@@ -5009,7 +5009,7 @@ LDD6B:  CMP #INV_WINGS          ;Did player use the wyvern wings?
 LDD6D:  BNE ChkDrgnScl          ;If not, branch.
 
 LDD6F:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDD72:  .byte WND_DIALOG        ;Dialog window.
+LDD72:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDD73:  LDA MapType             ;Is player in a dungeon?
 LDD75:  CMP #MAP_DUNGEON        ;
@@ -5042,7 +5042,7 @@ LDD95:  CMP #INV_SCALE          ;Did player use the dragon's scale?
 LDD97:  BNE ChkFryFlt           ;If not, branch.
 
 LDD99:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDD9C:  .byte WND_DIALOG        ;Dialog window.
+LDD9C:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDD9D:  JSR ChkDragonScale      ;($DFB9)Check if player is wearing the dragon's scale.
 LDDA0:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
@@ -5054,7 +5054,7 @@ LDDA3:  CMP #INV_FLUTE          ;Did player use the fairy's flute?
 LDDA5:  BNE ChkFghtrRng         ;If not, branch.
 
 LDDA7:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDDAA:  .byte WND_DIALOG        ;Dialog window.
+LDDAA:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDDAB:  JSR DoDialogLoBlock     ;($C7CB)Player blew the faries' flute...
 LDDAE:  .byte $3C               ;TextBlock4, entry 12.
@@ -5083,7 +5083,7 @@ LDDC6:  CMP #INV_RING           ;Did player use the fighter's ring?
 LDDC8:  BNE ChkToken            ;If not, branch.
 
 LDDCA:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDDCD:  .byte WND_DIALOG        ;Dialog window.
+LDDCD:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDDCE:  JSR ChkRing             ;($DFD1)Check if player is wearing the ring.
 LDDD1:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
@@ -5095,7 +5095,7 @@ LDDD4:  CMP #INV_TOKEN          ;Did the player use Erdrick's token?
 LDDD6:  BNE ChkStones           ;If not, branch.
 
 LDDD8:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDDDB:  .byte WND_DIALOG        ;Dialog window.
+LDDDB:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDDDC:  LDA #$38                ;Index to Erdrick's token description.
 
@@ -5117,7 +5117,7 @@ LDDEC:  CMP #INV_STONES         ;Did the player use the stones of sunlight?
 LDDEE:  BNE ChkStaff            ;If not, branch.
 
 LDDF0:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDDF3:  .byte WND_DIALOG        ;Dialog window.
+LDDF3:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDDF4:  LDA #$3D                ;Index to stones of sunlight description.
 LDDF6:  BNE DoItemDescription   ;Branch always.
@@ -5129,7 +5129,7 @@ LDDF8:  CMP #INV_STAFF          ;Did the player use the staff of rain?
 LDDFA:  BNE ChkHarp             ;If not, branch.
 
 LDDFC:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDDFF:  .byte WND_DIALOG        ;Dialog window.
+LDDFF:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDE00:  LDA #$3E                ;Index to staff of rain description.
 LDE02:  BNE DoItemDescription   ;Branch always.
@@ -5141,7 +5141,7 @@ LDE04:  CMP #INV_HARP           ;Did the player use the harp?
 LDE06:  BNE ChkBelt             ;If not, branch.
 
 LDE08:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDE0B:  .byte WND_DIALOG        ;Dialog window.
+LDE0B:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDE0C:  JSR DoDialogLoBlock     ;($C7CB)Player played a sweet melody on the harp...
 LDE0F:  .byte $41               ;TextBox5, entry 1.
@@ -5168,11 +5168,11 @@ LDE2B:  BEQ HarpRNGLoop         ;Works even after the dragon lord is dead.
 
 LDE2D:  PHA                     ;Store the random enemy number on the stack.
 
-LDE2E:  LDA #WND_DIALOG         ;Remove the dialog window.
+LDE2E:  LDA #WINDOW_DIALOG         ;Remove the dialog window.
 LDE30:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDE33:  LDA #WND_CMD_NONCMB     ;Remove the command window.
+LDE33:  LDA #WINDOW_CMD_NONCMB     ;Remove the command window.
 LDE35:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDE38:  LDA #WND_POPUP          ;Remove the popup window.
+LDE38:  LDA #WINDOW_POPUP          ;Remove the popup window.
 LDE3A:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LDE3D:  PLA                     ;Restore the enemy number back to A.
@@ -5196,7 +5196,7 @@ LDE50:  CMP #INV_BELT           ;Did the player use the cursed belt?
 LDE52:  BNE ChkNecklace         ;If not, branch.
 
 LDE54:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDE57:  .byte WND_DIALOG        ;Dialog window.
+LDE57:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDE58:  JSR WearCursedItem      ;($DFE7)Player puts on cursed item.
 
@@ -5214,7 +5214,7 @@ LDE66:  CMP #INV_NECKLACE       ;Did the player use the death necklace?
 LDE68:  BNE ChkDrop             ;If not, branch.
 
 LDE6A:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDE6D:  .byte WND_DIALOG        ;Dialog window.
+LDE6D:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDE6E:  JSR ChkDeathNecklace    ;($E00A)Check if player is wearking the death necklace.
 
@@ -5234,7 +5234,7 @@ LDE7E:  BEQ +                   ;If so, branch.
 LDE80:  JMP ChkLove             ;Jump to see if player used Gwaelin's love.
 
 LDE83:* JSR Dowindow            ;($C6F0)display on-screen window.
-LDE86:  .byte WND_DIALOG        ;Dialog window.
+LDE86:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDE87:  JSR DoDialogLoBlock     ;($C7CB)Player held the rainbow drop toward the sky...
 LDE8A:  .byte $04               ;TextBox1, entry 4.
@@ -5255,11 +5255,11 @@ LDE9D:  LDA ModsnSpells         ;Has the rainbow bridge already been built?
 LDE9F:  AND #F_RNBW_BRDG        ;
 LDEA1:  BNE RainbowFail         ;If not, branch. The rainbow bridge creation failed.
 
-LDEA3:  LDA #WND_DIALOG         ;Remove the dialog window.
+LDEA3:  LDA #WINDOW_DIALOG         ;Remove the dialog window.
 LDEA5:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDEA8:  LDA #WND_CMD_NONCMB     ;Remove the command window.
+LDEA8:  LDA #WINDOW_CMD_NONCMB     ;Remove the command window.
 LDEAA:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LDEAD:  LDA #WND_POPUP          ;remove the pop-up window.
+LDEAD:  LDA #WINDOW_POPUP          ;remove the pop-up window.
 LDEAF:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LDEB2:  LDA #MSC_RNBW_BRDG      ;Rainbow bridge music.
@@ -5333,7 +5333,7 @@ LDF0D:  CMP #INV_LOVE           ;Did player use Gwaelin's love?
 LDF0F:  BNE EndItemChecks       ;If not, branch to end. No more items to check.
 
 LDF11:  JSR Dowindow            ;($C6F0)display on-screen window.
-LDF14:  .byte WND_DIALOG        ;Dialog window.
+LDF14:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LDF15:  LDA DisplayedLevel      ;Is player at the max level?
 LDF17:  CMP #LVL_30             ;
@@ -5657,7 +5657,7 @@ LE098:  JSR CreateInvList       ;($DF77)Create inventory list in description buf
 LE09B:  JSR Dowindow            ;($C6F0)display on-screen window.
 LE09E:  .byte WND_INVTRY1       ;Player inventory window.
 
-LE09F:  CMP #WND_ABORT          ;Did player abort the discard process?
+LE09F:  CMP #WINDOW_ABORT          ;Did player abort the discard process?
 LE0A1:  BEQ PlayerNoDiscard     ;If so, branch.
 
 LE0A3:  TAX                     ;Prepare a check to see if player is trying to discard
@@ -5736,7 +5736,7 @@ LE0FF:  .byte INV_HARP, INV_STONES, INV_STAFF, INV_DROP
 
 DoSearch:
 LE103:  JSR Dowindow            ;($C6F0)display on-screen window.
-LE106:  .byte WND_DIALOG        ;Dialog window.
+LE106:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LE107:  JSR DoDialogLoBlock     ;($C7CB)Player searched the ground all about...
 LE10A:  .byte $D2               ;TextBlock14, entry 2.
@@ -5889,7 +5889,7 @@ LE1E0:  JMP DoFinalDialog       ;($D242)But there found nothing...
 
 DoTake:
 LE1E3:  JSR Dowindow            ;($C6F0)display on-screen window.
-LE1E6:  .byte WND_DIALOG        ;Dialog window.
+LE1E6:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LE1E7:  LDA CharXPos            ;
 LE1E9:  STA XTarget             ;Get the block description of the block the player is standing on.
@@ -6240,7 +6240,7 @@ LE38F:  JSR DoDialogLoBlock     ;($C7CB)Of gold thou hast gained...
 LE392:  .byte $D8               ;TextBlock14, entry 8.
 
 LE393:  JSR Dowindow            ;($C6F0)display on-screen window.
-LE396:  .byte WND_POPUP         ;Pop-up window.
+LE396:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LE397:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
 
@@ -6285,7 +6285,7 @@ LE3CA:  JMP GetDescriptionByte  ;($DBF0)Load byte for item dialog description.
 ;----------------------------------------------------------------------------------------------------
 
 LoadCombatBckgrnd:
-LE3CD:  LDA EnNumber            ;
+LE3CD:  LDA EnemyNumber            ;
 LE3CF:  CMP #EN_DRAGONLORD2     ;Is this the final boss?
 LE3D1:  BNE +                   ;If so, skip drawing the background.
 LE3D3:  RTS                     ;
@@ -6379,12 +6379,12 @@ LE44E:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 LoadEnemyGFX:
-LE44F:  LDA EnNumber            ;Is this the final boss?
+LE44F:  LDA EnemyNumber            ;Is this the final boss?
 LE451:  CMP #EN_DRAGONLORD2     ;
 LE453:  BNE +                   ;If not branch to load regular enemy graphics.
 
 LE455:  LDA #$00                ;Clear enemy number.
-LE457:  STA EnNumber            ;
+LE457:  STA EnemyNumber            ;
 
 LE459:  BRK                     ;Load the final boss!
 LE45A:  .byte $02, $07          ;($BABD)DoEndFight, bank 0.
@@ -6487,7 +6487,7 @@ LE4DC:  JMP PalFadeIn           ;($C529)Fade in both background and sprite palet
 ;----------------------------------------------------------------------------------------------------
 
 InitFight:
-LE4DF:  STA EnNumber            ;Prepare to point to enemy data table entry.
+LE4DF:  STA EnemyNumber            ;Prepare to point to enemy data table entry.
 LE4E1:  STA EnemyDataPointer            ;
 
 LE4E3:  CMP #EN_DRAGONLORD2     ;Is this the final boss?
@@ -6513,17 +6513,17 @@ LE4FE:  ROL EnDatPtrUB          ;
 LE500:  ASL EnDatPtrLB          ;
 LE502:  ROL EnDatPtrUB          ;
 
-LE504:  LDA EnNumber            ;Save a copy of the enemy number.
+LE504:  LDA EnemyNumber            ;Save a copy of the enemy number.
 LE506:  PHA                     ;
 
 LE507:  LDA #$00                ;Zero out enemy number.
-LE509:  STA EnNumber            ;
+LE509:  STA EnemyNumber            ;
 
 LE50B:  BRK                     ;
 LE50C:  .byte $0C, $17          ;($9961)LoadEnemyStats, bank 1.
 
 LE50E:  PLA                     ;
-LE50F:  STA EnNumber            ;
+LE50F:  STA EnemyNumber            ;
 LE511:  CMP #EN_RDRAGON         ;
 LE513:  BNE +                   ;
 LE515:  LDA #$46                ;Load additional description bytes for the red dragon.
@@ -6541,15 +6541,15 @@ LE529:  LDA PlayerFlags         ;
 LE52B:  AND #$0F                ;Clear combat status flags.
 LE52D:  STA PlayerFlags         ;
 
-LE52F:  LDA EnNumber            ;
+LE52F:  LDA EnemyNumber            ;
 LE531:  PHA                     ;Save the enemy number on the stack and
-LE532:  LDA #$00                ;then clear the EnNumber variable.
-LE534:  STA EnNumber            ;
+LE532:  LDA #$00                ;then clear the EnemyNumber variable.
+LE534:  STA EnemyNumber            ;
 
 LE536:  JSR LoadStats           ;($F050)Update player attributes.
 
 LE539:  PLA                     ;Restore enemy number data.
-LE53A:  STA EnNumber            ;
+LE53A:  STA EnemyNumber            ;
 
 LE53C:  ASL                     ;*2 Pointer to enemy sprite data is 2 bytes.
 LE53D:  TAY                     ;Use Y as index into EnSpritesPtrTbl.
@@ -6609,9 +6609,9 @@ LE57A:  STA NPCUpdateCounter       ;
 LE57C:  JSR LoadEnemyGFX        ;($E44F)Display enemy sprites.
 
 LE57F:  JSR Dowindow            ;($C6F0)display on-screen window.
-LE582:  .byte WND_DIALOG        ;Dialog window.
+LE582:  .byte WINDOW_DIALOG        ;Dialog window.
 
-LE583:  LDA EnNumber            ;Is this the end boss?
+LE583:  LDA EnemyNumber            ;Is this the end boss?
 LE585:  CMP #EN_DRAGONLORD2     ;
 LE587:  BNE EnAppearText        ;If not, branch to display standard enemy approaching text.
 
@@ -6639,14 +6639,14 @@ LE5A7:  STA MultNum1UB          ;
 LE5A9:  STA MultNum2UB          ;
 LE5AB:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LE5AE:  LDA MultRsltUB          ;
+LE5AE:  LDA MultiplyResultUB          ;
 LE5B0:  LSR                     ;Take upper byte of result and divide it by 4.
 LE5B1:  LSR                     ;
-LE5B2:  STA MultRsltLB          ;
+LE5B2:  STA MultiplyResultLB          ;
 
 LE5B4:  LDA EnBaseHP            ;
 LE5B7:  SEC                     ;Subtract resulting upper byte from enemy HP.
-LE5B8:  SBC MultRsltLB          ;
+LE5B8:  SBC MultiplyResultLB          ;
 
 SetEnHP:
 LE5BA:  STA EnCurntHP           ;Store final enemy HP calculation.
@@ -6667,7 +6667,7 @@ LE5CB:  JMP StartEnemyTurn      ;($EB1B)It's the enemy's turn to attack.
 
 StartPlayerTurn:
 LE5CE:  JSR Dowindow            ;($C6F0)display on-screen window.
-LE5D1:  .byte WND_POPUP         ;Pop-up window.
+LE5D1:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LE5D2:  LDA PlayerFlags         ;Is player asleep?
 LE5D4:  BPL ShowCombatCommand         ;If not, branch.
@@ -6696,17 +6696,17 @@ LE5EF:  JSR DoDialogLoBlock     ;($C7CB)Command?...
 LE5F2:  .byte $E8               ;TextBlock15, entry 8.
 
 LE5F3:  JSR Dowindow            ;($C6F0)display on-screen window.
-LE5F6:  .byte WND_CMD_CMB       ;Combat command window.
+LE5F6:  .byte WINDOW_CMD_CMB       ;Combat command window.
 
 LE5F7:  LDA WindowSelResults       ;Is player choosing to attack enemy?
 LE5F9:  BEQ PlayerFight           ;If so, branch.
 
-LE5FB:  JMP ChkPlyrSpell        ;($E6B6)Check if player attempted to cast a spell.
+LE5FB:  JMP CheckPlayerSpell        ;($E6B6)Check if player attempted to cast a spell.
 
 ;----------------------------------------------------------------------------------------------------
 
 PlayerFight:
-LE5FE:  LDA #WND_CMD_CMB        ;Remove combat window from screen.
+LE5FE:  LDA #WINDOW_CMD_CMB        ;Remove combat window from screen.
 LE600:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LE603:  LDA #SFX_ATTACK         ;Player attack SFX.
@@ -6721,17 +6721,17 @@ LE60E:  STA AttackStat          ;Save a copy of the player's attack and enemy's 
 LE610:  LDA EnBaseDef           ;
 LE613:  STA DefenseStat         ;
 
-LE615:  LDA EnNumber            ;Is player fighting the dragonlord's first form?
+LE615:  LDA EnemyNumber            ;Is player fighting the dragonlord's first form?
 LE617:  CMP #EN_DRAGONLORD1     ;
-LE619:  BEQ ChkPlyrMiss         ;If so, branch. no excellent moves permitted.
+LE619:  BEQ CheckPlayerMiss         ;If so, branch. no excellent moves permitted.
 
 LE61B:  CMP #EN_DRAGONLORD2     ;Is player fighting the dragonlord's final form?
-LE61D:  BEQ ChkPlyrMiss         ;If so, branch. no excellent moves permitted.
+LE61D:  BEQ CheckPlayerMiss         ;If so, branch. no excellent moves permitted.
 
 LE61F:  JSR UpdateRandNum       ;($C55B)Get random number.
 LE622:  LDA RandomNumberUB           ;
 LE624:  AND #$1F                ;Did player get an excellent move(1/32 chance)?
-LE626:  BNE ChkPlyrMiss         ;If not, branch to see if player missed.
+LE626:  BNE CheckPlayerMiss         ;If not, branch to see if player missed.
 
 LE628:  LDA #SFX_EXCLNT_MOVE    ;Excellent move SFX
 LE62A:  BRK                     ;
@@ -6755,10 +6755,10 @@ LE646:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
 LE649:  LDA DisplayedAttack      ;Total equation for excellent move damage:
 LE64B:  SEC                     ;Damage=DisplayedAttack-(DisplayedAttack/2 * rnd(255))/256.
-LE64C:  SBC MultRsltUB          ;
+LE64C:  SBC MultiplyResultUB          ;
 LE64E:  JMP SetEnDmg1           ;($E664)Set the amount of damage player did to the enemy.
 
-ChkPlyrMiss:
+CheckPlayerMiss:
 LE651:  JSR PlayerCalcHitDmg      ;($EFE5)Calculate the damage player will do to the enemy.
 LE654:  LDA CalcDamage          ;Did player do damage to the enemy?
 LE656:  BNE SetEnDmg1           ;If so, branch.
@@ -6831,11 +6831,11 @@ LE6B3:  JMP UpdateEnHP          ;($E95D)Subtract damage from enemy HP.
 
 ;----------------------------------------------------------------------------------------------------
 
-ChkPlyrSpell:
+CheckPlayerSpell:
 LE6B6:  CMP #CC_SPELL           ;Did player try to cast a spell?
 LE6B8:  BEQ PlayerSpell           ;If so, branch.
 
-LE6BA:  JMP ChkPlyrItem         ;($E7A2)Check if player is trying to use an item.
+LE6BA:  JMP CheckPlayerItem         ;($E7A2)Check if player is trying to use an item.
 
 PlayerSpell:
 LE6BD:  LDA SpellFlags          ;
@@ -6846,7 +6846,7 @@ LE6C5:  STA SpellFlagsUB        ;If so, branch to show available spells.
 LE6C7:  ORA SpellFlagsLB        ;
 LE6C9:  BNE ShowSpellWnd        ;
 
-LE6CB:  LDA #WND_CMD_CMB        ;Remove command window.
+LE6CB:  LDA #WINDOW_CMD_CMB        ;Remove command window.
 LE6CD:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LE6D0:  JSR DoDialogLoBlock     ;($C7CB)Player cannot yet use the spell.
@@ -6856,17 +6856,17 @@ LE6D4:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 
 ShowSpellWnd:
 LE6D7:  JSR ShowSpells          ;($DB56)Bring up the spell window.
-LE6DA:  CMP #WND_ABORT          ;Did player abort spell?
+LE6DA:  CMP #WINDOW_ABORT          ;Did player abort spell?
 LE6DC:  BNE PlayerSpellChosen     ;If not, branch.
 
-LE6DE:  LDA #WND_CMD_CMB        ;Remove command window from the screen.
+LE6DE:  LDA #WINDOW_CMD_CMB        ;Remove command window from the screen.
 LE6E0:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 LE6E3:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 
 PlayerSpellChosen:
 LE6E6:  PHA                     ;Save a copy of the spell chosen on the stack.
 
-LE6E7:  LDA #WND_CMD_CMB        ;Remove the command window from the screen.
+LE6E7:  LDA #WINDOW_CMD_CMB        ;Remove the command window from the screen.
 LE6E9:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LE6EC:  PLA                     ;Restore the spell chosen from the stack.
@@ -6995,11 +6995,11 @@ LE79F:  JMP StartEnemyTurn      ;($EB1B)It's the enemy's turn to attack.
 
 ;----------------------------------------------------------------------------------------------------
 
-ChkPlyrItem:
+CheckPlayerItem:
 LE7A2:  CMP #CC_ITEM            ;Is player trying to use an item?
 LE7A4:  BEQ PlayerItem            ;If so, branch.
 
-LE7A6:  JMP ChkPlyrRun          ;($E87F)Check if player is trying to run.
+LE7A6:  JMP CheckPlayerRun          ;($E87F)Check if player is trying to run.
 
 PlayerItem:
 LE7A9:  JSR CreateInvList       ;($DF77)Create inventory list in description buffer.
@@ -7007,7 +7007,7 @@ LE7A9:  JSR CreateInvList       ;($DF77)Create inventory list in description buf
 LE7AC:  CPX #INV_NONE           ;Does the player have any inventory?
 LE7AE:  BNE PlayerShowInv         ;If so, branch to show inventory window.
 
-LE7B0:  LDA #WND_CMD_CMB        ;Remove command window.
+LE7B0:  LDA #WINDOW_CMD_CMB        ;Remove command window.
 LE7B2:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LE7B5:  JSR DoDialogLoBlock     ;($C7CB)Nothing of use has yet been given to thee...
@@ -7019,17 +7019,17 @@ PlayerShowInv:
 LE7BC:  JSR Dowindow            ;($C6F0)display on-screen window.
 LE7BF:  .byte WND_INVTRY1       ;Player inventory window.
 
-LE7C0:  CMP #WND_ABORT          ;Did player abort the item window?
+LE7C0:  CMP #WINDOW_ABORT          ;Did player abort the item window?
 LE7C2:  BNE ChkCmbtItemUsed     ;If not, branch to figure out which item player used.
 
-LE7C4:  LDA #WND_CMD_CMB        ;Remove command window from the screen.
+LE7C4:  LDA #WINDOW_CMD_CMB        ;Remove command window from the screen.
 LE7C6:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 LE7C9:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 
 ChkCmbtItemUsed:
 LE7CC:  PHA                     ;Store copy of item used.
 
-LE7CD:  LDA #WND_CMD_CMB        ;Remove command window.
+LE7CD:  LDA #WINDOW_CMD_CMB        ;Remove command window.
 LE7CF:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LE7D2:  PLA                     ;Restore item used.
@@ -7063,7 +7063,7 @@ LE7F1:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 LE7F3:  BRK                     ;Wait for the music clip to end.
 LE7F4:  .byte $03, $17          ;($815E)WaitForMusicEnd, bank 1.
 
-LE7F6:  LDA EnNumber            ;Restart fight music.
+LE7F6:  LDA EnemyNumber            ;Restart fight music.
 LE7F8:  CMP #EN_DRAGONLORD2     ;Is player fighting the end boss?
 LE7FA:  BEQ PlayEndBossMusic1   ;If so, branch to restart end boss music.
 
@@ -7076,7 +7076,7 @@ LE801:  LDA #MSC_END_BOSS       ;End boss music.
 LE803:* BRK                     ;
 LE804:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 
-LE806:  LDA EnNumber            ;Is player fighting the golem?
+LE806:  LDA EnemyNumber            ;Is player fighting the golem?
 LE808:  CMP #EN_GOLEM           ;
 LE80A:  BNE FluteFail           ;If not, branch. Flute has no effect.
 
@@ -7108,7 +7108,7 @@ LE82B:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 LE82D:  BRK                     ;Wait for the music clip to end.
 LE82E:  .byte $03, $17          ;($815E)WaitForMusicEnd, bank 1.
 
-LE830:  LDA EnNumber            ;Is the player fighting the end boss?
+LE830:  LDA EnemyNumber            ;Is the player fighting the end boss?
 LE832:  CMP #EN_DRAGONLORD2     ;
 LE834:  BEQ PlayEndBossMusic2   ;If so, branch to restart end boss music.
 
@@ -7171,14 +7171,14 @@ LE87C:  JMP InvalidCombatSpell  ;($E6FD)Tell player item cannot be used in comba
 
 ;----------------------------------------------------------------------------------------------------
 
-ChkPlyrRun:
+CheckPlayerRun:
 LE87F:  CMP #CC_RUN             ;Did player try to run?
 LE881:  BEQ PlayerRun             ;If so, branch.
 
 LE883:  JMP ShowCombatCommand         ;($E5EF)Show command dialog.
 
 PlayerRun:
-LE886:  LDA #WND_CMD_CMB        ;Remove the command window from the screen.
+LE886:  LDA #WINDOW_CMD_CMB        ;Remove the command window from the screen.
 LE888:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LE88B:  LDA #SFX_RUN            ;Run away SFX.
@@ -7205,7 +7205,7 @@ LE8A6:  LDA ResumeMusicTbl,X    ;Use current map number to resume music.
 LE8A9:  BRK                     ;
 LE8AA:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 
-LE8AC:  LDA EnNumber            ;Was player fighting the end boss?
+LE8AC:  LDA EnemyNumber            ;Was player fighting the end boss?
 LE8AE:  CMP #EN_DRAGONLORD2     ;
 LE8B0:  BNE ChkMapHauksness     ;If not, branch.
 
@@ -7218,7 +7218,7 @@ LE8BD:  STA PalettePointerUB            ;
 
 LE8BF:  LDA #$00                ;
 LE8C1:  STA PalModByte          ;Disable fande-in/fade-out.
-LE8C3:  STA EnNumber            ;
+LE8C3:  STA EnemyNumber            ;
 
 LE8C5:  JSR PrepSPPalLoad       ;($C632)Load sprite palette data into PPU buffer.
 LE8C8:  JSR PrepBGPalLoad       ;($C63D)Load background palette data into PPU buffer
@@ -7339,7 +7339,7 @@ LE968:  JMP StartEnemyTurn      ;($EB1B)It's the enemy's turn to attack.
 ;----------------------------------------------------------------------------------------------------
 
 EnemyDefeated:
-LE96B:  LDA EnNumber            ;Check what enemy was just killed.
+LE96B:  LDA EnemyNumber            ;Check what enemy was just killed.
 LE96D:  CMP #EN_GDRAGON         ;Was it a green dragon?
 LE96F:  BNE ChkGolemKilled      ;If not, move on.
 
@@ -7376,7 +7376,7 @@ LE999:  LDA #MSC_VICTORY        ;Victory music.
 LE99B:  BRK                     ;
 LE99C:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 
-LE99E:  LDA EnNumber            ;Was it the first dragonlord that was defeated?
+LE99E:  LDA EnemyNumber            ;Was it the first dragonlord that was defeated?
 LE9A0:  CMP #EN_DRAGONLORD1     ;
 LE9A2:  BNE NotDL1Defeated      ;If not, branch to move on.
 
@@ -7429,7 +7429,7 @@ LE9E4:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LE9E7:  JSR WaitForNMI          ;($FF74)
 
 LE9EA:  LDA #$00                ;Clear enemy number.
-LE9EC:  STA EnNumber            ;
+LE9EC:  STA EnemyNumber            ;
 
 LE9EE:  JSR DoDialogHiBlock     ;($C7C5)Thou hast found the ball of light...
 LE9F1:  .byte $1A               ;TextBlock18, entry 10.
@@ -7487,7 +7487,7 @@ LEA3D:  STA MultNum1UB          ;
 LEA3F:  STA MultNum2UB          ;
 LEA41:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LEA44:  LDA MultRsltUB          ;
+LEA44:  LDA MultiplyResultUB          ;
 LEA46:  STA FightGoldLB         ;Final equation for gained gold:
 LEA48:  LDA #$00                ;Gold=EnBaseGold*(192+rnd(63))/256.
 LEA4A:  STA FightGoldUB         ;
@@ -7509,7 +7509,7 @@ LEA61:  STA GoldUB              ;
 
 ChkLevelUp:
 LEA63:  JSR Dowindow            ;($C6F0)display on-screen window.
-LEA66:  .byte WND_POPUP         ;Pop-up window.
+LEA66:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LEA67:  LDA DisplayedMaxMP      ;
 LEA69:  PHA                     ;
@@ -7640,7 +7640,7 @@ LEB10:  JSR DoDialogLoBlock     ;($C7CB)Thou hast learned a new spell...
 LEB13:  .byte $F2               ;TextBlock16, entry 2.
 
 LEB14:* JSR Dowindow            ;($C6F0)display on-screen window.
-LEB17:  .byte WND_POPUP         ;Pop-up window.
+LEB17:  .byte WINDOW_POPUP         ;Pop-up window.
 
 LEB18:  JMP ExitFight           ;($EE54)Return to map after fight.
 
@@ -8026,7 +8026,7 @@ LED45:  BEQ +                   ;If so, branch.
 LED47:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LED4A:  JMP ChkShakeCounter     ;Player did not die. Update screen shake.
 
-LED4D:* LDA EnNumber            ;Player died. Is player fighting the end boss?
+LED4D:* LDA EnemyNumber            ;Player died. Is player fighting the end boss?
 LED4F:  CMP #EN_DRAGONLORD2     ;
 LED51:  BEQ ChkShakeCounter     ;If so, branch to update the screen shake.
 
@@ -8051,7 +8051,7 @@ LED69:  ADC #$02                ;
 LED6B:  STA ScrollY             ;
 
 DoShake:
-LED6D:  LDA EnNumber            ;Is player fighting the end boss?
+LED6D:  LDA EnemyNumber            ;Is player fighting the end boss?
 LED6F:  CMP #EN_DRAGONLORD2     ;
 LED71:  BNE +                   ;If not, branch.
 
@@ -8075,7 +8075,7 @@ LED8D:  JSR DoDialogLoBlock     ;($C7CB)Thy hit points decreased...
 LED90:  .byte $FA               ;TextBlock16, entry 10.
 
 LED91:  JSR Dowindow            ;($C6F0)display on-screen window.
-LED94:  .byte WND_POPUP         ;Show pop-up window.
+LED94:  .byte WINDOW_POPUP         ;Show pop-up window.
 
 LED95:  LDA HitPoints           ;Has player died?
 LED97:  BEQ PlayerHasDied       ;
@@ -8099,7 +8099,7 @@ LEDAA:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 LEDAC:  BRK                     ;Wait for the music clip to end.
 LEDAD:  .byte $03, $17          ;($815E)WaitForMusicEnd, bank 1.
 
-LEDAF:  LDA #WND_DIALOG         ;Dialog window.
+LEDAF:  LDA #WINDOW_DIALOG         ;Dialog window.
 LEDB1:  JSR _DoWindow           ;($C703)Show dialog window.
 
 DeathText:
@@ -8124,11 +8124,11 @@ LEDCF:  LDA PlayerFlags         ;
 LEDD1:  AND #$FE                ;Clear flag indicating player is carrying Gwaelin.
 LEDD3:  STA PlayerFlags         ;
 
-LEDD5:  LDA EnNumber            ;Appears to have no effect.
+LEDD5:  LDA EnemyNumber            ;Appears to have no effect.
 LEDD7:  STA DrgnLrdPal          ;
 
 LEDDA:  LDA #$00                ;Clear out enemy number.
-LEDDC:  STA EnNumber            ;
+LEDDC:  STA EnemyNumber            ;
 
 LEDDE:  JSR StartAtThroneRoom   ;($CB47)Start player at throne room.
 
@@ -8161,7 +8161,7 @@ LEE03:  JSR DoDialogHiBlock     ;($C7C5)Now go player...
 LEE06:  .byte $13               ;TextBlock18, entry 3.
 
 LEE07:  JSR WaitForBtnRelease   ;($CFE4)Wait for player to release then press joypad buttons.
-LEE0A:  LDA #WND_DIALOG         ;Remove dialog window from the screen.
+LEE0A:  LDA #WINDOW_DIALOG         ;Remove dialog window from the screen.
 LEE0C:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LEE0F:  LDA #NPC_MOVE           ;
@@ -8187,7 +8187,7 @@ LEE25:  JMP PrepBGPalLoad       ;($C63D)Load background palette data into PPU bu
 LoadRegularBGPal:
 LEE28:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
-LEE2B:  LDA EnNumber            ;Is player fighting the end boss?
+LEE2B:  LDA EnemyNumber            ;Is player fighting the end boss?
 LEE2D:  CMP #EN_DRAGONLORD2     ;
 LEE2F:  BNE LoadRegularMapPal       ;If not, branch.
 
@@ -8238,9 +8238,9 @@ LEE72:  BEQ +                   ;If so, branch. to reset counter.
 LEE74:  LDA #$FF                ;Indicate no NPCs on the current map.
 LEE76:* STA NPCUpdateCounter       ;Update NPCUpdateCounter.
 
-LEE78:  LDA #WND_DIALOG         ;Remove dialog window from screen.
+LEE78:  LDA #WINDOW_DIALOG         ;Remove dialog window from screen.
 LEE7A:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
-LEE7D:  LDA #WND_ALPHBT         ;Remove alphabet window from screen.
+LEE7D:  LDA #WINDOW_ALPHBT         ;Remove alphabet window from screen.
 LEE7F:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LEE82:  LDA #DIR_DOWN           ;Player will be facing down.
@@ -8256,7 +8256,7 @@ LEE90:  RTS                     ;
 TryRun:
 LEE91:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LEE94:  LDA EnNumber            ;Is player running from an Armored Knight, Red Dragon,
+LEE94:  LDA EnemyNumber            ;Is player running from an Armored Knight, Red Dragon,
 LEE96:  CMP #EN_STONEMAN        ;Dragonlord 1 or Dragonlord 2?
 LEE98:  BCC ChkGrDrgnRun        ;If not, branch.
 
@@ -8301,9 +8301,9 @@ LEED0:  STA MultNum1UB          ;
 LEED2:  STA MultNum2UB          ;
 LEED4:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LEED7:  LDA MultRsltLB          ;
+LEED7:  LDA MultiplyResultLB          ;
 LEED9:  STA GenWord42LB         ;Save the results for later.
-LEEDB:  LDA MultRsltUB          ;
+LEEDB:  LDA MultiplyResultUB          ;
 LEEDD:  STA GenWord42UB         ;
 
 LEEDF:  JSR UpdateRandNum       ;($C55B)Get random number.
@@ -8317,17 +8317,17 @@ LEEEC:  STA MultNum1UB          ;
 LEEEE:  STA MultNum2UB          ;
 LEEF0:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LEEF3:  LDA MultRsltLB          ;
+LEEF3:  LDA MultiplyResultLB          ;
 LEEF5:  SEC                     ;Subtract the enemy's defense*rnd from player's agility*rnd.
 LEEF6:  SBC GenWord42LB         ;If number comes out negative, that's bad for the
-LEEF8:  LDA MultRsltUB          ;player(carry clear). The higher the enemy's defense, the
+LEEF8:  LDA MultiplyResultUB          ;player(carry clear). The higher the enemy's defense, the
 LEEFA:  SBC GenWord42UB         ;harder it is for the player to come out on top.
 LEEFC:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
 LoadEnPalette:
-LEEFD:  LDA EnNumber            ;
+LEEFD:  LDA EnemyNumber            ;
 LEEFF:  STA MultNum1LB          ;
 LEF01:  LDA #$0C                ;
 LEF03:  STA MultNum2LB          ;Multiply the enemy number by 12. There are 12 bytes of
@@ -8336,11 +8336,11 @@ LEF07:  STA MultNum1UB          ;the desired enemy palette data.
 LEF09:  STA MultNum2UB          ;
 LEF0B:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LEF0E:  LDA MultRsltLB          ;
+LEF0E:  LDA MultiplyResultLB          ;
 LEF10:  CLC                     ;
 LEF11:  ADC EnSPPalsPtr         ;Add the base address of the enemy palette data
 LEF14:  STA GenPtr3CLB          ;to the calculated index from above. The pointer
-LEF16:  LDA MultRsltUB          ;Now points to the proper enemy palette data.
+LEF16:  LDA MultiplyResultUB          ;Now points to the proper enemy palette data.
 LEF18:  ADC EnSPPalsPtr+1       ;
 LEF1B:  STA GenPtr3CUB          ;
 
@@ -8388,7 +8388,7 @@ LEF4F:  STA PalModByte          ;
 
 LEF51:  JSR PrepSPPalLoad       ;($C632)Load sprite palette data into PPU buffer.
 
-LEF54:  LDA EnNumber            ;Is the player fighting the end boss?
+LEF54:  LDA EnemyNumber            ;Is the player fighting the end boss?
 LEF56:  CMP #EN_DRAGONLORD2     ;
 LEF58:  BNE +                   ;If not, branch.
 
@@ -8419,7 +8419,7 @@ LEF7E:  STA PalModByte          ;
 
 LEF80:  JSR PrepSPPalLoad       ;($C632)Load sprite palette data into PPU buffer.
 
-LEF83:  LDA EnNumber            ;Is the player fighting the end boss?
+LEF83:  LDA EnemyNumber            ;Is the player fighting the end boss?
 LEF85:  CMP #EN_DRAGONLORD2     ;
 LEF87:  BNE +                   ;If not, branch.
 
@@ -8522,7 +8522,7 @@ LF011:  STA MultNum1UB          ;
 LF013:  STA MultNum2UB          ;
 LF015:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LF018:  LDA MultRsltUB          ;
+LF018:  LDA MultiplyResultUB          ;
 LF01A:  CLC                     ;A = (A/256+2)/3.
 LF01B:  ADC #$02                ;
 LF01D:  STA DivNum1LB           ;Total equation for weak enemy attack:
@@ -8551,7 +8551,7 @@ LF03F:  STA MultNum1UB          ;
 LF041:  STA MultNum2UB          ;
 LF043:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LF046:  LDA MultRsltUB          ;A = (A/256 + BaseAttack) / 4.
+LF046:  LDA MultiplyResultUB          ;A = (A/256 + BaseAttack) / 4.
 LF048:  CLC                     ;
 LF049:  ADC BaseAttack          ;
 LF04B:  ROR                     ;Total equation for normal attack damage:
@@ -8750,9 +8750,9 @@ LF114:  STA MultNum1UB          ;
 LF116:  STA MultNum2UB          ;
 LF118:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LF11B:  LDA MultRsltLB          ;
+LF11B:  LDA MultiplyResultLB          ;
 LF11D:  STA DivNum1LB           ;Save results of multiplication.
-LF11F:  LDA MultRsltUB          ;
+LF11F:  LDA MultiplyResultUB          ;
 LF121:  STA DivNmu1UB           ;
 
 LF123:  LDA #$0A                ;prepare to Divide stat by 10.
@@ -9325,7 +9325,7 @@ LF788:  LDA SaveNumber          ;Saved game RAM was corrupted. Erase game.
 LF78B:  JSR ClearValidSaves     ;($F80F)Clear ValidSave variable for selected game.
 
 LF78E:  JSR Dowindow            ;($C6F0)display on-screen window.
-LF791:  .byte WND_DIALOG        ;Dialog window.
+LF791:  .byte WINDOW_DIALOG        ;Dialog window.
 
 LF792:  LDA SaveNumber          ;
 LF795:  CLC                     ;
@@ -9489,7 +9489,7 @@ LF862:  BNE PreUnusedSaves      ;If so, branch.
 
 PreSavesUsed:
 LF864:  JSR Dowindow            ;($C6F0)display on-screen window.
-LF867:  .byte WND_CNT_CH_ER     ;Continue, change, erase window.
+LF867:  .byte WINDOW_CNT_CH_ER     ;Continue, change, erase window.
 
 LF868:  CMP #$00                ;Was continue saved game selected?
 LF86A:  BNE ChkChngMsgSpeed     ;If not, branch to check next selection.
@@ -9509,7 +9509,7 @@ LF87A:  JMP DoEraseGame         ;($F911)Select game to erase.
 
 PreUnusedSaves:
 LF87D:  JSR Dowindow            ;($C6F0)display on-screen window.
-LF880:  .byte WND_FULL_MNU      ;Full menu window.
+LF880:  .byte WINDOW_FULL_MNU      ;Full menu window.
 
 LF881:  CMP #$00                ;Was continue saved game selected?
 LF883:  BNE ChkChngMsgSpeed2    ;If not, branch to check next selection.
@@ -9539,7 +9539,7 @@ LF8A1:  JMP DoEraseGame         ;($F911)Select game to erase.
 
 PreNoSaves:
 LF8A4:  JSR Dowindow            ;($C6F0)display on-screen window.
-LF8A7:  .byte WND_NEW_QST       ;Begin new quest window.
+LF8A7:  .byte WINDOW_NEW_QST       ;Begin new quest window.
 
 LF8A8:  CMP #$00                ;Was continue saved game selected?
 LF8AA:  BNE PreNoSaves          ;If not, branch to stay on current menu.
@@ -9550,7 +9550,7 @@ LF8AC:  JMP DoNewQuest          ;($F8C2)Start a new game.
 DoContinueGame:
 LF8AF:  LDA #$00                ;Prepare to get valid saved games.
 LF8B1:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
-LF8B4:  CMP #WND_ABORT          ;Was B button pressed?
+LF8B4:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF8B6:  BNE PrepContinueGame    ;If not, branch to continue saved game.
 LF8B8:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
@@ -9564,7 +9564,7 @@ LF8C1:  RTS                     ;
 DoNewQuest:
 LF8C2:  LDA #$FF                ;Prepare to show available adventure log spots.
 LF8C4:  JSR ShowOpenLogs        ;($F983)Show open adventure log spots.
-LF8C7:  CMP #WND_ABORT          ;Was B button pressed?
+LF8C7:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF8C9:  BNE NewQuest            ;If not, branch to input character name of new game.
 
 LF8CB:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
@@ -9579,9 +9579,9 @@ LF8D4:  LDA #MSG_NORMAL         ;Set normal message speed.
 LF8D6:  STA MessageSpeed        ;
 
 LF8D8:  JSR Dowindow            ;($C6F0)display on-screen window.
-LF8DB:  .byte WND_MSG_SPEED     ;Message speed window.
+LF8DB:  .byte WINDOW_MSG_SPEED     ;Message speed window.
 
-LF8DC:  CMP #WND_ABORT          ;Was B button pressed?
+LF8DC:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF8DE:  BNE InitNewGame         ;If not, branch to initialize the new game.
 
 LF8E0:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
@@ -9599,7 +9599,7 @@ LF8EB:  RTS                     ;
 DoChngMsgSpeed:
 LF8EC:  LDA #$00                ;Prepare to show occupied adventure log spots.
 LF8EE:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
-LF8F1:  CMP #WND_ABORT          ;Was B button pressed?
+LF8F1:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF8F3:  BNE ShowChngMsgSpeed    ;If not, branch to show change message speed window.
 
 LF8F5:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
@@ -9609,9 +9609,9 @@ LF8F8:  STA SaveNumber          ;Store desired game number.
 LF8FB:  JSR Copy100Times        ;($FAC1)Make up to 100 copies of saved game to validate.
 
 LF8FE:  JSR Dowindow            ;($C6F0)display on-screen window.
-LF901:  .byte WND_MSG_SPEED     ;Message speed window.
+LF901:  .byte WINDOW_MSG_SPEED     ;Message speed window.
 
-LF902:  CMP #WND_ABORT          ;Was B button pressed?
+LF902:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF904:  BNE ChngMsgSpeed        ;If not, branch to change message speed.
 
 LF906:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
@@ -9626,7 +9626,7 @@ LF90E:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 DoEraseGame:
 LF911:  LDA #$00                ;Prepare to get used save game slots.
 LF913:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
-LF916:  CMP #WND_ABORT          ;Was B button pressed?
+LF916:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF918:  BNE VerifyErase         ;If not, branch to show verify window.
 LF91A:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
@@ -9635,12 +9635,12 @@ LF91D:  STA SaveNumber          ;Make copies of save slot selected(0 to 2).
 LF920:  STA SaveSelected        ;
 
 LF923:  JSR Dowindow            ;($C6F0)display on-screen window.
-LF926:  .byte WND_ERASE         ;Erase log window.
+LF926:  .byte WINDOW_ERASE         ;Erase log window.
 
 LF927:  JSR Dowindow            ;($C6F0)display on-screen window.
 LF92A:  .byte WND_YES_NO2       ;Yes/No selection window.
 
-LF92B:  CMP #WND_YES            ;Was chosen from selection window?
+LF92B:  CMP #WINDOW_YES            ;Was chosen from selection window?
 LF92D:  BEQ EraseGame           ;If so, branch to erase selected game.
 LF92F:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 
@@ -9654,7 +9654,7 @@ LF938:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
 DoCopyGame:
 LF93B:  LDA #$00                ;Prepare to get used save game slots.
 LF93D:  JSR ShowUsedLogs        ;($F99F)Show occupied adventure logs.
-LF940:  CMP #WND_ABORT          ;Was B button pressed?
+LF940:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF942:  BNE ShowOpenSlots       ;If not, branch to show open save game slots.
 
 LF944:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
@@ -9663,7 +9663,7 @@ ShowOpenSlots:
 LF947:  STA SaveNumber          ;Save a copy of the selected slot.
 LF94A:  LDA #$FF                ;Prepare to get open save game slots.
 LF94C:  JSR ShowOpenLogs        ;($F983)Show open adventure log spots.
-LF94F:  CMP #WND_ABORT          ;Was B button pressed?
+LF94F:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF951:  BNE ConfirmCopy         ;If not, branch to confirm save game copy.
 
 LF953:  JMP WindowBackToMain       ;($F96A)Go back to main pre-game window.
@@ -9718,7 +9718,7 @@ LF98E:  ADC #$11                ;
 LF990:  BRK                     ;Display empty adventure logs window (windows #$12 to #$18).
 LF991:  .byte $10, $17          ;($A194)ShowWindow, bank 1.
 
-LF993:  CMP #WND_ABORT          ;Was B button pressed?
+LF993:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF995:  BNE ShowOpenLogsExit    ;If not, exit with selected log results.
 
 NoOpenGames:
@@ -9743,7 +9743,7 @@ LF9AA:  ADC #$18                ;
 LF9AC:  BRK                     ;Display used adventure logs window (windows #$19 to #$1F).
 LF9AD:  .byte $10, $17          ;($A194)ShowWindow, bank 1.
 
-LF9AF:  CMP #WND_ABORT          ;Was B button pressed?
+LF9AF:  CMP #WINDOW_ABORT          ;Was B button pressed?
 LF9B1:  BNE ShowUsedLogsExit    ;If not, exit with selected log results.
 
 NoSavedGames:
@@ -10393,7 +10393,7 @@ LFCC4:  PHA                     ;
 LFCC5:  PHP                     ;
 
 LFCC6:  LDA ActiveBank          ;Unused variable.
-LFCC9:  STA WndUnused6006       ;
+LFCC9:  STA WindowUnused6006       ;
 
 LFCCC:  JSR GetDataPtr          ;($FCEC)Get pointer to desired data.
 LFCCF:  LDA #$4C                ;Prepare to jump. #$4C is the opcode for JUMP.

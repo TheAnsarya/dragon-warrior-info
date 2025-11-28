@@ -125,8 +125,8 @@
 .alias TextBlock        $1B     ;Text block number(0-18).
 
 .alias RowsRemaining    $1A     ;When displaying dialog, remaining rows in window.
-.alias _ColsRemaining   $1B     ;When doing window calculations, cols remaining in current row.
-.alias ColsRemaining    $1C     ;When displaying dialog, remaining chars in row.
+.alias _ColumnsRemaining   $1B     ;When doing window calculations, cols remaining in current row.
+.alias ColumnsRemaining    $1C     ;When displaying dialog, remaining chars in row.
 
 .alias TextRowNumber        $1A     ;Target row in dialog window.
 .alias TextRowStart      $1B     ;Offset into target row(column).
@@ -681,7 +681,7 @@
 
 ;------------------------------------[Text and window Variables]-------------------------------------
 
-.alias WndUnused6006    $6006   ;Unused window variable.
+.alias WindowUnused6006    $6006   ;Unused window variable.
 .alias WindowEraseHeight     $6007   ;Window erase height in blocks.
 .alias WindowEraseWidth     $6008   ;Window erase width in tiles.
 .alias WindowErasePosition      $6009   ;Window erase position in blocks, Y=upper nibble, X=lower nibble.
@@ -1182,26 +1182,26 @@
 .alias END_RPT_END      $FD     ;End marker for repeated data.
 
 ;Window types.
-.alias WND_POPUP        $00     ;Pop-up window with name, level, HP, MP gold and experience.
-.alias WND_STATUS       $01     ;Status window.
-.alias WND_DIALOG       $02     ;Dialog window.
-.alias WND_CMD_NONCMB   $03     ;Command window, non-combat.
-.alias WND_CMD_CMB      $04     ;Command window, combat.
+.alias WINDOW_POPUP        $00     ;Pop-up window with name, level, HP, MP gold and experience.
+.alias WINDOW_STATUS       $01     ;Status window.
+.alias WINDOW_DIALOG       $02     ;Dialog window.
+.alias WINDOW_CMD_NONCMB   $03     ;Command window, non-combat.
+.alias WINDOW_CMD_CMB      $04     ;Command window, combat.
 .alias WND_SPELL1       $05     ;Spell window, not used.
 .alias WND_SPELL2       $06     ;Spell window, points to same window data as above.
 .alias WND_INVTRY1      $07     ;Inventory window, player inventory.
 .alias WND_INVTRY2      $08     ;Inventory window, Shop inventory.
 .alias WND_YES_NO1      $09     ;Yes/no selection window, variant 1.
-.alias WND_BUY_SELL     $0A     ;Buy/sell window.
-.alias WND_ALPHBT       $0B     ;Alphabet window.
-.alias WND_MSG_SPEED    $0C     ;Message speed window.
-.alias WND_INPT_NAME    $0D     ;Input name window.
-.alias WND_NM_ENTRY     $0E     ;Name entry window.
-.alias WND_CNT_CH_ER    $0F     ;Continue, change, erase window.
-.alias WND_FULL_MNU     $10     ;Full menu window.
-.alias WND_NEW_QST      $11     ;Begin new quest window.
+.alias WINDOW_BUY_SELL     $0A     ;Buy/sell window.
+.alias WINDOW_ALPHBT       $0B     ;Alphabet window.
+.alias WINDOW_MSG_SPEED    $0C     ;Message speed window.
+.alias WINDOW_INPT_NAME    $0D     ;Input name window.
+.alias WINDOW_NM_ENTRY     $0E     ;Name entry window.
+.alias WINDOW_CNT_CH_ER    $0F     ;Continue, change, erase window.
+.alias WINDOW_FULL_MNU     $10     ;Full menu window.
+.alias WINDOW_NEW_QST      $11     ;Begin new quest window.
 .alias WND_LOG_1_1      $12     ;Log list window, only entry 1, variant 1.
-.alias WND_ERASE        $20     ;Erase log window.
+.alias WINDOW_ERASE        $20     ;Erase log window.
 .alias WND_YES_NO2      $21     ;Yes/no selection window, variant 2.
 
 ;Description entries.
@@ -1364,18 +1364,18 @@
 .alias AT_ATRBTBL1_UB   $27     ;Attribute table 1 base address upper byte.
 .alias NPC_MOVE         $00     ;Allow NPCs to move.
 .alias NPC_STOP         $FF     ;Stop NPCs from moving.
-.alias WND_ABORT        $FF     ;Window cancelled.
+.alias WINDOW_ABORT        $FF     ;Window cancelled.
 .alias STRT_FULL_HP     $78     ;Restore HP and MP on restart.
 .alias STRT_NO_HP       $AB     ;Do not restore HP and MP on restart.
 .alias IS_CURSED        $C0     ;Bitmask for checking if player is cursed.
-.alias WND_YES          $00     ;Yes selected from Yes/no window.
-.alias WND_NO           $01     ;No selected from Yes/no window.
-.alias WND_BUY          $00     ;Buy selected from Buy/sell window.
-.alias WND_SELL         $01     ;Sell selected from Buy/sell window.
+.alias WINDOW_YES          $00     ;Yes selected from Yes/no window.
+.alias WINDOW_NO           $01     ;No selected from Yes/no window.
+.alias WINDOW_BUY          $00     ;Buy selected from Buy/sell window.
+.alias WINDOW_SELL         $01     ;Sell selected from Buy/sell window.
 .alias ITM_TBL_END      $FD     ;End of shop items list.
 .alias PAL_LOAD_BG      $FF     ;Load background palette data.
 .alias PAL_SKIP_BG      $00     ;Skip loading background palette.
 .alias PAL_BLACK        $0F     ;Black background palette value.
-.alias WND_FOREGROUND   $00     ;Window overlaps another window.
-.alias WND_BACKGROUND   $FF     ;Window is a background window.
+.alias WINDOW_FOREGROUND   $00     ;Window overlaps another window.
+.alias WINDOW_BACKGROUND   $FF     ;Window is a background window.
 .alias INV_FULL         $04     ;Player's inventory is full.

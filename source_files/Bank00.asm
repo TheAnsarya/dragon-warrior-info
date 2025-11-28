@@ -2121,7 +2121,7 @@ L9913:  .byte $FF               ;
 ;Each entry in this table corresponds to an entry in MapTargetTbl.
 ;Player's facing direction: 0-up, 1-right, 2-down, 3-left.
 
-MapEntryDirTbl:
+MapEntryDirectionTable:
 L9914:  .byte DIR_RIGHT, DIR_DOWN, DIR_UP,    DIR_RIGHT, DIR_UP,   DIR_RIGHT, DIR_UP,   DIR_RIGHT
 L991C:  .byte DIR_RIGHT, DIR_LEFT, DIR_RIGHT, DIR_DOWN,  DIR_DOWN, DIR_RIGHT, DIR_DOWN, DIR_DOWN
 L9924:  .byte DIR_DOWN,  DIR_DOWN, DIR_RIGHT, DIR_DOWN,  DIR_DOWN, DIR_DOWN,  DIR_DOWN, DIR_DOWN
@@ -3322,24 +3322,24 @@ LA7FE:  STA BlockAddrUB         ;
 LA800:  LDA WindowTypeCopy         ;Get the window type.
 LA802:  BEQ SetWndBack          ;Is this the pop-up window? If so. branch. Background window.
 
-LA804:  CMP #WND_DIALOG         ;Is this a dialog window?
+LA804:  CMP #WINDOW_DIALOG         ;Is this a dialog window?
 LA806:  BEQ SetWndBack          ;If so, branch. Background window.
 
-LA808:  CMP #WND_CMD_NONCMB     ;Is this a non-combat command window?
+LA808:  CMP #WINDOW_CMD_NONCMB     ;Is this a non-combat command window?
 LA80A:  BEQ SetWndBack          ;If so, branch. Background window.
 
-LA80C:  CMP #WND_CMD_CMB        ;Is this a combat command window?
+LA80C:  CMP #WINDOW_CMD_CMB        ;Is this a combat command window?
 LA80E:  BEQ SetWndBack          ;If so, branch. Background window.
 
-LA810:  CMP #WND_ALPHBT         ;Is this the alphabet selection window?
+LA810:  CMP #WINDOW_ALPHBT         ;Is this the alphabet selection window?
 LA812:  BEQ SetWndBack          ;If so, branch. Background window.
 
 SetWndFore:
-LA814:  LDA #WND_FOREGROUND     ;Set the window as a foreground window(covers other windows).
+LA814:  LDA #WINDOW_FOREGROUND     ;Set the window as a foreground window(covers other windows).
 LA816:  BEQ SetWndBackFore      ;
 
 SetWndBack:
-LA818:  LDA #WND_BACKGROUND     ;Set the window as a background window(covered by other windows).
+LA818:  LDA #WINDOW_BACKGROUND     ;Set the window as a background window(covered by other windows).
 
 SetWndBackFore:
 LA81A:  STA WindowForeBack         ;Set window as foreground/background window.
@@ -3463,7 +3463,7 @@ LA8B7:  LDA #$1E                ;Divide out tile height and get remainder. Resul
 LA8B9:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
 LA8BB:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LA8BE:  LDA DivRemainder        ;The final result is the unsigned Y position of the block
+LA8BE:  LDA DivideRemainder        ;The final result is the unsigned Y position of the block
 LA8C0:  STA YPosFromTop         ;to replace, measured in tiles. #$00-#$1E.
 LA8C2:  STA YFromTopTemp        ;
 
@@ -3546,7 +3546,7 @@ LA92C:  LDA #$1E                ;Divide out tile height and get remainder. Resul
 LA92E:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
 LA930:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LA933:  LDA DivRemainder        ;The final result is the unsigned Y position of the block
+LA933:  LDA DivideRemainder        ;The final result is the unsigned Y position of the block
 LA935:  STA YPosFromTop         ;to replace, measured in tiles. #$00-#$1E.
 LA937:  STA YFromTopTemp        ;
 
@@ -3837,10 +3837,10 @@ LAAD0:  JSR WordMultiply        ;($C1C9)Multiply 2 words.
 LAAD3:  LDA _TargetX            ;Target X is player's X position. Add offset in current row
 LAAD5:  LSR                     ;to byte count value for exact byte offset in covered area
 LAAD6:  CLC                     ;map data.
-LAAD7:  ADC MultRsltLB          ;
+LAAD7:  ADC MultiplyResultLB          ;
 
 LAAD9:  STA GenWord3ELB         ;
-LAADB:  LDA MultRsltUB          ;The player's index into the covered map data is now
+LAADB:  LDA MultiplyResultUB          ;The player's index into the covered map data is now
 LAADD:  ADC #$00                ;stored in GenWord3E. This is byte level. Nibble level
 LAADF:  STA GenWord3EUB         ;is required and calculated below.
 
@@ -4122,7 +4122,7 @@ JmpOutOfBounds:
 LAC25:  JMP TrgtOutOfBounds     ;($AB77)Target out of bounds. Jump for boundary block.
 
 BlkIDCheckEn:
-LAC28:  LDA EnNumber            ;Is player fighting the end boss?
+LAC28:  LDA EnemyNumber            ;Is player fighting the end boss?
 LAC2A:  CMP #EN_DRAGONLORD2     ;
 LAC2C:  BNE BlkIDChkYCoord      ;If not, branch to keep processing.
 
@@ -4232,11 +4232,11 @@ LACA8:  LDA _TargetX            ;Divide by 2 as 1 byte represents 2 blocks.
 LACAA:  LSR                     ;
 
 LACAB:  CLC                     ;Add X offset for final address value.
-LACAC:  ADC MultRsltLB          ;
+LACAC:  ADC MultiplyResultLB          ;
 
 LACAE:  STA MapBytePtrLB        ;
 LACB0:  STA GenPtr3ELB          ;
-LACB2:  LDA MultRsltUB          ;Store address value results in map byte pointer
+LACB2:  LDA MultiplyResultUB          ;Store address value results in map byte pointer
 LACB4:  ADC #$00                ;and save a copy in a general use pointer.
 LACB6:  STA MapBytePtrUB        ;
 LACB8:  STA GenPtr3EUB          ;
@@ -4396,7 +4396,7 @@ LAD71:  LDA #$1E                ;Divide out tile height and get remainder. Resul
 LAD73:  STA DivNum2             ;between #$00-#$1E(height of screen in tiles).
 LAD75:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit number.
 
-LAD78:  LDA DivRemainder        ;The final result is the unsigned Y position of the block
+LAD78:  LDA DivideRemainder        ;The final result is the unsigned Y position of the block
 LAD7A:  STA YPosFromTop         ;to replace, measured in tiles. #$00-#$1E.
 LAD7C:  STA YFromTopTemp        ;
 
@@ -5332,7 +5332,7 @@ DoRemovePopUp:
 LB246:  LDA FrameCounter        ;Save the frame counter on the stack.
 LB248:  PHA                     ;
 
-LB249:  LDA #WND_POPUP          ;Remove the pop-up window.
+LB249:  LDA #WINDOW_POPUP          ;Remove the pop-up window.
 LB24B:  JSR RemoveWindow        ;($A7A2)Remove window from screen.
 
 LB24E:  PLA                     ;
@@ -5725,7 +5725,7 @@ LB46A:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 
 LB46D:  LDA XPosFromCenter      ;
 LB46F:  CMP #$14                ;Done clearing this row?
-LB471:  BNE VertAttribLoop1     ;If not, branch to clear another section.
+LB471:  BNEVerticalAttribLoop1     ;If not, branch to clear another section.
 
 LB473:  LDA #$10                ;Prepare to update blocks starting 16 tiles below the player.
 LB475:  STA YPosFromCenter      ;
@@ -5747,7 +5747,7 @@ LB48B:  INC XPosFromCenter      ;Increment to next block in row.
 LB48D:  INC XPosFromCenter      ;
 
 LB48F:  DEC TileCounter         ;Done changing block section?
-LB491:  BNE VertBlockLoop1      ;If not, branch to do more.
+LB491:  BNEVerticalBlockLoop1      ;If not, branch to do more.
 
 LB493:  INC ScrollY             ;Move player down 1 pixel.
 LB495:  INC CharYPixelsLB       ;
@@ -5755,7 +5755,7 @@ LB495:  INC CharYPixelsLB       ;
 LB497:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 LB49A:  LDA XPosFromCenter      ;
 LB49C:  CMP #$12                ;Done changing block row?
-LB49E:  BNE VertRowLoop1        ;If not, branch to do more.
+LB49E:  BNEVerticalRowLoop1        ;If not, branch to do more.
 
 LB4A0:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -5813,14 +5813,14 @@ LB4E8:  INC YPosFromCenter      ;
 
 LB4EA:  LDA YPosFromCenter      ;Have all the rows been changed?
 LB4EC:  CMP #$09                ;
-LB4EE:  BNE VertDgnBlockLoop    ;If not, branch to do another row.
+LB4EE:  BNEVerticalDgnBlockLoop    ;If not, branch to do another row.
 
 LB4F0:  INC XPosFromCenter      ;Move to next block in row. Block is 2 tiles wide.
 LB4F2:  INC XPosFromCenter      ;
 
 LB4F4:  LDA XPosFromCenter      ;Have all the columns been changed?
 LB4F6:  CMP #$08                ;
-LB4F8:  BNE VertDgnRowLoop      ;If not, branch to do another column.
+LB4F8:  BNEVerticalDgnRowLoop      ;If not, branch to do another column.
 
 LB4FA:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -5909,7 +5909,7 @@ LB573:  INC XPosFromCenter      ;Increment to next block in row.
 LB575:  INC XPosFromCenter      ;
 
 LB577:  DEC TileCounter         ;Done changing block section?
-LB579:  BNE VertBlockLoop2      ;If not, branch to do more.
+LB579:  BNEVerticalBlockLoop2      ;If not, branch to do more.
 
 LB57B:  DEC ScrollY             ;Decrement vertical scroll register and pixel position.
 LB57D:  DEC CharYPixelsLB       ;
@@ -5917,7 +5917,7 @@ LB57F:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 
 LB582:  LDA XPosFromCenter      ;
 LB584:  CMP #$12                ;Done clearing this row?
-LB586:  BNE VertRowLoop2        ;If not, branch to clear another section.
+LB586:  BNEVerticalRowLoop2        ;If not, branch to clear another section.
 
 LB588:  LDA #$F0                ;Prepare to update blocks starting -16 tiles above the player.
 LB58A:  STA YPosFromCenter      ;
@@ -5946,7 +5946,7 @@ LB5A9:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 
 LB5AC:  LDA XPosFromCenter      ;
 LB5AE:  CMP #$14                ;Done clearing this row?
-LB5B0:  BNE VertAttribLoop2     ;If not, branch to clear another section.
+LB5B0:  BNEVerticalAttribLoop2     ;If not, branch to clear another section.
 
 LB5B2:  LDA #$F0                ;Prepare to update blocks starting -16 tiles above the player.
 LB5B4:  STA YPosFromCenter      ;
@@ -5969,7 +5969,7 @@ LB5CA:  INC XPosFromCenter      ;Increment to next block in row.
 LB5CC:  INC XPosFromCenter      ;
 
 LB5CE:  DEC TileCounter         ;Done changing block section?
-LB5D0:  BNE VertBlockLoop3      ;If not, branch to do more.
+LB5D0:  BNEVerticalBlockLoop3      ;If not, branch to do more.
 
 LB5D2:  DEC ScrollY             ;Move player up 1 pixel.
 LB5D4:  DEC CharYPixelsLB       ;
@@ -5977,7 +5977,7 @@ LB5D4:  DEC CharYPixelsLB       ;
 LB5D6:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 LB5D9:  LDA XPosFromCenter      ;
 LB5DB:  CMP #$12                ;Done changing block row?
-LB5DD:  BNE VertRowLoop3        ;If not, branch to do more.
+LB5DD:  BNEVerticalRowLoop3        ;If not, branch to do more.
 
 LB5DF:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -6160,7 +6160,7 @@ LB6D9:  RTS                     ;End sprite direction calculations.
 ;----------------------------------------------------------------------------------------------------
 
 DoSprites:
-LB6DA:  LDA EnNumber            ;Is this the final fight?
+LB6DA:  LDA EnemyNumber            ;Is this the final fight?
 LB6DC:  CMP #EN_DRAGONLORD2     ;If so, exit, else branch
 LB6DE:  BNE SpriteCheckFrameCounter    ;to continue processing.
 LB6E0:  RTS                     ;
@@ -6178,24 +6178,24 @@ LB6EC:  STA CharLeftRight       ;
 ChkGotGwaelin:
 LB6EE:  LDA PlayerFlags         ;Is the player carrying Gwaelin?
 LB6F0:  AND #F_GOT_GWAELIN      ;if not, branch.
-LB6F2:  BEQ ChkPlayerWeapons    ;
+LB6F2:  BEQ CheckPlayerWeapons    ;
 
 LB6F4:  LDA #$C0                ;Offset to carrying Gwaelin tile patterns.
 LB6F6:  STA GenByte3C           ;
 LB6F8:  BNE GetPlayerAnim       ;Branch always.
 
-ChkPlayerWeapons:
+CheckPlayerWeapons:
 LB6FA:  LDA #$80                ;Offset to not carrying weapon tile patterns.
 LB6FC:  STA GenByte3C           ;
 
 LB6FE:  LDA EqippedItems        ;Is player carrying a weapon?
 LB700:  AND #WP_WEAPONS         ;
-LB702:  BEQ ChkPlayerShields    ;If not, branch to check if they are carrying a shield.
+LB702:  BEQ CheckPlayerShields    ;If not, branch to check if they are carrying a shield.
 
 LB704:  LDA #$90                ;Offset to carrying weapon tile patterns.
 LB706:  STA GenByte3C           ;Player is carrying a weapon.
 
-ChkPlayerShields:
+CheckPlayerShields:
 LB708:  LDA EqippedItems        ;Is player carrying a shield?
 LB70A:  AND #SH_SHIELDS         ;
 LB70C:  BEQ GetPlayerAnim       ;If not, branch.
@@ -7024,7 +7024,7 @@ LBB88:  BRK                     ;
 LBB89:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 
 LBB8B:  LDA #EN_DRAGONLORD2     ;Indicate fighting the end boss.
-LBB8D:  STA EnNumber            ;
+LBB8D:  STA EnemyNumber            ;
 LBB8F:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LBB92:  LDA #PAL_LOAD_BG        ;Indicate both sprite and background palettes will be written.

@@ -3084,7 +3084,7 @@ L937A:  DEX                     ;Clear NPC map position RAM (60 bytes).
 L937B:  BPL -                   ;
 
 L937D:  LDA #EN_DRAGONLORD2     ;Set enemy number.
-L937F:  STA EnNumber            ;
+L937F:  STA EnemyNumber            ;
 
 L9381:  JSR ClearSpriteRAM      ;($C6BB)Clear sprite RAM.
 L9384:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
@@ -3097,7 +3097,7 @@ L938E:  BRK                     ;Load BG and sprite palettes for selecting saved
 L938F:  .byte $01, $07          ;($AA7E)LoadStartPals, bank 0.
 
 L9391:  JSR Dowindow            ;($C6F0)display on-screen window.
-L9394:  .byte WND_DIALOG        ;Dialog window.
+L9394:  .byte WINDOW_DIALOG        ;Dialog window.
 
 L9395:  JSR DoDialogHiBlock     ;($C7C5)Please press reset, hold it in...
 L9398:  .byte $28               ;TextBlock19, entry 8.
@@ -3131,7 +3131,7 @@ L93B7:  STA ScrollX             ;
 L93B9:  STA ScrollY             ;Clear various RAM values.
 L93BB:  STA ActiveNmTbl         ;
 L93BD:  LDA #EN_DRAGONLORD2     ;
-L93BF:  STA EnNumber            ;
+L93BF:  STA EnemyNumber            ;
 
 L93C1:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 L93C4:  JSR EndGameClearPPU     ;($9354)Clear the display contents of the PPU.
@@ -4644,7 +4644,7 @@ LA17B:  .byte $8C, $82, $D2, $C8, $03, $FF  ;Level 30.
 ;This function appears to not be used.  It is not directly called through any other function
 ;or the IRQ interrupt.
 
-WndUnusedFunc1:
+WindowUnusedFunc1:
 LA181:  PLA                     ;Pull the value off the stack.
 
 LA182:  CLC                     ;
@@ -4694,7 +4694,7 @@ LA1BD:  BMI WindowConstructDone    ;If so, branch to
 LA1BF:  LDA WindowType          ;
 LA1C2:  CMP #WND_SPELL1         ;Special case. Don't destroy these windows when done.
 LA1C4:  BCC WindowConstructDone    ;The spell 1 window is never used and the alphabet
-LA1C6:  CMP #WND_ALPHBT         ;window does not disappear when an item is selected.
+LA1C6:  CMP #WINDOW_ALPHBT         ;window does not disappear when an item is selected.
 LA1C8:  BCS WindowConstructDone    ;
 
 LA1CA:  BRK                     ;Remove window from screen.
@@ -4796,7 +4796,7 @@ LA247:  RTS                     ;
 InitWindowEngine:
 LA248:  JSR ClearWndLineBuf     ;($A646)Clear window line buffer.
 LA24B:  LDA #$FF                ;
-LA24D:  STA WndUnused64FB       ;Written to but never accessed.
+LA24D:  STA WindowUnused64FB       ;Written to but never accessed.
 
 LA250:  LDA #$00                ;
 LA252:  STA WindowXPosition             ;
@@ -6019,7 +6019,7 @@ ControlCharSwapRow:
 LA881:  LDY #$00                ;Start at beginning of window tile row.
 
 LA883:  LDA WindowWidth            ;Set remaining columns to window width.
-LA886:  STA _ColsRemaining      ;
+LA886:  STA _ColumnsRemaining      ;
 
 ControlCharSwapCol:
 LA888:  LDA (PPUBufferPointer),Y       ;Was the end text control character found?
@@ -6031,7 +6031,7 @@ LA890:  STA (PPUBufferPointer),Y       ;
 
 ControlNextCol:
 LA892:  INY                     ;Move to next columns.
-LA893:  DEC _ColsRemaining      ;was that the last column?
+LA893:  DEC _ColumnsRemaining      ;was that the last column?
 LA895:  BNE ControlCharSwapCol    ;If not, branch to move to next column.
 
 LA897:  CLC                     ;
@@ -6149,7 +6149,7 @@ LA931:  LDA NumberColumnTable,X         ;
 LA934:  STA WindowSelectionNumberColumns       ;
 
 LA937:  LDA WindowType          ;Is this a message speed window?
-LA93A:  CMP #WND_MSG_SPEED      ;
+LA93A:  CMP #WINDOW_MSG_SPEED      ;
 LA93C:  BNE WindowSetCrsrHome      ;If not, branch to skip setting message speed.
 
 LA93E:  LDX MessageSpeed        ;Use current message speed to set the cursor in the window.
@@ -6279,7 +6279,7 @@ LA9D1:  JSR WindowUpdateCrsrPos    ;($AB35)Update cursor position on screen.
 LA9D4:  PLA                     ;Pull last return address off of stack.
 LA9D5:  PLA                     ;
 
-LA9D6:  LDA #WND_ABORT          ;Load abort indicator into A
+LA9D6:  LDA #WINDOW_ABORT          ;Load abort indicator into A
 LA9D8:  STA WindowSelectionResults       ;Store abort indicator in the selection results.
 LA9DA:  RTS                     ;
 
@@ -6324,7 +6324,7 @@ LAA0B:  LDA WindowType          ;Is this the SPELL1 window?
 LAA0E:  CMP #WND_SPELL1         ;Not used in the game.
 LAA10:  BEQ WndSpell1Down       ;If so, branch for special cursor update.
 
-LAA12:  CMP #WND_MSG_SPEED      ;Is this the message speed window?
+LAA12:  CMP #WINDOW_MSG_SPEED      ;Is this the message speed window?
 LAA14:  BNE WndDownCont1        ;If not, branch to continue processing.
 
 LAA16:  LDA WindowRow              ;Is thos the last row of the message speed window?
@@ -6343,7 +6343,7 @@ LAA25:  BEQ WindowDownDone         ;If so, branch to exit. Cannot go down anymor
 LAA27:  JSR WindowClearCursor      ;($AB30)Blank out cursor tile as it has moved.
 
 LAA2A:  LDA WindowType          ;Is this the alphabet window?
-LAA2D:  CMP #WND_ALPHBT         ;
+LAA2D:  CMP #WINDOW_ALPHBT         ;
 LAA2F:  BNE WndDownCont2        ;If not, branch to continue processing.
 
 LAA31:  JSR WindowSpclMoveCrsr     ;($AB3F)Move cursor to next position if next row is bottom.
@@ -6398,7 +6398,7 @@ LAA73:  LDA WindowColumn              ;Is cursor already at the far left?
 LAA75:  BEQ WindowLeftDone         ;If so, branch to exit. Cannot go left anymore.
 
 LAA77:  LDA WindowType          ;Is this the alphabet window?
-LAA7A:  CMP #WND_ALPHBT         ;
+LAA7A:  CMP #WINDOW_ALPHBT         ;
 LAA7C:  BNE WindowLeftUpdate       ;If not, branch to continue processing.
 
 LAA7E:  LDA WindowRow              ;Is this the bottom row of the alphabet window?
@@ -6465,7 +6465,7 @@ LAAD4:  LDA WindowColumns          ;Is there only a single column in this window
 LAAD7:  BEQ WindowEndRghtPressed   ;If so, branch to exit. Nothing to process.
 
 LAAD9:  LDA WindowType          ;Is this the alphabet window?
-LAADC:  CMP #WND_ALPHBT         ;
+LAADC:  CMP #WINDOW_ALPHBT         ;
 LAADE:  BNE WndRightCont1       ;If not, branch to continue processing.
 
 LAAE0:  LDA WindowRow              ;Is this the bottom row of the alphabet window?
@@ -6571,7 +6571,7 @@ LAB63:  RTS                     ;Cursor update complete. Return.
 
 WindowCalcSelResult:
 LAB64:  LDA WindowType          ;Is this the alphabet window for entering name?
-LAB67:  CMP #WND_ALPHBT         ;
+LAB67:  CMP #WINDOW_ALPHBT         ;
 LAB69:  BEQ WindowCalcAlphaResult  ;If so, branch for special results processing.
 
 LAB6B:  LDA _WindowColumn             ;
@@ -6646,7 +6646,7 @@ LABBF:  .byte $0B               ;Alphabet window columns.
 
 ;----------------------------------------------------------------------------------------------------
 
-WndUnusedFunc2:
+WindowUnusedFunc2:
 LABC0:  LDA #$00                ;Unused window function.
 LABC2:  BNE WindowShowHide+2       ;
 
@@ -6666,7 +6666,7 @@ LABD2:  JSR WindowUpdateTiles      ;($ADFA)Wait until next NMI for buffer to be 
 
 WindowDoRowReady:
 LABD5:  LDA #$00                ;Zero out unused variable.
-LABD7:  STA WndUnused64AB       ;
+LABD7:  STA WindowUnused64AB       ;
 
 LABDA:  PLA                     ;Restore A. Always 0.
 LABDB:  JSR WindowStartRow         ;($AD10)Set nametable and X,Y start position of window line.
@@ -6688,7 +6688,7 @@ LABF3:  AND #$0F                ;Make a copy of window width.
 LABF5:  ASL                     ;
 LABF6:  STA _WndWidth           ;
 
-LABF9:  STA WndUnused64AE       ;Not used.
+LABF9:  STA WindowUnused64AE       ;Not used.
 LABFC:  .byte $AE, $04, $00     ;LDX $0004(PPUBufCount)Get index for next buffer entry.
 
 WindowRowLoop:
@@ -6958,7 +6958,7 @@ LAD8D:  LDA WindowAtribAdrUB       ;Set upper byte for attribute table buffer. T
 LAD90:  AND #$07                ; table buffer starts at either $0300 or $0700, depending
 LAD92:  STA AttributePtrUB         ;on the active nametable.
 
-LAD94:  LDA EnNumber            ;Is player fighting the end boss?
+LAD94:  LDA EnemyNumber            ;Is player fighting the end boss?
 LAD96:  CMP #EN_DRAGONLORD2     ;If so, force atribute table buffer to base address $0700.
 LAD98:  BNE ModAtribByte        ;If not, branch to get attribute table byte.
 
@@ -7082,12 +7082,12 @@ LAE2B:  RTS                     ;
 InitNameWindow:
 LAE2C:  LDA #$00                ;
 LAE2E:  STA WindowNameIndex        ;Zero out name variables.
-LAE31:  STA WndUnused6505       ;
+LAE31:  STA WindowUnused6505       ;
 
-LAE34:  LDA #WND_NM_ENTRY       ;Show name entry window.
+LAE34:  LDA #WINDOW_NM_ENTRY       ;Show name entry window.
 LAE36:  JSR ShowWindow          ;($A194)Display window.
 
-LAE39:  LDA #WND_ALPHBT         ;Show alphabet window.
+LAE39:  LDA #WINDOW_ALPHBT         ;Show alphabet window.
 LAE3B:  JSR ShowWindow          ;($A194)Display window.
 
 LAE3E:  LDA #$12                ;Set window columns to 18. Special value for the alphabet window.
@@ -7108,7 +7108,7 @@ LAE52:  RTS                     ;If not, branch to write another.
 ;----------------------------------------------------------------------------------------------------
 
 WindowProcessChar:
-LAE53:  CMP #WND_ABORT          ;Did player press the B button?
+LAE53:  CMP #WINDOW_ABORT          ;Did player press the B button?
 LAE55:  BEQ WindowDoBackspace      ;If so, back up 1 character.
 
 LAE57:  CMP #$1A                ;Did player select character A-Z?
@@ -7245,16 +7245,16 @@ LAEF5:  STA WindowBuildPhase       ;
 LAEF8:* PLA                     ;Get window type byte again.
 LAEF9:  PHA                     ;
 
-LAEFA:  CMP #WND_CMD_NONCMB     ;Is this the command, non-combat window?
+LAEFA:  CMP #WINDOW_CMD_NONCMB     ;Is this the command, non-combat window?
 LAEFC:  BEQ DoBeepSFX           ;If so, branch to make menu button SFX.
 
-LAEFE:  CMP #WND_CMD_CMB        ;Is this the command, combat window?
+LAEFE:  CMP #WINDOW_CMD_CMB        ;Is this the command, combat window?
 LAF00:  BEQ DoBeepSFX           ;If so, branch to make menu button SFX.
 
 LAF02:  CMP #WND_YES_NO1        ;Is this the yes/no selection window?
 LAF04:  BEQ DoConfirmSFX        ;If so, branch to make confirm SFX.
 
-LAF06:  CMP #WND_DIALOG         ;Is this a dialog window?
+LAF06:  CMP #WINDOW_DIALOG         ;Is this a dialog window?
 LAF08:  BNE +                   ;If not, branch to exit.
 
 LAF0A:  LDA #$00                ;Dialog window being created. Set cursor to top left.
@@ -7280,15 +7280,15 @@ LAF1F:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 WindowType1Table:
-LAF20:  .byte WND_CMD_NONCMB    ;Command window, non-combat.
-LAF21:  .byte WND_CMD_CMB       ;Combat window, combat.
-LAF22:  .byte WND_DIALOG        ;Dialog window.
-LAF23:  .byte WND_POPUP         ;Pop-up window.
+LAF20:  .byte WINDOW_CMD_NONCMB    ;Command window, non-combat.
+LAF21:  .byte WINDOW_CMD_CMB       ;Combat window, combat.
+LAF22:  .byte WINDOW_DIALOG        ;Dialog window.
+LAF23:  .byte WINDOW_POPUP         ;Pop-up window.
 
 ;----------------------------------------------------------------------------------------------------
 
 WindowEraseParams:
-LAF24:  CMP #WND_ALPHBT         ;Special case. Erase alphabet window.
+LAF24:  CMP #WINDOW_ALPHBT         ;Special case. Erase alphabet window.
 LAF26:  BEQ WindowErsAlphabet      ;
 
 LAF28:  CMP #$FF                ;Special case. Erase unspecified window.
@@ -8678,13 +8678,13 @@ LB801:  JMP WorkBufDone         ;($B667)Done building work buffer.
 ;----------------------------------------------------------------------------------------------------
 
 DoENMY:
-LB804:  LDA EnNumber            ;Get current enemy number.
+LB804:  LDA EnemyNumber            ;Get current enemy number.
 LB806:  JSR GetEnName           ;($B89F)Put enemy name into name buffer.
 LB809:  JSR NameBufToWorkBuf    ;($B81D)Copy name buffer to work buffer.
 LB80C:  JMP BufFinished         ;($B7FF)Finish building work buffer.
 
 DoENM2:
-LB80F:  LDA EnNumber            ;Get current enemy number.
+LB80F:  LDA EnemyNumber            ;Get current enemy number.
 LB811:  JSR GetEnName           ;($B89F)Put enemy name into name buffer.
 LB814:  JSR NameBufToWorkBuf    ;($B81D)Copy name buffer to work buffer.
 LB817:  JSR CheckAToAn          ;($B79D)Check if item starts with vowel and convert 'a' to 'an'.
@@ -8757,7 +8757,7 @@ LB863:  LDY #$00                ;Zero out DialogOutBuf index.
 
 NewDialogRow:
 LB865:  LDA #$16                ;Total columns = 22.
-LB867:  STA ColsRemaining       ;
+LB867:  STA ColumnsRemaining       ;
 
 CopyDialogByte:
 LB869:  LDA DialogOutBuf,Y      ;Copy dialog buffer to background screen buffer.
@@ -8766,7 +8766,7 @@ LB86C:  STA WinBufRAM+$0265,X   ;
 LB86F:  INX                     ;Increment screen buffer index.
 LB870:  INY                     ;Increment dialog buffer index.
 
-LB871:  DEC ColsRemaining       ;Are there stil characters left in current row?
+LB871:  DEC ColumnsRemaining       ;Are there stil characters left in current row?
 LB873:  BNE CopyDialogByte      ;If so, branch to get next character.
 
 LB875:  TXA                     ;
