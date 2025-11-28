@@ -718,13 +718,13 @@ CalcRAMBufAddr:
 LC59E:  LDA #$80                ;Indicate data is being saved to RAM buffer.
 LC5A0:  ORA XPosFromLeft        ;
 LC5A2:  STA XPosFromLeft        ;Set MSB to determine target later.
-LC5A4:  BNE DoAddrCalc          ;Branch always.
+LC5A4:  BNE DoAddressCalculation          ;Branch always.
 
 Block2TileConv:
 LC5A6:  ASL XPosFromLeft        ;*2. Blocks are 2 tiles wide.
 LC5A8:  ASL YPosFromTop         ;*2. Blocks are 2 tiles tall.
 
-DoAddrCalc:
+DoAddressCalculation:
 LC5AA:  LDA YPosFromTop         ;Put Y position in upper address byte.  This is 8 times the
 LC5AC:  STA PPUBufPtrUB         ;address of the proper row needed so divide it down next.
 LC5AE:  LDA #$00                ;This saves from having to do the multiplication routine
@@ -792,11 +792,11 @@ LC5FB:  AND #$20                ;
 LC5FD:  BNE +                   ;If not, branch to use address for nametable 1.
 
 LC5FF:  LDA #$03                ;Lower nibble of upper byte(attribute table for nametable 0).
-LC601:  BNE ExitAttribCalc      ;Branch always.
+LC601:  BNE ExitAttributeCalculation      ;Branch always.
 
 LC603:* LDA #$07                ;Lower nibble of upper byte(attribute table for nametable 1).
 
-ExitAttribCalc:
+ExitAttributeCalculation:
 LC605:  STA PPUAddrUB           ;Store calculated upper byte.
 LC607:  RTS                     ;
 
@@ -1038,7 +1038,7 @@ LC74F:  ADC XPosFromCenter      ;signed value to an unsigned value and store the
 LC751:  AND #$3F                ;
 LC753:  STA XPosFromLeft        ;
 LC755:  STA XFromLeftTemp       ;
-LC757:  JSR DoAddrCalc          ;($C5AA)Calculate destination address for GFX data.
+LC757:  JSR DoAddressCalculation          ;($C5AA)Calculate destination address for GFX data.
 
 LC75A:  LDY #$00                ;Zero out index.
 
@@ -1274,14 +1274,14 @@ LCA26:  .byte $17               ;TextBlock18, entry 7.
 
 LCA27:  LDA DisplayedLevel      ;Is player level 30? If so, show a special message.
 LCA29:  CMP #LVL_30             ;
-LCA2B:  BNE KingExpCalc         ;If not, branch for the regular message.
+LCA2B:  BNE KingExperienceCalculation         ;If not, branch for the regular message.
 
 LCA2D:  JSR DoDialogLoBlock     ;($C7CB)Though art strong enough...
 LCA30:  .byte $02               ;TextBlock1, entry 2.
 
 LCA31:  JMP EndKingDialog       ;Jump to last king dialog segment.
 
-KingExpCalc:
+KingExperienceCalculation:
 LCA34:  JSR GetExpRemaining     ;($F134)Calculate experience needed for next level.
 
 LCA37:  JSR DoDialogLoBlock     ;($C7CB)Before reaching thy next level...

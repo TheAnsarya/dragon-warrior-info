@@ -13,7 +13,7 @@
 .alias ClearAttribByte          $C244
 .alias UpdateRandNumber            $C55B
 .alias CalcPPUBufferAddr           $C596
-.alias DoAddrCalc               $C5AA
+.alias DoAddressCalculation               $C5AA
 .alias PrepSPPalLoad            $C632
 .alias PrepBGPalLoad            $C63D
 .alias AddPPUBufferEntry           $C690
@@ -3558,7 +3558,7 @@ LA93F:  AND #$3F                ;both nametables. The final result is the unsign
 LA941:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No
 LA943:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
-LA945:  JSR DoAddrCalc          ;($C5AA)Calculate destination address for GFX data.
+LA945:  JSR DoAddressCalculation          ;($C5AA)Calculate destination address for GFX data.
 
 LA948:  LDA XPosFromCenter      ;
 LA94A:  ASL                     ;/2 with sign extension to convert block X location.
@@ -4408,7 +4408,7 @@ LAD84:  AND #$3F                ;both nametables. The final result is the unsign
 LAD86:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No
 LAD88:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
-LAD8A:  JSR DoAddrCalc          ;($C5AA)Calculate destination address for GFX data.
+LAD8A:  JSR DoAddressCalculation          ;($C5AA)Calculate destination address for GFX data.
 
 LAD8D:  LDA XPosFromCenter      ;
 LAD8F:  ASL                     ;/2 with sign extension to convert block X location.

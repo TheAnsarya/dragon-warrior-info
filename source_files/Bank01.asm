@@ -5410,7 +5410,7 @@ LA58F:  PHA                     ;
 LA590:  BIT WindowBuildPhase       ;Is this the second window building phase?
 LA593:  BVS WndStorePPUDatEnd   ;If so, skip. Only save data on first phase.
 
-LA595:  JSR PrepPPUAdrCalc      ;($A8AD)Address offset for start of current window row.
+LA595:  JSR PrepPPUAddressCalc      ;($A8AD)Address offset for start of current window row.
 LA598:  LDA #$20                ;
 LA59A:  STA PPURowBytesLB       ;32 bytes per screen row.
 LA59C:  LDA #$00                ;
@@ -6010,7 +6010,7 @@ LA878:* RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 WndCalcBufAddr:
-LA879:  JSR PrepPPUAdrCalc      ;($A8AD)Prepare and calculate PPU address.
+LA879:  JSR PrepPPUAddressCalc      ;($A8AD)Prepare and calculate PPU address.
 
 LA87C:  LDA WndHeight           ;Get window height in tiles.  Need to replace any end of text
 LA87F:  STA RowsRemaining       ;control characters with no-ops so window can be processed properly.
@@ -6051,7 +6051,7 @@ LA8A7:  .byte $04, $07          ;($B6DA)DoSprites, bank 0.
 LA8A9:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LA8AC:  RTS                     ;
 
-PrepPPUAdrCalc:
+PrepPPUAddressCalc:
 LA8AD:  LDA WndColPos           ;Convert column tile position into block position.
 LA8AF:  LSR                     ;
 LA8B0:  STA XPosFromLeft        ;
