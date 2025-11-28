@@ -6,16 +6,16 @@
 
 .alias BankPointers             $8000
 .alias UpdateSound              $8028
-.alias NPCMobPtrTbl             $9734
-.alias NPCStatPtrTbl            $974C
-.alias MapEntryDirTbl           $9914
-.alias ItemCostTbl              $9947
-.alias KeyCostTbl               $9989
-.alias InnCostTbl               $998C
-.alias ShopItemsTbl             $9991
-.alias WeaponsBonusTbl          $99CF
-.alias ArmorBonusTbl            $99D7
-.alias ShieldBonusTbl           $99DF
+.alias NPCMobilePointerTable    $9734
+.alias NPCStaticPointerTable    $974C
+.alias MapEntryDirectionTable   $9914
+.alias ItemCostTable            $9947
+.alias KeyCostTable             $9989
+.alias InnCostTable             $998C
+.alias ShopItemsTable           $9991
+.alias WeaponsBonusTable        $99CF
+.alias ArmorBonusTable          $99D7
+.alias ShieldBonusTable         $99DF
 .alias BlackPalPtr              $9A18
 .alias OverworldPalPtr          $9A1A
 .alias TownPalPtr               $9A1C
@@ -25,7 +25,7 @@
 .alias BadEndBGPalPtr           $9A28
 .alias EnSPPalsPtr              $9A2A
 .alias CombatBckgndGFX          $9C8F
-.alias SpellCostTbl             $9D53
+.alias SpellCostTable           $9D53
 .alias ClearWinBufRAM2          $A788
 .alias RemoveWindow             $A7A2
 .alias GetBlockID               $AC17
@@ -33,7 +33,7 @@
 .alias MapChngFadeNoSound       $B08D
 .alias MapChngNoSound           $B091
 .alias MapChngWithSound         $B097
-.alias ResumeMusicTbl           $B1AE
+.alias ResumeMusicTable         $B1AE
 .alias ChkSpecialLoc            $B219
 .alias CheckMapExit             $B228
 .alias DoJoyRight               $B252
@@ -343,16 +343,16 @@ LC155:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 GetPlayerStatPtr:
-LC156:  LDX #$3A                ;Start at level 30 and point to the end of LevelUpTbl.
+LC156:  LDX #$3A                ;Start at level 30 and point to the end of LevelUpTable.
 LC158:  LDA #LVL_30             ;Work backwards to find the proper level.
 LC15A:  STA DisplayedLevel      ;
 
 PlayerStatLoop:
 LC15C:  LDA ExpLB               ;
-LC15E:  SEC                     ;Subtract entries in LevelUpTbl from player's current exp.
-LC15F:  SBC LevelUpTbl,X        ;
+LC15E:  SEC                     ;Subtract entries in LevelUpTable from player's current exp.
+LC15F:  SBC LevelUpTable,X      ;
 LC162:  LDA ExpUB               ;
-LC164:  SBC LevelUpTbl+1,X      ;Has the correct level for the player been found?
+LC164:  SBC LevelUpTable+1,X    ;Has the correct level for the player been found?
 LC167:  BCS PlayerStatEnd       ;If so, branch to the exit.
 
 LC169:  DEC DisplayedLevel      ;Move down to the next level and stats table entry.
@@ -2505,7 +2505,7 @@ LD0E0:  BCC CheckMobNPC         ;If lower slot, branch to check for valid mobile
 
 LD0E2:  TYA                     ;
 LD0E3:  SEC                     ;This is a static NPC.  Move offset down in preparation
-LD0E4:  SBC #$1C                ;to calculate the index into the NPCStatPtrTbl.
+LD0E4:  SBC #$1C                ;to calculate the index into the NPCStaticPointerTable.
 LD0E6:  TAY                     ;
 
 LD0E7:  LDA MapNumber           ;Subtract 4 from the map number and make sure it is
@@ -2520,9 +2520,9 @@ GetStatNPCPtr:
 LD0F3:  ASL                     ;*2. Pointers into NPC tables are 2 bytes.
 LD0F4:  TAX                     ;
 
-LD0F5:  LDA NPCStatPtrTbl,X     ;
+LD0F5:  LDA NPCStaticPointerTable,X     ;
 LD0F8:  STA GenPtr3CLB          ;Get pointer to static NPC for the current map.
-LD0FA:  LDA NPCStatPtrTbl+1,X   ;
+LD0FA:  LDA NPCStaticPointerTable+1,X   ;
 LD0FD:  STA GenPtr3CUB          ;
 LD0FF:  JMP PrepTalk            ;($D11C)Do next phase of NPC dialog.
 
@@ -2542,9 +2542,9 @@ GetMobNPCPtr:
 LD110:  ASL                     ;*2. Pointers into NPC tables are 2 bytes.
 LD111:  TAX                     ;
 
-LD112:  LDA NPCMobPtrTbl,X      ;
+LD112:  LDA NPCMobilePointerTable,X      ;
 LD115:  STA GenPtr3CLB          ;Get pointer to mobile NPC for the current map.
-LD117:  LDA NPCMobPtrTbl+1,X    ;
+LD117:  LDA NPCMobilePointerTable+1,X    ;
 LD11A:  STA GenPtr3CUB          ;
 
 PrepTalk:
@@ -3447,7 +3447,7 @@ LD594:  BCS DoWeapPurchase      ;Does player have enough money? if so, branch.
 LD596:  JMP NoMoneyDialog       ;($D660)Player does not have enough money.
 
 DoWeapPurchase:
-LD599:  TXA                     ;Save a copy of the item index into the ItemCostTbl.
+LD599:  TXA                     ;Save a copy of the item index into the ItemCostTable.
 LD59A:  PHA                     ;
 
 LD59B:  CMP #$0E                ;Is the selected item anything but a weapon?
@@ -3515,7 +3515,7 @@ LD5E3:  .byte $27               ;TextBlock3, entry 7.
 LD5E4:  JSR Dowindow            ;($C6F0)display on-screen window.
 LD5E7:  .byte WND_YES_NO1       ;Yes/no selection window.
 
-LD5E8:  PLA                     ;Restore copy of the item index into the ItemCostTbl.
+LD5E8:  PLA                     ;Restore copy of the item index into the ItemCostTable.
 LD5E9:  TAX                     ;
 
 LD5EA:  LDA WndSelResults       ;Did player choose to buy the item?
@@ -5067,7 +5067,7 @@ LDDB4:  BRK                     ;Wait for the music clip to end.
 LDDB5:  .byte $03, $17          ;($815E)WaitForMusicEnd, bank 1.
 
 LDDB7:  LDX MapNumber           ;Get current map number.
-LDDB9:  LDA ResumeMusicTbl,X    ;Use current map number to resume music.
+LDDB9:  LDA ResumeMusicTable,X  ;Use current map number to resume music.
 LDDBC:  BRK                     ;
 LDDBD:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 
@@ -8660,8 +8660,8 @@ LF0D1:  LSR                     ;Shift weapons down to lower 3 bits.
 LF0D2:  LSR                     ;
 LF0D3:  LSR                     ;
 
-LF0D4:  TAX                     ;Use the 3 bits above as index into the WeaponsBonusTbl.
-LF0D5:  LDA WeaponsBonusTbl,X   ;
+LF0D4:  TAX                     ;Use the 3 bits above as index into the WeaponsBonusTable.
+LF0D5:  LDA WeaponsBonusTable,X ;
 
 LF0D8:  CLC                     ;
 LF0D9:  ADC DisplayedStr        ;Add bonus from weapons table to strength attribute.
@@ -8676,8 +8676,8 @@ LF0E4:  LSR                     ;
 LF0E5:  LSR                     ;
 LF0E6:  AND #AR_ARMOR/4         ;Remove weapon bits.
 
-LF0E8:  TAX                     ;Use the 3 bits above as index into the ArmorBonusTbl.
-LF0E9:  LDA ArmorBonusTbl,X     ;
+LF0E8:  TAX                     ;Use the 3 bits above as index into the ArmorBonusTable.
+LF0E9:  LDA ArmorBonusTable,X   ;
 
 LF0EC:  CLC                     ;
 LF0ED:  ADC DisplayedDefns      ;Add bonus from armor table to defense attribute.
@@ -8686,8 +8686,8 @@ LF0EF:  STA DisplayedDefns      ;
 LF0F1:  LDA EqippedItems        ;Mask off shield bits.
 LF0F3:  AND #SH_SHIELDS         ;
 
-LF0F5:  TAX                     ;Use the 2 bits above as index into the ShieldBonusTbl.
-LF0F6:  LDA ShieldBonusTbl,X    ;
+LF0F5:  TAX                     ;Use the 2 bits above as index into the ShieldBonusTable.
+LF0F6:  LDA ShieldBonusTable,X  ;
 
 LF0F9:  CLC                     ;
 LF0FA:  ADC DisplayedDefns      ;Add bonus from shield table to defense attribute.

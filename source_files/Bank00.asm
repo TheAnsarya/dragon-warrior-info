@@ -59,7 +59,7 @@ L8018:  .word GarinCaveB3Dat+$E ;($9170)Pointer to Rimuldar covered areas data.
 
 ;----------------------------------------------------------------------------------------------------
 
-MapDatTbl:                      ;Data for game maps.
+MapDataTable:                   ;Data for game maps.
 
 ;Unused. Map #$00.
 L801A:  .word NULL              ;Map data pointer.
@@ -1839,33 +1839,33 @@ L9732:  .byte $8F, $02
 ;The following 2 tables are used to find NPC data for the various maps.  The first table
 ;points to NPC data for modile NPCs.  The second table points to NPC data for static NPCs.
 
-NPCMobPtrTbl:
-L9734:  .word TantMobTbl        ;($9764)Tantagel castle, ground floor mobile NPCs.
-L9736:  .word ThRmMobTbl        ;($97A2)Throne room mobile NPCs.
-L9738:  .word DLBFMobTbl        ;($97EA)Dragonlord's castle, bottom floor mobile NPCs.
-L973A:  .word KolMobTbl         ;($98B3)Kol mobile NPCs.
-L973C:  .word BrecMobTbl        ;($9875)Brecconary mobile NPCs.
-L973E:  .word GarMobTbl         ;($98E5)Garinham mobile NPCs.
-L9740:  .word CantMobTbl        ;($97F9)Cantlin mobile NPCs.
-L9742:  .word RimMobTbl         ;($9837)Rimuldar mobile NPCs.
-L9744:  .word TaSLMobTbl        ;($97B3)Tantagel castle, sublevel mobile NPCs.
-L9746:  .word RainMobTbl        ;($97EF)Staff of rain cave mobile NPCs.
-L9748:  .word RnbwMobTbl        ;($97F4)Rainbow drop cave mobile NPCs.
-L974A:  .word TaDLMobTbl        ;($97B8)Tantagel castle, after dragonlord defeat mobile NPCs.
+NPCMobilePointerTable:
+L9734:  .word TantagelMobileTable     ;($9764)Tantagel castle, ground floor mobile NPCs.
+L9736:  .word ThroneRoomMobileTable   ;($97A2)Throne room mobile NPCs.
+L9738:  .word DrgnLrdBFMobileTable    ;($97EA)Dragonlord's castle, bottom floor mobile NPCs. NPCs.
+L973A:  .word KolMobileTable          ;($98B3)Kol mobile NPCs.
+L973C:  .word BrecconaryMobileTable   ;($9875)Brecconary mobile NPCs.
+L973E:  .word GarinhamMobileTable     ;($98E5)Garinham mobile NPCs. NPCs.
+L9740:  .word CantlinMobileTable      ;($97F9)Cantlin mobile NPCs.
+L9742:  .word RimuldarMobileTable     ;($9837)Rimuldar mobile NPCs.
+L9744:  .word TantSLMobileTable       ;($97B3)Tantagel castle, sublevel mobile NPCs. NPCs.
+L9746:  .word RainCaveMobileTable     ;($97EF)Staff of rain cave mobile NPCs.
+L9748:  .word RainbowCaveMobileTable  ;($97F4)Rainbow drop cave mobile NPCs.
+L974A:  .word TantDLMobileTable       ;($97B8)Tantagel castle, after dragonlord defeat mobile NPCs.
 
-NPCStatPtrTbl:
-L974C:  .word TantStatTbl       ;($9783)Tantagel castle, ground floor static NPCs.
-L974E:  .word ThRmStatTbl       ;($97A6)Throne room, static NPCs.
-L9750:  .word DLBFStatTbl       ;($97EB)Dragonlord's castle, bottom floor static NPCs.
-L9752:  .word KolStatTbl        ;($98CF)Kol, static NPCs.
-L9754:  .word BrecStatTbl       ;($9894)Brecconary, static NPCs.
-L9756:  .word GarStatTbl        ;($98FB)Garinham, static NPCs.
-L9758:  .word CantStatTbl       ;($9818)Cantlin, static NPCs.
-L975A:  .word RimStatTbl        ;($9856)Rimuldar, static NPCs.
-L975C:  .word TaSLStatTbl       ;($97B4)Tantagel castle, sublevel static NPCs.
-L975E:  .word RainStatTbl       ;($97F0)Staff of rain cave static NPCs.
-L9760:  .word RnbwStatTbl       ;($97F5)Rainbow drop cave static NPCs.
-L9762:  .word TaDLStatTbl       ;($97CE)Tantagel castle, after dragonlord defeat static NPCs.
+NPCStaticPointerTable:erTable:
+L974C:  .word TantagelStaticTable     ;($9783)Tantagel castle, ground floor static NPCs.
+L974E:  .word ThroneRoomStaticTable   ;($97A6)Throne room, static NPCs.
+L9750:  .word DrgnLrdBFStaticTable    ;($97EB)Dragonlord's castle, bottom floor static NPCs. NPCs.
+L9752:  .word KolStaticTable          ;($98CF)Kol, static NPCs.
+L9754:  .word BrecconaryStaticTable   ;($9894)Brecconary, static NPCs.
+L9756:  .word GarinhamStaticTable     ;($98FB)Garinham, static NPCs. NPCs.
+L9758:  .word CantlinStaticTable      ;($9818)Cantlin, static NPCs.
+L975A:  .word RimuldarStaticTable     ;($9856)Rimuldar, static NPCs.
+L975C:  .word TantSLStaticTable       ;($97B4)Tantagel castle, sublevel static NPCs. NPCs.
+L975E:  .word RainCaveStaticTable     ;($97F0)Staff of rain cave static NPCs.
+L9760:  .word RainbowCaveStaticTable  ;($97F5)Rainbow drop cave static NPCs.
+L9762:  .word TantDLStaticTable       ;($97CE)Tantagel castle, after dragonlord defeat static NPCs.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -1885,7 +1885,7 @@ L9762:  .word TaDLStatTbl       ;($97CE)Tantagel castle, after dragonlord defeat
 
 ;----------------------------------------------------------------------------------------------------
 
-TantMobTbl:
+TantagelMobileTable:
 L9764:  .byte $C8, $4D, $62     ;Female villager at  8,13.
 L9767:  .byte $53, $42, $17     ;Guard at           19, 2.
 L976A:  .byte $0B, $4B, $1C     ;Male villager at   11,11.
