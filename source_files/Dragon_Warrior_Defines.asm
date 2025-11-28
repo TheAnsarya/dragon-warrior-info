@@ -14,19 +14,19 @@
 .alias GenByte00        $00     ;General use byte.
 .alias GenByte01        $01     ;General use byte.
 
-.alias GenPtr00         $00     ;General use pointer.
-.alias GenPtr00LB       $00     ;General use pointer, lower byte.
-.alias GenPtr00UB       $01     ;General use pointer, upper byte.
+.alias GeneralPointer00         $00     ;General use pointer.
+.alias GeneralPointer00LB       $00     ;General use pointer, lower byte.
+.alias GeneralPointer00UB       $01     ;General use pointer, upper byte.
 
-.alias GenWrd00         $00     ;General use word.
-.alias GenWrd00LB       $00     ;General use word, lower byte.
-.alias GenWrd00UB       $01     ;General use word, upper byte.
+.alias GeneralWord00         $00     ;General use word.
+.alias GeneralWord00LB       $00     ;General use word, lower byte.
+.alias GeneralWord00UB       $01     ;General use word, upper byte.
 
 .alias GenByte22        $22     ;General use byte.
 
-.alias GenPtr22         $22     ;General use pointer.
-.alias GenPtr22LB       $22     ;General use pointer, lower byte.
-.alias GenPtr22UB       $23     ;General use pointer, upper byte.
+.alias GeneralPointer22         $22     ;General use pointer.
+.alias GeneralPointer22LB       $22     ;General use pointer, lower byte.
+.alias GeneralPointer22UB       $23     ;General use pointer, upper byte.
 
 .alias GenByte24        $24     ;General use byte.
 .alias GenByte25        $25     ;General use byte.
@@ -39,9 +39,9 @@
 .alias GenByte3C        $3C     ;General use byte.
 .alias GenByte3D        $3D     ;General use byte.
 
-.alias GenPtr3C         $3C     ;General use pointer.
-.alias GenPtr3CLB       $3C     ;General use pointer, lower byte.
-.alias GenPtr3CUB       $3D     ;General use pointer, upper byte.
+.alias GeneralPointer3C         $3C     ;General use pointer.
+.alias GeneralPointer3CLB       $3C     ;General use pointer, lower byte.
+.alias GeneralPointer3CUB       $3D     ;General use pointer, upper byte.
 
 .alias GenWord3C        $3C     ;General use word.
 .alias GenWord3CLB      $3C     ;General use word, lower byte.
@@ -50,9 +50,9 @@
 .alias GenByte3E        $3E     ;General use byte.
 .alias GenByte3F        $3F     ;General use byte.
 
-.alias GenPtr3E         $3E     ;General use pointer.
-.alias GenPtr3ELB       $3E     ;General use pointer, lower byte.
-.alias GenPtr3EUB       $3F     ;General use pointer, upper byte.
+.alias GeneralPointer3E         $3E     ;General use pointer.
+.alias GeneralPointer3ELB       $3E     ;General use pointer, lower byte.
+.alias GeneralPointer3EUB       $3F     ;General use pointer, upper byte.
 
 .alias GenWord3E        $3E     ;General use word.
 .alias GenWord3ELB      $3E     ;General use word, lower byte.
@@ -61,9 +61,9 @@
 .alias GenByte42        $42     ;General use byte.
 .alias GenByte43        $43     ;General use byte.
 
-.alias GenPtr42         $42     ;General use pointer.
-.alias GenPtr42LB       $42     ;General use pointer, lower byte.
-.alias GenPtr42UB       $43     ;General use pointer, upper byte.
+.alias GeneralPointer42         $42     ;General use pointer.
+.alias GeneralPointer42LB       $42     ;General use pointer, lower byte.
+.alias GeneralPointer42UB       $43     ;General use pointer, upper byte.
 
 .alias GenWord42        $42     ;General use word.
 .alias GenWord42LB      $42     ;General use word, lower byte.
@@ -71,8 +71,8 @@
 
 ;-----------------------------------------[Variable Defines]-----------------------------------------
 
-.alias EnDamage         $00     ;Amount of damage player caused to the enemy. Subtracted from HP.
-.alias PlyrDamage       $00     ;Amount of damage enemy caused to the player. Subtracted from HP.
+.alias EnemyDamage         $00     ;Amount of damage player caused to the enemy. Subtracted from HP.
+.alias PlayerDamage       $00     ;Amount of damage enemy caused to the player. Subtracted from HP.
 .alias DmgNotUsed       $01     ;Always set to 0.
 .alias FightExpLB       $00     ;Experience gained from fight, lower byte.
 .alias FightExpUB       $01     ;Experience gained from fight, upper byte.
@@ -81,23 +81,23 @@
 .alias AmountLB         $00     ;Calculated amount used in text, lower byte.
 .alias AmountUB         $01     ;Calculated amount used in text, upper byte.
 
-.alias TrsrGoldLB       $00     ;Lower byte of gold received trom treasure chest.
-.alias TrsrGoldUB       $01     ;Upper byte of gold received trom treasure chest.
+.alias TreasureGoldLB       $00     ;Lower byte of gold received from treasure chest.
+.alias TreasureGoldUB       $01     ;Upper byte of gold received from treasure chest.
 .alias NMIStatus        $02     ;#$00 = in NMI(VBlank).
 .alias PPUEntCount      $03     ;Number of entries load from PPU buffer to PPU.
 .alias PPUBufCount      $04     ;Number of bytes to load from PPU buffer to PPU.
 .alias ScrollX          $05     ;PPU scroll x position.
-.alias ActiveNmTbl      $06     ;Active name table $#00= nametable0, #$01=nametable1.
+.alias ActiveNameTable      $06     ;Active name table $#00= nametable0, #$01=nametable1.
 .alias ScrollY          $07     ;PPU scroll y position.
 .alias PPUDataByte      $08     ;Data byte to be stored in PPU.
-.alias IsEnMirrored     $09     ;#$80=Enemy sprites mirrored, #$00=Enemy sprites not mirrored.
-.alias PPUBufPtr        $0A     ;Pointer to RAM buffer for PPU image.
-.alias PPUBufPtrLB      $0A     ;Pointer to RAM buffer for PPU image, lower byte.
-.alias PPUBufPtrUB      $0B     ;Pointer to RAM buffer for PPU image, upper byte.
+.alias IsEnemyMirrored     $09     ;#$80=Enemy sprites mirrored, #$00=Enemy sprites not mirrored.
+.alias PPUBufferPointer        $0A     ;Pointer to RAM buffer for PPU image. image.
+.alias PPUBufferPointerLB      $0A     ;Pointer to RAM buffer for PPU image, lower byte.
+.alias PPUBufferPointerUB      $0B     ;Pointer to RAM buffer for PPU image, upper byte.
 .alias PPUAddrLB        $0A     ;Target address for PPU write, lower byte.
 .alias PPUAddrUB        $0B     ;Target address for PPU write, upper byte.
-.alias PalPtrLB         $0C     ;Pointer to PPU palette data, lower byte.
-.alias PalPtrUB         $0D     ;Pointer to PPU palette data, upper byte.
+.alias PalettePointerLB         $0C     ;Pointer to PPU palette data, lower byte.
+.alias PalettePointerUB         $0D     ;Pointer to PPU palette data, upper byte.
 
 .alias XPosFromCenter   $0F     ;Tile X position with respect to center of display. Signed.
 .alias YPosFromCenter   $10     ;Tile Y position with respect to center of display. Signed.
@@ -105,17 +105,17 @@
 .alias ShakeX           $0F     ;Scroll X offset during screen shake after player damage.
 .alias ShakeY           $10     ;Scroll Y offset during screen shake after player damage.
 
-.alias MapDatPtr        $11     ;Pointer to base address of map data.
-.alias MapDatPtrLB      $11     ;Pointer to base address of map data, lower byte.
-.alias MapDatPtrUB      $12     ;Pointer to base address of map data, upper byte.
+.alias MapDataPointer        $11     ;Pointer to base address of map data.
+.alias MapDataPointerLB      $11     ;Pointer to base address of map data, lower byte.
+.alias MapDataPointerUB      $12     ;Pointer to base address of map data, upper byte.
 .alias MapWidth         $13     ;Width of current map in blocks.
 .alias MapHeight        $14     ;Height of current map in blocks.
 .alias BoundryBlock     $15     ;Block ID of for blocks beyond the map boundaries.
 .alias MapType          $16     ;#$00-over world, #$10-town/castle, #$20-cave.
 
-.alias CoverDatPtr      $17     ;Pointer to map covered area data.
-.alias CoverDatLB       $17     ;Pointer to map covered area data, lower byte.
-.alias CoverDatUB       $18     ;Pointer to map covered area data, upper byte.
+.alias CoverDataPointer      $17     ;Pointer to map covered area data.
+.alias CoverDataLB       $17     ;Pointer to map covered area data, lower byte.
+.alias CoverDataUB       $18     ;Pointer to map covered area data, upper byte.
 .alias CoverStatus      $19     ;#$00=Not covered, #$08=Under cover.
 
 .alias ThisTempIndex    $1A     ;Working index into temp buffer.
@@ -139,24 +139,24 @@
 .alias BCDByte2         $1C     ;
 .alias BCDResult        $1D     ;Hold 1 byte result of conversion.
 
-.alias WndColLB         $1E     ;Number of columns in window used in mult, lower byte.
-.alias WndColUB         $1F     ;Number of columns in window used in mult, upper byte(0).
+.alias WindowColumnLB         $1E     ;Number of columns in window used in mult, lower byte.
+.alias WindowColumnUB         $1F     ;Number of columns in window used in mult, upper byte(0).
 
-.alias _WndCol          $20     ;Working Copy of current window column selected.
-.alias _WndRow          $21     ;Working Copy of current window row selected.
+.alias _WindowColumn          $20     ;Working Copy of current window column selected.
+.alias _WindowRow          $21     ;Working Copy of current window row selected.
 
-.alias GameDatPtr       $22     ;Pointer for loading/saving game data.
-.alias GameDatPtrLB     $22     ;Pointer for loading/saving game data, lower byte.
-.alias GameDatPtrUB     $23     ;Pointer for loading/saving game data, upper byte.
+.alias GameDataPointer       $22     ;Pointer for loading/saving game data.
+.alias GameDataPointerLB     $22     ;Pointer for loading/saving game data, lower byte.
+.alias GameDataPointerUB     $23     ;Pointer for loading/saving game data, upper byte.
 
-.alias PlayerDatPtr     $22     ;Pointer for loading/saving player stats.
-.alias PlayerDatPtrLB   $22     ;Pointer for loading/saving player stats, lower byte.
-.alias PlayerDatPtrUB   $23     ;Pointer for loading/saving player stats, upper byte.
+.alias PlayerDataPointer     $22     ;Pointer for loading/saving player stats.
+.alias PlayerDataPointerLB   $22     ;Pointer for loading/saving player stats, lower byte.
+.alias PlayerDataPointerUB   $23     ;Pointer for loading/saving player stats, upper byte.
 
-.alias WndLineBufIdx    $22     ;Index into window line buffer.
-.alias AttribBufIndex   $23     ;Index into attribute table buffer
+.alias WindowLineBufferIndex    $22     ;Index into window line buffer.
+.alias AttributeBufferIndex   $23     ;Index into attribute table buffer
 
-.alias WndTypeCopy      $23     ;Temporary copy of current window type.
+.alias WindowTypeCopy      $23     ;Temporary copy of current window type.
 
 .alias NPCXCheck        $22     ;X position to check for NPC.
 .alias NPCYCheck        $23     ;Y position to check for NPC.
@@ -165,27 +165,27 @@
 .alias NPCNewFace       $25     ;New direction NPC should face to talk to player.
 .alias NPCNumber        $26     ;NPC being worked on.
 .alias NPCSpriteCntr    $27     ;Counter used for loading NPC sprite data.
-.alias NPCSprtRAMInd    $28     ;Index into sprite RAM for current NPC sprite.
+.alias NPCSpriteRAMIndex    $28     ;Index into sprite RAM for current NPC sprite.
 
 .alias JMPFuncPtr       $0030   ;JUMP command for IRQ function pointer.
 .alias _JMPFuncPtr      $30     ;JUMP command for IRQ function pointer.
 
 .alias NewPRGBank       $30     ;Stores PRG bank to switch to.
-.alias BankDatPtr       $30     ;Bank data pointer.
-.alias BankDatPtrLB     $30     ;Bank data pointer, lower byte.
-.alias BankDatPtrUB     $31     ;Bank data pointer, upper byte.
-.alias BankPtrIndex     $31     ;Stores index into BankPointers table.
-.alias BankPntr         $31     ;Bank function pointer.
-.alias BankPntrLB       $31     ;Bank function pointer, lower byte.
-.alias BankPntrUB       $32     ;Bank function pointer, upper byte.
+.alias BankDataPointer       $30     ;Bank data pointer.
+.alias BankDataPointerLB     $30     ;Bank data pointer, lower byte.
+.alias BankDataPointerUB     $31     ;Bank data pointer, upper byte.
+.alias BankPointerIndex     $31     ;Stores index into BankPointers table.
+.alias BankPointer         $31     ;Bank function pointer.
+.alias BankPointerLB       $31     ;Bank function pointer, lower byte.
+.alias BankPointerUB       $32     ;Bank function pointer, upper byte.
 
-.alias _BankFuncDatPtr  $33     ;Bank function data pointer.
-.alias _BankFuncDatLB   $33     ;Bank function data pointer, lower byte.
-.alias _BankFuncDatUB   $34     ;Bank function data pointer, upper byte.
+.alias _BankFunctionDataPointer  $33     ;Bank function data pointer.
+.alias _BankFunctionDataLB   $33     ;Bank function data pointer, lower byte.
+.alias _BankFunctionDataUB   $34     ;Bank function data pointer, upper byte.
 
-.alias NMIPtr           $35     ;Used to check If MMC is being accessed during NMI.
-.alias NMIPtrLB         $35     ;Special NMI check pointer, lower byte.
-.alias NMIPtrUB         $36     ;Special NMI check pointer, upper byte.
+.alias NMIPointer           $35     ;Used to check If MMC is being accessed during NMI.
+.alias NMIPointerLB         $35     ;Special NMI check pointer, lower byte.
+.alias NMIPointerUB         $36     ;Special NMI check pointer, upper byte.
 
 .alias IRQStoreA        $37     ;Temp storage for A in IRQ routine.
 .alias IRQStoreX        $38     ;Temp storage for X in IRQ routine.
@@ -197,7 +197,7 @@
 .alias BufByteCntr      $3C     ;Buffer byte load counter.
 .alias _EnNumber        $3C     ;Working copy of enemy number.
 .alias CalcDamage       $3C     ;Calculated damage to player/enemy.
-.alias PlyrTempStat     $3C     ;Temporary register for the player's various stats.
+.alias PlayerTempStat     $3C     ;Temporary register for the player's various stats.
 
 .alias CharYScrPos      $3C     ;Character sprite Y position on the screen.
 .alias CharXScrPos      $3D     ;Character sprite X position on the screen.
@@ -205,19 +205,19 @@
 .alias ShopIndex        $3C     ;Index into ShopItemsTbl for current shop items list.
 .alias WrldMapXPos      $3D     ;World map X position calculation.
 
-.alias LevelDatPtr      $3C     ;Pointer into BaseStatsTbl.
+.alias LevelDataPointer      $3C     ;Pointer into BaseStatsTable.
 .alias PalModByte       $3C     ;Added to palette data to change it in some cases.
 .alias LoadBGPal        $3D     ;#$00-skip loading BG palette, #$FF-Load BG palette.
 
-.alias EnSprtAttribDat  $3C     ;Attribute data for enemy sprites.
-.alias EnSprtXPos       $3D     ;X position data for enemy sprite.
+.alias EnemySpriteAttributeData  $3C     ;Attribute data for enemy sprites.
+.alias EnemySpriteXPos       $3D     ;X position data for enemy sprite.
 
 .alias NPCSpriteYOfst   $3C     ;4 sprites per NPC. Y offset of current NPC sprite tile.
 .alias NPCSpriteXOfst   $3D     ;4 sprites per NPC. X offset of current NPC sprite tile.
 
-.alias NPCDatPtr        $3C     ;Data pointer to NPC data.
-.alias NPCDatPtrLB      $3C     ;Data pointer to NPC data, lower byte.
-.alias NPCDatPtrUB      $3D     ;Data pointer to NPC data, upper byte.
+.alias NPCDataPointer        $3C     ;Data pointer to NPC data.
+.alias NPCDataPointerLB      $3C     ;Data pointer to NPC data, lower byte.
+.alias NPCDataPointerUB      $3D     ;Data pointer to NPC data, upper byte.
 
 .alias CoveredStsNext   $3D     ;Indicates the covered status after player movement.
 
@@ -231,27 +231,27 @@
 .alias NTXPos           $3C     ;Nametable X position to modify (#$00-#$3F, spans 2 nametables).
 .alias NTYPos           $3E     ;Nametable Y position to modify (#$00-#$1E).
 
-.alias ROMSrcPtr        $3C     ;ROM copy source pointer.
-.alias ROMSrcPtrLB      $3C     ;ROM copy source pointer, lower byte.
-.alias ROMSrcPtrUB      $3D     ;ROM copy source pointer, upper byte.
+.alias ROMSourcePointer        $3C     ;ROM copy source pointer.
+.alias ROMSourcePointerLB      $3C     ;ROM copy source pointer, lower byte.
+.alias ROMSourcePointerUB      $3D     ;ROM copy source pointer, upper byte.
 
-.alias RAMTrgtPtr       $3E     ;RAM copy target pointer.
-.alias RAMTrgtPtrLB     $3E     ;RAM copy target pointer, lower byte.
-.alias RAMTrgtPtrUB     $3F     ;RAM copy target pointer, upper byte.
+.alias RAMTargetPointer       $3E     ;RAM copy target pointer.
+.alias RAMTargetPointerLB     $3E     ;RAM copy target pointer, lower byte.
+.alias RAMTargetPointerUB     $3F     ;RAM copy target pointer, upper byte.
 
-.alias MultNum1LB       $3C     ;Multiply number 1, lower byte.
-.alias MultNum1UB       $3D     ;Multiply number 1, upper byte.
-.alias MultNum2LB       $3E     ;Multiply number 2, lower byte.
-.alias MultNum2UB       $3F     ;Multiply number 2, upper byte.
-.alias MultRsltLB       $40     ;Multiply results, lower byte.
-.alias MultRsltUB       $41     ;Multiply results, upper byte.
+.alias MultiplyNum1LB       $3C     ;Multiply number 1, lower byte.
+.alias MultiplyNum1UB       $3D     ;Multiply number 1, upper byte.
+.alias MultiplyNum2LB       $3E     ;Multiply number 2, lower byte.
+.alias MultiplyNum2UB       $3F     ;Multiply number 2, upper byte.
+.alias MultiplyResultLB       $40     ;Multiply results, lower byte.
+.alias MultiplyResultUB       $41     ;Multiply results, upper byte.
 
-.alias DivNum1LB        $3C     ;Divide number 1, lower byte.
-.alias DivNmu1UB        $3D     ;Divide number 1, upper byte.
-.alias DivNum2          $3E     ;Divide number 2.
-.alias DivNum2NU        $3F     ;Divide number 2 (not used).
-.alias DivQuotient      $3C     ;Divide results, quotient.
-.alias DivRemainder     $40     ;Divide results, remainder.
+.alias DivideNum1LB        $3C     ;Divide number 1, lower byte.
+.alias DivideNum1UB        $3D     ;Divide number 1, upper byte.
+.alias DivideNum2          $3E     ;Divide number 2.
+.alias DivideNum2NU        $3F     ;Divide number 2 (not used).
+.alias DivideQuotient      $3C     ;Divide results, quotient.
+.alias DivideRemainder     $40     ;Divide results, remainder.
 
 .alias EnemyOffset      $3E     ;Offset used to get enemy from EnemyGroupsTbl.
 .alias RndGoldBits      $3E     ;Bitmask for adding random gold to found treasure chests.
@@ -259,9 +259,9 @@
 .alias SpellFlagsLB     $3E     ;Stores bit flags for first 8 spells.
 .alias SpellFlagsUB     $3F     ;Stores bit flags for last 2 spells in the LSBs.
 
-.alias SprtPalPtr       $3E     ;Pointer to sprite palette data.
-.alias SprtPalPtrLB     $3E     ;Pointer to sprite palette data, lower byte.
-.alias SprtPalPtrUB     $3F     ;Pointer to sprite palette data, upper byte.
+.alias SpritePalettePointer       $3E     ;Pointer to sprite palette data.
+.alias SpritePalettePointerLB     $3E     ;Pointer to sprite palette data, lower byte.
+.alias SpritePalettePointerUB     $3F     ;Pointer to sprite palette data, upper byte.
 
 .alias NPCXPixelsLB     $3E     ;NPC X pixel coordinates, lower byte.
 .alias NPCXPixelsUB     $3F     ;NPC X pixel coordinates, upper byte.
@@ -270,17 +270,17 @@
 
 .alias SpellDescByte    $40     ;#$00-#$0A represents each one of the spells in ascending order.
 
-.alias BGPalPtr         $40     ;Pointer to background palette data.
-.alias BGPalPtrLB       $40     ;Pointer to background palette data, lower byte.
-.alias BGPalPtrUB       $41     ;Pointer to background palette data, upper byte.
+.alias BackgroundPalettePointer         $40     ;Pointer to background palette data.
+.alias BackgroundPalettePointerLB       $40     ;Pointer to background palette data, lower byte.
+.alias BackgroundPalettePointerUB       $41     ;Pointer to background palette data, upper byte.
 
 .alias CopyCounter      $40     ;Word used to count bytes copied from ROM to RAM.
 .alias CopyCounterLB    $40     ;Copy counter, lower byte.
 .alias CopyCounterUB    $41     ;Copy counter, upper byte.
 
-.alias EnDatPtr         $40     ;Enemy data pointer.
-.alias EnDatPtrLB       $40     ;Enemy data pointer, lower byte.
-.alias EnDatPtrUB       $41     ;Enemy data pointer, upper byte.
+.alias EnemyDataPointer         $40     ;Enemy data pointer.
+.alias EnemyDataPointerLB       $40     ;Enemy data pointer, lower byte.
+.alias EnemyDataPointerUB       $41     ;Enemy data pointer, upper byte.
 
 .alias BlockDataPtr     $40     ;Pointer to block graphics data.
 .alias BlockDataPtrLB   $40     ;Pointer to block graphics data, lower byte.
@@ -289,13 +289,13 @@
 .alias CRCCopyLB        $40     ;Copy of saved game CRC, lower byte for verification purposes.
 .alias CRCCopyUB        $41     ;Copy of saved game CRC, upper byte for verification purposes.
 
-.alias MapBytePtr       $40     ;Pointer to map data byte.
-.alias MapBytePtrLB     $40     ;Pointer to map data byte, lower byte.
-.alias MapBytePtrUB     $41     ;Pointer to map data byte, upper byte.
+.alias MapBytePointer       $40     ;Pointer to map data byte.
+.alias MapBytePointerLB     $40     ;Pointer to map data byte, lower byte.
+.alias MapBytePointerUB     $41     ;Pointer to map data byte, upper byte.
 
-.alias WrldMapPtr       $40     ;Pointer to overworld map row data.
-.alias WrldMapPtrLB     $40     ;Pointer to overworld map row data, lower byte.
-.alias WrldMapPtrUB     $41     ;Pointer to overworld map row data, upper byte.
+.alias WorldMapPointer       $40     ;Pointer to overworld map row data.
+.alias WorldMapPointerLB     $40     ;Pointer to overworld map row data, lower byte.
+.alias WorldMapPointerUB     $41     ;Pointer to overworld map row data, upper byte.
 
 .alias WindowBlock      $40     ;#$FF-No window data at selected block.
 .alias NPCOnScreen      $41     ;#$FF-NPC on screen, #$00-NPC not on screen.
@@ -321,16 +321,16 @@
 
 .alias MapNumber        $45     ;Current map player is on.
 .alias JoypadBit        $46     ;LSB Contains current bit read from joypad 1.
-.alias JoypadBtns       $47     ;Captured button presses on controller 1.
+.alias JoypadButtons       $47     ;Captured button presses on controller 1.
 
 .alias XFromLeftTemp    $48     ;Temporary storage for XPosFromLeft.
 .alias YFromTopTemp     $49     ;Temporary storage for YPosFromTop.
 
 .alias NTBlockX         $4A     ;Nametable X block position, #$00-#$1F(1/2 X tile position).
 .alias NTBlockY         $4B     ;Nametable Y block position, #$00-#$0E(1/2 y tile position).
-.alias BlkRemoveFlgs    $4C     ;Lower nibble is flags of tiles to remove when changing a map block.
+.alias BlockRemoveFlags    $4C     ;Lower nibble is flags of tiles to remove when changing a map block.
 				;1-upper left, 2-upper right, 4-lower left, 8-lower right.
-.alias BridgeFlashCntr  $4C     ;Used to count palette flash cycles when rainbow bridge is created.
+.alias BridgeFlashCounter  $4C     ;Used to count palette flash cycles when rainbow bridge is created.
 .alias TileCounter      $4D     ;Used to count tiles when modifying blocks.
 .alias RowCounter       $4D     ;Used to count block rows when clearing out nametable on map change.
 .alias BlockClear       $4D     ;Is always 0. Maybe had some other function in Dragon's Quest.
@@ -354,7 +354,7 @@
 .alias GwaelinYPos      $8B     ;Princess Gwaelin's Y position at the end of the game.
 .alias GwaelinOffset    $8C     ;Princess Gwaelin's moving offset at the end of the game.
 
-.alias NPCUpdateCntr    $8D     ;Counts 0 to 4. Used to update NPCs. #$FF=No NPCs on current map.
+.alias NPCUpdateCounter    $8D     ;Counts 0 to 4. Used to update NPCs. #$FF=No NPCs on current map.
 .alias _CharXPos        $8E     ;Copy of player's X position.
 .alias _CharYPos        $8F     ;Copy of player's Y position.
 .alias CharXPixelsLB    $90     ;Player's X position in pixels, lower byte (CharXPos*16).
@@ -368,47 +368,47 @@
 .alias RandNumLB        $94     ;Random number, lower byte.
 .alias RandNumUB        $95     ;Random number, upper byte.
 .alias StopNPCMove      $96     ;#$FF-Stop NPCs from moving, #$00-Allow NPCs to move.
-.alias WndColPos        $97     ;Window column position, in tiles.
-.alias WndRowPos        $98     ;Window row position, in tiles.
+.alias WindowColumnPosition    $97     ;Window column position, in tiles.
+.alias WindowRowPosition       $98     ;Window row position, in tiles.
 .alias BlockCounter     $98     ;Counts blocks placed when putting combat background on screen.
 
 .alias BlockAddr        $99     ;Current block address in buffer.
 .alias BlockAddrLB      $99     ;Current block address in buffer, lower byte.
 .alias BlockAddrUB      $9A     ;Current block address in buffer, upper byte.
 
-.alias EnSpritePtr      $99     ;Pointer to enemy sprite data.
-.alias EnSpritePtrLB    $99     ;Pointer to enemy sprite data, lower byte.
-.alias EnSpritePtrUB    $9A     ;Pointer to enemy sprite data, upper byte.
+.alias EnemySpritePointer      $99     ;Pointer to enemy sprite data.
+.alias EnemySpritePointerLB    $99     ;Pointer to enemy sprite data, lower byte.
+.alias EnemySpritePointerUB    $9A     ;Pointer to enemy sprite data, upper byte.
 
-.alias DatPntr1         $99     ;
-.alias DatPntr1LB       $99     ;Stores a pointer to the start of data tables.
-.alias DatPntrlUB       $9A     ;
+.alias DataPointer1         $99     ;
+.alias DataPointer1LB       $99     ;Stores a pointer to the start of data tables.
+.alias DataPointer1UB       $9A     ;
 
 .alias StartSignedXPos  $9D     ;Starting X position in tiles of window row. signed from center.
-.alias WndBlockWidth    $9E     ;Block width of window being removed.
+.alias WindowBlockWidth    $9E     ;Block width of window being removed.
 
-.alias DialogPtr        $9F     ;Pointer to dialog text.
-.alias DialogPtrLB      $9F     ;Pointer to dialog text, lower byte.
-.alias DialogPtrUB      $A0     ;Pointer to dialog text, upper byte.
+.alias DialogPointer        $9F     ;Pointer to dialog text.
+.alias DialogPointerLB      $9F     ;Pointer to dialog text, lower byte.
+.alias DialogPointerUB      $A0     ;Pointer to dialog text, upper byte.
 
-.alias WndDatPtr        $9F     ;Pointer to window data.
-.alias WndDatPtrLB      $9F     ;Pointer to window data, lower byte.
-.alias WndDatPtrUB      $A0     ;Pointer to window data, upper byte.
+.alias WindowDataPointer      $9F     ;Pointer to window data.
+.alias WindowDataPointerLB    $9F     ;Pointer to window data, lower byte.
+.alias WindowDataPointerUB    $A0     ;Pointer to window data, upper byte.
 
-.alias WndFcnPtr        $00A1   ;Window function pointer.
-.alias WndFcnLB         $A1     ;Window function pointer, lower byte.
-.alias WndFcnUB         $A2     ;Window function pointer, upper byte.
+.alias WindowFunctionPointer  $00A1   ;Window function pointer.
+.alias WindowFunctionLB       $A1     ;Window function pointer, lower byte.
+.alias WindowFunctionUB       $A2     ;Window function pointer, upper byte.
 
-.alias DescPtr          $A1     ;Pointer used for item and window descriptions.
-.alias DescPtrLB        $A1     ;Description pointer, lower byte.
-.alias DescPtrUB        $A2     ;Description pointer, upper byte.
+.alias DescriptionPointer          $A1     ;Pointer used for item and window descriptions.
+.alias DescriptionPointerLB        $A1     ;Description pointer, lower byte.
+.alias DescriptionPointerUB        $A2     ;Description pointer, upper byte.
 
-.alias AttribPtr        $A1     ;Pointer used for attribute table data.
-.alias AttribPtrLB      $A1     ;attribute table pointer, lower byte.
-.alias AttribPtrUB      $A2     ;attribute table pointer, upper byte.
+.alias AttributePointer        $A1     ;Pointer used for attribute table data.
+.alias AttributePointerLB      $A1     ;attribute table pointer, lower byte.
+.alias AttributePointerUB      $A2     ;attribute table pointer, upper byte.
 
-.alias _DescBuf         $00A3   ;Description buffer.
-.alias DescBuf          $A3     ;Through $B4. Indexes used for item descriptions.
+.alias _DescriptionBuffer         $00A3   ;Description buffer.
+.alias DescriptionBuffer          $A3     ;Through $B4. Indexes used for item descriptions.
 
 .alias DispName0        $B5     ;
 .alias DispName1        $B6     ;First four bytes of name displayed in status window.
@@ -420,7 +420,7 @@
 .alias ExpUB            $BB     ;Current experience points, upper byte.
 .alias GoldLB           $BC     ;Current gold, lower byte.
 .alias GoldUB           $BD     ;Current gold, upper bytee.
-.alias EqippedItems     $BE     ;Current equipped items %WWWAAASS W-weapon, A-armor, S-shield
+.alias EquippedItems     $BE     ;Current equipped items %WWWAAASS W-weapon, A-armor, S-shield
 				;Value  Weapon           Armor            Shield
 				;--------------------------------------------------------------------
 				; 000   None             None             None
@@ -449,12 +449,12 @@
 .alias HitPoints        $C5     ;Current hit points.
 .alias MagicPoints      $C6     ;Current magic points.
 .alias DisplayedLevel   $C7     ;Current level, for display only.
-.alias DisplayedStr     $C8     ;Strength, for display only.
-.alias DisplayedAgi     $C9     ;Agility, for display only.
-.alias DisplayedMaxHP   $CA     ;Max hit points, for display only.
-.alias DisplayedMaxMP   $CB     ;Max magic points, for display only.
-.alias DisplayedAttck   $CC     ;Attack power, for display only.
-.alias DisplayedDefns   $CD     ;Defense power, for display only.
+.alias DisplayedStrength     $C8     ;Strength, for display only.
+.alias DisplayedAgility      $C9     ;Agility, for display only.
+.alias DisplayedMaxHP        $CA     ;Max hit points, for display only.
+.alias DisplayedMaxMP        $CB     ;Max magic points, for display only.
+.alias DisplayedAttack       $CC     ;Attack power, for display only.
+.alias DisplayedDefense      $CD     ;Defense power, for display only.
 .alias SpellFlags       $CE     ;Flags that keep track of the player's spells.
 				;%00000001-Heal
 				;%00000010-Hurt
@@ -464,7 +464,7 @@
 				;%00100000-Outside
 				;%01000000-Return
 				;%10000000-Repel
-.alias ModsnSpells      $CF     ;Two more spell flags and stat enhancing items.
+.alias ModifiersAndSpells      $CF     ;Two more spell flags and stat enhancing items.
 				;%00000001-Healmore Spell.
 				;%00000010-Hurtmore Spell.
 				;%00000100-Dragonlord castle secret passage found.
@@ -479,22 +479,22 @@
 				;non-zero=Write PPU data horizontally.
 .alias AddAttribData    $D1     ;#$00=Move attrib data to buffer. Non-zero=skip attrib table data.
 
-.alias WndTxtXCoord     $D2     ;X coordinant of current text byte relative to the window.
-.alias WndTxtYCoord     $D3     ;Y coordinant of current text byte relative to the window.
+.alias WindowTextXCoordinate     $D2     ;X coordinant of current text byte relative to the window.
+.alias WindowTextYCoordinate     $D3     ;Y coordinant of current text byte relative to the window.
 
 .alias RepeatCounter    $D6     ;Counts repeated PPU entry bytes.
 .alias SpellToCast      $D7     ;Spell player or enemy is attempting to cast.
-.alias WndSelResults    $D7     ;Stores selection results from a window.
+.alias WindowSelectionResults    $D7     ;Stores selection results from a window.
 
-.alias WndCol           $D8     ;Window colum currently selected.
-.alias WndRow           $D9     ;Window row currently selected.
+.alias WindowColumn           $D8     ;Window colum currently selected.
+.alias WindowRow              $D9     ;Window row currently selected.
 
 .alias RadiantTimer     $DA     ;Remaining time for radiant spell.
 .alias RepelTimer       $DB     ;Remining repel spell time.
 
 .alias DialogTemp       $DE     ;Dialog byte used for finding correct dialog.
 .alias DescTemp         $DE     ;Temporary storage of item description byte.
-.alias PalFlashCntr     $DE     ;Counter used when flashing palette when enemy hit.
+.alias PaletteFlashCounter     $DE     ;Counter used when flashing palette when enemy hit.
 .alias PlayerFlags      $DF     ;Additional player flags.
 				;%00000001-Carrying Gwaelin.
 				;%00000010-Gwaelin returned.
@@ -505,11 +505,11 @@
 				;%01000000-Enemy asleep.
 				;%10000000-Player asleep.
 
-.alias EnNumber         $E0     ;Enemy number. $00 through $27.
+.alias EnemyNumber         $E0     ;Enemy number. $00 through $27.
 .alias ThisTile         $E0     ;Current block type player is standing on.
 
-.alias EnCurntHP        $E2     ;Enemy's current hit points.
-.alias MjArmrHP         $E3     ;Increments every movement and increments HP every
+.alias EnemyCurrentHP        $E2     ;Enemy's current hit points.
+.alias MagicArmorHP         $E3     ;Increments every movement and increments HP every
 				;3 steps if wearing magic armor.
 .alias StoryFlags       $E4     ;Flags that keep track of major game events.
 				;%00000001-
@@ -528,10 +528,10 @@
 .alias SQ1IndexUB       $E7     ;
 .alias SQ2IndexLB       $E8     ;Current address to SQ2 music data.
 .alias SQ2IndexUB       $E9     ;
-.alias TriIndexLB       $EA     ;Current address to triangle music data.
-.alias TriIndexUB       $EB     ;
-.alias NoisIndexLB      $EC     ;Current address to noise SFX data.
-.alias NoisIndexUB      $ED     ;
+.alias TriangleIndexLB       $EA     ;Current address to triangle music data.
+.alias TriangleIndexUB       $EB     ;
+.alias NoiseIndexLB      $EC     ;Current address to noise SFX data.
+.alias NoiseIndexUB      $ED     ;
 
 .alias SQ1ReturnLB      $EE     ;Return address for SQ1 music loop.
 .alias SQ1ReturnUB      $EF     ;
@@ -551,18 +551,18 @@
 .alias TRIQuiet         $F9     ;TRI Quiet time between notes.
 .alias SFXActive        $FA     ;Number of frames remaining in current SFX.
 .alias Tempo            $FB     ;Controls overall speed of music.
-.alias TempoCntr        $FC     ;Increments by Tempo every frame.
+.alias TempoCounter        $FC     ;Increments by Tempo every frame.
 .alias NoteOffset       $FD     ;Index offset for note to play. Makes dungeon music lower.
 .alias MusicTemp        $FE     ;Used as temp variable when doing sound calcs.
 .alias SQ2Config        $FF     ;Hold config byte for SQ2 control register $4004.
 
 ;----------------------------------------------------------------------------------------------------
 
-.alias EnBaseAtt        $0100   ;Enemy base attack attibute.
-.alias EnBaseDef        $0101   ;Enemy base defense attribute.
-.alias EnBaseHP         $0102   ;Enemy base hit points.
+.alias EnemyBaseAttack        $0100   ;Enemy base attack attibute.
+.alias EnemyBaseDefense        $0101   ;Enemy base defense attribute.
+.alias EnemyBaseHP         $0102   ;Enemy base hit points.
 
-.alias EnSpell          $0103   ;Enemy spells.
+.alias EnemySpell          $0103   ;Enemy spells.
 				;The enemy spells are broken into the upper and lower nibbles.
 				;The upper nibble controls the sleep, stopspell, heal and
 				;healmore spells.  Bits 4 and 5 control the percent the spell
@@ -580,17 +580,17 @@
 .alias BankFuncDatLB    $0103   ;Pointer to bank function data after BRK command, lower byte.
 .alias BankFuncDatUB    $0104   ;Pointer to bank function data after BRK command, upper byte.
 
-.alias EnBaseAgi        $0104   ;Enemy base agility.
-.alias EnBaseMDef       $0105   ;Enemy base magic defense.
-.alias EnBaseExp        $0106   ;Enemy base experience.
-.alias EnBaseGld        $0107   ;Enemy base gold.
+.alias EnemyBaseAgility        $0104   ;Enemy base agility.
+.alias EnemyBaseMagicDefense        $0105   ;Enemy base magic defense.
+.alias EnemyBaseExperience        $0106   ;Enemy base experience.
+.alias EnemyBaseGold        $0107   ;Enemy base gold.
 
 .alias Stack            $0110   ;Through $01FF. CPU stack.
 .alias SpriteRAM        $0200   ;Through $02FF. Sprite DMA RAM.
 .alias BlockRAM         $0300   ;Through $03FF. Multipurpose RAM for buffering.
-.alias TrsrArray        $0320   ;Through $039B. Array of all trasure chest data.
-.alias EnPalData        $03A0   ;Through $03AB. Palette data for current enemy.
-.alias WinBufRAM        $0400   ;Through $07BF. Window data buffer. 32 by 30 bytes.
+.alias TreasureArray        $0320   ;Through $039B. Array of all trasure chest data.
+.alias EnemyPaletteData        $03A0   ;Through $03AB. Palette data for current enemy.
+.alias WindowBufferRAM        $0400   ;Through $07BF. Window data buffer. 32 by 30 bytes.
 
 ;--------------------------------------[Hardware defines]--------------------------------------------
 
@@ -603,35 +603,35 @@
 .alias PPUAddress       $2006   ;
 .alias PPUIOReg         $2007   ;
 
-.alias SQ1Cntrl0        $4000   ;
-.alias SQ1Cntrl1        $4001   ;SQ1 hardware control registers.
-.alias SQ1Cntrl2        $4002   ;
-.alias SQ1Cntrl3        $4003   ;
+.alias SQ1Control0        $4000   ;
+.alias SQ1Control1        $4001   ;SQ1 hardware control registers.
+.alias SQ1Control2        $4002   ;
+.alias SQ1Control3        $4003   ;
 
-.alias SQ2Cntrl0        $4004   ;
-.alias SQ2Cntrl1        $4005   ;SQ2 hardware control registers.
-.alias SQ2Cntrl2        $4006   ;
-.alias SQ2Cntrl3        $4007   ;
+.alias SQ2Control0        $4004   ;
+.alias SQ2Control1        $4005   ;SQ2 hardware control registers.
+.alias SQ2Control2        $4006   ;
+.alias SQ2Control3        $4007   ;
 
-.alias TriangleCntrl0   $4008   ;
-.alias TriangleCntrl1   $4009   ;Triangle hardware control registers.
-.alias TriangleCntrl2   $400A   ;
-.alias TriangleCntrl3   $400B   ;
+.alias TriangleControl0   $4008   ;
+.alias TriangleControl1   $4009   ;Triangle hardware control registers.
+.alias TriangleControl2   $400A   ;
+.alias TriangleControl3   $400B   ;
 
-.alias NoiseCntrl0      $400C   ;
-.alias NoiseCntrl1      $400D   ;Noise hardware control registers.
-.alias NoiseCntrl2      $400E   ;
-.alias NoiseCntrl3      $400F   ;
+.alias NoiseControl0      $400C   ;
+.alias NoiseControl1      $400D   ;Noise hardware control registers.
+.alias NoiseControl2      $400E   ;
+.alias NoiseControl3      $400F   ;
 
-.alias DMCCntrl0        $4010   ;
-.alias DMCCntrl1        $4011   ;DMC hardware control registers.
-.alias DMCCntrl2        $4012   ;
-.alias DMCCntrl3        $4013   ;
+.alias DMCControl0        $4010   ;
+.alias DMCControl1        $4011   ;DMC hardware control registers.
+.alias DMCControl2        $4012   ;
+.alias DMCControl3        $4013   ;
 
 .alias SPRDMAReg        $4014   ;Sprite RAM DMA register.
-.alias APUCommonCntrl0  $4015   ;APU common control 1 register.
+.alias APUCommonControl0  $4015   ;APU common control 1 register.
 .alias CPUJoyPad1       $4016   ;Joypad1 register.
-.alias APUCommonCntrl1  $4017   ;Joypad2/APU common control 2 register.
+.alias APUCommonControl1  $4017   ;Joypad2/APU common control 2 register.
 
 ;------------------------------------------[Cartridge RAM]-------------------------------------------
 
@@ -639,16 +639,16 @@
 .alias ActiveNT0        $6002   ;Stores number of CHR ROM bank active in nametable 0.
 .alias ActiveNT1        $6003   ;Stores number of CHR ROM bank active in nametable 1.
 .alias ActiveBank       $6004   ;Stores number of lower PRG bank that is active.
-.alias SndEngineStat    $6005   ;If not 0, sound engine is processing.
+.alias SoundEngineStatus    $6005   ;If not 0, sound engine is processing.
 
-.alias DrgnLrdPal       $600A   ;Read only once and loads a special palette when
+.alias DragonlordPalette       $600A   ;Read only once and loads a special palette when
 				;the dradonlord is defeated. The palette does not
 				;seemed to be used for anything.
 
 .alias DoorXPos         $600C   ;Through $601A. X and y positions of doors
 .alias DoorYPos         $600D   ;Through $601B. opened on the current map.
-.alias TrsrXPos         $601C   ;Through $602A. X and y positions of treasure
-.alias TrsrYPos         $601D   ;Through $602B. chests picked up on the current map.
+.alias TreasureXPos         $601C   ;Through $602A. X and y positions of treasure
+.alias TreasureYPos         $601D   ;Through $602B. chests picked up on the current map.
 
 .alias UpdateBGTiles    $602C   ;MSB set = update on-screen background tiles.
 
@@ -656,7 +656,7 @@
 .alias CharDirection    $602F   ;Player's facing direction, 0-up, 1-right, 2-down, 3-left.
 .alias SaveSelected     $6030   ;Save slot selected(0-2).
 .alias OpnSltSelected   $6031   ;Open game slot selected for copying a saved game into.
-.alias SaveGameCntr     $6032
+.alias SaveGameCounter     $6032
 
 .alias _SaveBitMask     $6034   ;Working copy of saved games bitmasks.
 .alias ValidSave1       $6035   ;#$C8=valid saved data, slot 1, #$00=not valid.
@@ -669,7 +669,7 @@
 .alias StartStatus1     $6045   ;#$78=Full HP and MP on start, #$AB=Do not restore, Save game 1.
 .alias StartStatus2     $6046   ;#$78=Full HP and MP on start, #$AB=Do not restore, Save game 2.
 .alias StartStatus3     $6047   ;#$78=Full HP and MP on start, #$AB=Do not restore, Save game 3.
-.alias CurrentGameDat   $6048   ;Through $6067. Game data for current game being played.
+.alias CurrentGameData   $6048   ;Through $6067. Game data for current game being played.
 .alias SavedGame1       $6068   ;Through $61A7. Save game slot 1. Data repeated 10 times.
 .alias SavedGame2       $61A8   ;Through $62E7. Save game slot 2. Data repeated 10 times.
 .alias SavedGame3       $62E8   ;Through $6427. Save game slot 3. Data repeated 10 times.
@@ -682,56 +682,56 @@
 ;------------------------------------[Text and window Variables]-------------------------------------
 
 .alias WndUnused6006    $6006   ;Unused window variable.
-.alias WndEraseHght     $6007   ;Window erase height in blocks.
-.alias WndEraseWdth     $6008   ;Window erase width in tiles.
-.alias WndErasePos      $6009   ;Window erase position in blocks, Y=upper nibble, X=lower nibble.
+.alias WindowEraseHeight     $6007   ;Window erase height in blocks.
+.alias WindowEraseWidth     $6008   ;Window erase width in tiles.
+.alias WindowErasePosition      $6009   ;Window erase position in blocks, Y=upper nibble, X=lower nibble.
 
-.alias WndLineBuf       $6436   ;Through $6471. 60 bytes. buffers 2 window tile rows.
+.alias WindowLineBuffer       $6436   ;Through $6471. 60 bytes. buffers 2 window tile rows.
 
-.alias AttribTblBuf     $6496   ;Through $64A5. Attribute table buffer for 1 on-screen block row.
+.alias AttributeTableBuffer     $6496   ;Through $64A5. Attribute table buffer for 1 on-screen block row.
 
-.alias WndWidthTemp     $64A6   ;Temp copy of WndWidth.
+.alias WindowWidthTemp     $64A6   ;Temp copy of WindowWidth.
 .alias _WndPosition     $64A7   ;Working copy of WndPosition.
 
-.alias WndBlkTileRow    $64A9   ;Either #$02 or #$01. Which row of block is being processed.
-.alias _WndWidth        $64AA   ;Working copy of WndWidth.
-.alias WndUnused64AB    $64AB   ;Written to but never used.
-.alias WndLineBufIndex  $64AC   ;Current index into window line buffer.
-.alias WndAtrbBufIndex  $64AD   ;Current index into attribute table buffer.
-.alias WndUnused64AE    $64AE   ;Written to but never used.
+.alias WindowBlockTileRow    $64A9   ;Either #$02 or #$01. Which row of block is being processed.
+.alias _WindowWidth        $64AA   ;Working copy of WindowWidth.
+.alias WindowUnused64AB    $64AB   ;Written to but never used.
+.alias WindowLineBufferIndex  $64AC   ;Current index into window line buffer.
+.alias WindowAttributeBufferIndex  $64AD   ;Current index into attribute table buffer.
+.alias WindowUnused64AE    $64AE   ;Written to but never used.
 
 .alias DescLength       $64AF   ;Length in bytes of description string.
 .alias IndMultByte      $64AF   ;Indexed multiplication multiplicand byte.
-.alias DialogScrlY      $64AF   ;Screen coords Y offset while scrolling dialog text.
+.alias DialogScrollY      $64AF   ;Screen coords Y offset while scrolling dialog text.
 
-.alias DialogScrlInd    $64B0   ;Index into dialog buffer to write to PPU while scrolling.
+.alias DialogScrollIndex    $64B0   ;Index into dialog buffer to write to PPU while scrolling.
 
 .alias IndMultNum1      $64B0   ;Indexed multiplication, 1st multiplication byte.
 .alias IndMultNum2      $64B1   ;Indexed multiplication, 2nd multiplication byte.
 
 .alias WordBufIndex     $64B4   ;Search index into word buffer.
 
-.alias WndNTRowOffset   $64B6   ;Tile offset in nametable row for start of window row.
-.alias WndAtribDat      $64B6   ;Attribute table data byte.
+.alias WindowNameTableRowOffset   $64B6   ;Tile offset in nametable row for start of window row.
+.alias WindowAttributeData      $64B6   ;Attribute table data byte.
 
-.alias ScrnTxtXCoord    $64B6   ;X coordinant of current text byte relative to the screen.
-.alias ScrnTxtYCoord    $64B7   ;Y coordinant of current text byte relative to the screen.
-.alias WndBtnPresses    $64B8   ;Button presses captured while selection window is active.
+.alias ScreenTextXCoordinate    $64B6   ;X coordinant of current text byte relative to the screen.
+.alias ScreenTextYCoordinate    $64B7   ;Y coordinant of current text byte relative to the screen.
+.alias WindowButtonPresses    $64B8   ;Button presses captured while selection window is active.
 
-.alias WndThisNTRow     $64B8   ;Number of tiles for window row on this nametable.
-.alias WndNextNTRow     $64B9   ;Number of tiles for window row on next nametable.
+.alias WindowThisNameTableRow     $64B8   ;Number of tiles for window row on this nametable.
+.alias WindowNextNameTableRow     $64B9   ;Number of tiles for window row on next nametable.
 
-.alias WndPPUAddrLB     $64BA   ;Lower byte PPU address for current window tile.
-.alias WndPPUAddrUB     $64BB   ;Upper byte PPU address for current window tile.
+.alias WindowPPUAddressLB     $64BA   ;Lower byte PPU address for current window tile.
+.alias WindowPPUAddressUB     $64BB   ;Upper byte PPU address for current window tile.
 
-.alias AtribBitsOfst    $64BE   ;Offset for attrib table bits in attrib table byte(0,2,4,6).
-.alias AttribByte       $64BF   ;Attribute table data byte.
+.alias AttributeBitsOffset    $64BE   ;Offset for attrib table bits in attrib table byte(0,2,4,6).
+.alias AttributeByte       $64BF   ;Attribute table data byte.
 
-.alias WndAttribVal     $64C1   ;Attribute table value(#$00-#$03).
-.alias _WndPPUAddrLB    $64C2   ;Working copy of nametable address, lower byte.
-.alias _WndPPUAddrUB    $64C3   ;Working copy of nametable address, upper byte.
-.alias WndAtribAdrLB    $64C4   ;Attribute table address, lower byte.
-.alias WndAtribAdrUB    $64C5   ;Attribute table address, upper byte.
+.alias WindowAttributeValue     $64C1   ;Attribute table value(#$00-#$03).
+.alias _WindowPPUAddressLB    $64C2   ;Working copy of nametable address, lower byte.
+.alias _WindowPPUAddressUB    $64C3   ;Working copy of nametable address, upper byte.
+.alias WindowAttributeAddressLB    $64C4   ;Attribute table address, lower byte.
+.alias WindowAttributeAddressUB    $64C5   ;Attribute table address, upper byte.
 .alias DispName4        $64C6   ;
 .alias DispName5        $64C7   ;Last four bytes of name.
 .alias DispName6        $64C8   ;
@@ -741,50 +741,50 @@
 
 .alias WindowType       $64DC   ;Window type byte.
 .alias WorkTile         $64DD   ;Current tile pattern used for building windows.
-.alias WndCcontrol      $64DE   ;Retreived control byte from window data table.
-.alias WndParam         $64DF   ;Parameters for window, such as number of times to repeat, etc.
+.alias WindowControl      $64DE   ;Retrieved control byte from window data table.
+.alias WindowParameter       $64DF   ;Parameters for window, such as number of times to repeat, etc.
 
-.alias WndXPosAW        $64E0   ;Current X position after current word is taken into account.
+.alias WindowXPosAfterWord        $64E0   ;Current X position after current word is taken into account.
 
-.alias WndXPos          $64E0   ;Current X position in window.
-.alias WndYPos          $64E1   ;Current Y position in window(current tile row being built).
-.alias WndCounter       $64E2   ;Counter used when building window rows.
+.alias WindowXPos          $64E0   ;Current X position in window.
+.alias WindowYPos          $64E1   ;Current Y position in window(current tile row being built).
+.alias WindowCounter       $64E2   ;Counter used when building window rows.
 
 .alias SubBufLength     $64E2   ;Sub string buffer length.
 
-.alias WndWidth         $64E3   ;Window width in tiles.
-.alias WndHeightblks    $64E4   ;Window height in blocks (block is 2X2 tiles).
-.alias WndHeight        $64E5   ;Window height in tiles.
-.alias WndPosition      $64E6   ;Window screen coordinates in blocks. Y in upper nibble, X in lower.
-.alias WndColumns       $64E7   ;Window columnns. Indicates how many tiles between columns.
-.alias WndDatIndex      $64E8   ;Index into window data table.
-.alias WndRepeatIndex   $64E9   ;Index in window data to return to for variable height windows.
-.alias WndBuildRow      $64EA   ;When building window on screen, keeps track of current block height.
-.alias WndCursorHome    $64EB   ;Home position of cursor. X in upper nibble, Y in lower.
-.alias WndOptions       $64EC   ;Various window options.
-.alias WndDescHalf      $64ED   ;#$00=on first part of description, #$01=on second part.
-.alias WndThisDesc      $64EE   ;In variable height windows, index to current item description.
-.alias WndDescIndex     $64EF   ;Index into description tables.
-.alias WndUnused1       $64F0   ;Unused window variable.
+.alias WindowWidth         $64E3   ;Window width in tiles.
+.alias WindowHeightBlocks    $64E4   ;Window height in blocks (block is 2X2 tiles).
+.alias WindowHeight        $64E5   ;Window height in tiles.
+.alias WindowPosition      $64E6   ;Window screen coordinates in blocks. Y in upper nibble, X in lower.
+.alias WindowColumns       $64E7   ;Window columnns. Indicates how many tiles between columns.
+.alias WindowDataIndex      $64E8   ;Index into window data table.
+.alias WindowRepeatIndex   $64E9   ;Index in window data to return to for variable height windows.
+.alias WindowBuildRow      $64EA   ;When building window on screen, keeps track of current block height.
+.alias WindowCursorHome    $64EB   ;Home position of cursor. X in upper nibble, Y in lower.
+.alias WindowOptions       $64EC   ;Various window options.
+.alias WindowDescriptionHalf      $64ED   ;#$00=on first part of description, #$01=on second part.
+.alias WindowThisDescription      $64EE   ;In variable height windows, index to current item description.
+.alias WindowDescriptionIndex     $64EF   ;Index into description tables.
+.alias WindowUnused1       $64F0   ;Unused window variable.
 
-.alias WndCursorXPos    $64F2   ;Cursor X position in tiles in current selection window.
-.alias WndCursorYPos    $64F3   ;Cursor Y position in tiles in current selection window.
-.alias WndUnused64F4    $64F4   ;Written to but never used.
-.alias WndCursorYHome   $64F5   ;Home Y coord for cursor.
-.alias WndBuildPhase    $64F6   ;Window build phase. MSB set-phase 1, bit 6 set-phase 2.
+.alias WindowCursorXPos    $64F2   ;Cursor X position in tiles in current selection window.
+.alias WindowCursorYPos    $64F3   ;Cursor Y position in tiles in current selection window.
+.alias WindowUnused64F4    $64F4   ;Written to but never used.
+.alias WindowCursorYHome   $64F5   ;Home Y coord for cursor.
+.alias WindowBuildPhase    $64F6   ;Window build phase. MSB set-phase 1, bit 6 set-phase 2.
 
-.alias WndUnused64FB    $64FB   ;Written to but never used.
+.alias WindowUnused64FB    $64FB   ;Written to but never used.
 
-.alias WndNameIndex     $6504   ;Index into name string when creating player's name.
-.alias WndUnused6505    $6505   ;Written to but never used.
-.alias WndSelNumCols    $6506   ;Number of columns for command windows and alphabet window.
-.alias WndBtnRetrig     $6507   ;Controls retrigger time for button presses in windows.
+.alias WindowNameIndex     $6504   ;Index into name string when creating player's name.
+.alias WindowUnused6505    $6505   ;Written to but never used.
+.alias WindowSelectionNumColumns    $6506   ;Number of columns for command windows and alphabet window.
+.alias WindowButtonRetrigger     $6507   ;Controls retrigger time for button presses in windows.
 
-.alias TxtLineSpace     $6509   ;Always #$08. single spaced lines.
-.alias TxtIndent        $650A   ;Number if spaces to indent text line.
-.alias WrkBufBytsDone   $650B   ;Keeps track of how many work buffer bytes have been processed.
+.alias TextLineSpace     $6509   ;Always #$08. single spaced lines.
+.alias TextIndent        $650A   ;Number if spaces to indent text line.
+.alias WorkBufferBytesDone   $650B   ;Keeps track of how many work buffer bytes have been processed.
 .alias Dialog00         $650C   ;Set to 0 on dialog init and never changed.
-.alias WordBufLen       $650D   ;Length of word buffer.
+.alias WordBufferLength       $650D   ;Length of word buffer.
 .alias DialogEnd        $650E   ;#$FF=dialog end.
 
 .alias Unused6510       $6510   ;Written to but never read.
@@ -795,11 +795,11 @@
 .alias WorkBuffer       $652C   ;Through $6553. 40 bytes. Sub string work buffer.
 .alias NameBuffer       $6554   ;Through $655C. 9  bytes. Buffer for storing player's name.
 
-.alias DialogOutBuf     $657C   ;Through $662B. 176 bytes. Final dialog output buffer.
+.alias DialogOutputBuffer     $657C   ;Through $662B. 176 bytes. Final dialog output buffer.
 
 ;------------------------------------------[MMC Registers]-------------------------------------------
 
-.alias MMCCfg           $9FFF   ;MMC1 configuration.
+.alias MMCConfig           $9FFF   ;MMC1 configuration.
 .alias MMCPRG           $FFFF   ;MMC1 PRG RAM.
 .alias MMCCHR0          $BFFF   ;MMC1 CHR0 RAM.
 .alias MMCCHR1          $DFFF   ;MMC1 CHR1 RAM.
@@ -1083,26 +1083,26 @@
 .alias SFX_FIRE         $95     ;Breath fire SFX.
 
 ;Sound control bytes.
-.alias MCTL_SQ1_SW      $00     ;Index to SQ1 channel software regs.
-.alias MCTL_SQ2_SW      $02     ;Index to SQ2 channel software regs.
-.alias MCTL_TRI_SW      $04     ;Index to TRI channel software regs.
-.alias MCTL_NOIS_SW     $06     ;Index to noise channel software regs.
-.alias MCTL_SQ1_HW      $00     ;Index to SQ1 channel hardware regs.
-.alias MCTL_SQ2_HW      $04     ;Index to SQ2 channel hardware regs.
-.alias MCTL_TRI_HW      $08     ;Index to TRI channel hardware regs.
-.alias MCTL_DMC_HW      $10     ;Index to DMC channel hardware regs (not used).
-.alias MCTL_NOTE        $80     ;*2 is index into note table to load musical note.
-.alias MCTL_NOISE_CFG   $E0     ;Noise channel period config byte.
-.alias MCTL_END_SPACE   $F6     ;Stop adding quiet time between notes.
-.alias MCTL_ADD_SPACE   $F7     ;Add quiet time between notes.
-.alias MCTL_NOISE_VOL   $F8     ;Noise volume control byte.
-.alias MCTL_NOTE_OFST   $F9     ;Note offset control byte.
-.alias MCTL_CNTRL1      $FA     ;Channel control 1 byte.
-.alias MCTL_CNTRL0      $FB     ;Channel control 0 byte.
-.alias MCTL_NO_OP       $FC     ;Skip byte and move to the next byte.
-.alias MCTL_RETURN      $FD     ;Return to old music data address.
-.alias MCTL_JUMP        $FE     ;Jump to new music data address.
-.alias MCTL_TEMPO       $FF     ;Change music tempo.
+.alias MUSICCTL_SQ1_SW      $00     ;Index to SQ1 channel software regs.
+.alias MUSICCTL_SQ2_SW      $02     ;Index to SQ2 channel software regs.
+.alias MUSICCTL_TRI_SW      $04     ;Index to TRI channel software regs.
+.alias MUSICCTL_NOIS_SW     $06     ;Index to noise channel software regs.
+.alias MUSICCTL_SQ1_HW      $00     ;Index to SQ1 channel hardware regs.
+.alias MUSICCTL_SQ2_HW      $04     ;Index to SQ2 channel hardware regs.
+.alias MUSICCTL_TRI_HW      $08     ;Index to TRI channel hardware regs.
+.alias MUSICCTL_DMC_HW      $10     ;Index to DMC channel hardware regs (not used).
+.alias MUSICCTL_NOTE        $80     ;*2 is index into note table to load musical note.
+.alias MUSICCTL_NOISE_CFG   $E0     ;Noise channel period config byte.
+.alias MUSICCTL_END_SPACE   $F6     ;Stop adding quiet time between notes.
+.alias MUSICCTL_ADD_SPACE   $F7     ;Add quiet time between notes.
+.alias MUSICCTL_NOISE_VOL   $F8     ;Noise volume control byte.
+.alias MUSICCTL_NOTE_OFST   $F9     ;Note offset control byte.
+.alias MUSICCTL_CNTRL1      $FA     ;Channel control 1 byte.
+.alias MUSICCTL_CNTRL0      $FB     ;Channel control 0 byte.
+.alias MUSICCTL_NO_OP       $FC     ;Skip byte and move to the next byte.
+.alias MUSICCTL_RETURN      $FD     ;Return to old music data address.
+.alias MUSICCTL_JUMP        $FE     ;Jump to new music data address.
+.alias MUSICCTL_TEMPO       $FF     ;Change music tempo.
 
 ;Nibble bit masks.
 .alias NBL_LOWER        $0F     ;Lower nibble.

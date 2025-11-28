@@ -3208,7 +3208,7 @@ LA763:  ADC #$00                ;
 LA765:  STA BGPalPtrUB          ;
 
 LA767:  JSR PalFadeOut          ;($C212)Fade out both background and sprite palettes.
-LA76A:  JMP ClearWinBufRAM2     ;($A788)Clear RAM buffer used for drawing text windows.
+LA76A:  JMP ClearWindowBufferRAM2     ;($A788)Clear RAM buffer used for drawing text windows.
 
 LoadEndPals:
 LA76D:  LDA #PAL_LOAD_BG        ;Indicate background palette should be loaded.
@@ -3228,24 +3228,24 @@ LA785:  JSR PalFadeOut          ;($C212)Fade out both background and sprite pale
 
 ;----------------------------------------------------------------------------------------------------
 
-ClearWinBufRAM2:
+ClearWindowBufferRAM2:
 LA788:  LDA #$00                ;
-LA78A:  STA GenPtr3CLB          ;Set base address to $0400(start of window buffer RAM).
+LA78A:  STA GeneralPointer3CLB          ;Set base address to $0400(start of window buffer RAM).
 LA78C:  LDA #$04                ;
-LA78E:  STA GenPtr3CUB          ;
+LA78E:  STA GeneralPointer3CUB          ;
 
-WinBufRAMLoop:
+WindowBufferRAMLoop:
 LA790:  LDY #$00                ;Initialize offset.
 LA792:  LDA #$FF                ;Indicates window tile is empty.
 
-LA794:* STA (GenPtr3C),Y        ;Have 256 bytes been cleared?
+LA794:* STA (GeneralPointer3C),Y        ;Have 256 bytes been cleared?
 LA796:  INY                     ;
 LA797:  BNE -                   ;If not, branch to clear another byte.
 
-LA799:  INC GenPtr3CUB          ;
-LA79B:  LDA GenPtr3CUB          ;
+LA799:  INC GeneralPointer3CUB          ;
+LA79B:  LDA GeneralPointer3CUB          ;
 LA79D:  CMP #$08                ;Has all the window RAM buffer been cleared?
-LA79F:  BNE WinBufRAMLoop       ;If not, branch to clear another 256 bytes.
+LA79F:  BNE WindowBufferRAMLoop       ;If not, branch to clear another 256 bytes.
 LA7A1:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -3256,22 +3256,22 @@ LA7A2:  STA WndTypeCopy         ;Save a copy of the window type.
 LA7A4:  BRK                     ;Get parameters for removing windows from the screen.
 LA7A5:  .byte $00, $17          ;($AF24)WndEraseParams, bank 1.
 
-LA7A7:  LDA WndEraseWdth        ;
+LA7A7:  LDA WindowEraseWidth        ;
 LA7AA:  LSR                     ;Convert wiindow erase position from tiles to blocks.
 LA7AB:  ORA #$10                ;Does not appear to be used anywhere.
-LA7AD:  STA WndWidthTemp        ;
+LA7AD:  STA WindowWidthTemp        ;
 
-LA7B0:  LDA WndEraseHght        ;
+LA7B0:  LDA WindowEraseHeight        ;
 LA7B3:  SEC                     ;
 LA7B4:  SBC #$01                ;
 LA7B6:  ASL                     ;Perform a calculation on the window erase height and
 LA7B7:  ASL                     ;store it. It is referenced below but does no useful work.
 LA7B8:  ASL                     ;
 LA7B9:  ASL                     ;
-LA7BA:  ADC WndErasePos         ;
-LA7BD:  STA _WndPosition        ;
+LA7BA:  ADC WindowErasePosition         ;
+LA7BD:  STA _WindowPosition        ;
 
-LA7C0:  LDA WndErasePos         ;Get the X position of the window in blocks.
+LA7C0:  LDA WindowErasePosition         ;Get the X position of the window in blocks.
 LA7C3:  AND #$0F                ;
 
 LA7C5:  STA XPosFromLeft        ;
@@ -3280,36 +3280,36 @@ LA7C8:  SBC #$08                ;by 2 to convert to tiles.
 LA7CA:  ASL                     ;
 LA7CB:  STA StartSignedXPos     ;
 
-LA7CD:  LDA WndEraseHght        ;Store the window erase height. Does not appera to be used.
+LA7CD:  LDA WindowEraseHeight        ;Store the window erase height. Does not appera to be used.
 LA7D0:  STA BlockCounter        ;
 LA7D2:  SEC                     ;Get the height of the window in blocks - 1.
 LA7D3:  SBC #$01                ;
 
 LA7D5:  PHA                     ;Save the height for later.
 
-LA7D6:  LDA WndErasePos         ;
+LA7D6:  LDA WindowErasePosition         ;
 LA7D9:  LSR                     ;
 LA7DA:  LSR                     ;Get the Y position of the window, in blocks.
 LA7DB:  LSR                     ;
 LA7DC:  LSR                     ;
-LA7DD:  STA WndLineBufIdx       ;
+LA7DD:  STA WindowLineBufferIndex       ;
 
 LA7DF:  PLA                     ;Get the height calculation again.
 
 LA7E0:  CLC                     ;Add the height of the window to the offset of
-LA7E1:  ADC WndLineBufIdx       ;the window on the screen. Result is in blocks.
-LA7E3:  STA WndLineBufIdx       ;
+LA7E1:  ADC WindowLineBufferIndex       ;the window on the screen. Result is in blocks.
+LA7E3:  STA WindowLineBufferIndex       ;
 
 LA7E5:  SEC                     ;
 LA7E6:  SBC #$07                ;Convert the Y positon into a signed value. then, multiply
 LA7E8:  ASL                     ;by 2 to convert to tiles.
 LA7E9:  STA YPosFromCenter      ;
 
-LA7EB:  LDA WndEraseWdth        ;
+LA7EB:  LDA WindowEraseWidth        ;
 LA7EE:  LSR                     ;Store the width of the window in blocks.
-LA7EF:  STA WndBlockWidth       ;
+LA7EF:  STA WindowBlockWidth       ;
 
-LA7F1:  LDA WndLineBufIdx       ;Set the start of the removal to the bottom of the window.
+LA7F1:  LDA WindowLineBufferIndex       ;Set the start of the removal to the bottom of the window.
 LA7F3:  STA YPosFromTop         ;
 
 LA7F5:  JSR CalcPPUBufAddr      ;($C596)Calculate PPU address.
@@ -3347,33 +3347,33 @@ LA81A:  STA WndForeBack         ;Set window as foreground/background window.
 WndRemoveRowLoop:
 LA81C:  LDA #$00                ;
 LA81E:  STA AttribBufIndex      ;Reset buffer index to remove a new row.
-LA820:  STA WndLineBufIdx       ;
+LA820:  STA WindowLineBufferIndex       ;
 
 LA822:  LDA StartSignedXPos     ;Set the X position to start erasing row.
 LA824:  STA XPosFromCenter      ;
 
-LA826:  LDA WndBlockWidth       ;Set the width of the window in blocks.
-LA828:  STA WndColPos           ;
+LA826:  LDA WindowBlockWidth       ;Set the width of the window in blocks.
+LA828:  STA WindowColumnPosition           ;
 
 WndRemoveBlockLoop:
 LA82A:  JSR ClearWndBuf         ;($A880)Clear window block from buffers and uncover windows.
 
 LA82D:  LDA BlockAddrLB         ;
 LA82F:  CLC                     ;
-LA830:  ADC #$02                ;Increment the block address pointer by 2. points at WinBufRAM.
+LA830:  ADC #$02                ;Increment the block address pointer by 2. points at WindowBufferRAM.
 LA832:  STA BlockAddrLB         ;
 LA834:  BCC +                   ;
 LA836:  INC BlockAddrUB         ;
 
-LA838:* INC WndLineBufIdx       ;Increment the window line buffer index by 2.
-LA83A:  INC WndLineBufIdx       ;
+LA838:* INC WindowLineBufferIndex       ;Increment the window line buffer index by 2.
+LA83A:  INC WindowLineBufferIndex       ;
 
 LA83C:  INC AttribBufIndex      ;Increment the attribute table buffer index.
 
 LA83E:  INC XPosFromCenter      ;Increment to the next block in the row(2X2 tiles per block).
 LA840:  INC XPosFromCenter      ;
 
-LA842:  DEC WndColPos           ;Are there more blocks in this window row to process?
+LA842:  DEC WindowColumnPosition           ;Are there more blocks in this window row to process?
 LA844:  BNE WndRemoveBlockLoop  ;If so, branch to do another block.
 
 LA846:  BRK                     ;Show/hide window on the screen.
@@ -5323,7 +5323,7 @@ LB23B:  JMP ChangeMaps          ;($D9E2)Load a new map.
 ;----------------------------------------------------------------------------------------------------
 
 ChkRemovePopUp:
-LB23E:  LDA WinBufRAM+$84       ;
+LB23E:  LDA WindowBufferRAM+$84       ;
 LB241:  CMP #$FF                ;This tile will be blank unless the pop-up window is active.
 LB243:  BNE DoRemovePopUp       ;If it is active, branch to remove it from the screen.
 LB245:  RTS                     ;
@@ -6223,7 +6223,7 @@ LB727:  LDA #$80                ;First sprite tile of player is 128 pixels from 
 LB729:  STA CharXScrPos         ;
 
 GetPlayerTileLoop2:
-LB72B:  LDA WinBufRAM+$1D0      ;Check if window is covering player's position.
+LB72B:  LDA WindowBufferRAM+$1D0      ;Check if window is covering player's position.
 LB72E:  CMP #$FF                ;If not, branch to hide player sprites.
 LB730:  BEQ +                   ;
 
@@ -6935,10 +6935,10 @@ LBAF9:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LBAFC:  LDA #$FF                ;Prepare to clear NES RAM.
 LBAFE:  LDY #$00                ;256 bytes.
 
-LBB00:* STA WinBufRAM,Y         ;
-LBB03:  STA WinBufRAM+$100,Y    ;
-LBB06:  STA WinBufRAM+$200,Y    ;Clear NES RAM.
-LBB09:  STA WinBufRAM+$300,Y    ;
+LBB00:* STA WindowBufferRAM,Y         ;
+LBB03:  STA WindowBufferRAM+$100,Y    ;
+LBB06:  STA WindowBufferRAM+$200,Y    ;Clear NES RAM.
+LBB09:  STA WindowBufferRAM+$300,Y    ;
 LBB0C:  DEY                     ;
 LBB0D:  BNE -                   ;
 
