@@ -5686,8 +5686,8 @@ LA6E3:  .word WndAddToBuf       ;($A543)Non-control character processing.
 ;----------------------------------------------------------------------------------------------------
 
 AttributeVariableTable:
-LA6E5:  .byte DisplayedStrength,   DisplayedAgi,   DisplayedAttck
-LA6E8:  .byte DisplayedDefns, DisplayedMaxHP, DisplayedMaxMP
+LA6E5:  .byte DisplayedStrength,   DisplayedAgi,   DisplayedAttack
+LA6E8:  .byte DisplayedDefense, DisplayedMaxHP, DisplayedMaxMP
 
 ;----------------------------------------------------------------------------------------------------
 

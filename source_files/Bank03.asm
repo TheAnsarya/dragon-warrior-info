@@ -2182,20 +2182,20 @@ ChkFightRepel:
 LCF26:  LDA RepelTimer          ;Is the repel spell active?
 LCF28:  BEQ ReadyFight          ;If not, branch to start fight.
 
-LCF2A:  LDA DisplayedDefns      ;
+LCF2A:  LDA DisplayedDefense      ;
 LCF2C:  LSR                     ;Get a copy of the player's defense / 2.
 LCF2D:  STA GenByte3E           ;
 
 LCF2F:  LDX _EnNumber           ;Get enemy's repel value from RepelTbl.
 LCF31:  LDA RepelTbl,X          ;
-LCF34:  SEC                     ;Is enemy's repel value less than DisplayedDefns/2?
+LCF34:  SEC                     ;Is enemy's repel value less than DisplayedDefense/2?
 LCF35:  SBC GenByte3E           ;
 LCF37:  BCC RepelSucceeded      ;If so, branch.  Enemy was successfully repeled.
 
-LCF39:  STA GenByte3E           ;Save difference between repel value and DisplayedDefns/2
+LCF39:  STA GenByte3E           ;Save difference between repel value and DisplayedDefense/2
 LCF3B:  LDA RepelTbl,X          ;
 LCF3E:  LSR                     ;
-LCF3F:  CMP GenByte3E           ;Is repel value/2 < repel value - DisplayedDefns/2?
+LCF3F:  CMP GenByte3E           ;Is repel value/2 < repel value - DisplayedDefense/2?
 LCF41:  BCC ReadyFight          ;If not, branch to start fight. Repel unsuccessful.
 
 RepelSucceeded:
@@ -6716,7 +6716,7 @@ LE606:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 LE608:  JSR DoDialogLoBlock     ;($C7CB)Player attacks...
 LE60B:  .byte $E5               ;TextBlock15, entry 5.
 
-LE60C:  LDA DisplayedAttck      ;
+LE60C:  LDA DisplayedAttack      ;
 LE60E:  STA AttackStat          ;Save a copy of the player's attack and enemy's defense.
 LE610:  LDA EnBaseDef           ;
 LE613:  STA DefenseStat         ;
@@ -6745,7 +6745,7 @@ LE633:  .byte $04               ;TextBlock17, entry 4.
 LE634:  JSR UpdateRandNum       ;($C55B)Get random number.
 LE637:  LDA RandNumUB           ;
 LE639:  STA MultNum1LB          ;
-LE63B:  LDA DisplayedAttck      ;
+LE63B:  LDA DisplayedAttack      ;
 LE63D:  LSR                     ;A = DisplayedAttack/2 * rnd(255).
 LE63E:  STA MultNum2LB          ;
 LE640:  LDA #$00                ;
@@ -6753,7 +6753,7 @@ LE642:  STA MultNum1UB          ;
 LE644:  STA MultNum2UB          ;
 LE646:  JSR WordMultiply        ;($C1C9)Multiply 2 16-bit words.
 
-LE649:  LDA DisplayedAttck      ;Total equation for excellent move damage:
+LE649:  LDA DisplayedAttack      ;Total equation for excellent move damage:
 LE64B:  SEC                     ;Damage=DisplayedAttack-(DisplayedAttack/2 * rnd(255))/256.
 LE64C:  SBC MultRsltUB          ;
 LE64E:  JMP SetEnDmg1           ;($E664)Set the amount of damage player did to the enemy.
@@ -7760,7 +7760,7 @@ LEBCC:  .byte $F9               ;TextBlock16, entry 9.
 
 LEBCD:  LDA EnBaseAtt           ;Make a copy of enemy's attack stat.
 LEBD0:  STA AttackStat          ;
-LEBD2:  LDA DisplayedDefns      ;Make a copy of player's defense stat.
+LEBD2:  LDA DisplayedDefense      ;Make a copy of player's defense stat.
 LEBD4:  STA DefenseStat         ;
 LEBD6:  JSR EnCalcHitDmg        ;($EFF4)Calculate enemy hit damage on player.
 
@@ -8665,11 +8665,11 @@ LF0D5:  LDA WeaponsBonusTable,X ;
 
 LF0D8:  CLC                     ;
 LF0D9:  ADC DisplayedStrength        ;Add bonus from weapons table to strength attribute.
-LF0DB:  STA DisplayedAttck      ;
+LF0DB:  STA DisplayedAttack      ;
 
 LF0DD:  LDA DisplayedAgi        ;
 LF0DF:  LSR                     ;Divide agility by 2 and add to defense attribute.
-LF0E0:  STA DisplayedDefns      ;
+LF0E0:  STA DisplayedDefense      ;
 
 LF0E2:  LDA EqippedItems        ;Get equipped armor and move to lower 3 bits.
 LF0E4:  LSR                     ;
@@ -8680,8 +8680,8 @@ LF0E8:  TAX                     ;Use the 3 bits above as index into the ArmorBon
 LF0E9:  LDA ArmorBonusTable,X   ;
 
 LF0EC:  CLC                     ;
-LF0ED:  ADC DisplayedDefns      ;Add bonus from armor table to defense attribute.
-LF0EF:  STA DisplayedDefns      ;
+LF0ED:  ADC DisplayedDefense      ;Add bonus from armor table to defense attribute.
+LF0EF:  STA DisplayedDefense      ;
 
 LF0F1:  LDA EqippedItems        ;Mask off shield bits.
 LF0F3:  AND #SH_SHIELDS         ;
@@ -8690,17 +8690,17 @@ LF0F5:  TAX                     ;Use the 2 bits above as index into the ShieldBo
 LF0F6:  LDA ShieldBonusTable,X  ;
 
 LF0F9:  CLC                     ;
-LF0FA:  ADC DisplayedDefns      ;Add bonus from shield table to defense attribute.
-LF0FC:  STA DisplayedDefns      ;
+LF0FA:  ADC DisplayedDefense      ;Add bonus from shield table to defense attribute.
+LF0FC:  STA DisplayedDefense      ;
 
 LF0FE:  LDA ModsnSpells         ;Is dragon's scale equipped?
 LF100:  AND #F_DRGSCALE         ;
 LF102:  BEQ +                   ;If not, branch to exit.
 
-LF104:  LDA DisplayedDefns      ;
+LF104:  LDA DisplayedDefense      ;
 LF106:  CLC                     ;
 LF107:  ADC #$02                ;Dragon's scale equipped. Add 2 to defense.
-LF109:  STA DisplayedDefns      ;
+LF109:  STA DisplayedDefense      ;
 LF10B:* RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -9053,7 +9053,7 @@ LF4F7:  .byte MAP_ERDRCK_B2,   $08, $09 ;Erdrick cave B2(8,9)    -> Erdrick cave
 ;strong enought to repel an enemy when the repel spell is active.  each entry in the table
 ;corresponds to an enemy and the index is the same as the enemy number. We can call each entry
 ;in the table the enemy's RepelVal.  The formula for figuring out if repel will work is as
-;follows: IF [RepelVal - DisplayedDefns/2 < 0] OR [RepelVal/2 < (RepelVal - DisplayedDefns/2)]
+;follows: IF [RepelVal - DisplayedDefense/2 < 0] OR [RepelVal/2 < (RepelVal - DisplayedDefense/2)]
 ;Then repel will be successful.
 
 RepelTbl:
