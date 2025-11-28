@@ -4794,7 +4794,7 @@ LAF99:  LDA MapDatTbl,Y         ;Get the block used for out of bounds graphic.
 LAF9C:  STA BoundryBlock        ;
 
 LAF9E:  LDA #$FF                ;Assume no NPCs on the map.
-LAFA0:  STA NPCUpdateCntr       ;
+LAFA0:  STA NPCUpdateCounter       ;
 
 LAFA2:  LDA StoryFlags          ;Is the dragonlord dead?
 LAFA4:  AND #F_DGNLRD_DEAD      ;
@@ -4820,7 +4820,7 @@ LAFBB:  ASL                     ;*2. Pointer to NPC data is 2 bytes.
 LAFBC:  TAY                     ;
 
 LAFBD:  LDA #$00                ;Reset NPC update counter.
-LAFBF:  STA NPCUpdateCntr       ;
+LAFBF:  STA NPCUpdateCounter       ;
 
 LAFC1:  LDA NPCMobPtrTbl,Y      ;
 LAFC4:  STA NPCDatPtrLB         ;Get pointer to NPC data for current map.
@@ -5257,7 +5257,7 @@ LB1F0:  STA FrameCounter        ;
 LB1F2:  JMP IdleUpdate          ;($CB30)Update NPC movement and pop-up window.
 
 CheckNPCCollision:
-LB1F5:  LDA NPCUpdateCntr       ;Are there NPCs on the current map?
+LB1F5:  LDA NPCUpdateCounter       ;Are there NPCs on the current map?
 LB1F7:  CMP #$FF                ;
 LB1F9:  BNE InitNPCCheck        ;If so, branch to check their locations.
 LB1FB:  RTS                     ;
@@ -6162,10 +6162,10 @@ LB6D9:  RTS                     ;End sprite direction calculations.
 DoSprites:
 LB6DA:  LDA EnNumber            ;Is this the final fight?
 LB6DC:  CMP #EN_DRAGONLORD2     ;If so, exit, else branch
-LB6DE:  BNE SprtChkFrameCntr    ;to continue processing.
+LB6DE:  BNE SpriteCheckFrameCounter    ;to continue processing.
 LB6E0:  RTS                     ;
 
-SprtChkFrameCntr:
+SpriteCheckFrameCounter:
 LB6E1:  LDA FrameCounter        ;Is this the 16th frame?
 LB6E3:  AND #$0F                ;
 LB6E5:  BNE ChkGotGwaelin       ;If not, branch.
@@ -6267,18 +6267,18 @@ LB760:  STA CharYScrPos         ;
 LB762:  CMP #$7F                ;Have all 4 sprite tiles for the player been placed?
 LB764:  BNE GetPlayerTileLoop1  ;If not, branch to place another tile.
 
-LB766:  LDA NPCUpdateCntr       ;Are NPCs on the current map?
+LB766:  LDA NPCUpdateCounter       ;Are NPCs on the current map?
 LB768:  AND #$F0                ;
 LB76A:  BEQ UpdateNPCs1         ;If so, branch to update NPCs.
 
 LB76C:  JMP UpdateNPCCounter    ;($B9FB)Update NPC counter and exit.
 
 ;This code calculates the movement of 2 NPCs whenever its entered. Which 2 NPCs is based on
-;NPCUpdateCntr.  There are a max of 20 NPCs but only 10 can move. Valid ranges for NPCUpdateCntr
+;NPCUpdateCounter.  There are a max of 20 NPCs but only 10 can move. Valid ranges for NPCUpdateCounter
 ;are 0 to 4.  There are 3 bytes of data per NPC.
 
 UpdateNPCs1:
-LB76F:  LDA NPCUpdateCntr       ;
+LB76F:  LDA NPCUpdateCounter       ;
 LB771:  ASL                     ;
 LB772:  STA GenByte3C           ;Calculate the offset to the NPCs to do movement calculations for.
 LB774:  ASL                     ;
@@ -6750,17 +6750,17 @@ LB9FD:  AND #$0F                ;
 LB9FF:  BEQ +                   ;If so, branch to updater the NPC counter.
 LBA01:  RTS                     ;
 
-LBA02:* LDA NPCUpdateCntr       ;Are there no NPCs on this map?
+LBA02:* LDA NPCUpdateCounter       ;Are there no NPCs on this map?
 LBA04:  CMP #$FF                ;
 LBA06:  BEQ SpritesEnd          ;If none, branch to exit.
 
-LBA08:  INC NPCUpdateCntr       ;Increment NPC counter.
-LBA0A:  LDA NPCUpdateCntr       ;
+LBA08:  INC NPCUpdateCounter       ;Increment NPC counter.
+LBA0A:  LDA NPCUpdateCounter       ;
 LBA0C:  CMP #$05                ;Should be a value 0 to 4.
 LBA0E:  BNE SpritesEnd          ;If outside valid value, wrap counter.
 
 LBA10:  LDA #$00                ;Reset update NPC update counter.
-LBA12:  STA NPCUpdateCntr       ;
+LBA12:  STA NPCUpdateCounter       ;
 
 SpritesEnd:
 LBA14:  RTS                     ;End sprite processing.
@@ -6809,7 +6809,7 @@ LBA43:  RTS                     ;If so, exit. NPC is off screen.
 
 LBA44:* JSR CalcPPUBufAddr      ;($C596)Calculate PPU address.
 LBA47:  LDY #$00                ;
-LBA49:  LDA (PPUBufPtr),Y       ;Get the any window data over the given block.
+LBA49:  LDA (PPUBufferPointer),Y       ;Get the any window data over the given block.
 LBA4B:  STA WindowBlock         ;
 
 LBA4D:  LDA #$FF                ;
@@ -6917,7 +6917,7 @@ LBADF:  LDA #NT_NAMETBL0_UB     ;
 LBAE1:  STA PPUAddrUB           ;
 
 LBAE3:  LDA #$1E                ;Prepare to load 30 nametable buffer rows.
-LBAE5:  STA BufByteCntr         ;
+LBAE5:  STA BufferByteCounter         ;
 LBAE7:  LDA #TL_BLANK_TILE1     ;Prepare to load blank tiles into the buffer.
 LBAE9:  STA PPUDataByte         ;
 
@@ -6927,7 +6927,7 @@ LBAEE:  LDA #$00                ;Prepare to clear out the attribute table.
 LBAF0:  STA PPUDataByte         ;
 
 LBAF2:  LDA #$02                ;Load 2 rows of zeros into the attribute table.
-LBAF4:  STA BufByteCntr         ;
+LBAF4:  STA BufferByteCounter         ;
 
 LBAF6:  JSR LoadBufferRows      ;($BBAE)Load a string of the same byte into nametable buffer rows.
 LBAF9:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
@@ -7053,7 +7053,7 @@ LBBB3:* JSR LoadBufferByte      ;($BBDF)Load a single byte into the nametable bu
 LBBB6:  DEY                     ;
 LBBB7:  BNE -                   ;Has the whole row been loaded? If not, branch to do another byte.
 
-LBBB9:  DEC BufByteCntr         ;Move to next row.
+LBBB9:  DEC BufferByteCounter         ;Move to next row.
 LBBBB:  BNE LoadBufferRows      ;Is there another row to load?
 LBBBD:  RTS                     ;If so, branch to to another row.
 

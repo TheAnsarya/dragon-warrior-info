@@ -86,14 +86,14 @@ L8057:  STA SQ2Cntrl1           ;
 L805A:  LDA #%00110000          ;Turn off volume for noise channel.
 L805C:  STA NoiseCntrl0         ;
 
-L805F:* LDA TempoCntr           ;Tempo counter has the effect of slowing down the length
+L805F:* LDA TempoCounter           ;Tempo counter has the effect of slowing down the length
 L8061:  CLC                     ;The music plays.  If the tempo is less than 150, the
 L8062:  ADC Tempo               ;amount it slows down is linear.  For example, if tempo is
-L8064:  STA TempoCntr           ;125, the music will slow down by 150/125 = 1.2 times.
+L8064:  STA TempoCounter           ;125, the music will slow down by 150/125 = 1.2 times.
 L8066:  BCC SoundUpdateEnd      ;The values varies if tempo is greater than 150.
 
 L8068:  SBC #$96                ;Subtract 150 from tempo counter.
-L806A:  STA TempoCntr           ;
+L806A:  STA TempoCounter           ;
 
 L806C:  LDX #MCTL_TRI_SW        ;TRI channel software regs index.
 L806E:  LDY #MCTL_TRI_HW        ;TRI channel hardware regs index.
@@ -3075,7 +3075,7 @@ L936C:  STA ExpLB               ;
 L936E:  STA ScrollX             ;Clear various RAM values.
 L9370:  STA ScrollY             ;
 L9372:  STA ActiveNmTbl         ;
-L9374:  STA NPCUpdateCntr       ;
+L9374:  STA NPCUpdateCounter       ;
 
 L9376:  LDX #$3B                ;Prepare to clear NPC position RAM.
 
@@ -3158,9 +3158,9 @@ L93E5:  BNE -                   ;If not, branch to load more.
 
 L93E7:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
-L93EA:  LDA EndCreditDatPtr     ;
+L93EA:  LDA EndCreditsDataPointer     ;
 L93ED:  STA DatPntr1LB          ;Get pointer to end credits data.
-L93EF:  LDA EndCreditDatPtr+1   ;
+L93EF:  LDA EndCreditsDataPointer+1   ;
 L93F2:  STA DatPntrlUB          ;
 
 L93F4:  JMP RollCredits         ;($93FA)Display credits on the screen.
@@ -3289,7 +3289,7 @@ L9488:  JMP DoClearPPU          ;($93F7)Prepare to load next screen of credits.
 
 ;----------------------------------------------------------------------------------------------------
 
-EndCreditDatPtr:
+EndCreditsDataPointer:
 L948B:  .word EndCreditDat      ;($948D)Start of data below.
 
 ;----------------------------------------------------------------------------------------------------
@@ -3861,13 +3861,13 @@ L9961:  PHA                     ;
 L9962:  TYA                     ;Store A and Y.
 L9963:  PHA                     ;
 
-L9964:  LDY #$0F                ;16 bytes per enemy in EnStatTbl.
+L9964:  LDY #$0F                ;16 bytes per enemy in EnemyStatsTable.
 L9966:  LDA EnDatPtrLB          ;
 L9968:  CLC                     ;
-L9969:  ADC EnStatTblPtr        ;Add enemy data offset to the table pointer.
+L9969:  ADC EnemyStatsTablePointer        ;Add enemy data offset to the table pointer.
 L996C:  STA GenPtr3CLB          ;
 L996E:  LDA EnDatPtrUB          ;
-L9970:  ADC EnStatTblPtr+1      ;Save a copy of the pointer in a general use pointer.
+L9970:  ADC EnemyStatsTablePointer+1      ;Save a copy of the pointer in a general use pointer.
 L9973:  STA GenPtr3CUB          ;
 
 L9975:* LDA (GenPtr3C),Y        ;Use the general pointer to load the enemy data.
@@ -3933,7 +3933,7 @@ L99B6:  LDA BaseStatsTable-2      ;
 L99B9:  STA PlayerDatPtrLB      ;Load base address for the BaseStatsTable.
 L99BB:  LDA BaseStatsTable-1      ;
 L99BE:  STA PlayerDatPtrUB      ;
-L99C0:  LDY LevelDatPtr         ;Load offset for player's level in the table.
+L99C0:  LDY LevelDataPointer         ;Load offset for player's level in the table.
 
 L99C2:  LDA (PlayerDatPtr),Y    ;
 L99C4:  STA DisplayedStr        ;Load player's base strength.
@@ -4961,7 +4961,7 @@ LA32C:  JMP NextBlankTile       ;($A332)Move to next blank tile.
 LA32F:* JSR WndNextXPos         ;($A573)Increment x position in current window row.
 
 NextBlankTile:
-LA332:  DEC WndCounter          ;More tiles to process?
+LA332:  DEC WindowCounter          ;More tiles to process?
 LA335:  BNE --                  ;If so, branch to do another.
 LA337:  RTS                     ;
 
@@ -4985,7 +4985,7 @@ LA352:  JSR SetCountLength      ;($A600)Calculate the required length of the cou
 
 HorzTilesLoop:
 LA355:  JSR BuildWndLine        ;($A546)Transfer data into window line buffer.
-LA358:  DEC WndCounter          ;More tiles to process?
+LA358:  DEC WindowCounter          ;More tiles to process?
 LA35B:  BNE HorzTilesLoop       ;If so, branch to do another.
 LA35D:  RTS                     ;
 
@@ -5439,7 +5439,7 @@ LA5BF:  STA PPUAddrUB           ;
 
 LA5C1:  LDY #$00                ;
 LA5C3:  LDA WorkTile            ;Store window tile byte in the PPU buffer.
-LA5C6:  STA (PPUBufPtr),Y       ;
+LA5C6:  STA (PPUBufferPointer),Y       ;
 
 WndStorePPUDatEnd:
 LA5C8:  PLA                     ;
@@ -6022,12 +6022,12 @@ LA883:  LDA WndWidth            ;Set remaining columns to window width.
 LA886:  STA _ColsRemaining      ;
 
 CntrlCharSwapCol:
-LA888:  LDA (PPUBufPtr),Y       ;Was the end text control character found?
+LA888:  LDA (PPUBufferPointer),Y       ;Was the end text control character found?
 LA88A:  CMP #TXT_END2           ;
 LA88C:  BNE CntrlNextCol        ;If not, branch to check next window character.
 
 LA88E:  LDA #TXT_NOP            ;Replace text control character with a no-op.
-LA890:  STA (PPUBufPtr),Y       ;
+LA890:  STA (PPUBufferPointer),Y       ;
 
 CntrlNextCol:
 LA892:  INY                     ;Move to next columns.
@@ -6888,14 +6888,14 @@ WndGetRowStartPos:
 LAD1F:  LDA _WndPosition        ;
 LAD22:  ASL                     ;Get start X position in tiles
 LAD23:  AND #$1E                ;relative to screen for window row.
-LAD25:  STA ScrnTxtXCoord       ;
+LAD25:  STA ScreenTextXCoordinate       ;
 
 LAD28:  LDA _WndPosition        ;
 LAD2B:  LSR                     ;
 LAD2C:  LSR                     ;Get start Y position in tiles
 LAD2D:  LSR                     ;relative to screen for window row.
 LAD2E:  AND #$1E                ;
-LAD30:  STA ScrnTxtYCoord       ;
+LAD30:  STA ScreenTextYCoordinate       ;
 LAD33:  JMP WndCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
 
 ;----------------------------------------------------------------------------------------------------
@@ -7000,7 +7000,7 @@ LADC4:  AND #$04                ;name table. It will be either #$20 or #$24.
 LADC6:  ORA #$20                ;
 LADC8:  STA PPUAddrUB           ;
 
-LADCA:  LDA ScrnTxtXCoord       ;
+LADCA:  LDA ScreenTextXCoordinate       ;
 LADCD:  ASL                     ;*8. Convert X tile coord to X pixel coord.
 LADCE:  ASL                     ;
 LADCF:  ASL                     ;
@@ -7023,7 +7023,7 @@ LADE0:  LSR                     ;
 LADE1:  LSR                     ;
 
 LADE2:  CLC                     ;Add Tile Y coord of window. A now
-LADE3:  ADC ScrnTxtYCoord       ;contains Y coordinate in tiles.
+LADE3:  ADC ScreenTextYCoordinate       ;contains Y coordinate in tiles.
 
 LADE6:  CMP #$1E                ;Did Y position go below nametable boundary?
 LADE8:  BCC WndAddrCombine      ;If not, branch.
@@ -8269,10 +8269,10 @@ LB5D5:  JSR CheckBetweenWords   ;($B8F9)Check for non-word character.
 LB5D8:  BCS SearchWordBuf       ;Still in word? If so, branch.
 
 WordBufBreakFound:
-LB5DA:  LDX WndXPosAW           ;Is X position at beginning of line?
+LB5DA:  LDX WindowXPositionAfterWord           ;Is X position at beginning of line?
 LB5DD:  BEQ +                   ;If so, branch to skip modifying X position.
 
-LB5DF:  DEC WndXPosAW           ;Dcrement index so it points to last character position.
+LB5DF:  DEC WindowXPositionAfterWord           ;Dcrement index so it points to last character position.
 
 LB5E2:* JSR CheckForNewLine     ;($B915)Move text to new line, if necessary.
 
@@ -8334,7 +8334,7 @@ LB62A:* RTS                     ;
 DialogEndFound:
 LB62B:  JSR DoNewline           ;($B91D)Go to next line in dialog window.
 LB62E:  LDA #$00                ;Set cursor X position to beginning of line.
-LB630:  STA WndTxtXCoord        ;
+LB630:  STA WindowTextXCoordinate        ;
 LB632:  JMP DoDialogEnd         ;($B613)End current dialog.
 
 ;----------------------------------------------------------------------------------------------------
@@ -8901,18 +8901,18 @@ LB914:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 CheckForNewLine:
-LB915:  LDA WndXPosAW           ;Will this word extend to the end of the current text row?
+LB915:  LDA WindowXPositionAfterWord           ;Will this word extend to the end of the current text row?
 LB918:  CMP #$16                ;If so, branch to move to the next line.
 LB91A:  BCS MoveToNextLine      ;($B924)Move to the next line in the text window.
 LB91C:  RTS                     ;
 
 DoNewline:
-LB91D:  LDA WndTxtXCoord        ;Update position after text word with current
-LB91F:  STA WndXPosAW           ;cursor position.
+LB91D:  LDA WindowTextXCoordinate        ;Update position after text word with current
+LB91F:  STA WindowXPositionAfterWord           ;cursor position.
 LB922:  BEQ NewlineEnd          ;At beginning of text line? If so, branch to exit.
 
 MoveToNextLine:
-LB924:  LDX WndTxtYCoord        ;Move to the next line in the text window.
+LB924:  LDX WindowTextYCoordinate        ;Move to the next line in the text window.
 LB926:  INX                     ;
 
 LB927:  CPX #$08                ;Are we at or beyond the last row in the dialog box?
@@ -8923,13 +8923,13 @@ LB92E:  LSR                     ;
 LB92F:  LSR                     ;It looks like there used to be some code for controlling
 LB930:  EOR #$03                ;how many lines to skip when going to a new line. The value
 LB932:  CLC                     ;in TxtLineSpace is always #$08 so the line always increments
-LB933:  ADC WndTxtYCoord        ;by 1.
-LB935:  STA WndTxtYCoord        ;
+LB933:  ADC WindowTextYCoordinate        ;by 1.
+LB935:  STA WindowTextYCoordinate        ;
 
 LineDone:
 LB937:  LDA TxtIndent           ;
-LB93A:  STA WndXPosAW           ;Add the indent value to the cursor X position.
-LB93D:  STA WndTxtXCoord        ;
+LB93A:  STA WindowXPositionAfterWord           ;Add the indent value to the cursor X position.
+LB93D:  STA WindowTextXCoordinate        ;
 
 LB93F:  CLC                     ;Clear carry to indicate the line was incremented.
 
