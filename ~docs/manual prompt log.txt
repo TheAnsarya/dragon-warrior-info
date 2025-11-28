@@ -103,7 +103,9 @@ Labels like `EnStatTbl` are not descriptive enough, `tbl` means `table` please e
 
 please expand label names so they are easy to understand; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+first, update chat and session logs then git comment and push everything that is uncommited; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+first, update chat and session logs then git comment and push everything that is uncommited; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
 
 
