@@ -5,9 +5,9 @@
 ;--------------------------------------[ Forward declarations ]--------------------------------------
 
 .alias ClearPPU                 $C17A
-.alias CalcPPUBufAddr           $C596
+.alias CalcPPUBufferAddr           $C596
 .alias GetJoypadStatus          $C608
-.alias AddPPUBufEntry           $C690
+.alias AddPPUBufferEntry           $C690
 .alias ClearSpriteRAM           $C6BB
 .alias DoWindow                 $C6F0
 .alias DoDialogHiBlock          $C7C5
@@ -5804,7 +5804,7 @@ LA786:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 ClearAndLookup:
-LA787:  JSR ClearAndSetBufLen   ;($A7AE)Initialize buffer.
+LA787:  JSR ClearAndSetBufferLen   ;($A7AE)Initialize buffer.
 
 LA78A:  CPX #$FF                ;End of description?
 LA78C:  BEQ ++                  ;If so, branch to exit.
@@ -5815,7 +5815,7 @@ LA78E:  LDA DescBuf,X           ;Load description index.
 
 LookupDescriptions:
 LA790:  STA WindowDescriptionIndex        ;Save a copy of description table index.
-LA793:  JSR ClearAndSetBufLen   ;($A7AE)Initialize buffer.
+LA793:  JSR ClearAndSetBufferLen   ;($A7AE)Initialize buffer.
 
 LA796:  LDA WindowDescriptionHalf         ;If on first half of description, load Y with 0.
 LA799:  AND #$01                ;
@@ -5833,8 +5833,8 @@ LA7AD:* RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-ClearAndSetBufLen:
-LA7AE:  JSR ClearTempBuffer     ;($A776)Write blank tiles to buffer.
+ClearAndSetBufferLen:
+LA7AE:  JSR ClearTempBuffer     ;($A7AE)Write blank tiles to buffer.
 LA7B1:  LDA WindowDescriptionHalf         ;
 
 LA7B4:  LSR                     ;On first half of description? If so, buffer length
@@ -8283,11 +8283,11 @@ LB5E5:  RTS                     ;End coordinate calculations.
 
 WordToScreen:
 LB5E6:  LDX #$00                ;Zero out word buffer index.
-LB5E8:  STX WordBufLen          ;
+LB5E8:  STX WordBufferLength          ;
 
-LB5EB:* LDX WordBufLen          ;
+LB5EB:* LDX WordBufferLength          ;
 LB5EE:  LDA WordBuffer,X        ;Get next character in the word buffer.
-LB5F1:  INC WordBufLen          ;
+LB5F1:  INC WordBufferLength          ;
 
 LB5F4:  CMP #TXT_SUBEND         ;Is character a control character that will cause a newline?
 LB5F6:  BCS TxtCntrlChars       ;If so, branch to determine the character.
@@ -8362,9 +8362,9 @@ TxtSetIndent:
 LB64E:  LDX #$01                ;Set text indent to 1 space.
 LB650:  STX TxtIndent           ;
 
-LB653:* LDX WordBufLen          ;Add character to word buffer.
+LB653:* LDX WordBufferLength          ;Add character to word buffer.
 LB656:  STA WordBuffer,X        ;
-LB659:  INC WordBufLen          ;Increment buffer length.
+LB659:  INC WordBufferLength          ;Increment buffer length.
 LB65C:  JSR CheckBetweenWords   ;($B8F9)Check for non-word character.
 LB65F:  BCS GetTxtByteLoop      ;End of word? If not, branch to get next byte.
 LB661:  RTS                     ;
@@ -8568,7 +8568,7 @@ LB75D:  LDA #$00                ;Start with first half of description.
 LB75F:  STA WndDescHalf         ;
 
 LB762:  JSR PrepGetDesc         ;($B77E)Do some prep then locate description.
-LB765:  JSR UpdateDescBufLen    ;($B82B)Save desc buffer length and zero index.
+LB765:  JSR UpdateDescBufferLen    ;($B82B)Save desc buffer length and zero index.
 LB768:  LDA #TL_BLANK_TILE1     ;
 LB76A:  STA WorkBuffer,Y        ;Place a blank space between words.
 
@@ -8648,7 +8648,7 @@ LB7DA:  STA SubBufLength        ;
 
 LB7DD:  LDA DescBuf             ;Get spell description byte.
 LB7DF:  JSR WndGetSpellDesc     ;($A7EB)Get spell description.
-LB7E2:  JSR UpdateDescBufLen    ;($B82B)Save desc buffer length and zero index.
+LB7E2:  JSR UpdateDescBufferLen    ;($B82B)Save desc buffer length and zero index.
 LB7E5:  JMP WorkBufEndChar      ;($B6D0)Place termination character on work buffer.
 
 ;----------------------------------------------------------------------------------------------------
@@ -8704,7 +8704,7 @@ LB82A:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-UpdateDescBufLen:
+UpdateDescBufferLen:
 LB82B:  STY DescLength          ;Save length of description buffer.
 LB82E:  LDY #$00                ;Zero index.
 

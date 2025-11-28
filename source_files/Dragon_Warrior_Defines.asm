@@ -128,7 +128,7 @@
 .alias _ColsRemaining   $1B     ;When doing window calculations, cols remaining in current row.
 .alias ColsRemaining    $1C     ;When displaying dialog, remaining chars in row.
 
-.alias TxtRowNum        $1A     ;Target row in dialog window.
+.alias TxtRowNumber        $1A     ;Target row in dialog window.
 .alias TxtRowStart      $1B     ;Offset into target row(column).
 
 .alias PPURowBytesLB    $1B     ;Stores lower number of bytes un a PPU row(32).
@@ -167,8 +167,8 @@
 .alias NPCSpriteCntr    $27     ;Counter used for loading NPC sprite data.
 .alias NPCSpriteRAMIndex    $28     ;Index into sprite RAM for current NPC sprite.
 
-.alias JMPFuncPtr       $0030   ;JUMP command for IRQ function pointer.
-.alias _JMPFuncPtr      $30     ;JUMP command for IRQ function pointer.
+.alias JMPFuncPointer       $0030   ;JUMP command for IRQ function pointer.
+.alias _JMPFuncPointer      $30     ;JUMP command for IRQ function pointer.
 
 .alias NewPRGBank       $30     ;Stores PRG bank to switch to.
 .alias BankDataPointer       $30     ;Bank data pointer.
@@ -239,10 +239,10 @@
 .alias RAMTargetPointerLB     $3E     ;RAM copy target pointer, lower byte.
 .alias RAMTargetPointerUB     $3F     ;RAM copy target pointer, upper byte.
 
-.alias MultiplyNum1LB       $3C     ;Multiply number 1, lower byte.
-.alias MultiplyNum1UB       $3D     ;Multiply number 1, upper byte.
-.alias MultiplyNum2LB       $3E     ;Multiply number 2, lower byte.
-.alias MultiplyNum2UB       $3F     ;Multiply number 2, upper byte.
+.alias MultiplyNumber1LB       $3C     ;Multiply number 1, lower byte.
+.alias MultiplyNumber1UB       $3D     ;Multiply number 1, upper byte.
+.alias MultiplyNumber2LB       $3E     ;Multiply number 2, lower byte.
+.alias MultiplyNumber2UB       $3F     ;Multiply number 2, upper byte.
 .alias MultiplyResultLB       $40     ;Multiply results, lower byte.
 .alias MultiplyResultUB       $41     ;Multiply results, upper byte.
 
@@ -282,9 +282,9 @@
 .alias EnemyDataPointerLB       $40     ;Enemy data pointer, lower byte.
 .alias EnemyDataPointerUB       $41     ;Enemy data pointer, upper byte.
 
-.alias BlockDataPtr     $40     ;Pointer to block graphics data.
-.alias BlockDataPtrLB   $40     ;Pointer to block graphics data, lower byte.
-.alias BlockDataPtrUB   $41     ;Pointer to block graphics data, upper byte.
+.alias BlockDataPointer     $40     ;Pointer to block graphics data.
+.alias BlockDataPointerLB   $40     ;Pointer to block graphics data, lower byte.
+.alias BlockDataPointerUB   $41     ;Pointer to block graphics data, upper byte.
 
 .alias CRCCopyLB        $40     ;Copy of saved game CRC, lower byte for verification purposes.
 .alias CRCCopyUB        $41     ;Copy of saved game CRC, upper byte for verification purposes.
@@ -441,7 +441,7 @@
 				;--------------------------------------------------------------------
 .alias InventoryKeys    $BF     ;Magic key count. Not part of regular inventory.
 .alias InventoryHerbs   $C0     ;Herb count. Not part of regular inventory.
-.alias InventoryPtr     $00C1   ;Inventory pointer.
+.alias InventoryPointer     $00C1   ;Inventory pointer.
 .alias InventorySlot12  $C1     ;First two inventory slots.
 .alias InventorySlot34  $C2     ;Second two inventory slots.
 .alias InventorySlot56  $C3     ;Third two inventory slots.
@@ -706,8 +706,8 @@
 
 .alias DialogScrollIndex    $64B0   ;Index into dialog buffer to write to PPU while scrolling.
 
-.alias IndMultNum1      $64B0   ;Indexed multiplication, 1st multiplication byte.
-.alias IndMultNum2      $64B1   ;Indexed multiplication, 2nd multiplication byte.
+.alias IndMultNumber1      $64B0   ;Indexed multiplication, 1st multiplication byte.
+.alias IndMultNumber2      $64B1   ;Indexed multiplication, 2nd multiplication byte.
 
 .alias WordBufIndex     $64B4   ;Search index into word buffer.
 

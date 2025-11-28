@@ -16,17 +16,17 @@
 .alias WeaponsBonusTable        $99CF
 .alias ArmorBonusTable          $99D7
 .alias ShieldBonusTable         $99DF
-.alias BlackPalPtr              $9A18
-.alias OverworldPalPtr          $9A1A
-.alias TownPalPtr               $9A1C
-.alias RedFlashPalPtr           $9A22
-.alias RegSPPalPtr              $9A24
-.alias SplFlshBGPalPtr          $9A26
-.alias BadEndBGPalPtr           $9A28
-.alias EnSPPalsPtr              $9A2A
+.alias BlackPalPointer              $9A18
+.alias OverworldPalPointer          $9A1A9A1A
+.alias TownPalPointer               $9A1C
+.alias RedFlashPalPointer           $9A229A22
+.alias RegSPPalPointer              $9A24
+.alias SplFlshBGPalPointer          $9A269A26
+.alias BadEndBGPalPointer           $9A28
+.alias EnSPPalsPointer              $9A2A
 .alias CombatBckgndGFX          $9C8F
 .alias SpellCostTable           $9D53
-.alias ClearWinBufRAM2          $A788
+.alias ClearWinBufferRAM2          $A788
 .alias RemoveWindow             $A7A2
 .alias GetBlockID               $AC17
 .alias ModMapBlock              $AD66
@@ -693,17 +693,17 @@ LC586:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-WaitForPPUBufSpace:
+WaitForPPUBufferSpace:
 LC587:  STA GenByte24           ;Save max number bytes that can be used in PPU buffer.
 
-WaitForPPUBufLoop:
+WaitForPPUBufferLoop:
 LC589:  LDA PPUBufCount         ;Is the used space below the max used space?
 LC58B:  CMP GenByte24           ;
-LC58D:  BCC WaitForPPUBufEnd    ;If so, branch to end. Done waiting for space.
+LC58D:  BCC WaitForPPUBufferEnd    ;If so, branch to end. Done waiting for space.
 LC58F:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-LC592:  JMP WaitForPPUBufLoop   ;($C589)Loop until PPU buffer has enough empty space.
+LC592:  JMP WaitForPPUBufferLoop   ;($C589)Loop until PPU buffer has enough empty space.
 
-WaitForPPUBufEnd:
+WaitForPPUBufferEnd:
 LC595:  RTS                     ;Buffer is free. Stop waiting.
 
 ;----------------------------------------------------------------------------------------------------
@@ -838,7 +838,7 @@ LC631:  RTS                     ;Done reading the controller bits.
 
 PrepSPPalLoad:
 LC632:  LDA #$31                ;Max. 48 buffer spots can be used.
-LC634:  JSR WaitForPPUBufSpace  ;($C587)Wait for space in PPU buffer.
+LC634:  JSR WaitForPPUBufferSpace  ;($C587)Wait for space in PPU buffer.
 
 LC637:  LDA #PAL_SPR_LB         ;Sprite palettes start at address $3F10.
 LC639:  STA PPUAddrLB           ;
@@ -846,7 +846,7 @@ LC63B:  BNE LoadPalData         ;Branch always.
 
 PrepBGPalLoad:
 LC63D:  LDA #$61                ;Max. 96 buffer spots can be used.
-LC63F:  JSR WaitForPPUBufSpace  ;($C587)Wait for space in PPU buffer.
+LC63F:  JSR WaitForPPUBufferSpace  ;($C587)Wait for space in PPU buffer.
 
 LC642:  LDA #PAL_BKG_LB         ;Background palettes start at address $3F00.
 LC644:  STA PPUAddrLB           ;
@@ -1218,7 +1218,7 @@ LC9DE:  STA NTBlockY            ;
 LC9E0:  JSR DoIntroGFX          ;($BD5B)Load intro graphics.
 
 LC9E3:  LDA #$01                ;Wait for PPU buffer to be completely empty.
-LC9E5:  JSR WaitForPPUBufSpace  ;($C587)Wait for space in PPU buffer.
+LC9E5:  JSR WaitForPPUBufferSpace  ;($C587)Wait for space in PPU buffer.
 
 LC9E8:  LDA #%00011000          ;Enable sprites and background.
 LC9EA:  STA PPUControl1         ;
@@ -5664,19 +5664,19 @@ LE0A3:  TAX                     ;Prepare a check to see if player is trying to d
 LE0A4:  LDA DescBuf+1,X         ;an important item that cannot be discarded.
 LE0A6:  LDY #$00                ;
 
-DiscardChkLoop:
+DiscardCheckLoop:
 LE0A8:  CMP NonDiscardTbl,Y     ;Does the item match a non-discarable item?
-LE0AB:  BNE NextDiscardChk      ;If not, branch to check next non-discardable item.
+LE0AB:  BNE NextDiscardCheck      ;If not, branch to check next non-discardable item.
 
 LE0AD:  JSR DoDialogLoBlock     ;($C7CB)That is much to important to throw away...
 LE0B0:  .byte $D1               ;TextBlock14, entry 1.
 
 LE0B1:  JMP PlayerDiscards      ;Jump so player can choose another item to discard.
 
-NextDiscardChk:
+NextDiscardCheck:
 LE0B4:  INY                     ;Has the item been checked against all non-discardable items?
 LE0B5:  CPY #$09                ;
-LE0B7:  BNE DiscardChkLoop      ;If not, branch to check against another item.
+LE0B7:  BNE DiscardCheckLoop      ;If not, branch to check against another item.
 
 LE0B9:  CMP #INV_BELT           ;Is player trying to discard the cursed belt?
 LE0BB:  BNE ChkDiscardNecklace  ;If not, branch to check if its the death necklace.
@@ -8785,7 +8785,7 @@ LF147:  RTS                     ;
 
 PrepSaveGame:
 LF148:  LDA #$01                ;Wait for PPU buffer to be completely empty.
-LF14A:  JSR WaitForPPUBufSpace  ;($C587)Wait for space in PPU buffer.
+LF14A:  JSR WaitForPPUBufferSpace  ;($C587)Wait for space in PPU buffer.
 LF14D:  JMP SaveCurrentGame     ;($F9DF)Save current game.
 
 ;----------------------------------------------------------------------------------------------------

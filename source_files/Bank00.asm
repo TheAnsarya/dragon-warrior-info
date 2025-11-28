@@ -11,18 +11,18 @@
 .alias PalFadeOut               $C212
 .alias PalFadeIn                $C529
 .alias ClearAttribByte          $C244
-.alias UpdateRandNum            $C55B
-.alias CalcPPUBufAddr           $C596
+.alias UpdateRandNumber            $C55B
+.alias CalcPPUBufferAddr           $C596
 .alias DoAddrCalc               $C5AA
 .alias PrepSPPalLoad            $C632
 .alias PrepBGPalLoad            $C63D
-.alias AddPPUBufEntry           $C690
+.alias AddPPUBufferEntry           $C690
 .alias ClearSpriteRAM           $C6BB
 .alias IdleUpdate               $CB30
 .alias CheckForTriggers         $CBF7
 .alias ChangeMaps               $D9E2
 .alias MapTargetTbl             $F461
-.alias GFXTilesPtr              $F5B3
+.alias GFXTilesPointer              $F5B3
 .alias Bank1ToCHR0              $FC98
 .alias Bank0ToCHR0              $FCA3
 .alias Bank0ToCHR1              $FCA8
@@ -45,7 +45,7 @@ L800C:  .word LoadCreditsPals   ;($AA62)Load palettes for end credits.
 L800E:  .word DoPalFadeIn       ;($AA3D)Fade in palettes.
 L8010:  .word DoPalFadeOut      ;($AA43)Fade out palettes.
 
-BrecCvrdDatPtr:
+BrecCvrdDatPointer:
 L8012:  .word TantSLDat         ;($8D24)Pointer to Brecconary covered areas data.
 
 GarinCvrdDatPtr:
@@ -3475,7 +3475,7 @@ LA8CA:  AND #$3F                ;both nametables. The final result is the unsign
 LA8CC:  STA XPosFromLeft        ;of the block to replace, measured in tiles. #$00-#$3F. No
 LA8CE:  STA XFromLeftTemp       ;division necessary. value rolls over naturally.
 
-LA8D0:  JSR DoAddrCalc          ;($C5AA)Calculate destination address for GFX data.
+LA8D0:  JSR DoAddressCalculation ;($C5AA)Calculate destination address for GFX data.
 
 LA8D3:  LDX WndLineBufIdx       ;Initialize indexes.
 LA8D5:  LDY #$00                ;
