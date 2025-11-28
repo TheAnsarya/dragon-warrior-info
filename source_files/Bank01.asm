@@ -7340,18 +7340,18 @@ LAF6B:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 WindowDataPointerTable:
-LAF6C:  .word PopupDat          ;($AFB0)Pop-up window.
-LAF6E:  .word StatusDat         ;($AFC7)Status window.
-LAF70:  .word DialogDat         ;($B04B)Dialog window.
+LAF6C:  .word PopupData          ;($AFB0)Pop-up window.
+LAF6E:  .word StatusData         ;($AFC7)Status window.
+LAF70:  .word DialogData         ;($B04B)Dialog window.
 LAF72:  .word CmdNonCmbtDat     ;($B054)Command window, non-combat.
 LAF74:  .word CmdCmbtDat        ;($B095)Command window, combat.
-LAF76:  .word SpellDat          ;($B0BA)Spell window.
-LAF78:  .word SpellDat          ;($B0BA)Spell window.
+LAF76:  .word SpellData          ;($B0BA)Spell window.
+LAF78:  .word SpellData          ;($B0BA)Spell window.
 LAF7A:  .word PlayerInvDat      ;($B0CC)Player inventory window.
 LAF7C:  .word ShopInvDat        ;($B0DA)Shop inventory window.
 LAF7E:  .word YesNo1Dat         ;($B0EB)Yes/no selection window, variant 1.
 LAF80:  .word BuySellDat        ;($B0FB)Buy/sell selection window.
-LAF82:  .word AlphabetDat       ;($B10D)Alphabet window.
+LAF82:  .word AlphabetData       ;($B10D)Alphabet window.
 LAF84:  .word MsgSpeedDat       ;($B194)Message speed window.
 LAF86:  .word InputNameDat      ;($B1E0)Input name window.
 LAF88:  .word NameEntryDat      ;($B1F7)Name entry window.
@@ -7377,7 +7377,7 @@ LAFAE:  .word YesNo2Dat         ;($B50D)Yes/no selection window, variant 2.
 
 ;----------------------------------------------------------------------------------------------------
 
-PopupDat:
+PopupData:
 LAFB0:  .byte $01               ;Window options.  Display window.
 LAFB1:  .byte $06               ;Window height.   6 blocks.
 LAFB2:  .byte $08               ;Window Width.    8 tiles.
@@ -7406,7 +7406,7 @@ LAFC6:  .byte $A8               ;Show experience.
 
 ;----------------------------------------------------------------------------------------------------
 
-StatusDat:
+StatusData:
 LAFC7:  .byte $21               ;Display window, single spaced.
 LAFC8:  .byte $0B               ;Window height.   11 blocks.
 LAFC9:  .byte $14               ;Window Width.    20 tiles.
@@ -7483,7 +7483,7 @@ LB04A:  .byte $BA               ;Show shield, second half.
 
 ;----------------------------------------------------------------------------------------------------
 
-DialogDat:
+DialogData:
 LB04B:  .byte $01               ;Window options.  Display window.
 LB04C:  .byte $05               ;Window height.   5 blocks.
 LB04D:  .byte $18               ;Window Width.    24 tiles.
@@ -7564,7 +7564,7 @@ LB0B9:  .byte $80               ;Blank tiles, remainder of row.
 
 ;----------------------------------------------------------------------------------------------------
 
-SpellDat:
+SpellData:
 LB0BA:  .byte $80               ;Window options.  Selection window.
 LB0BB:  .byte $0B               ;Window height.   11 blocks.
 LB0BC:  .byte $0C               ;Window Width.    12 tiles.
@@ -7660,7 +7660,7 @@ LB10C:  .byte $80               ;Blank tiles, remainder of row.
 
 ;----------------------------------------------------------------------------------------------------
 
-AlphabetDat:
+AlphabetData:
 LB10D:  .byte $01               ;Window options.  Display window.
 LB10E:  .byte $07               ;Window height.   7 blocks.
 LB10F:  .byte $18               ;Window Width.    24 tiles.

@@ -2186,14 +2186,14 @@ LCF2A:  LDA DisplayedDefense      ;
 LCF2C:  LSR                     ;Get a copy of the player's defense / 2.
 LCF2D:  STA GenByte3E           ;
 
-LCF2F:  LDX _EnNumber           ;Get enemy's repel value from RepelTbl.
-LCF31:  LDA RepelTbl,X          ;
+LCF2F:  LDX _EnNumber           ;Get enemy's repel value from RepelTable.
+LCF31:  LDA RepelTable,X          ;
 LCF34:  SEC                     ;Is enemy's repel value less than DisplayedDefense/2?
 LCF35:  SBC GenByte3E           ;
 LCF37:  BCC RepelSucceeded      ;If so, branch.  Enemy was successfully repeled.
 
 LCF39:  STA GenByte3E           ;Save difference between repel value and DisplayedDefense/2
-LCF3B:  LDA RepelTbl,X          ;
+LCF3B:  LDA RepelTable,X          ;
 LCF3E:  LSR                     ;
 LCF3F:  CMP GenByte3E           ;Is repel value/2 < repel value - DisplayedDefense/2?
 LCF41:  BCC ReadyFight          ;If not, branch to start fight. Repel unsuccessful.
@@ -3817,7 +3817,7 @@ LD756:  TAX                     ;
 LD757:  LDA DescBuf+1,X         ;Get description byte from the description buffer.
 LD759:  STA DescTemp            ;
 
-LD75B:  CLC                     ;Convert it to the proper index in DescTbl.
+LD75B:  CLC                     ;Convert it to the proper index in DescTable.
 LD75C:  ADC #$2E                ;
 
 LD75E:  JSR GetDescriptionByte  ;($DBF0)Load byte for item dialog description.
@@ -8791,12 +8791,12 @@ LF14D:  JMP SaveCurrentGame     ;($F9DF)Save current game.
 ;----------------------------------------------------------------------------------------------------
 
 UnusedTblPtr1:
-LF150:  .word DescTbl+1         ;($F155)Unused pointer into table below.
+LF150:  .word DescTable+1         ;($F155)Unused pointer into table below.
 
 DescTblPtr:
-LF152:  .word DescTbl           ;($F154)Pointer into table below.
+LF152:  .word DescTable           ;($F154)Pointer into table below.
 
-DescTbl:
+DescTable:
 
 ;Unused.
 LF154:  .byte $FA, $55, $62, $FA, $41, $4E, $40, $62, $FA, $FA, $40, $47, $F8, $6B, $4E, $4D
@@ -9056,7 +9056,7 @@ LF4F7:  .byte MAP_ERDRCK_B2,   $08, $09 ;Erdrick cave B2(8,9)    -> Erdrick cave
 ;follows: IF [RepelVal - DisplayedDefense/2 < 0] OR [RepelVal/2 < (RepelVal - DisplayedDefense/2)]
 ;Then repel will be successful.
 
-RepelTbl:
+RepelTable:
 LF4FA:  .byte $05, $07, $09, $0B, $0B, $0E, $12, $14, $12, $18, $16, $1C, $1C, $24, $28, $2C
 LF50A:  .byte $0A, $28, $32, $2F, $34, $38, $3C, $44, $78, $30, $4C, $4E, $4F, $56, $58, $56
 LF51A:  .byte $50, $5E, $62, $64, $69, $78, $5A, $8C
