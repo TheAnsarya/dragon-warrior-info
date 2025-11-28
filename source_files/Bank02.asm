@@ -7,7 +7,7 @@
 .alias  GetJoypadStatus         $C608
 .alias  PrepSPPalLoad           $C632
 .alias  PrepBGPalLoad           $C63D
-.alias  AddPPUBufEntry          $C690
+.alias  AddPPUBufferEntry          $C690
 .alias  WaitForNMI              $FF74
 .alias  _DoReset                $FF8E
 
@@ -3553,7 +3553,7 @@ LBCFB:  STA PPUAddrLB           ;effect to a light pink color.
 LBCFD:  LDA #$3F                ;
 LBCFF:  STA PPUAddrUB           ;
 
-LBD01:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LBD01:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 LBD04:  JSR SetBlackBackDrop    ;($BDE0)Set black background.
 LBD07:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -3702,7 +3702,7 @@ LBDE4:  LDA #$00                ;Store black value in $3F00 which makes backgrou
 LBDE6:  STA PPUAddrLB           ;
 LBDE8:  LDA #$3F                ;
 LBDEA:  STA PPUAddrUB           ;
-LBDEC:  JMP AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LBDEC:  JMP AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 ;----------------------------------------------------------------------------------------------------
 

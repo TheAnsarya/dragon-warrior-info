@@ -475,7 +475,7 @@
 				;%10000000-Wearing Death necklace.
 
 .alias LightDiameter    $D0     ;Diameter in blocks of light around player in dungeons.
-.alias PPUHorzVert      $D1     ;#$00=Write PPU data in vertical column(add #$20 every write).
+.alias PPUHorizontalVertical      $D1     ;#$00=Write PPU data in vertical column(add #$20 every write).
 				;non-zero=Write PPU data horizontally.
 .alias AddAttribData    $D1     ;#$00=Move attrib data to buffer. Non-zero=skip attrib table data.
 

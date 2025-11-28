@@ -3144,7 +3144,7 @@ L93CF:  LDA #$55                ;
 L93D1:  STA PPUDataByte         ;
 
 L93D3:  LDY #$08                ;Load 8 bytes of attribute table data.
-L93D5:* JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+L93D5:* JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 L93D8:  DEY                     ;Done loading attribute table bytes?
 L93D9:  BNE -                   ;If not, branch to load more.
 
@@ -3152,7 +3152,7 @@ L93DB:  LDA #$AA                ;Load different attribute table data.
 L93DD:  STA PPUDataByte         ;
 
 L93DF:  LDY #$20                ;Fill the remainder of the attribute table with the data.
-L93E1:* JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+L93E1:* JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 L93E4:  DEY                     ;Done loading attribute table bytes?
 L93E5:  BNE -                   ;If not, branch to load more.
 
@@ -3192,7 +3192,7 @@ L9414:  INY                     ;
 L9415:  LDA (DatPntr1),Y        ;Get next byte. It is the byte to repeatedly load.
 L9417:  STA PPUDataByte         ;Store byte in PPU buffer.
 
-L9419:* JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+L9419:* JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 L941C:  DEC GenByte3C           ;More data to load?
 L941E:  BNE -                   ;If so, branch to load next byte.
 
@@ -3205,7 +3205,7 @@ L9425:  BEQ FinishEndDataBlock  ;Has an end of data block byte been found?
 L9427:  CMP #END_RPT_END        ;If so, display credits and move to next data block.
 L9429:  BEQ FinishEndDataBlock  ;
 
-L942B:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+L942B:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 L942E:  INY                     ;Increment data index.
 L942F:  BNE GetNextEndByte      ;Get next data byte.
@@ -4825,7 +4825,7 @@ LA275:  CPX WindowWidth            ;
 LA278:  BNE CheckWndBottom      ;If not, branch to check if in bottom rom.
 
 LA27A:  LDX WindowYPosition             ;In left most column.  In top row?
-LA27D:  BEQ WindowUpRightCrnr      ;If so, branch to load upper right corner tile.
+LA27D:  BEQ WindowUpperRightCorner      ;If so, branch to load upper right corner tile.
 
 LA27F:  INX                     ;
 LA280:  CPX WindowHeight           ;In left most column. in bottom row?
@@ -4834,7 +4834,7 @@ LA283:  BEQ WindowBotRightCrnr     ;If so, branch to load lower right corner til
 LA285:  LDA #TL_RIGHT           ;Border pattern - right border.
 LA287:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
 
-WindowUpRightCrnr:
+WindowUpperRightCorner:
 LA289:  LDA #TL_UPPER_RIGHT     ;Border pattern - upper right corner.
 LA28B:  BNE UpdateWndWrkTile    ;Done. Branch to update working tile and exit.
 
@@ -4967,9 +4967,9 @@ LA337:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-WindowHorzTiles:
+WindowHorizontalTiles:
 LA338:  BIT WindowOptions          ;Branch always.  This bit is never set for any of the windows.
-LA33B:  BVC DoHorzTiles         ;
+LA33B:  BVC DoHorizontalTiles         ;
 
 LA33D:  LDA #TL_BLANK_TILE1     ;Blank tile.
 LA33F:  STA WorkTile            ;
@@ -4978,7 +4978,7 @@ LA345:  LDA #TL_TOP2            ;Border pattern - upper border.
 LA347:  STA WorkTile            ;
 LA34A:  JSR BuildWndLine        ;($A546)Transfer data into window line buffer.
 
-DoHorzTiles:
+DoHorizontalTiles:
 LA34D:  LDA #TL_TOP1            ;Border pattern - upper border.
 LA34F:  STA WorkTile            ;
 LA352:  JSR SetCountLength      ;($A600)Calculate the required length of the counter.
@@ -5019,7 +5019,7 @@ WindowShowLevel:
 LA37E:  LDA WindowParam            ;Is parameter not 0? If so, get level from a saved game.
 LA381:  BNE WindowGetSavedGame     ;Branch to get saved game level.
 
-WindowCovertLvl:
+WindowConvertLvl:
 LA383:  LDA #$02                ;Set buffer length to 2.
 LA385:  STA SubBufLength        ;
 LA388:  LDX #DisplayedLevel     ;Load player's level.
@@ -5029,7 +5029,7 @@ LA38C:  JMP WindowBinToBCD         ;($A61C)Convert binary word to BCD.
 
 WindowGetSavedGame:
 LA38F:  JSR WindowLoadGameDat      ;($F685)Load selected game into memory.
-LA392:  JMP WindowCovertLvl        ;($A383)Convert player level to BCD.
+LA392:  JMP WindowConvertLvl        ;($A383)Convert player level to BCD.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -5055,24 +5055,24 @@ LA3AA:  BEQ WindowFullSaved        ;The SaveSelected variable is set before this
 LA3AC:  CMP #$05                ;Get the lower 4 letters of a saved character.
 LA3AE:  BCS WndLwr4Saved        ;The SaveSelected variable is set with the WindowParam variable.
 
-WindowPrepareGetLwr:
+WindowPrepareGetLower:
 LA3B0:  LDA #$04                ;Set buffer length to 4.
 LA3B2:  STA SubBufLength        ;
 
 LA3B5:  LDX #$00                ;Start at beginning of name registers.
 LA3B7:  LDY SubBufLength        ;
 
-WindowGetLwrName:
+WindowGetLowerName:
 LA3BA:  LDA DispName0,X         ;Load name character and save it in the buffer.
 LA3BC:  STA TempBuffer-1,Y      ;
 LA3BF:  INX                     ;
 LA3C0:  DEY                     ;Have 4 characters been loaded?
-LA3C1:  BNE WindowGetLwrName       ;If not, branch to get next character.
+LA3C1:  BNE WindowGetLowerName       ;If not, branch to get next character.
 
 LA3C3:  JMP WindowTempToLineBuf    ;($A62B)Transfer value from temp buf to window line buffer.
 
 WindowGetfullName:
-LA3C6:  JSR WindowPrepareGetLwr       ;($A3B0)Get lower 4 characters of name.
+LA3C6:  JSR WindowPrepareGetLower       ;($A3B0)Get lower 4 characters of name.
 
 LA3C9:  LDA #$04                ;Set buffer length to 4.
 LA3CB:  STA SubBufLength        ;
@@ -5080,12 +5080,12 @@ LA3CB:  STA SubBufLength        ;
 LA3CE:  LDX #$00                ;Start at beginning of name registers.
 LA3D0:  LDY SubBufLength        ;
 
-WindowGetUprName:
+WindowGetUpperName:
 LA3D3:  LDA DispName4,X         ;Load name character and save it in the buffer.
 LA3D6:  STA TempBuffer-1,Y      ;
 LA3D9:  INX                     ;
 LA3DA:  DEY                     ;Have 4 characters been loaded?
-LA3DB:  BNE WindowGetUprName       ;If not, branch to get next character.
+LA3DB:  BNE WindowGetUpperName       ;If not, branch to get next character.
 
 LA3DD:  JMP WindowTempToLineBuf    ;($A62B)Transfer value from temp buf to window line buffer.
 
@@ -5099,7 +5099,7 @@ LA3E9:  SBC #$05                ;from the WindowParameter variable.
 LA3EB:  STA SaveSelected        ;
 
 LA3EE:  JSR WindowLoadGameDat      ;($F685)Load selected game into memory.
-LA3F1:  JMP WindowPrepareGetLwr       ;($A3B0)Get lower 4 letters of saved character's name.
+LA3F1:  JMP WindowPrepareGetLower       ;($A3B0)Get lower 4 letters of saved character's name.
 
 WindowFullSaved:
 LA3F4:  LDA #$08                ;Set buffer length to 8.
@@ -5666,7 +5666,7 @@ LA6BF:  .byte DSC_NONE,      DSC_SM_SHLD,   DSC_LG_SHLD,   DSC_SLVR_SHLD
 
 WindowControlPointerTable:
 LA6C3:  .word WindowBlankTiles     ;($A31C)Place blank tiles.
-LA6C5:  .word WindowHorzTiles      ;($A338)Place horizontal border tiles.
+LA6C5:  .word WindowHorizontalTiles      ;($A338)Place horizontal border tiles.
 LA6C7:  .word WindowHitMgcPoints   ;($A35E)Show hit points, magic points.
 LA6C9:  .word WindowGold           ;($A373)Show gold.
 LA6CB:  .word WindowShowLevel      ;($A37E)Show current/save game character level.
@@ -6212,7 +6212,7 @@ LA986:  ADC WindowCursorYPosition       ;
 LA989:  STA ScreenTextYCoordinate       ;
 
 LA98C:  JSR WindowCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
-LA98F:  JMP AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LA98F:  JMP AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -7112,13 +7112,13 @@ LAE53:  CMP #WND_ABORT          ;Did player press the B button?
 LAE55:  BEQ WindowDoBackspace      ;If so, back up 1 character.
 
 LAE57:  CMP #$1A                ;Did player select character A-Z?
-LAE59:  BCC WindowUprCaseConvert   ;If so, branch to covert to nametables values.
+LAE59:  BCC WindowUpperCaseConvert   ;If so, branch to covert to nametables values.
 
 LAE5B:  CMP #$21                ;Did player select symbol -'!?() or _?
 LAE5D:  BCC WndSymbConvert1     ;If so, branch to covert to nametables values.
 
 LAE5F:  CMP #$3B                ;Did player select character a-z?
-LAE61:  BCC WindowLwrCaseConvert   ;If so, branch to covert to nametables values.
+LAE61:  BCC WindowLowerCaseConvert   ;If so, branch to covert to nametables values.
 
 LAE63:  CMP #$3D                ;Did player select symbol , or .?
 LAE65:  BCC WndSymbConvert2     ;If so, branch to covert to nametables values.
@@ -7130,12 +7130,12 @@ LAE6B:  LDA #$08                ;Player must have selected END.
 LAE6D:  STA WindowNameIndex        ;Set name index to max value to indicate the end.
 LAE70:  RTS                     ;
 
-WindowUprCaseConvert:
+WindowUpperCaseConvert:
 LAE71:  CLC                     ;
 LAE72:  ADC #TXT_UPR_A          ;Add value to convert to nametable character.
 LAE74:  BNE WindowUpdateName       ;
 
-WindowLwrCaseConvert:
+WindowLowerCaseConvert:
 LAE76:  SEC                     ;
 LAE77:  SBC #$17                ;Subtract value to convert to nametable character.
 LAE79:  BNE WindowUpdateName       ;
@@ -7213,7 +7213,7 @@ LAECD:  ADC #$0C                ;
 LAECF:  STA ScreenTextXCoordinate       ;
 
 LAED2:  JSR WindowCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
-LAED5:  JMP AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LAED5:  JMP AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -9013,7 +9013,7 @@ LB9AB:  LDX DialogScrlInd       ;
 LB9AE:  LDA DialogOutBuf,X      ;Get dialog buffer byte to update.
 LB9B1:  STA PPUDataByte         ;Put it in the PPU buffer.
 LB9B3:  JSR WindowCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
-LB9B6:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LB9B6:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LB9B9:  INC DialogScrlInd       ;
 LB9BC:  INC ScreenTextXCoordinate       ;Update buffer pointer and x cursor position.
@@ -9098,7 +9098,7 @@ LBA26:  ADC #$13                ;Need to add current dialog line to this offset.
 LBA28:  STA ScreenTextYCoordinate       ;
 
 LBA2B:  JSR WindowCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
-LBA2E:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LBA2E:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LBA31:  LDX MessageSpeed        ;Load text speed to use as counter to slow text.
 LBA33:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
@@ -9183,7 +9183,7 @@ LBA8C:  ADC #$13                ;This converts window Y coords to screen Y coord
 LBA8E:  STA ScreenTextYCoordinate       ;
 
 LBA91:  JSR WindowCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
-LBA94:  JMP AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LBA94:  JMP AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 TxtCheckInput:
 LBA97:  JSR GetJoypadStatus     ;($C608)Get input button presses.

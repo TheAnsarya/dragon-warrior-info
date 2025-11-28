@@ -576,7 +576,7 @@ LC27F:  CLC                     ;Add in upper nibble of upper address byte.
 LC280:  ADC #$20                ;
 LC282:  STA PPUAddrUB           ;
 
-LC284:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC284:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 LC287:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -861,7 +861,7 @@ PalDataLoop:
 LC64C:  LDA #PAL_BLACK          ;First color of every palette is always black.
 LC64E:  STA PPUDataByte         ;
 
-LC650:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC650:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 LC653:  JSR AddPalByte          ;($C661)Add a byte of palette data to the PPU buffer.
 LC656:  JSR AddPalByte          ;($C661)Add a byte of palette data to the PPU buffer.
 LC659:  JSR AddPalByte          ;($C661)Add a byte of palette data to the PPU buffer.
@@ -903,19 +903,19 @@ LC685:  BCS +                   ;
 LC687:  LDA #PAL_BLACK          ;Fully faded out. Set all palette colors to black.
 
 LC689:* STA PPUDataByte         ;Save final palette color.
-LC68B:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC68B:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 LC68E:  INY                     ;Move to next palette byte.
 LC68F:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-AddPPUBufEntry:
+AddPPUBufferEntry:
 LC690:  LDX PPUBufCount         ;
 LC692:  CPX #$B0                ;Is the PPU buffer full?
 LC694:  BCC PutPPUBufferData        ;If not, branch to add data to the PPU buffer.
 
 LC696:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-LC699:  JMP AddPPUBufEntry      ;Loop until buffer has room.
+LC699:  JMP AddPPUBufferEntry      ;Loop until buffer has room.
 
 PutPPUBufferData:
 LC69C:  LDX PPUBufCount         ;Copy PPU buffer count to X
@@ -999,7 +999,7 @@ LC717:  JMP BattleBlock         ;Branch always.
 BlankBlock:
 LC71A:  LDA #$00                ;Remove no tiles from the current block.
 LC71C:  STA BlkRemoveFlgs       ;PPU column write.
-LC71E:  STA PPUHorzVert         ;
+LC71E:  STA PPUHorizontalVertical         ;
 
 LC720:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -1044,13 +1044,13 @@ LC75A:  LDY #$00                ;Zero out index.
 
 LC75C:  LDA (BlockAddr),Y       ;Get upper left tile of block.
 LC75E:  STA PPUDataByte         ;
-LC760:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC760:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LC763:  INY                     ;Move to next tile.
 
 LC764:  LDA (BlockAddr),Y       ;Get upper right tile of block.
 LC766:  STA PPUDataByte         ;
-LC768:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC768:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LC76B:  LDA PPUAddrLB           ;
 LC76D:  CLC                     ;
@@ -1063,13 +1063,13 @@ LC776:* LDY #$20                ;Move to next tile in next row down.
 
 LC778:  LDA (BlockAddr),Y       ;Get lower left tile of block.
 LC77A:  STA PPUDataByte         ;
-LC77C:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC77C:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LC77F:  INY                     ;Move to next tile.
 
 LC780:  LDA (BlockAddr),Y       ;Get lower right tile of block.
 LC782:  STA PPUDataByte         ;
-LC784:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC784:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LC787:  LDA XFromLeftTemp       ;
 LC789:  STA XPosFromLeft        ;Restore the X and Y position variables.
@@ -1108,7 +1108,7 @@ LC7B4:  CLC                     ;Move to the next position in the column.
 LC7B5:  ADC #$20                ;
 LC7B7:  STA PPUAddrUB           ;
 
-LC7B9:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LC7B9:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 LC7BC:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -1795,7 +1795,7 @@ LCD25:  LDA #$3F                ;
 LCD27:  STA PPUAddrUB           ;Make sure low HP palette is not active.
 LCD29:  LDA #$30                ;
 LCD2B:  STA PPUDataByte         ;
-LCD2D:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LCD2D:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -5294,7 +5294,7 @@ LDEDE:  STA PPUAddrLB           ;This is the palette location that creates the
 LDEE0:  LDA #$3F                ;multicolor water effect when the rainbow bridge
 LDEE2:  STA PPUAddrUB           ;animation is occurring.
 
-LDEE4:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LDEE4:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LDEE7:  INC PPUDataByte         ;Increment to next palette color.
 
@@ -7411,7 +7411,7 @@ LE9CB:  STA GenByte3C           ;
 EndBossEraseLoop:
 LE9CD:  LDY #$07                ;7 tiles per row.
 
-LE9CF:* JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LE9CF:* JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 LE9D2:  DEY                     ;Have all the tiles in the row been cleared?
 LE9D3:  BNE -                   ;If not, branch to delete another tile.
 

@@ -4547,7 +4547,7 @@ LAE3D:  LDY #$00                ;Initialize index for transferring GFX block dat
 DoUpperLeftTile:
 LAE3F:  LDA (BlockDataPtr),Y    ;Store the Upper left tile data of block in buffer.
 LAE41:  STA PPUDataByte         ;
-LAE43:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LAE43:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 ChkRmvUpperLeft:
 LAE46:  LDA BlkRemoveFlgs       ;Is the flag set for removing the upper left tile of block?
@@ -4575,7 +4575,7 @@ DoUpperRightTile:
 LAE63:  INY                     ;Store the Upper right tile data of block in buffer.
 LAE64:  LDA (BlockDataPtr),Y    ;
 LAE66:  STA PPUDataByte         ;
-LAE68:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LAE68:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LAE6B:  LDA BlkRemoveFlgs       ;Is the flag set for removing the upper right tile of block?
 LAE6D:  AND #BLK_UPPER_RIGHT    ;
@@ -4609,7 +4609,7 @@ LAE93:  INC PPUAddrUB           ;
 
 LAE95:* LDA (BlockDataPtr),Y    ;Store the lower left tile data of block in buffer.
 LAE97:  STA PPUDataByte         ;
-LAE99:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LAE99:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LAE9C:  LDA BlkRemoveFlgs       ;Is the flag set for removing the lower left tile of block?
 LAE9E:  AND #BLK_LOWER_LEFT     ;
@@ -4636,7 +4636,7 @@ DoLowerRightTile:
 LAEBA:  INY                     ;Store the lower right tile data of block in buffer.
 LAEBB:  LDA (BlockDataPtr),Y    ;
 LAEBD:  STA PPUDataByte         ;
-LAEBF:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LAEBF:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LAEC2:  LDA BlkRemoveFlgs       ;Is the flag set for removing the lower right tile of block?
 LAEC4:  AND #BLK_LOWER_RIGHT    ;
@@ -4672,14 +4672,14 @@ LAEEB:  STA PPUDataByte         ;
 
 LAEED:  JSR ModAttribBits       ;($C006)Set the attribute table bits for a nametable block.
 
-LAEF0:  LDA PPUHorzVert         ;Is PPU set up to write in rows?
+LAEF0:  LDA PPUHorizontalVertical         ;Is PPU set up to write in rows?
 LAEF2:  BNE ModBlockExit        ;If so, branch to exit.
 
 LAEF4:  LDA PPUAddrUB           ;
 LAEF6:  CLC                     ;Add in upper nibble of upper address byte.
 LAEF7:  ADC #$20                ;
 LAEF9:  STA PPUAddrUB           ;
-LAEFB:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LAEFB:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 ModBlockExit:
 LAEFE:  RTS                     ;Done modifying graphics block. Return.
@@ -5035,7 +5035,7 @@ LB0CC:  STA XPosFromCenter      ;
 ChngMapLeftLoop:
 LB0CE:  LDA #$00                ;
 LB0D0:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB0D2:  STA PPUHorzVert         ;PPU column write.
+LB0D2:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB0D4:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -5049,7 +5049,7 @@ LB0DD:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 ChngMapRightLoop:
 LB0E0:  LDA #$00                ;
 LB0E2:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB0E4:  STA PPUHorzVert         ;PPU column write.
+LB0E4:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB0E6:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -5360,7 +5360,7 @@ LB267:  CMP #MAP_DUNGEON        ;
 LB269:  BNE UpdtRNonDungeon     ;If not, branch to update non-dungeon map.
 
 LB26B:  INC CharXPos            ;Move player 1 block to the right.
-LB26D:  JSR UpdtHorzDungeon     ;($B2D4)Update left/right side of dungeon map.
+LB26D:  JSR UpdateHorizontalDungeon     ;($B2D4)Update left/right side of dungeon map.
 
 LB270:  LDA CharXPixelsLB       ;
 LB272:  CLC                     ;
@@ -5391,7 +5391,7 @@ LB294:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LB297:  LDA #$00                ;
 LB299:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB29B:  STA PPUHorzVert         ;PPU column write.
+LB29B:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB29D:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -5431,7 +5431,7 @@ LB2D1:  JMP DoCoveredArea       ;($B5FA)Handle covered areas of the map, if nece
 
 ;----------------------------------------------------------------------------------------------------
 
-UpdtHorzDungeon:
+UpdateHorizontalDungeon:
 LB2D4:  LDA NTBlockX            ;
 LB2D6:  EOR #$10                ;Update data on the other nametable.
 LB2D8:  AND #$1F                ;
@@ -5449,7 +5449,7 @@ LB2E5:  STA XPosFromCenter      ;
 HorzDgnBlockLoop:
 LB2E7:  LDA #$00                ;
 LB2E9:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB2EB:  STA PPUHorzVert         ;PPU column write.
+LB2EB:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB2ED:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -5497,7 +5497,7 @@ LB323:  STA XPosFromCenter      ;
 TickBlockLoop:
 LB325:  LDA #$00                ;
 LB327:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB329:  STA PPUHorzVert         ;PPU column write.
+LB329:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB32B:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -5542,7 +5542,7 @@ LB35F:  LDA MapType             ;Is player in a dungeon?
 LB361:  CMP #MAP_DUNGEON        ;
 LB363:  BNE UpdtLNonDungeon     ;If not, branch to update non-dungeon map.
 
-LB365:  JSR UpdtHorzDungeon     ;($B2D4)Update left/right side of dungeon map.
+LB365:  JSR UpdateHorizontalDungeon     ;($B2D4)Update left/right side of dungeon map.
 LB368:  DEC CharXPos            ;Move player 1 block to the left.
 
 LB36A:  LDA CharXPixelsLB       ;
@@ -5574,7 +5574,7 @@ LB38E:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LB391:  LDA #$00                ;
 LB393:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB395:  STA PPUHorzVert         ;PPU column write.
+LB395:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB397:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -5681,7 +5681,7 @@ LB428:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 RowInnerLoop1:
 LB42B:  LDA #$0C                ;Remove bottom half of the current block.
 LB42D:  STA BlkRemoveFlgs       ;
-LB42F:  STA PPUHorzVert         ;PPU row write.
+LB42F:  STA PPUHorizontalVertical         ;PPU row write.
 LB431:  JSR ModMapBlock         ;($AD66)Change block on map.
 
 LB434:  INC XPosFromCenter      ;Move to the next block in the row.
@@ -5740,7 +5740,7 @@ LB47F:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 VertBlockLoop1:
 LB482:  LDA #$03                ;Remove upper tiles in block.
 LB484:  STA BlkRemoveFlgs       ;
-LB486:  STA PPUHorzVert         ;PPU row write.
+LB486:  STA PPUHorizontalVertical         ;PPU row write.
 LB488:  JSR ModMapBlock         ;($AD66)Change block on map.
 
 LB48B:  INC XPosFromCenter      ;Increment to next block in row.
@@ -5804,7 +5804,7 @@ LB4DB:  STA YPosFromCenter      ;
 VertDgnBlockLoop:
 LB4DD:  LDA #$00                ;
 LB4DF:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB4E1:  STA PPUHorzVert         ;PPU column write.
+LB4E1:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB4E3:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -5902,7 +5902,7 @@ LB567:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 VertBlockLoop2:
 LB56A:  LDA #$03                ;Remove upper tiles in block.
 LB56C:  STA BlkRemoveFlgs       ;
-LB56E:  STA PPUHorzVert         ;PPU row write.
+LB56E:  STA PPUHorizontalVertical         ;PPU row write.
 LB570:  JSR ModMapBlock         ;($AD66)Change block on map.
 
 LB573:  INC XPosFromCenter      ;Increment to next block in row.
@@ -5961,7 +5961,7 @@ LB5BE:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 VertBlockLoop3:
 LB5C1:  LDA #$0C                ;
 LB5C3:  STA BlkRemoveFlgs       ;Remove lower 2 tiles from the block
-LB5C5:  STA PPUHorzVert         ;PPU row write.
+LB5C5:  STA PPUHorizontalVertical         ;PPU row write.
 
 LB5C7:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -6041,7 +6041,7 @@ LB635:  STA XPosFromCenter      ;
 CoverLeftLoop:
 LB637:  LDA #$00                ;
 LB639:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB63B:  STA PPUHorzVert         ;PPU column write.
+LB63B:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB63D:  JSR ModMapBlock         ;($AD66)Change block on map.
 LB640:  INC XPosFromCenter      ;Move to next block. A block is 2 tiles wide.
@@ -6056,7 +6056,7 @@ LB64A:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 CoverRightLoop:
 LB64D:  LDA #$00                ;
 LB64F:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB651:  STA PPUHorzVert         ;PPU column write.
+LB651:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB653:  JSR ModMapBlock         ;($AD66)Change block on map.
 LB656:  INC XPosFromCenter      ;Move to next block. A block is 2 tiles wide.
@@ -6102,7 +6102,7 @@ LB68B:  STA YPosFromCenter      ;
 CoverHiColumnLoop:
 LB68D:  LDA #$00                ;
 LB68F:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB691:  STA PPUHorzVert         ;PPU column write.
+LB691:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB693:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -6118,7 +6118,7 @@ LB6A0:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 CoverLoColumnLoop:
 LB6A3:  LDA #$00                ;
 LB6A5:  STA BlkRemoveFlgs       ;Remove no tiles from the current block.
-LB6A7:  STA PPUHorzVert         ;PPU column write.
+LB6A7:  STA PPUHorizontalVertical         ;PPU column write.
 
 LB6A9:  JSR ModMapBlock         ;($AD66)Change block on map.
 
@@ -7096,7 +7096,7 @@ LBBEA:  STA GenPtr22UB          ;
 LBBEC:  LDY #$00                ;Zero out the offset.
 LBBEE:  LDA PPUDataByte         ;Store byte in the buffer.
 LBBF0:  STA (GenPtr22),Y        ;
-LBBF2:  JSR AddPPUBufEntry      ;($C690)Add data to PPU buffer.
+LBBF2:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 
 LBBF5:  PLA                     ;
 LBBF6:  TAY                     ;Restore Y from the stack.
