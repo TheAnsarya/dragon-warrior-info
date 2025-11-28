@@ -1203,7 +1203,7 @@ LC9C7:  CPX #$10                ;chest pickup history.
 LC9C9:  BCC -                   ;
 
 LC9CB:  BRK                     ;
-LC9CC:  .byte $02, $17          ;($8178)ClearSoundRegs, bank 1.
+LC9CC:  .byte $02, $17          ;($8178)ClearSoundRegisters, bank 1.
 
 LC9CE:  JSR Bank0ToNT0          ;($FCA3)Load data into nametable 0.
 LC9D1:  JSR Bank3ToNT1          ;($FCB8)Load data into nametable 1.
@@ -1294,13 +1294,13 @@ EndKingDialog:
 LCA3F:  JSR DoDialogLoBlock     ;($C7CB)Goodbye now. Take care...
 LCA42:  .byte $C4               ;TextBlock13, entry 4.
 
-LCA43:  JMP PlayerInitControl   ;($CA4A)Give the player control for the first time.
+LCA43:  JMP PlayerInitializeControl   ;($CA4A)Give the player control for the first time.
 
 FirstKingDialog:
 LCA46:  JSR DoDialogHiBlock     ;($C7C5)Descendant of Erdrick, listen to my words...
 LCA49:  .byte $02               ;TextBlock17, entry 2.
 
-PlayerInitControl:
+PlayerInitializeControl:
 LCA4A:  JSR WaitForBtnRelease   ;($CFE4)Wait for player to release then press joypad buttons.
 
 LCA4D:  LDA #WND_DIALOG         ;Remove the dialog window from the screen.
@@ -1373,14 +1373,14 @@ LCAA2:  LDA JoypadBtns          ;
 LCAA4:  AND #IN_START           ;Is game paused?
 LCAA6:  BEQ CheckJoyA           ;If not, branch to check user inputs.
 
-PausePrepLoop:
+PausePrepareLoop:
 LCAA8:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LCAAB:  LDA FrameCounter        ;
 LCAAD:  AND #$0F                ;Sync the pause every 16th frame of the frame counter.
 LCAAF:  CMP #$01                ;This lines up the NPCs and player on the background tiles.
 LCAB1:  BEQ GamePaused          ;
 LCAB3:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
-LCAB6:  JMP PausePrepLoop       ;($CAA8)Start pressed.  Wait until first frame and then pause game.
+LCAB6:  JMP PausePrepareLoop       ;($CAA8)Start pressed.  Wait until first frame and then pause game.
 
 GamePaused:
 LCAB9:  JSR GetJoypadStatus     ;($C608)Get input button presses.
@@ -1935,7 +1935,7 @@ LCDE6:  LDA #$00                ;Player is dead. set HP to 0.
 DoSwampDamage:
 LCDE8:  STA HitPoints           ;Update player HP.
 LCDEA:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-LCDED:  JSR LoadRegBGPal        ;($EE28)Load the normal background palette.
+LCDED:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LCDF0:  LDA HitPoints           ;Is player still alive?
 LCDF2:  BNE ChkFight            ;If so, branch to check for random encounter.
@@ -1993,7 +1993,7 @@ LCE32:  STA GenByte42           ;
 LCE34:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LCE37:  JSR RedFlashScreen      ;($EE14)Flash the screen red.
 LCE3A:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-LCE3D:  JSR LoadRegBGPal        ;($EE28)Load the normal background palette.
+LCE3D:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 LCE40:  DEC GenByte42           ;Has 3 frames passed?
 LCE42:  BNE -                   ;If not, branch to wait another frame.
 
@@ -2008,7 +2008,7 @@ LCE4D:  BEQ +                   ;Branch always.
 LCE4F:* STA HitPoints           ;Is player's HP 0?
 LCE51:  CMP #$00                ;If not, branch to check for a random fight.
 LCE53:  BNE ChkRandomFight      ;($CE5F)Check for enemy encounter.
-LCE55:  JSR LoadRegBGPal        ;($EE28)Load the normal background palette.
+LCE55:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LCE58:  JSR Dowindow            ;($C6F0)display on-screen window.
 LCE5B:  .byte WND_POPUP         ;Pop-up window.
@@ -4132,7 +4132,7 @@ LD8EA:  STA MagicPoints         ;
 LD8EC:  JSR Dowindow            ;($C6F0)display on-screen window.
 LD8EF:  .byte WND_POPUP         ;Pop-up window.
 
-LD8F0:  JSR GetRegPalPtrs       ;($D915)Get pointers to the standard palettes.
+LD8F0:  JSR GetRegularPalPtrs       ;($D915)Get pointers to the standard palettes.
 
 LD8F3:  BRK                     ;Wait for the music clip to end.
 LD8F4:  .byte $03, $17          ;($815E)WaitForMusicEnd, bank 1.
@@ -4164,7 +4164,7 @@ LD912:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
 
 ;----------------------------------------------------------------------------------------------------
 
-GetRegPalPtrs:
+GetRegularPalPtrs:
 LD915:  LDA RegSPPalPtr         ;
 LD918:  STA SprtPalPtrLB        ;Get a pointer to the standard sprite palettes.
 LD91A:  LDA RegSPPalPtr+1       ;
@@ -4693,7 +4693,7 @@ PlayerMaxHP:
 LDBCB:  LDA DisplayedMaxHP      ;Max out player's HP.
 
 LDBCD:* STA HitPoints           ;Store player's new HP value.
-LDBCF:  JSR LoadRegBGPal        ;($EE28)Load the normal background palette.
+LDBCF:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LDBD2:  JSR Dowindow            ;($C6F0)display on-screen window.
 LDBD5:  .byte WND_POPUP         ;Pop-up window.
@@ -4936,7 +4936,7 @@ LDD0C:  BCC +                   ;If not, banch.
 LDD0E:  LDA DisplayedMaxHP      ;Max out player's HP.
 
 LDD10:* STA HitPoints           ;Update player's HP.
-LDD12:  JSR LoadRegBGPal        ;($EE28)Load the normal background palette.
+LDD12:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LDD15:  JSR Dowindow            ;($C6F0)display on-screen window.
 LDD18:  .byte WND_POPUP         ;Pop-up window.
@@ -6530,11 +6530,11 @@ LE515:  LDA #$46                ;Load additional description bytes for the red d
 LE517:  STA Stack               ;These bytes do not appear to be used for any enemy.
 LE51A:  LDA #$FA                ;
 LE51C:  STA Stack+1             ;
-LE51F:  BNE ContInitFight       ;
+LE51F:  BNE ContInitializeFight       ;
 LE521:* LDA #$FA                ;
 LE523:  STA Stack               ;
 
-ContInitFight:
+ContInitializeFight:
 LE526:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 
 LE529:  LDA PlayerFlags         ;
@@ -6899,14 +6899,14 @@ LE70E:  JMP StartPlayerTurn     ;($E5CE)It's the player's turn to attack.
 LE711:* STA SpellToCast         ;Has stop spell been cast on player?
 LE713:  LDA PlayerFlags         ;
 LE715:  AND #F_PLR_STOPSPEL     ;
-LE717:  BEQ PlayerPrepSpell       ;If not, branch.
+LE717:  BEQ PlayerPrepareSpell       ;If not, branch.
 
 LE719:  JSR DoDialogLoBlock     ;($C7CB)But that spell hath been blocked...
 LE71C:  .byte $EA               ;TextBlock15, entry 10.
 
 LE71D:  JMP StartEnemyTurn      ;($EB1B)It's the enemy's turn to attack.
 
-PlayerPrepSpell:
+PlayerPrepareSpell:
 LE720:  LDA SpellToCast         ;Get cast spell.
 
 LE722:  CMP #SPL_HEAL           ;Was the heal spell cast?
@@ -8061,7 +8061,7 @@ LED77:  LDA ShakeY              ;the end boss. Screen does not shake while fight
 LED79:  STA ScrollY             ;
 
 LED7B:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-LED7E:  JSR LoadRegBGPal        ;($EE28)Load the normal background palette.
+LED7E:  JSR LoadRegularBGPal        ;($EE28)Load the normal background palette.
 
 LED81:  LDA ShakeX              ;
 LED83:  STA ScrollX             ;Reset scroll registers to original values.
@@ -8184,21 +8184,21 @@ LEE25:  JMP PrepBGPalLoad       ;($C63D)Load background palette data into PPU bu
 
 ;----------------------------------------------------------------------------------------------------
 
-LoadRegBGPal:
+LoadRegularBGPal:
 LEE28:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LEE2B:  LDA EnNumber            ;Is player fighting the end boss?
 LEE2D:  CMP #EN_DRAGONLORD2     ;
-LEE2F:  BNE LoadRegMapPal       ;If not, branch.
+LEE2F:  BNE LoadRegularMapPal       ;If not, branch.
 
 LEE31:  LDA FnlNormBGPalPtr     ;
 LEE34:  STA PalPtrLB            ;Load regular background palette for end boss.
 LEE36:  LDA FnlNormBGPalPtr+1   ;
 LEE39:  STA PalPtrUB            ;
 
-LEE3B:  JMP FinishRegPalLoad    ;Jump to finish loading palette.
+LEE3B:  JMP FinishRegularPalLoad    ;Jump to finish loading palette.
 
-LoadRegMapPal:
+LoadRegularMapPal:
 LEE3E:  LDA OverworldPalPtr     ;
 LEE41:  CLC                     ;Get index to proper palette for the current map.
 LEE42:  ADC MapType             ;
@@ -8208,7 +8208,7 @@ LEE46:  LDA OverworldPalPtr+1   ;Load regular background palette for current map
 LEE49:  ADC #$00                ;
 LEE4B:  STA PalPtrUB            ;
 
-FinishRegPalLoad:
+FinishRegularPalLoad:
 LEE4D:  LDA #$00                ;No palette modification.
 LEE4F:  STA PalModByte          ;
 LEE51:  JMP PrepBGPalLoad       ;($C63D)Load background palette data into PPU buffer
@@ -10815,12 +10815,12 @@ LFF3E:  BNE SetNT1              ;Is it nametable 1? If so, branch to set.
 
 SetNT0:
 LFF40:  LDA #%10001000          ;Set nametable 0 as active nametable.
-LFF42:  BNE SetScrollRegs       ;Branch always.
+LFF42:  BNE SetScrollRegisters       ;Branch always.
 
 SetNT1:
 LFF44:  LDA #%10001001          ;Set nametable 1 as active nametable.
 
-SetScrollRegs:
+SetScrollRegisters:
 LFF46:  STA PPUControl0         ;
 LFF49:  LDA ScrollX             ;
 LFF4B:  STA PPUScroll           ;Set scroll registers.

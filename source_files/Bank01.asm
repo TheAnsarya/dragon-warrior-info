@@ -25,7 +25,7 @@
 BankPointers:
 L8000:  .word WindowEraseParams    ;($AF24)Get parameters for removing windows from the screen.
 L8002:  .word WindowShowHide       ;($ABC4)Show/hide window on the screen.
-L8004:  .word ClearSoundRegs    ;($8178)Silence all sound.
+L8004:  .word ClearSoundRegisters    ;($8178)Silence all sound.
 L8006:  .word WaitForMusicEnd   ;($815E)Wait for the music clip to end.
 L8008:  .word InitMusicSFX      ;($81A0)Initialize new music/SFX.
 L800A:  .word ExitGame          ;($9362)Shut down game after player chooses not to continue.
@@ -319,7 +319,7 @@ L8175:* JMP IncAudioPtr         ;($8157)Increment audio data pointer.
 
 ;----------------------------------------------------------------------------------------------------
 
-ClearSoundRegs:
+ClearSoundRegisters:
 L8178:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 L817B:  LDA #$00                ;
@@ -362,7 +362,7 @@ L81B0:  TAY                     ;Use Y as index into table.
 
 L81B1:  LDX #$04                ;Prepare to loop 3 times.
 
-ChannelInitLoop:
+ChannelInitializeLoop:
 L81B3:  LDA MscStrtIndxTbl+1,Y  ;Get upper byte of pointer from table.
 L81B6:  BNE +                   ;Is there a valid pointer? If so branch to save pointer.
 
@@ -382,7 +382,7 @@ L81CE:  DEY                     ;Move to the next pointer in the pointer table a
 L81CF:  DEY                     ;
 L81D0:  DEX                     ;
 L81D1:  DEX                     ;Have three pointers been picked up?
-L81D2:  BPL ChannelInitLoop        ;If not, branch to get the next pointer.
+L81D2:  BPL ChannelInitializeLoop        ;If not, branch to get the next pointer.
 
 L81D4:  LDA #$00                ;
 L81D6:  STA NoteOffset          ;
@@ -546,7 +546,7 @@ L8349:  .word ExclntMvSFX                           ;($8420)Excellent move.
 L834B:  .word AttackSFX                             ;($843B)Attack.
 L834D:  .word HitSFX                                ;($844A)Player hit 1.
 L834F:  .word HitSFX                                ;($844A)Player hit 2.
-L8351:  .word AttackPrepSFX                           ;($8459)Attack prep.
+L8351:  .word AttackPrepareSFX                           ;($8459)Attack prep.
 L8353:  .word Missed1SFX                            ;($8468)Missed 1.
 L8355:  .word Missed2SFX                            ;($8471)Missed 2.
 L8357:  .word WallSFX                               ;($847A)Wall bump.
@@ -743,7 +743,7 @@ L8458:  .byte $00                   ;End SFX.
 
 ;----------------------------------------------------------------------------------------------------
 
-AttackPrepSFX:
+AttackPrepareSFX:
 L8459:  .byte MCTL_CNTRL0,     $43  ;25% duty, len counter yes, env yes, vol=3.
 L845B:  .byte $A6, $02              ;D5,  2 counts.
 L845D:  .byte $A3, $02              ;B4,  2 counts.
@@ -5055,7 +5055,7 @@ LA3AA:  BEQ WindowFullSaved        ;The SaveSelected variable is set before this
 LA3AC:  CMP #$05                ;Get the lower 4 letters of a saved character.
 LA3AE:  BCS WndLwr4Saved        ;The SaveSelected variable is set with the WindowParam variable.
 
-WindowPrepGetLwr:
+WindowPrepareGetLwr:
 LA3B0:  LDA #$04                ;Set buffer length to 4.
 LA3B2:  STA SubBufLength        ;
 
@@ -5072,7 +5072,7 @@ LA3C1:  BNE WindowGetLwrName       ;If not, branch to get next character.
 LA3C3:  JMP WindowTempToLineBuf    ;($A62B)Transfer value from temp buf to window line buffer.
 
 WindowGetfullName:
-LA3C6:  JSR WindowPrepGetLwr       ;($A3B0)Get lower 4 characters of name.
+LA3C6:  JSR WindowPrepareGetLwr       ;($A3B0)Get lower 4 characters of name.
 
 LA3C9:  LDA #$04                ;Set buffer length to 4.
 LA3CB:  STA SubBufLength        ;
@@ -5099,7 +5099,7 @@ LA3E9:  SBC #$05                ;from the WindowParameter variable.
 LA3EB:  STA SaveSelected        ;
 
 LA3EE:  JSR WindowLoadGameDat      ;($F685)Load selected game into memory.
-LA3F1:  JMP WindowPrepGetLwr       ;($A3B0)Get lower 4 letters of saved character's name.
+LA3F1:  JMP WindowPrepareGetLwr       ;($A3B0)Get lower 4 letters of saved character's name.
 
 WindowFullSaved:
 LA3F4:  LDA #$08                ;Set buffer length to 8.
@@ -5171,12 +5171,12 @@ LA458:  JMP SecondDescHalf      ;($A7D7)Change to second description half.
 
 WindowNumHerbs:
 LA45B:  LDA InventoryHerbs      ;Get nuber of herbs player has in inventory.
-LA45D:  BNE WindowPrepBCD          ;More than 0? If so, branch to convert and display amount.
+LA45D:  BNE WindowPrepareBCD          ;More than 0? If so, branch to convert and display amount.
 
 WindowNumKeys:
 LA45F:  LDA InventoryKeys       ;Get number of keys player has in inventory.
 
-WindowPrepBCD:
+WindowPrepareBCD:
 LA461:  STA BCDByte0            ;Load value into first BCD conversion byte.
 LA463:  LDA #$00                ;
 LA465:  STA BCDByte1            ;The other 2 BCD conversion bytes are not used.
@@ -6083,7 +6083,7 @@ WindowDoSelect:
 LA8D1:  LDA WindowBuildPhase       ;Is the window in the first build phase?
 LA8D4:  BMI WindowDoSelectExit     ;If so, branch to exit.
 
-LA8D6:  JSR WindowInitSelect       ;($A918)Initialize window selection variables.
+LA8D6:  JSR WindowInitializeSelect       ;($A918)Initialize window selection variables.
 
 LA8D9:  LDA #IN_RIGHT           ;Disable right button retrigger.
 LA8DB:  STA WindowBtnRetrig        ;
@@ -6130,7 +6130,7 @@ LA917:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
 
-WindowInitSelect:
+WindowInitializeSelect:
 LA918:  LDA #$00                ;
 LA91A:  STA WindowColumn              ;
 LA91C:  STA WindowRow              ;
@@ -6414,7 +6414,7 @@ LAA8C:  STA WindowColumn              ;
 LAA8E:  JSR WindowClearCursor      ;($AB30)Blank out cursor tile.
 
 LAA91:  LDA #$0D                ;Prepare new cursor X position.
-LAA93:  BNE WindowLeftUpdtFinish   ;
+LAA93:  BNE WindowLeftUpdateFinish   ;
 
 WindowLeftUpdate:
 LAA95:  JSR WindowClearCursor      ;($AB30)Blank out cursor tile.
@@ -6428,7 +6428,7 @@ LAAA1:  LDA WindowCursorXPosition       ;
 LAAA4:  SEC                     ;Subtract tiles to get final cursor X position.
 LAAA5:  SBC WindowColumnLowerByte            ;
 
-WindowLeftUpdtFinish:
+WindowLeftUpdateFinish:
 LAAA7:  STA WindowCursorXPosition       ;Update cursor X position.
 LAAAA:  JSR WindowUpdateCrsrPos    ;($AB35)Update cursor position on screen.
 
@@ -6483,7 +6483,7 @@ LAAF1:  LDA #$09                ;
 LAAF3:  STA WindowColumn              ;Move cursor to point to END.
 
 LAAF5:  LDA #$13                ;Prepare new cursor X position.
-LAAF7:  BNE WindowRightUpdtFinish  ;
+LAAF7:  BNE WindowRightUpdateFinish  ;
 
 WndRightCont1:
 LAAF9:  LDX WindowSelectionNumberColumns       ;Is cursor in right most column?
@@ -6500,7 +6500,7 @@ LAB09:  AND #$0F                ;
 LAB0B:  CLC                     ;Use tiles per column from above to update cursor X pos.
 LAB0C:  ADC WindowCursorXPosition       ;
 
-WindowRightUpdtFinish:
+WindowRightUpdateFinish:
 LAB0F:  STA WindowCursorXPosition       ;Update cursor X position.
 LAB12:  JSR WindowUpdateCrsrPos    ;($AB35)Update cursor position on screen.
 
@@ -7026,12 +7026,12 @@ LADE2:  CLC                     ;Add Tile Y coord of window. A now
 LADE3:  ADC ScreenTextYCoordinate       ;contains Y coordinate in tiles.
 
 LADE6:  CMP #$1E                ;Did Y position go below nametable boundary?
-LADE8:  BCC WindowAddrCombine      ;If not, branch.
+LADE8:  BCC WindowAddressCombine      ;If not, branch.
 
 WindowYOverRun:
 LADEA:  SBC #$1E                ;Window tile went below end of nametable. Loop back to top.
 
-WindowAddrCombine:
+WindowAddressCombine:
 LADEC:  LSR                     ;A is upper byte of result and PPUAddrLB is lower byte.
 LADED:  ROR PPUAddrLB           ;
 LADEF:  LSR                     ;Need to divide by 8 because X coord is still in pixel
