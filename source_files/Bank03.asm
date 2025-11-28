@@ -72,12 +72,12 @@ LC01A:  LDA #$FC                ;Load bitmask for clearing selected nametable bi
 LC01C:  CPY #$00                ;Is bit counter 0?
 LC01E:  BEQ SetAttribBits       ;If so, branch. No need to do any shifting.
 
-AttribLoop:
+AttributeLoop:
 LC020:  SEC                     ;
 LC021:  ROL                     ;This loop shifts the attribute tabe bit pair into position
 LC022:  ASL PPUDataByte         ;while decrementing the counter.
 LC024:  DEY                     ;Do attribute table bits still need to be shifted?
-LC025:  BNE AttribLoop          ;If so, branch to shift them 1 more bit.
+LC025:  BNE AttributeLoop          ;If so, branch to shift them 1 more bit.
 
 SetAttribBits:
 LC027:  AND (PPUBufferPointer),Y       ;

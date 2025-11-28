@@ -3346,7 +3346,7 @@ LA81A:  STA WindowForeBack         ;Set window as foreground/background window.
 
 WindowRemoveRowLoop:
 LA81C:  LDA #$00                ;
-LA81E:  STA AttribBufIndex      ;Reset buffer index to remove a new row.
+LA81E:  STA AttributeBufIndex      ;Reset buffer index to remove a new row.
 LA820:  STA WindowLineBufferIndex       ;
 
 LA822:  LDA StartSignedXPos     ;Set the X position to start erasing row.
@@ -3368,7 +3368,7 @@ LA836:  INC BlockAddrUB         ;
 LA838:* INC WindowLineBufferIndex       ;Increment the window line buffer index by 2.
 LA83A:  INC WindowLineBufferIndex       ;
 
-LA83C:  INC AttribBufIndex      ;Increment the attribute table buffer index.
+LA83C:  INC AttributeBufIndex      ;Increment the attribute table buffer index.
 
 LA83E:  INC XPosFromCenter      ;Increment to the next block in the row(2X2 tiles per block).
 LA840:  INC XPosFromCenter      ;
@@ -3527,8 +3527,8 @@ LA917:  BNE StoreAttribByte     ;Branch always.
 LA919:* LDA #$03                ;Set attribute table values for battle scene horizon tiles.
 
 StoreAttribByte:
-LA91B:  LDX AttribBufIndex      ;
-LA91D:  STA AttribTblBuf,X      ;Store the attribute table byte in the buffer.
+LA91B:  LDX AttributeBufIndex      ;
+LA91D:  STA AttributeTblBuf,X      ;Store the attribute table byte in the buffer.
 LA920:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -3732,9 +3732,9 @@ LAA2F:  STA PPUDataByte         ;
 LAA31:  LDA AddAttribData       ;Should always be 0. Add attribute table data to buffer.
 LAA33:  BNE ModWndExit          ;Never branch.
 
-LAA35:  LDX AttribBufIndex      ;
+LAA35:  LDX AttributeBufIndex      ;
 LAA37:  LDA PPUDataByte         ;Add attribute table data to buffer for the corresponding block.
-LAA39:  STA AttribTblBuf,X      ;
+LAA39:  STA AttributeTblBuf,X      ;
 
 ModWndExit:
 LAA3C:  RTS                     ;Done removing window block. Return.
@@ -5708,7 +5708,7 @@ LB451:  LDA #$05                ;Prepare to change the attribute table for a giv
 LB453:  STA TileCounter         ;
 LB455:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
-AttribClearLoop1:
+AttributeClearLoop1:
 LB458:  JSR ClearAttribByte     ;($C244)Set black palette for 4x4 block area.
 
 LB45B:  LDA XPosFromCenter      ;
@@ -5717,7 +5717,7 @@ LB45E:  ADC #$04                ;
 LB460:  STA XPosFromCenter      ;
 
 LB462:  DEC TileCounter         ;Done clearing this section?
-LB464:  BNE AttribClearLoop1    ;If not, branch to clear another attrib byte.
+LB464:  BNE AttributeClearLoop1    ;If not, branch to clear another attrib byte.
 
 LB466:  INC ScrollY             ;Increment vertical scroll and player Y pixel position.
 LB468:  INC CharYPixelsLB       ;
@@ -5929,7 +5929,7 @@ LB590:  LDA #$05                ;Prepare to change a 5 block section.
 LB592:  STA TileCounter         ;
 LB594:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
-AttribClearLoop2:
+AttributeClearLoop2:
 LB597:  JSR ClearAttribByte     ;($C244)Set black palette for 4x4 block area.
 
 LB59A:  LDA $0F                 ;
@@ -5938,7 +5938,7 @@ LB59D:  ADC #$04                ;
 LB59F:  STA XPosFromCenter      ;
 
 LB5A1:  DEC TileCounter         ;Done clearing this section?
-LB5A3:  BNE AttribClearLoop2    ;If not, branch to clear another attrib byte.
+LB5A3:  BNE AttributeClearLoop2    ;If not, branch to clear another attrib byte.
 
 LB5A5:  DEC ScrollY             ;Decrement vertical scroll and player Y pixel position.
 LB5A7:  DEC CharYPixelsLB       ;

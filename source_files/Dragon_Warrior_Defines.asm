@@ -164,7 +164,7 @@
 .alias NPCOffset        $25     ;Offset to NPC position data.
 .alias NPCNewFace       $25     ;New direction NPC should face to talk to player.
 .alias NPCNumber        $26     ;NPC being worked on.
-.alias NPCSpriteCntr    $27     ;Counter used for loading NPC sprite data.
+.alias NPCSprite Counter    $27     ;Counter used for loading NPC sprite data.
 .alias NPCSpriteRAMIndex    $28     ;Index into sprite RAM for current NPC sprite.
 
 .alias JMPFuncPointer       $0030   ;JUMP command for IRQ function pointer.
@@ -194,7 +194,7 @@
 .alias CharXPos         $3A     ;Player's X position on current map in blocks.
 .alias CharYPos         $3B     ;Player's Y position on current map in blocks.
 
-.alias BufByteCntr      $3C     ;Buffer byte load counter.
+.alias BufferByteCounter      $3C     ;Buffer byte load counter.
 .alias _EnNumber        $3C     ;Working copy of enemy number.
 .alias CalcDamage       $3C     ;Calculated damage to player/enemy.
 .alias PlayerTempStat     $3C     ;Temporary register for the player's various stats.

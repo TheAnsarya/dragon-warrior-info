@@ -4806,7 +4806,7 @@ LA25B:  STA WindowDescriptionHalf         ;
 LA25E:  STA WindowBuildRow         ;
 
 LA261:  LDX #$0F                ;
-LA263:* STA AttribTblBuf,X      ;
+LA263:* STA AttributeTblBuf,X      ;
 LA266:  DEX                     ;Zero out attribute table buffer.
 LA267:  BPL -                   ;
 LA269:  RTS                     ;
@@ -6015,35 +6015,35 @@ LA879:  JSR PrepPPUAddressCalc      ;($A8AD)Prepare and calculate PPU address.
 LA87C:  LDA WindowHeight           ;Get window height in tiles.  Need to replace any end of text
 LA87F:  STA RowsRemaining       ;control characters with no-ops so window can be processed properly.
 
-CntrlCharSwapRow:
+ControlCharSwapRow:
 LA881:  LDY #$00                ;Start at beginning of window tile row.
 
 LA883:  LDA WindowWidth            ;Set remaining columns to window width.
 LA886:  STA _ColsRemaining      ;
 
-CntrlCharSwapCol:
+ControlCharSwapCol:
 LA888:  LDA (PPUBufferPointer),Y       ;Was the end text control character found?
 LA88A:  CMP #TXT_END2           ;
-LA88C:  BNE CntrlNextCol        ;If not, branch to check next window character.
+LA88C:  BNE ControlNextCol        ;If not, branch to check next window character.
 
 LA88E:  LDA #TXT_NOP            ;Replace text control character with a no-op.
 LA890:  STA (PPUBufferPointer),Y       ;
 
-CntrlNextCol:
+ControlNextCol:
 LA892:  INY                     ;Move to next columns.
 LA893:  DEC _ColsRemaining      ;was that the last column?
-LA895:  BNE CntrlCharSwapCol    ;If not, branch to move to next column.
+LA895:  BNE ControlCharSwapCol    ;If not, branch to move to next column.
 
 LA897:  CLC                     ;
 LA898:  LDA PPUAddrLB           ;
 LA89A:  ADC #$20                ;Move buffer address to next row.
 LA89C:  STA PPUAddrLB           ;Handle carry, if necessary.
-LA89E:  BCC CntrlNextRow        ;
+LA89E:  BCC ControlNextRow        ;
 LA8A0:  INC PPUAddrUB           ;
 
-CntrlNextRow:
+ControlNextRow:
 LA8A2:  DEC RowsRemaining       ;Are there more rows to check?
-LA8A4:  BNE CntrlCharSwapRow    ;If so, branch.
+LA8A4:  BNE ControlCharSwapRow    ;If so, branch.
 
 LA8A6:  BRK                     ;Update sprites.
 LA8A7:  .byte $04, $07          ;($B6DA)DoSprites, bank 0.
@@ -6821,14 +6821,14 @@ LACC9:  STA _WndPPUAddrLB       ;
 
 WindowLoadAttribLoop:
 LACCC:  TXA                     ;
-LACCD:  PHA                     ;Save BlockRAM index and AttribTblBuf index on stack.
+LACCD:  PHA                     ;Save BlockRAM index and AttributeTblBuf index on stack.
 LACCE:  TYA                     ;
 LACCF:  PHA                     ;
 
 LACD0:  LDA WindowPPUAddrUB        ;Save upper byte of PPU address on stack.
 LACD3:  PHA                     ;
 
-LACD4:  LDA AttribTblBuf,Y      ;Get attibute table bits from buffer.
+LACD4:  LDA AttributeTblBuf,Y      ;Get attibute table bits from buffer.
 LACD7:  JSR WindowCalcAttribAddr   ;($AD36)Update attribute table values.
 LACDA:  STA WindowAtribDat         ;Save a copy of the completed attribute table data byte.
 
@@ -6836,7 +6836,7 @@ LACDD:  PLA                     ;Restore upper byte of PPU address from stack.
 LACDE:  STA WindowPPUAddrUB        ;
 
 LACE1:  PLA                     ;
-LACE2:  TAY                     ;Restore BlockRAM index and AttribTblBuf index from stack.
+LACE2:  TAY                     ;Restore BlockRAM index and AttributeTblBuf index from stack.
 LACE3:  PLA                     ;
 LACE4:  TAX                     ;
 
@@ -6850,7 +6850,7 @@ LACF2:  INX                     ;
 LACF3:  LDA WindowAtribDat         ;Save attribute table data byte in buffer.
 LACF6:  STA BlockRAM,X          ;
 
-LACF9:  INX                     ;Increment BlockRAM index and AttribTblBuf index.
+LACF9:  INX                     ;Increment BlockRAM index and AttributeTblBuf index.
 LACFA:  INY                     ;
 
 LACFB:  INC _WndPPUAddrLB       ;Increment to next window block.
@@ -6952,23 +6952,23 @@ LAD82:  ORA AtribBitsOfst       ;This sets the lower bit for offset shifting.
 LAD85:  STA AtribBitsOfst       ;
 
 LAD88:  LDA WindowAtribAdrLB       ;Set attrib table pointer to lower byte of attrib table address.
-LAD8B:  STA AttribPtrLB         ;
+LAD8B:  STA AttributePtrLB         ;
 
 LAD8D:  LDA WindowAtribAdrUB       ;Set upper byte for attribute table buffer. The atrib
 LAD90:  AND #$07                ; table buffer starts at either $0300 or $0700, depending
-LAD92:  STA AttribPtrUB         ;on the active nametable.
+LAD92:  STA AttributePtrUB         ;on the active nametable.
 
 LAD94:  LDA EnNumber            ;Is player fighting the end boss?
 LAD96:  CMP #EN_DRAGONLORD2     ;If so, force atribute table buffer to base address $0700.
 LAD98:  BNE ModAtribByte        ;If not, branch to get attribute table byte.
 
 LAD9A:  LDA #$07                ;Force atribute table buffer to base address $0700.
-LAD9C:  STA AttribPtrUB         ;
+LAD9C:  STA AttributePtrUB         ;
 
 ModAtribByte:
 LAD9E:  LDY #$00                ;
-LADA0:  LDA (AttribPtr),Y       ;Get attribute byte to modify from buffer.
-LADA2:  STA AttribByte          ;
+LADA0:  LDA (AttributePtr),Y       ;Get attribute byte to modify from buffer.
+LADA2:  STA AttributeByte          ;
 
 LADA5:  LDA #$03                ;Initialize bitmask.
 LADA7:  LDY AtribBitsOfst       ;Set shift amount.
@@ -6982,12 +6982,12 @@ LADB1:  BNE AtribValShiftLoop   ;If not branch to shift by another bit.
 
 AddNewAtribVal:
 LADB3:  EOR #$FF                ;Clear the two bits to be modified.
-LADB5:  AND AttribByte          ;
+LADB5:  AND AttributeByte          ;
 
 LADB8:  ORA WindowAttribVal        ;Insert the 2 new bits.
 LADBB:  LDY #$00                ;
 
-LADBD:  STA (AttribPtr),Y       ;Save attribute table data byte back into the buffer.
+LADBD:  STA (AttributePtr),Y       ;Save attribute table data byte back into the buffer.
 LADBF:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
