@@ -85,6 +85,38 @@ Implement remaining editor features (dialogue, music, shops); Create automated t
 
 first, update chat and session logs then git comment and push everything that is uncommited; Create a big list of every file that is used in the build process; Which data extract files are used? Which code files are used? Run the build process, see what files are used; Open the build script in the editor so I can see it; make a list of asset files that are not used in the build process (should be be used?); make sure the editors are using the asset files, not editing the rom directly; item asset extraction is nonsense too, the `club` does not have an `attack_bonus": 253` and also it's not called `attack bonus` it's `atack power` and why does the torch have one instead of a link to its effect when used?; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+club is a weapon,. it should have an attack of 1
+
+first, update chat and session logs then git comment and push everything that is uncommited; Create a big list of every file that is used in the build process; Which data extract files are used? Which code files are used? Run the build process, see what files are used; Open the build script in the editor so I can see it; make a list of asset files that are not used in the build process (should be be used?); move the session summaries, files named starting with `SESSION_SUMMARY` `*.md` files into `~docs\session-logs` and move other doumentation into the `docs` folder and organize all these files into a series of sub-folders and correct the links in the files to reflect the new organization; make a list of manual steps linked in a `Manual` section inside the main `readme.md` file, including the "files used in build process" and "assets not used in build process" and "steps for testing the editors" and "steps for testing rom changes"; git comment and push;
+
+turn off github actions for cd/ci since we're not there yet and I don't want to waste money on it yet; continue! ;
+
+Create a big list of every file that is used in the build process; Which data extract files are used? Which code files are used? Run the build process, see what files are used; Open the build script in the editor so I can see it; make a list of asset files that are not used in the build process (should be be used?);
+
+You said `Build assembles from ASM source files, not from extracted JSON data.` this is not what we want, we want to extract the data and graphics, so we can edit them and then re-transform those files into the data structures and build the rom with them; so, update the build process to use the extracted assets (png and json, etc) during build; so also reference and update `docs\build\BUILD_PROCESS_DETAILED_ANALYSIS.md`
+
+continue!
+
+Labels like `EnStatTbl` are not descriptive enough, `tbl` means `table` please expand label names so they are easy to understand; continue!
+update all the labels, not just that one or not just tbl ones, make real labels;
+Labels like `EnStatTbl` are not descriptive enough, `tbl` means `table` please expand label names so they are easy to understand; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+
+please expand label names so they are easy to understand; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
