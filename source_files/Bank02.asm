@@ -3509,9 +3509,9 @@ LBCAC:  .byte $F5, $47, $FB, $FC
 DoIntroRoutine:
 LBCB0:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LBCB3:  LDA IntroPalPtr1        ;
-LBCB6:  STA PalPtrLB            ;Get pointer to palette data.
+LBCB6:  STA PalettePointerLB            ;Get pointer to palette data.
 LBCB8:  LDA IntroPalPtr1+1      ;
-LBCBB:  STA PalPtrUB            ;Hide intro text.
+LBCBB:  STA PalettePointerUB            ;Hide intro text.
 
 LBCBD:  LDA #$00                ;No palette modification.
 LBCBF:  STA PalModByte          ;
@@ -3537,9 +3537,9 @@ LBCDF:  BNE -                   ;Else branch to wait more.
 ShowIntroText:
 LBCE1:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LBCE4:  LDA IntroPalPtr2        ;
-LBCE7:  STA PalPtrLB            ;Get pointer to palette data.
+LBCE7:  STA PalettePointerLB            ;Get pointer to palette data.
 LBCE9:  LDA IntroPalPtr2+1      ;
-LBCEC:  STA PalPtrUB            ;Show intro text.
+LBCEC:  STA PalettePointerUB            ;Show intro text.
 
 LBCEE:  LDA #$00                ;No palette modification.
 LBCF0:  STA PalModByte          ;
@@ -3673,9 +3673,9 @@ LBDB6:  AND #IN_START           ;Has start been pressed?
 LBDB8:  BEQ +                   ;If not, branch to loop.
 
 LBDBA:  LDA IntroPalPtr3        ;
-LBDBD:  STA PalPtrLB            ;Get pointer to palette data.
+LBDBD:  STA PalettePointerLB            ;Get pointer to palette data.
 LBDBF:  LDA IntroPalPtr3+1      ;
-LBDC2:  STA PalPtrUB            ;
+LBDC2:  STA PalettePointerUB            ;
 
 LBDC4:  LDA #$00                ;No palette modification.
 LBDC6:  STA PalModByte          ;
@@ -3683,9 +3683,9 @@ LBDC6:  STA PalModByte          ;
 LBDC8:  JSR PrepBGPalLoad       ;($C63D)Clear background palette.
 
 LBDCB:  LDA IntroPalPtr3        ;
-LBDCE:  STA PalPtrLB            ;Get pointer to palette data.
+LBDCE:  STA PalettePointerLB            ;Get pointer to palette data.
 LBDD0:  LDA IntroPalPtr3+1      ;
-LBDD3:  STA PalPtrUB            ;
+LBDD3:  STA PalettePointerUB            ;
 
 LBDD5:  LDA #$00                ;No palette modification.
 LBDD7:  STA PalModByte          ;

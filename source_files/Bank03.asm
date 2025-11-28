@@ -388,7 +388,7 @@ LC184:  STA PPUControl0         ;
 LC187:  LDA #TL_BLANK_TILE1     ;Fill both nametables with blank tiles.
 LC189:  STA PPUDataByte         ;
 
-LC18B:  LDA PPUStatus           ;Reset address latch.
+LC18B:  LDA PPUStatusus           ;Reset address latch.
 
 LC18E:  LDA #NT_NAMETBL0_UB     ;
 LC190:  STA PPUAddress          ;Set address to start of nametable 0.
@@ -397,7 +397,7 @@ LC195:  STA PPUAddress          ;
 
 LC198:  JSR ClearNameTable      ;($C1B9)Write #$5F to nametable 0.
 
-LC19B:  LDA PPUStatus           ;Reset address latch.
+LC19B:  LDA PPUStatusus           ;Reset address latch.
 
 LC19E:  LDA #NT_NAMETBL1_UB     ;
 LC1A0:  STA PPUAddress          ;Set address to start of nametable 1.
@@ -500,19 +500,19 @@ LC218:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LC21B:  DEX                     ;
 LC21C:  BNE -                   ;Has 4 frames elapsed? If not, branch to wait another frame.
 
-LC21E:  LDA SprtPalPtrLB        ;
-LC220:  STA PalPtrLB            ;Load sprite palette pointers.
-LC222:  LDA SprtPalPtrUB        ;
-LC224:  STA PalPtrUB            ;
+LC21E:  LDA SpritePalettePointerLB        ;
+LC220:  STA PalettePointerLB            ;Load sprite palette pointers.
+LC222:  LDA SpritePalettePointerUB        ;
+LC224:  STA PalettePointerUB            ;
 LC226:  JSR PrepSPPalLoad       ;($C632)Load sprite palette data into PPU buffer.
 
 LC229:  LDA LoadBGPal           ;Is background palette supposed to change?
 LC22B:  BEQ +                   ;If not, branch to skip.
 
-LC22D:  LDA BGPalPtrLB          ;
-LC22F:  STA PalPtrLB            ;Load background palette pointers.
-LC231:  LDA BGPalPtrUB          ;
-LC233:  STA PalPtrUB            ;
+LC22D:  LDA BackgroundPalettePointerLB          ;
+LC22F:  STA PalettePointerLB            ;Load background palette pointers.
+LC231:  LDA BackgroundPalettePointerUB          ;
+LC233:  STA PalettePointerUB            ;
 LC235:  JSR PrepBGPalLoad       ;($C63D)Load background palette data into PPU buffer
 
 LC238:* LDA PalModByte          ;
@@ -639,19 +639,19 @@ LC52F:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LC532:  DEX                     ;Have 4 frames passed?
 LC533:  BNE -                   ;If not, branch to wait another frame.
 
-LC535:  LDA SprtPalPtrLB        ;
-LC537:  STA PalPtrLB            ;Load base address of desired sprite palette data.
-LC539:  LDA SprtPalPtrUB        ;
-LC53B:  STA PalPtrUB            ;
+LC535:  LDA SpritePalettePointerLB        ;
+LC537:  STA PalettePointerLB            ;Load base address of desired sprite palette data.
+LC539:  LDA SpritePalettePointerUB        ;
+LC53B:  STA PalettePointerUB            ;
 LC53D:  JSR PrepSPPalLoad       ;($C632)Load sprite palette data into PPU buffer.
 
 LC540:  LDA LoadBGPal           ;Does background need to be faded in?
 LC542:  BEQ +                   ;If not, branch to skip.
 
-LC544:  LDA BGPalPtrLB          ;
-LC546:  STA PalPtrLB            ;Load base address of desired background palette data.
-LC548:  LDA BGPalPtrUB          ;
-LC54A:  STA PalPtrUB            ;
+LC544:  LDA BackgroundPalettePointerLB          ;
+LC546:  STA PalettePointerLB            ;Load base address of desired background palette data.
+LC548:  LDA BackgroundPalettePointerUB          ;
+LC54A:  STA PalettePointerUB            ;
 LC54C:  JSR PrepBGPalLoad       ;($C63D)Load background palette data into PPU buffer
 
 LC54F:* LDA PalModByte          ;
@@ -666,29 +666,29 @@ LC55A:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 UpdateRandNum:
-LC55B:  LDA RandNumUB           ;
+LC55B:  LDA RandomNumberUB           ;
 LC55D:  STA GenWord3CUB         ;
-LC55F:  LDA RandNumLB           ;
+LC55F:  LDA RandomNumberLB           ;
 LC561:  STA GenWord3CLB         ;
-LC563:  ASL RandNumLB           ;
-LC565:  ROL RandNumUB           ;
+LC563:  ASL RandomNumberLB           ;
+LC565:  ROL RandomNumberUB           ;
 LC567:  CLC                     ;
-LC568:  ADC RandNumLB           ;
-LC56A:  STA RandNumLB           ;
-LC56C:  LDA RandNumUB           ;
+LC568:  ADC RandomNumberLB           ;
+LC56A:  STA RandomNumberLB           ;
+LC56C:  LDA RandomNumberUB           ;
 LC56E:  ADC GenWord3CUB         ;
-LC570:  STA RandNumUB           ;Update the random number word.
-LC572:  LDA RandNumLB           ;
+LC570:  STA RandomNumberUB           ;Update the random number word.
+LC572:  LDA RandomNumberLB           ;
 LC574:  CLC                     ;
-LC575:  ADC RandNumUB           ;
-LC577:  STA RandNumUB           ;
-LC579:  LDA RandNumLB           ;
+LC575:  ADC RandomNumberUB           ;
+LC577:  STA RandomNumberUB           ;
+LC579:  LDA RandomNumberLB           ;
 LC57B:  CLC                     ;
 LC57C:  ADC #$81                ;
-LC57E:  STA RandNumLB           ;
-LC580:  LDA RandNumUB           ;
+LC57E:  STA RandomNumberLB           ;
+LC580:  LDA RandomNumberUB           ;
 LC582:  ADC #$00                ;
-LC584:  STA RandNumUB           ;
+LC584:  STA RandomNumberUB           ;
 LC586:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -894,7 +894,7 @@ LC67C:  LDA #$26                ;Load red palette color for low health.
 LC67E:  BNE +                   ;
 
 ChkPalFade:
-LC680:  LDA (PalPtrLB),Y        ;Get current palette color.
+LC680:  LDA (PalettePointerLB),Y        ;Get current palette color.
 
 LC682:* SEC                     ;If fade in/fade out is currently active, subtract the
 LC683:  SBC PalModByte          ;current fade offset value from color to make it darker.
@@ -1224,7 +1224,7 @@ LC9E8:  LDA #%00011000          ;Enable sprites and background.
 LC9EA:  STA PPUControl1         ;
 
 LC9ED:  LDA #$00                ;Reset sound engine status.
-LC9EF:  STA SndEngineStat       ;
+LC9EF:  STA SoundEngineStatus       ;
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -1471,9 +1471,9 @@ LCB44:  JMP CheckInputs         ;Loop until user presses a button.
 StartAtThroneRoom:
 LCB47:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 LCB4A:  LDA BlackPalPtr         ;
-LCB4D:  STA PalPtrLB            ;
+LCB4D:  STA PalettePointerLB            ;
 LCB4F:  LDA BlackPalPtr+1       ;Point to the all black palette.
-LCB52:  STA PalPtrUB            ;
+LCB52:  STA PalettePointerUB            ;
 
 LCB54:  LDA #$00                ;No sprite palette fade in.
 LCB56:  STA PalModByte          ;
@@ -1949,7 +1949,7 @@ ChkFight:
 LCDFB:  LDA #$0F                ;Get random number.
 
 ChkFight2:
-LCDFD:  AND RandNumUB           ;Is lower nibble 0?
+LCDFD:  AND RandomNumberUB           ;Is lower nibble 0?
 LCDFF:  BEQ DoRandomFight       ;If so, branch to start a random fight.
 LCE01:  RTS                     ;
 
@@ -2071,27 +2071,27 @@ LCE99:  JSR ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit numbe
 LCE9C:  LDA GenByte42           ;*4. 4 bytes per row in overworld enemy grid.
 LCE9E:  ASL                     ;
 LCE9F:  ASL                     ;The proper row in OvrWrldEnGrid is now known.
-LCEA0:  STA EnemyOffset         ;Next, calculate the desired byte from the row.
+LCEA0:  STA EnemyOffsetset         ;Next, calculate the desired byte from the row.
 
 LCEA2:  LDA DivNum1LB           ;Get the X position again for the overworld enemy grid.
 LCEA4:  LSR                     ;/2 at the enemy data is stored in nibble wide data.
 LCEA5:  CLC                     ;Add value to the Y position calculation.
-LCEA6:  ADC EnemyOffset         ;
+LCEA6:  ADC EnemyOffsetset         ;
 LCEA8:  TAX                     ;We now have the proper byte index into OvrWrldEnGrid.
 
 LCEA9:  LDA OvrWrldEnGrid,X     ;Get the enemy zone data from OvrWrldEnGrid.
-LCEAC:  STA EnemyOffset         ;
+LCEAC:  STA EnemyOffsetset         ;
 
 LCEAE:  LDA DivNum1LB           ;Since the enemy zone data is stored in nibbles, we need
 LCEB0:  LSR                     ;to get the right nibble in the byte. Is this the right
 LCEB1:  BCS +                   ;byte? If so, branch.
 
-LCEB3:  LSR EnemyOffset         ;
-LCEB5:  LSR EnemyOffset         ;Transfer upper nibble into the lower nibble.
-LCEB7:  LSR EnemyOffset         ;
-LCEB9:  LSR EnemyOffset         ;
+LCEB3:  LSR EnemyOffsetset         ;
+LCEB5:  LSR EnemyOffsetset         ;Transfer upper nibble into the lower nibble.
+LCEB7:  LSR EnemyOffsetset         ;
+LCEB9:  LSR EnemyOffsetset         ;
 
-LCEBB:* LDA EnemyOffset         ;Keep only the lower nibble. We now have the proper
+LCEBB:* LDA EnemyOffsetset         ;Keep only the lower nibble. We now have the proper
 LCEBD:  AND #$0F                ;data from OvrWrldEnGrid.
 LCEBF:  BNE GetEnemyRow         ;
 
@@ -2102,13 +2102,13 @@ LCEC6:  CMP #BLK_HILL           ;If not, branch. Another check will be done to a
 LCEC8:  BNE NormFightModifier   ;fight. 50% chance the fight may not happen.
 
 HighFightModifier:
-LCECA:  LDA RandNumUB           ;Player is in hilly terrain. Increased chance of fight!
+LCECA:  LDA RandomNumberUB           ;Player is in hilly terrain. Increased chance of fight!
 LCECC:  AND #$03                ;Do another check to avoid the fight. 25% chance the fight
 LCECE:  BEQ GetEnemyRow         ;may not happen. Is fight going to happen?
 LCED0:  RTS                     ;If so, branch to calculate which enemy.
 
 NormFightModifier:
-LCED1:  LDA RandNumUB           ;Player is not on hilly terrain.
+LCED1:  LDA RandomNumberUB           ;Player is not on hilly terrain.
 LCED3:  AND #$01                ;Do another check to avoid the fight. 50% chance the fight
 LCED5:  BEQ GetEnemyRow         ;may not happen. Is fight going to happen?
 LCED7:  RTS                     ;If so, branch to calculate which enemy.
@@ -2152,24 +2152,24 @@ LCF00:  TAX                     ;
 LCF01:  LDA CaveEnIndexTbl,X    ;Get enemy index data byte. points to a row in EnemyGroupsTbl.
 
 GetEnemyRow:
-LCF04:  STA EnemyOffset         ;This calculates the proper row of enemies to
+LCF04:  STA EnemyOffsetset         ;This calculates the proper row of enemies to
 LCF06:  ASL                     ;choose a fight from in EnemyGroupsTbl.
 LCF07:  ASL                     ;
 LCF08:  CLC                     ;
-LCF09:  ADC EnemyOffset         ;EnemyOffset * 5. 5 enemy entries per row.
-LCF0B:  STA EnemyOffset         ;
+LCF09:  ADC EnemyOffsetset         ;EnemyOffsetset * 5. 5 enemy entries per row.
+LCF0B:  STA EnemyOffsetset         ;
 
 ;All chances to evade the enemy has failed(except repel). Figure out which enemy to fight.
 ;At this point, we have the index to the row of enemies in EnemyGroupsTbl.
 
 GetEnemyInRow:
 LCF0D:  JSR UpdateRandNum       ;($C55B)Get random number.
-LCF10:  LDA RandNumUB           ;
+LCF10:  LDA RandomNumberUB           ;
 LCF12:  AND #$07                ;Keep only 3 LSBs. Is number between 0 and 4? If not, branch
 LCF14:  CMP #$05                ;to get another random number as there are only 5 enemy slots
 LCF16:  BCS GetEnemyInRow       ;per enemy zone.
 
-LCF18:  ADC EnemyOffset         ;Add offset to the enemy row to get the specific enemy.
+LCF18:  ADC EnemyOffsetset         ;Add offset to the enemy row to get the specific enemy.
 LCF1A:  TAX                     ;
 LCF1B:  LDA EnemyGroupsTbl,X    ;
 LCF1E:  STA _EnNumber           ;Store the enemy number and continue the fight preparations.
@@ -2499,7 +2499,7 @@ LD0D9:  JMP NoTalk              ;($D1ED)No one to talk to in that direction.
 ;----------------------------------------------------------------------------------------------------
 
 ValidateNPC:
-LD0DC:  STY NPCOffset           ;Get NPC offset.
+LD0DC:  STY NPCOffsetset           ;Get NPC offset.
 LD0DE:  CPY #$1E                ;Lower NPC slots are for moving NPCs.
 LD0E0:  BCC CheckMobNPC         ;If lower slot, branch to check for valid mobile NPC.
 
@@ -2548,7 +2548,7 @@ LD117:  LDA NPCMobilePointerTable+1,X    ;
 LD11A:  STA GenPtr3CUB          ;
 
 PrepTalk:
-LD11C:  LDA NPCOffset           ;Get target NPC number.
+LD11C:  LDA NPCOffsetset           ;Get target NPC number.
 LD11E:  JSR NPCFacePlayer       ;($C04A)Make the NPC face the player.
 
 LD121:  TYA                     ;Save NPC index on stack.
@@ -2594,7 +2594,7 @@ LD151:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
 
 RandEndDialog:
 LD154:  JSR UpdateRandNum       ;($C55B)Get a random number.
-LD157:  LDA RandNumUB           ;
+LD157:  LDA RandomNumberUB           ;
 LD159:  LSR                     ;Randomly choose text based on the LSB of
 LD15A:  BCC AlternateDialog     ;the number if the dragonlord is dead.
 
@@ -3212,7 +3212,7 @@ LD464:  CMP #$6F                ;Is the player talking to the princess?
 LD466:  BNE DgrnLrdDialog       ;If not, branch.
 
 LD468:  JSR UpdateRandNum       ;($C55B)Get random number.
-LD46B:  LDA RandNumUB           ;
+LD46B:  LDA RandomNumberUB           ;
 LD46D:  AND #$60                ;Choose a random number to vary what princess Gwaelin says
 LD46F:  BNE PrncsRndDialog1     ;to the player when she is talked to.
 
@@ -3339,9 +3339,9 @@ LD511:  JSR DoDialogLoBlock     ;($C7CB)Thy journey is over. Take now a long res
 LD514:  .byte $CB               ;TextBlock13, entry 11.
 
 LD515:  LDA BadEndBGPalPtr      ;
-LD518:  STA PalPtrLB            ;Get pointer to palette data.
+LD518:  STA PalettePointerLB            ;Get pointer to palette data.
 LD51A:  LDA BadEndBGPalPtr+1    ;
-LD51D:  STA PalPtrUB            ;
+LD51D:  STA PalettePointerUB            ;
 
 LD51F:  LDA #$00                ;Disable palette fade effect.
 LD521:  STA PalModByte          ;
@@ -4166,14 +4166,14 @@ LD912:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
 
 GetRegularPalPtrs:
 LD915:  LDA RegSPPalPtr         ;
-LD918:  STA SprtPalPtrLB        ;Get a pointer to the standard sprite palettes.
+LD918:  STA SpritePalettePointerLB        ;Get a pointer to the standard sprite palettes.
 LD91A:  LDA RegSPPalPtr+1       ;
-LD91D:  STA SprtPalPtrUB        ;
+LD91D:  STA SpritePalettePointerUB        ;
 
 LD91F:  LDA TownPalPtr          ;
-LD922:  STA BGPalPtrLB          ;Get a pointer to the standard background palettes.
+LD922:  STA BackgroundPalettePointerLB          ;Get a pointer to the standard background palettes.
 LD924:  LDA TownPalPtr+1        ;
-LD927:  STA BGPalPtrUB          ;
+LD927:  STA BackgroundPalettePointerUB          ;
 
 LD929:  LDA #PAL_LOAD_BG        ;
 LD92B:  STA LoadBGPal           ;Indicate background palette data should be loaded.
@@ -4676,7 +4676,7 @@ LDBB7:  RTS                     ;
 
 DoHeal:
 LDBB8:  JSR UpdateRandNum       ;($C55B)Get random number.
-LDBBB:  LDA RandNumUB           ;
+LDBBB:  LDA RandomNumberUB           ;
 LDBBD:  AND #$07                ;Keep lower 3 bits.
 LDBBF:  CLC                     ;Add to 10.
 LDBC0:  ADC #$0A                ;Heal adds 10 to 17 points to HP.
@@ -4701,7 +4701,7 @@ LDBD6:  RTS                     ;
 
 DoHealmore:
 LDBD7:  JSR UpdateRandNum       ;($C55B)Get random number.
-LDBDA:  LDA RandNumUB           ;
+LDBDA:  LDA RandomNumberUB           ;
 LDBDC:  AND #$0F                ;Keep lower 4 bits.
 LDBDE:  CLC                     ;
 LDBDF:  ADC #$55                ;Add to 85
@@ -4923,7 +4923,7 @@ LDCFB:  JMP ResumeGamePlay      ;($CFD9)Give control back to player.
 HerbHeal:
 LDCFE:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LDD01:  LDA RandNumUB           ;Get lower 3 bits of a random number.
+LDD01:  LDA RandomNumberUB           ;Get lower 3 bits of a random number.
 LDD03:  AND #$07                ;
 
 LDD05:  CLC                     ;
@@ -5159,7 +5159,7 @@ LDE1C:  BNE HarpFail            ;If not, branch. Harp only work in the overworld
 
 HarpRNGLoop:
 LDE1E:  JSR UpdateRandNum       ;($C55B)Get random number.
-LDE21:  LDA RandNumUB           ;
+LDE21:  LDA RandomNumberUB           ;
 LDE23:  AND #$07                ;Choose a random number that is 0, 1, 2, 3, 4 or 6.
 LDE25:  CMP #$05                ;
 LDE27:  BEQ HarpRNGLoop         ;The harp will summon either a slime, red slime, drakee
@@ -5986,7 +5986,7 @@ LE256:  AND #F_DTH_NCK_FOUND    ;
 LE258:  BNE GetDthNeckGold      ;If so, branch to get gold instead.
 
 LE25A:  JSR UpdateRandNum       ;($C55B)Get random number.
-LE25D:  LDA RandNumUB           ;If lower 5 bits are 0, player will receive the
+LE25D:  LDA RandomNumberUB           ;If lower 5 bits are 0, player will receive the
 LE25F:  AND #$1F                ;death necklace(1 in 32 chance).
 LE261:  BNE GetDthNeckGold      ;($E288)Lower 5 zeros? if not, branch to get gold instead.
 
@@ -6211,7 +6211,7 @@ LE363:  .byte $19, $FA          ;Description index for Erdrick's tablet.
 
 GetTrsrGold:
 LE365:  JSR UpdateRandNum       ;($C55B)Get random number.
-LE368:  LDA RandNumUB           ;
+LE368:  LDA RandomNumberUB           ;
 LE36A:  AND RndGoldBits         ;Get random anount of gold to add to treasure gold.
 
 LE36C:  CLC                     ;
@@ -6632,7 +6632,7 @@ LE599:  LDA EnBaseHP            ;Prepare to multiply enemy HP by random number(0
 LE59C:  STA MultNum2LB          ;
 LE59E:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LE5A1:  LDA RandNumUB           ;
+LE5A1:  LDA RandomNumberUB           ;
 LE5A3:  STA MultNum1LB          ;
 LE5A5:  LDA #$00                ;Multiply enemy HP by random byte.
 LE5A7:  STA MultNum1UB          ;
@@ -6673,7 +6673,7 @@ LE5D2:  LDA PlayerFlags         ;Is player asleep?
 LE5D4:  BPL ShowCombatCommand         ;If not, branch.
 
 LE5D6:  JSR UpdateRandNumber       ;($C55B)Get random number.
-LE5D9:  LDA RandNumUB           ;
+LE5D9:  LDA RandomNumberUB           ;
 LE5DB:  LSR                     ;Player is asleep. 50% chance they wake up.
 LE5DC:  BCS PlayerAwakes        ;Did player wake up? If so, branch.
 
@@ -6729,7 +6729,7 @@ LE61B:  CMP #EN_DRAGONLORD2     ;Is player fighting the dragonlord's final form?
 LE61D:  BEQ ChkPlyrMiss         ;If so, branch. no excellent moves permitted.
 
 LE61F:  JSR UpdateRandNum       ;($C55B)Get random number.
-LE622:  LDA RandNumUB           ;
+LE622:  LDA RandomNumberUB           ;
 LE624:  AND #$1F                ;Did player get an excellent move(1/32 chance)?
 LE626:  BNE ChkPlyrMiss         ;If not, branch to see if player missed.
 
@@ -6743,7 +6743,7 @@ LE630:  JSR DoDialogHiBlock     ;($C7C5)Excellent move...
 LE633:  .byte $04               ;TextBlock17, entry 4.
 
 LE634:  JSR UpdateRandNum       ;($C55B)Get random number.
-LE637:  LDA RandNumUB           ;
+LE637:  LDA RandomNumberUB           ;
 LE639:  STA MultNum1LB          ;
 LE63B:  LDA DisplayedAttack      ;
 LE63D:  LSR                     ;A = DisplayedAttack/2 * rnd(255).
@@ -6782,9 +6782,9 @@ LE66C:  BVS PlayerHitEn           ;If so, branch. Enemy can't dodge.
 
 LE66E:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LE671:  LDA RandNumUB           ;
+LE671:  LDA RandomNumberUB           ;
 LE673:  AND #$3F                ;Get a random number and keep lower 6 bits(0-63).
-LE675:  STA RandNumUB           ;
+LE675:  STA RandomNumberUB           ;
 
 LE677:  LDA EnBaseMDef          ;Does enemy have magic defense?
 LE67A:  AND #$0F                ;
@@ -6792,7 +6792,7 @@ LE67C:  BEQ PlayerHitEn           ;If not, branch. Enemy can't dodge.
 
 LE67E:  SEC                     ;Magic defense will be 0-14.
 LE67F:  SBC #$01                ;If random number is equal or greater than this, player will hit.
-LE681:  CMP RandNumUB           ;
+LE681:  CMP RandomNumberUB           ;
 LE683:  BCC PlayerHitEn           ;22% chance enemy will dodge(14/63).
 
 LE685:  JSR CopyEnUpperBytes    ;($DBE4)Copy enemy upper bytes to description RAM.
@@ -6933,7 +6933,7 @@ LE740:  LSR                     ;
 LE741:  JSR ChkSpellFail        ;($E946)Check if the spell will fail or succeed.
 LE744:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LE747:  LDA RandNumUB           ;
+LE747:  LDA RandomNumberUB           ;
 LE749:  AND #$07                ;Hurt will do between 5 and 12 damage.
 LE74B:  CLC                     ;
 LE74C:  ADC #$05                ;
@@ -6952,7 +6952,7 @@ LE75B:  LSR                     ;
 LE75C:  JSR ChkSpellFail        ;($E946)Check if the spell will fail or succeed.
 LE75F:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LE762:  LDA RandNumUB           ;
+LE762:  LDA RandomNumberUB           ;
 LE764:  AND #$07                ;Hurtmore will do between 58 and 65 damage.
 LE766:  CLC                     ;
 LE767:  ADC #$3A                ;
@@ -7212,9 +7212,9 @@ LE8B0:  BNE ChkMapHauksness     ;If not, branch.
 LE8B2:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LE8B5:  LDA BlackPalPtr         ;
-LE8B8:  STA PalPtrLB            ;Prepare to load the black palette.
+LE8B8:  STA PalettePointerLB            ;Prepare to load the black palette.
 LE8BA:  LDA BlackPalPtr+1       ;
-LE8BD:  STA PalPtrUB            ;
+LE8BD:  STA PalettePointerUB            ;
 
 LE8BF:  LDA #$00                ;
 LE8C1:  STA PalModByte          ;Disable fande-in/fade-out.
@@ -7307,7 +7307,7 @@ ChkSpellFail:
 LE946:  STA GenByte3E           ;Store spell test byte.
 LE948:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LE94B:  LDA RandNumUB           ;Get 4 bits from the random number(0-15).
+LE94B:  LDA RandomNumberUB           ;Get 4 bits from the random number(0-15).
 LE94D:  AND #$0F                ;
 
 LE94F:  CMP GenByte3E           ;Is the spell test byte greater than the random number?
@@ -7475,7 +7475,7 @@ LEA2A:  LDA EnBaseGld           ;Prepare to multiply enemy's base gold by a rand
 LEA2D:  STA MultNum2LB          ;
 
 LEA2F:  JSR UpdateRandNum       ;($C55B)Get random number.
-LEA32:  LDA RandNumUB           ;Keep only 6 bytes(0-63).
+LEA32:  LDA RandomNumberUB           ;Keep only 6 bytes(0-63).
 LEA34:  AND #$3F                ;
 
 LEA36:  CLC                     ;
@@ -7652,7 +7652,7 @@ LEB1D:  AND #F_EN_ASLEEP        ;
 LEB1F:  BEQ DoEnemyAttack       ;($EB48)Enemy is not asleep.  Branch to continue.
 
 LEB21:* JSR UpdateRandNum       ;($C55B)Get random number.
-LEB24:  LDA RandNumUB           ;
+LEB24:  LDA RandomNumberUB           ;
 LEB26:  AND #$03                ;Get random number until at least one of the 2 LSBs is set.
 LEB28:  BEQ -                   ;
 
@@ -7685,7 +7685,7 @@ LEB4B:  JSR UpdateRandNum       ;($C55B)Get random number.
 LEB4E:  LDA EnSpell             ;
 LEB51:  AND #$30                ;Get upper spells control bits.
 LEB53:  STA GenByte3C           ;
-LEB55:  LDA RandNumUB           ;Make random check to see if an upper spell will be cast.
+LEB55:  LDA RandomNumberUB           ;Make random check to see if an upper spell will be cast.
 LEB57:  AND #$30                ;
 LEB59:  CMP GenByte3C           ;Will upper spell be cast?
 LEB5B:  BCS EnCheckHurtFire     ;If not, branch to check if lower spell will be cast.
@@ -7728,7 +7728,7 @@ LEB94:  JSR UpdateRandNum       ;($C55B)Get random number.
 LEB97:  LDA EnSpell             ;
 LEB9A:  AND #$03                ;Get lower spells control bits.
 LEB9C:  STA GenByte3C           ;
-LEB9E:  LDA RandNumUB           ;
+LEB9E:  LDA RandomNumberUB           ;
 LEBA0:  AND #$03                ;Make random check to see if a lower spell will be cast.
 LEBA2:  CMP GenByte3C           ;Will lower spell be cast?
 LEBA4:  BCS EnPhysAttack        ;If not, branch. Enemy going to do a physical attack.
@@ -7824,7 +7824,7 @@ LEC25:  STA SpellToCast         ;
 LEC27:  JSR EnCastSpell         ;($EBEE)Enemy casts a spell.
 
 LEC2A:  JSR UpdateRandNum       ;($C55B)Get random number.
-LEC2D:  LDA RandNumUB           ;
+LEC2D:  LDA RandomNumberUB           ;
 LEC2F:  AND #$07                ;Keep 3 bits of random number(0-7).
 LEC31:  CLC                     ;
 LEC32:  ADC #$03                ;Hurt spel will do between 7 and 10 damage.
@@ -7860,7 +7860,7 @@ LEC57:  STA SpellToCast         ;
 LEC59:  JSR EnCastSpell         ;($EBEE)Enemy casts a spell.
 
 LEC5C:  JSR UpdateRandNum       ;($C55B)Get random number.
-LEC5F:  LDA RandNumUB           ;Get random number and keep lower 4 bits.
+LEC5F:  LDA RandomNumberUB           ;Get random number and keep lower 4 bits.
 LEC61:  AND #$0F                ;
 LEC63:  CLC                     ;Add 30.
 LEC64:  ADC #$1E                ;Enemy damages for 30HP min and 45HP max(base damage).
@@ -7877,7 +7877,7 @@ LEC74:  CMP #AR_ERDK_ARMR       ;
 LEC76:  BEQ BlockStopSpell      ;Branch to block.
 
 LEC78:  JSR UpdateRandNum       ;($C55B)Get random number.
-LEC7B:  LDA RandNumUB           ;50% chance it will stopspell the player.
+LEC7B:  LDA RandomNumberUB           ;50% chance it will stopspell the player.
 LEC7D:  LSR                     ;
 LEC7E:  BCC BlockStopSpell      ;Branch if stopspell was blocked.
 
@@ -7914,7 +7914,7 @@ LECA8:  STA SpellToCast         ;
 LECAA:  JSR EnCastSpell         ;($EBEE)Enemy casts a spell.
 
 LECAD:  JSR UpdateRandNum       ;($C55B)Get random number.
-LECB0:  LDA RandNumUB           ;Get random number and keep lower 3 bits.
+LECB0:  LDA RandomNumberUB           ;Get random number and keep lower 3 bits.
 LECB2:  AND #$07                ;
 LECB4:  CLC                     ;Add 20.
 LECB5:  ADC #$14                ;Enemy recovers 20HP min and 27HP max.
@@ -7941,7 +7941,7 @@ LECD0:  STA SpellToCast         ;
 LECD2:  JSR EnCastSpell         ;($EBEE)Enemy casts a spell.
 
 LECD5:  JSR UpdateRandNum       ;($C55B)Get random number.
-LECD8:  LDA RandNumUB           ;Get random number and keep lower 4 bits.
+LECD8:  LDA RandomNumberUB           ;Get random number and keep lower 4 bits.
 LECDA:  AND #$0F                ;
 LECDC:  CLC                     ;Add 85.
 LECDD:  ADC #$55                ;Enemy recovers 85HP min and 100HP max.
@@ -7949,7 +7949,7 @@ LECDF:  BNE EnemyAddHP          ;Branch always.
 
 EnCastFire2:
 LECE1:  JSR UpdateRandNum       ;($C55B)Get random number.
-LECE4:  LDA RandNumUB           ;Keep 3 bits(0-7).
+LECE4:  LDA RandomNumberUB           ;Keep 3 bits(0-7).
 LECE6:  AND #$07                ;
 LECE8:  CLC                     ;
 LECE9:  ADC #$41                ;Fire2 damage ranges from 65 to 72.
@@ -7957,7 +7957,7 @@ LECEB:  BNE CalcPlyrDmg         ;
 
 EnCastFire1:
 LECED:  JSR UpdateRandNum       ;($C55B)Get random number.
-LECF0:  LDA RandNumUB           ;Keep 3 bits(0-7).
+LECF0:  LDA RandomNumberUB           ;Keep 3 bits(0-7).
 LECF2:  AND #$07                ;
 LECF4:  ORA #$10                ;Fire1 damage ranges from 16 to 23.
 
@@ -8174,9 +8174,9 @@ RedFlashScreen:
 LEE14:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LEE17:  LDA RedFlashPalPtr      ;
-LEE1A:  STA PalPtrLB            ;Set palette pointer to the red flash palette.
+LEE1A:  STA PalettePointerLB            ;Set palette pointer to the red flash palette.
 LEE1C:  LDA RedFlashPalPtr+1    ;
-LEE1F:  STA PalPtrUB            ;
+LEE1F:  STA PalettePointerUB            ;
 
 LEE21:  LDA #$00                ;No palette modification.
 LEE23:  STA PalModByte          ;
@@ -8192,9 +8192,9 @@ LEE2D:  CMP #EN_DRAGONLORD2     ;
 LEE2F:  BNE LoadRegularMapPal       ;If not, branch.
 
 LEE31:  LDA FnlNormBGPalPtr     ;
-LEE34:  STA PalPtrLB            ;Load regular background palette for end boss.
+LEE34:  STA PalettePointerLB            ;Load regular background palette for end boss.
 LEE36:  LDA FnlNormBGPalPtr+1   ;
-LEE39:  STA PalPtrUB            ;
+LEE39:  STA PalettePointerUB            ;
 
 LEE3B:  JMP FinishRegularPalLoad    ;Jump to finish loading palette.
 
@@ -8203,10 +8203,10 @@ LEE3E:  LDA OverworldPalPtr     ;
 LEE41:  CLC                     ;Get index to proper palette for the current map.
 LEE42:  ADC MapType             ;
 
-LEE44:  STA PalPtrLB            ;
+LEE44:  STA PalettePointerLB            ;
 LEE46:  LDA OverworldPalPtr+1   ;Load regular background palette for current map.
 LEE49:  ADC #$00                ;
-LEE4B:  STA PalPtrUB            ;
+LEE4B:  STA PalettePointerUB            ;
 
 FinishRegularPalLoad:
 LEE4D:  LDA #$00                ;No palette modification.
@@ -8223,9 +8223,9 @@ ExitFight2:
 LEE5A:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LEE5D:  LDA RegSPPalPtr         ;
-LEE60:  STA PalPtrLB            ;Load standard palette while on map.
+LEE60:  STA PalettePointerLB            ;Load standard palette while on map.
 LEE62:  LDA RegSPPalPtr+1       ;
-LEE65:  STA PalPtrUB            ;
+LEE65:  STA PalettePointerUB            ;
 
 LEE67:  LDA #$00                ;Disable fade-in/fade-out.
 LEE69:  STA PalModByte          ;
@@ -8260,14 +8260,14 @@ LEE94:  LDA EnNumber            ;Is player running from an Armored Knight, Red D
 LEE96:  CMP #EN_STONEMAN        ;Dragonlord 1 or Dragonlord 2?
 LEE98:  BCC ChkGrDrgnRun        ;If not, branch.
 
-LEE9A:  LDA RandNumUB           ;Load a random number and keep all the bits(0-255).
+LEE9A:  LDA RandomNumberUB           ;Load a random number and keep all the bits(0-255).
 LEE9C:  JMP CalcNextOdds        ;
 
 ChkGrDrgnRun:
 LEE9F:  CMP #EN_GDRAGON         ;Is player running from a Starwyvern, Wizard, Axe Knight,
 LEEA1:  BCC ChkDrollMRun        ;Blue Dragon or Stoneman? If not, branch.
 
-LEEA3:  LDA RandNumUB           ;
+LEEA3:  LDA RandomNumberUB           ;
 LEEA5:  AND #$7F                ;Load a random number and keep lower 7 bits(0-127).
 LEEA7:  JMP CalcNextOdds        ;
 
@@ -8275,12 +8275,12 @@ ChkDrollMRun:
 LEEAA:  CMP #EN_DROLLMAGI       ;Is player running from a Wyvern to a Green Dragon?
 LEEAC:  BCC CalcWhoIsNext       ;If not, branch.
 
-LEEAE:  LDA RandNumUB           ;Get a random nuber and keep lower 6 bits.
+LEEAE:  LDA RandomNumberUB           ;Get a random nuber and keep lower 6 bits.
 LEEB0:  AND #$3F                ;
 LEEB2:  STA MultNum2LB          ;
 LEEB4:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LEEB7:  LDA RandNumUB           ;Get a random number and keep lower 5 bits. Add it to
+LEEB7:  LDA RandomNumberUB           ;Get a random number and keep lower 5 bits. Add it to
 LEEB9:  AND #$1F                ;previous number to get a range of 0-95.
 LEEBB:  ADC MultNum2LB          ;
 LEEBD:  JMP CalcNextOdds        ;
@@ -8289,7 +8289,7 @@ LEEBD:  JMP CalcNextOdds        ;
 
 CalcWhoIsNext:
 LEEC0:  JSR UpdateRandNum       ;($C55B)Get random number.
-LEEC3:  LDA RandNumUB           ;
+LEEC3:  LDA RandomNumberUB           ;
 LEEC5:  AND #$3F                ;Keep only lower 6 bits(0-63).
 
 CalcNextOdds:
@@ -8308,7 +8308,7 @@ LEEDD:  STA GenWord42UB         ;
 
 LEEDF:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LEEE2:  LDA RandNumUB           ;Store random number as a multiplier.
+LEEE2:  LDA RandomNumberUB           ;Store random number as a multiplier.
 LEEE4:  STA MultNum1LB          ;
 LEEE6:  LDA DisplayedAgility        ;
 LEEE8:  STA MultNum2LB          ;Multiply the random number by the player's agility.
@@ -8360,11 +8360,11 @@ LEF29:  PLA                     ;Restore Y from the stack.
 LEF2A:  TAY                     ;
 
 LEF2B:  LDA #$03                ;
-LEF2D:  STA SprtPalPtrUB        ;
-LEF2F:  STA PalPtrUB            ;
+LEF2D:  STA SpritePalettePointerUB        ;
+LEF2F:  STA PalettePointerUB            ;
 LEF31:  LDA #$A0                ;Set copy pointers to buffered data.
-LEF33:  STA SprtPalPtrLB        ;
-LEF35:  STA PalPtrLB            ;
+LEF33:  STA SpritePalettePointerLB        ;
+LEF35:  STA PalettePointerLB            ;
 LEF37:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -8375,9 +8375,9 @@ LEF3A:  STA PaletteFlashCounter        ;
 
 PalFlashLoop:
 LEF3C:  LDA GenPtr42LB          ;
-LEF3E:  STA PalPtrLB            ;Copy red flash palette pointer to the working palette pointer.
+LEF3E:  STA PalettePointerLB            ;Copy red flash palette pointer to the working palette pointer.
 LEF40:  LDA GenPtr42UB          ;
-LEF42:  STA PalPtrUB            ;
+LEF42:  STA PalettePointerUB            ;
 
 LEF44:  JSR WaitForNMI          ;($FF74)
 LEF47:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
@@ -8393,9 +8393,9 @@ LEF56:  CMP #EN_DRAGONLORD2     ;
 LEF58:  BNE +                   ;If not, branch.
 
 LEF5A:  LDA FnlRedBGPalPtr      ;
-LEF5D:  STA PalPtrLB            ;Red flash the background palette for the end boss.
+LEF5D:  STA PalettePointerLB            ;Red flash the background palette for the end boss.
 LEF5F:  LDA FnlRedBGPalPtr+1    ;
-LEF62:  STA PalPtrUB            ;
+LEF62:  STA PalettePointerUB            ;
 
 LEF64:  JSR PrepBGPalLoad       ;($C63D)Load background palette data into PPU buffer
 
@@ -8424,9 +8424,9 @@ LEF85:  CMP #EN_DRAGONLORD2     ;
 LEF87:  BNE +                   ;If not, branch.
 
 LEF89:  LDA FnlNormBGPalPtr     ;
-LEF8C:  STA PalPtrLB            ;Restore the normal background palette for the end boss.
+LEF8C:  STA PalettePointerLB            ;Restore the normal background palette for the end boss.
 LEF8E:  LDA FnlNormBGPalPtr+1   ;
-LEF91:  STA PalPtrUB            ;
+LEF91:  STA PalettePointerUB            ;
 
 LEF93:  JSR PrepBGPalLoad       ;($C63D)Load background palette data into PPU buffer
 
@@ -8459,7 +8459,7 @@ LEFBA:  CMP EnBaseAtt           ;
 LEFBD:  BCC EnRunExit           ;If not, branch. Enemy will not run.
 
 LEFBF:  JSR UpdateRandNum       ;($C55B)Get random number.
-LEFC2:  LDA RandNumUB           ;
+LEFC2:  LDA RandomNumberUB           ;
 LEFC4:  AND #$03                ;Player is very strong. 25% chance enemy will run.
 LEFC6:  BNE EnRunExit           ;
 
@@ -8515,7 +8515,7 @@ LF006:  BCS NormalAttack        ;If so, branch to do normal attack damage.
 
 EnWeakAttack:
 LF008:* JSR UpdateRandNum       ;($C55B)Get random number.
-LF00B:  LDA RandNumUB           ;
+LF00B:  LDA RandomNumberUB           ;
 LF00D:  STA MultNum1LB          ;
 LF00F:  LDA #$00                ;A = A * rnd(255).
 LF011:  STA MultNum1UB          ;
@@ -8533,7 +8533,7 @@ LF023:  JMP ByteDivide          ;($C1F0)Divide a 16-bit number by an 8-bit numbe
 PlayerWeakAttack:
 LF026:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LF029:  LDA RandNumUB           ;
+LF029:  LDA RandomNumberUB           ;
 LF02B:  AND #$01                ;Player is too weak to fight this enemy. 50% chance
 LF02D:  STA CalcDamage          ;of doing 1 point of damage or 50% chance of missing.
 LF02F:  RTS                     ;
@@ -8544,7 +8544,7 @@ LF032:  STA MultNum2LB          ;A = A+1.
 LF034:  INC MultNum2LB          ;
 LF036:  JSR UpdateRandNum       ;($C55B)Get random number.
 
-LF039:  LDA RandNumUB           ;
+LF039:  LDA RandomNumberUB           ;
 LF03B:  STA MultNum1LB          ;
 LF03D:  LDA #$00                ;A = rand(0-255) * A.
 LF03F:  STA MultNum1UB          ;
@@ -8591,10 +8591,10 @@ LF073:  ADC LevelDataPointer         ;Final table pointer = 2*(level-1)+4*(level
 LF075:  STA LevelDataPointer         ;6 bytes per table entry.
 
 LF077:  LDA #$FF                ;Indicate not in VBlank.
-LF079:  STA NMIStatus           ;
+LF079:  STA NMIStatusus           ;
 
 LF07B:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-LF07E:  LDA NMIStatus           ;
+LF07E:  LDA NMIStatusus           ;
 LF080:  BNE -                   ;Wait for VBlank to end before continuing.
 
 LF082:  BRK                     ;Get player's base stats for their level.
@@ -10540,11 +10540,11 @@ LFD86:  CLD                     ;Put processor in binary mode.
 LFD87:  LDA #%00010000          ;Turn off VBlank interrupt, BG pattern table 1.
 LFD89:  STA PPUControl0         ;
 
-LFD8C:* LDA PPUStatus           ;
+LFD8C:* LDA PPUStatusus           ;
 LFD8F:  BMI -                   ;Loop until not in VBlank. Clears the address latch.
-LFD91:* LDA PPUStatus           ;
+LFD91:* LDA PPUStatusus           ;
 LFD94:  BPL -                   ;Wait until VBlank starts.
-LFD96:* LDA PPUStatus           ;
+LFD96:* LDA PPUStatusus           ;
 LFD99:  BMI -                   ;In VBlank.  Bit should be clear on second read.
 
 LFD9B:  LDA #%00000000          ;Turn off the display.
@@ -10575,7 +10575,7 @@ LFDC8:  STA ActiveNT0           ;Prepare to load the nametables.
 LFDCB:  STA ActiveNT1           ;
 LFDCE:  JSR DoMMC1              ;($FDF4)Program the MMC1 chip.
 
-LFDD1:  LDA PPUStatus           ;Clear PPU address latch.
+LFDD1:  LDA PPUStatusus           ;Clear PPU address latch.
 LFDD4:  LDA #$10                ;
 LFDD6:  STA PPUAddress          ;
 LFDD9:  LDA #$00                ;Set PPU address to start of pattern table 1.
@@ -10689,7 +10689,7 @@ LFE7B:  CMP #<WaitForNMI+9      ;Do less processing if not VBlank ready.
 LFE7D:  BCS NotVBlankReady      ;
 
 ProcessVBlank:
-LFE7F:  LDA PPUStatus           ;No effect.
+LFE7F:  LDA PPUStatusus           ;No effect.
 LFE82:  INC FrameCounter        ;Increment frame counter.
 
 LFE84:  LDA PPUEntCount         ;Are there PPU entries waiting to be loaded into the PPU?
@@ -10723,7 +10723,7 @@ LFEB1:  LDA #$3F                ;Prepare to write to the PPU palettes.
 LFEB3:  STA PPUAddress          ;
 
 LFEB6:  LDA #$00                ;
-LFEB8:  STA NMIStatus           ;
+LFEB8:  STA NMIStatusus           ;
 LFEBA:  STA PPUEntCount         ;Clear status variables.
 LFEBC:  STA PPUBufCount         ;
 LFEBE:  STA UpdateBGTiles       ;
@@ -10746,7 +10746,7 @@ LFEDD:  STA PPUScroll           ;
 
 DoFrameUpdates:
 LFEE0:  JSR DoMMC1              ;($FDF4)Program the MMC1 chip.
-LFEE3:  LDA SndEngineStat       ;Is sound engine busy?
+LFEE3:  LDA SoundEngineStatus       ;Is sound engine busy?
 LFEE6:  BNE DoFrameUpdates2     ;If so, branch to skip updating sounds.
 
 LFEE8:  LDA #PRG_BANK_1         ;Prepare to access sound engine.
@@ -10838,8 +10838,8 @@ LFF64:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $
 
 WaitForNMI:
 LFF74:  LDA #$01                ;
-LFF76:  STA NMIStatus           ;
-LFF78:* LDA NMIStatus           ;Loop until NMI has completed.
+LFF76:  STA NMIStatusus           ;
+LFF78:* LDA NMIStatusus           ;Loop until NMI has completed.
 LFF7A:  BNE -                   ;
 LFF7C:  RTS                     ;
 

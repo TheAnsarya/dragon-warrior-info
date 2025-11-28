@@ -3195,17 +3195,17 @@ LA74A:  LDA #PAL_LOAD_BG        ;Indicate background palette should be loaded.
 LA74C:  STA LoadBGPal           ;
 
 LA74E:  LDA RegSPPalPtr         ;
-LA751:  STA SprtPalPtrLB        ;Set pointer for sprite palettes.
+LA751:  STA SpritePalettePointerLB        ;Set pointer for sprite palettes.
 LA753:  LDA RegSPPalPtr+1       ;
-LA756:  STA SprtPalPtrUB        ;
+LA756:  STA SpritePalettePointerUB        ;
 
 LA758:  LDA OverworldPalPtr     ;
 LA75B:  CLC                     ;
 LA75C:  ADC MapType             ;
-LA75E:  STA BGPalPtrLB          ;Calculate background palette pointer based on map type.
+LA75E:  STA BackgroundPalettePointerLB          ;Calculate background palette pointer based on map type.
 LA760:  LDA OverworldPalPtr+1   ;
 LA763:  ADC #$00                ;
-LA765:  STA BGPalPtrUB          ;
+LA765:  STA BackgroundPalettePointerUB          ;
 
 LA767:  JSR PalFadeOut          ;($C212)Fade out both background and sprite palettes.
 LA76A:  JMP ClearWindowBufferRAM2     ;($A788)Clear RAM buffer used for drawing text windows.
@@ -3215,14 +3215,14 @@ LA76D:  LDA #PAL_LOAD_BG        ;Indicate background palette should be loaded.
 LA76F:  STA LoadBGPal           ;
 
 LA771:  LDA EndBossPal1Ptr      ;
-LA774:  STA BGPalPtrLB          ;Set pointer for background palettes.
+LA774:  STA BackgroundPalettePointerLB          ;Set pointer for background palettes.
 LA776:  LDA EndBossPal1Ptr+1    ;
-LA779:  STA BGPalPtrUB          ;
+LA779:  STA BackgroundPalettePointerUB          ;
 
 LA77B:  LDA EndBossPal2Ptr      ;
-LA77E:  STA SprtPalPtrLB        ;Set pointer for sprite palettes.
+LA77E:  STA SpritePalettePointerLB        ;Set pointer for sprite palettes.
 LA780:  LDA EndBossPal2Ptr+1    ;
-LA783:  STA SprtPalPtrUB        ;
+LA783:  STA SpritePalettePointerUB        ;
 
 LA785:  JSR PalFadeOut          ;($C212)Fade out both background and sprite palettes.
 
@@ -3665,12 +3665,12 @@ LA9CB:  BNE CalcBlockIndex      ;Branch always.
 
 ChkCoveredArea:
 LA9CD:  JSR HasCoverData        ;($AAE1)Check if current map has covered areas.
-LA9D0:  LDA CoverStatus         ;
+LA9D0:  LDA CoverStatusus         ;
 LA9D2:  EOR CoveredStsNext      ;Did player just enter/exit covered area?
 LA9D4:  AND #$08                ;
 LA9D6:  BEQ CalcBlockIndex      ;If not, beanch to move on.
 
-LA9D8:  LDA CoverStatus         ;Did the player just enter cover?
+LA9D8:  LDA CoverStatusus         ;Did the player just enter cover?
 LA9DA:  BNE +                   ;If so, branch.
 
 LA9DC:  LDA #BLK_SML_TILES      ;Area under cover will be replaced with small tile blocks.
@@ -3751,14 +3751,14 @@ LAA46:  JMP PalFadeOut          ;($C212)Fade out both background and sprite pale
 
 LoadFadePals:
 LAA49:  LDA BlackPalPtr         ;
-LAA4C:  STA SprtPalPtrLB        ;Set pointer for sprite palettes.
+LAA4C:  STA SpritePalettePointerLB        ;Set pointer for sprite palettes.
 LAA4E:  LDA BlackPalPtr+1       ;
-LAA51:  STA SprtPalPtrUB        ;
+LAA51:  STA SpritePalettePointerUB        ;
 
 LAA53:  LDA FadePalPtr          ;
-LAA56:  STA BGPalPtrLB          ;Set pointer for background palettes.
+LAA56:  STA BackgroundPalettePointerLB          ;Set pointer for background palettes.
 LAA58:  LDA FadePalPtr+1        ;
-LAA5B:  STA BGPalPtrUB          ;
+LAA5B:  STA BackgroundPalettePointerUB          ;
 
 LAA5D:  LDA #PAL_LOAD_BG        ;
 LAA5F:  STA LoadBGPal           ;Indicate background palette should be loaded.
@@ -3769,28 +3769,28 @@ LAA62:  LDA #PAL_LOAD_BG        ;Indicate background palette should be loaded.
 LAA64:  STA LoadBGPal           ;
 
 LAA66:  LDA RegSPPalPtr         ;
-LAA69:  STA SprtPalPtrLB        ;Set pointer for sprite palettes.
+LAA69:  STA SpritePalettePointerLB        ;Set pointer for sprite palettes.
 LAA6B:  LDA RegSPPalPtr+1       ;
-LAA6E:  STA SprtPalPtrUB        ;
+LAA6E:  STA SpritePalettePointerUB        ;
 
 LAA70:  LDA TownPalPtr          ;
-LAA73:  STA BGPalPtrLB          ;Set pointer for background palettes.
+LAA73:  STA BackgroundPalettePointerLB          ;Set pointer for background palettes.
 LAA75:  LDA TownPalPtr+1        ;
-LAA78:  STA BGPalPtrUB          ;
+LAA78:  STA BackgroundPalettePointerUB          ;
 
 LAA7A:  JSR PalFadeOut          ;($C212)Fade out both background and sprite palettes.
 LAA7D:  RTS                     ;
 
 LoadStartPals:
 LAA7E:  LDA RegSPPalPtr         ;
-LAA81:  STA SprtPalPtrLB        ;Set pointer for sprite palettes.
+LAA81:  STA SpritePalettePointerLB        ;Set pointer for sprite palettes.
 LAA83:  LDA RegSPPalPtr+1       ;
-LAA86:  STA SprtPalPtrUB        ;
+LAA86:  STA SpritePalettePointerUB        ;
 
 LAA88:  LDA PreGamePalPtr       ;
-LAA8B:  STA BGPalPtrLB          ;Set pointer for background palettes.
+LAA8B:  STA BackgroundPalettePointerLB          ;Set pointer for background palettes.
 LAA8D:  LDA PreGamePalPtr+1     ;
-LAA90:  STA BGPalPtrUB          ;
+LAA90:  STA BackgroundPalettePointerUB          ;
 
 LAA92:  LDA #PAL_LOAD_BG        ;Indicate background palette should be loaded.
 LAA94:  STA LoadBGPal           ;
@@ -3798,9 +3798,9 @@ LAA96:  JMP PalFadeIn           ;($C529)Fade in both background and sprite palet
 
 LoadIntroPals:
 LAA99:  LDA BlackPalPtr         ;
-LAA9C:  STA PalPtrLB            ;Get pointer to palette data.
+LAA9C:  STA PalettePointerLB            ;Get pointer to palette data.
 LAA9E:  LDA BlackPalPtr+1       ;
-LAAA1:  STA PalPtrUB
+LAAA1:  STA PalettePointerUB
 
 LAAA3:  LDA #$00                ;Indicate no fade in/fade out.
 LAAA5:  STA PalModByte          ;
@@ -3809,9 +3809,9 @@ LAAA7:  JSR PrepBGPalLoad       ;($C63D)Load background palette data into PPU bu
 LAAAA:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LAAAD:  LDA BlackPalPtr         ;
-LAAB0:  STA PalPtrLB            ;Get pointer to palette data.
+LAAB0:  STA PalettePointerLB            ;Get pointer to palette data.
 LAAB2:  LDA BlackPalPtr+1       ;
-LAAB5:  STA PalPtrUB            ;
+LAAB5:  STA PalettePointerUB            ;
 
 LAAB7:  LDA #$00                ;Indicate no fade in/fade out.
 LAAB9:  STA PalModByte          ;
@@ -4514,12 +4514,12 @@ LAE10:  BNE CalcBlockIndex2      ;Branch always.
 
 ChkCoveredArea2:
 LAE12:  JSR HasCoverData        ;($AAE1)Check if current map has covered areas.
-LAE15:  LDA CoverStatus         ;
+LAE15:  LDA CoverStatusus         ;
 LAE17:  EOR CoveredStsNext      ;Did player just enter/exit covered area?
 LAE19:  AND #$08                ;
 LAE1B:  BEQ CalcBlockIndex2     ;If not, branch.
 
-LAE1D:  LDA CoverStatus         ;Did player just enter cover?
+LAE1D:  LDA CoverStatusus         ;Did player just enter cover?
 LAE1F:  BNE ModUnderCover       ;If so branch to load blank tiles.
 
 LAE21:  LDA #BLK_SML_TILES      ;Player just left covered area.
@@ -4696,7 +4696,7 @@ LAF07:  JSR GetBlockID          ;($AC17)Get description of block.
 
 LAF0A:  JSR HasCoverData        ;($AAE1)Check if current map has covered areas.
 LAF0D:  LDA CoveredStsNext      ;
-LAF0F:  STA CoverStatus         ;Set variables to indicate no transition in/out of covered area.
+LAF0F:  STA CoverStatusus         ;Set variables to indicate no transition in/out of covered area.
 LAF11:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -5084,9 +5084,9 @@ LB113:  BRK                     ;
 LB114:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 
 LB116:  LDA RegSPPalPtr         ;
-LB119:  STA SprtPalPtrLB        ;Set pointer for sprite palettes.
+LB119:  STA SpritePalettePointerLB        ;Set pointer for sprite palettes.
 LB11B:  LDA RegSPPalPtr+1       ;
-LB11E:  STA SprtPalPtrUB        ;
+LB11E:  STA SpritePalettePointerUB        ;
 
 LB120:  LDA #$FF                ;Indicate player has not just moved in//out of cover.
 LB122:  STA CoveredStsNext      ;
@@ -5094,10 +5094,10 @@ LB122:  STA CoveredStsNext      ;
 LB124:  LDA OverworldPalPtr     ;
 LB127:  CLC                     ;
 LB128:  ADC MapType             ;
-LB12A:  STA BGPalPtrLB          ;Get proper background palette for current map type.
+LB12A:  STA BackgroundPalettePointerLB          ;Get proper background palette for current map type.
 LB12C:  LDA OverworldPalPtr+1   ;
 LB12F:  ADC #$00                ;
-LB131:  STA BGPalPtrUB          ;
+LB131:  STA BackgroundPalettePointerUB          ;
 
 LB133:  JSR PalFadeIn           ;($C529)Fade in both background and sprite palettes.
 
@@ -6006,13 +6006,13 @@ LB600:  STA _TargetY            ;
 LB602:  JSR CheckCoveredArea    ;($AABE)Check if player is in a covered map area.
 
 LB605:  LDA CoveredStsNext      ;Did the player just enter/exit a covered area?
-LB607:  CMP CoverStatus         ;
+LB607:  CMP CoverStatusus         ;
 LB609:  BNE ToggleCoveredArea   ;If so, branch to toggle going in/out of cover.
 LB60B:  RTS                     ;
 
 ToggleCoveredArea:
-LB60C:  STA CoverStatus         ;Update current cover status.
-LB60E:  LDA CoverStatus         ;Is player moving into covered area?
+LB60C:  STA CoverStatusus         ;Update current cover status.
+LB60E:  LDA CoverStatusus         ;Is player moving into covered area?
 LB610:  BEQ PrepToggleCover     ;If not, branch to skip hiding player.
 LB612:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -6320,7 +6320,7 @@ LB7A4:  LDA NPCYPos,X           ;
 LB7A6:  AND #$9F                ;Set NPC direction facing up.
 LB7A8:  STA NPCYPos,X           ;
 
-LB7AA:  LDA RandNumUB           ;
+LB7AA:  LDA RandomNumberUB           ;
 LB7AC:  AND #$60                ;Randomly set direction of NPC.
 LB7AE:  ORA NPCYPos,X           ;
 LB7B0:  STA NPCYPos,X           ;
@@ -6611,7 +6611,7 @@ LB955:  STA GenByte3E           ;
 
 LB957:  JSR CheckCoveredArea    ;($AABE)Check if player is in a covered map area.
 LB95A:  LDA CoveredStsNext      ;
-LB95C:  CMP CoverStatus         ;Did player just transition in/out of cover?
+LB95C:  CMP CoverStatusus         ;Did player just transition in/out of cover?
 LB95E:  BEQ +                   ;If not, branch.
 
 LB960:  JMP NextNPCSprites      ;($B9DF)Increment to next NPC.
@@ -6645,7 +6645,7 @@ LB985:  ADC #$00                ;
 LB987:  BNE NextNPCSprite       ;If so, branch to check next NPC sprite.
 
 LB989:  TYA                     ;Before:
-LB98A:  STX NPCOffset           ;X-CharSpriteTbl, Y-Index into sprite(OAM) RAM.
+LB98A:  STX NPCOffsetset           ;X-CharSpriteTbl, Y-Index into sprite(OAM) RAM.
 LB98C:  TAX                     ;After:
 LB98D:  LDY NPCROMIndex         ;X-Index into sprite(OAM) RAM, Y-Index into NPC data from ROM.
 
@@ -6659,7 +6659,7 @@ LB997:  ROL                     ;
 
 LB998:  JSR SprtFacingBaseAddr  ;($B6C2)Calculate entry into char data table based on direction.
 
-LB99B:  LDY NPCOffset           ;
+LB99B:  LDY NPCOffsetset           ;
 
 LB99D:  LDA ThisNPCXPos         ;Save updated X position of NPC sprite.
 LB99F:  STA SpriteRAM+3,X       ;
@@ -6900,14 +6900,14 @@ LBABF:  STA LoadBGPal           ;
 LBAC1:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
 LBAC4:  LDA TownPalPtr          ;
-LBAC7:  STA BGPalPtrLB          ;Get background palette pointer.
+LBAC7:  STA BackgroundPalettePointerLB          ;Get background palette pointer.
 LBAC9:  LDA TownPalPtr+1        ;
-LBACC:  STA BGPalPtrUB          ;
+LBACC:  STA BackgroundPalettePointerUB          ;
 
 LBACE:  LDA BlackPalPtr         ;
-LBAD1:  STA SprtPalPtrLB        ;Get sprite palette pointer.
+LBAD1:  STA SpritePalettePointerLB        ;Get sprite palette pointer.
 LBAD3:  LDA BlackPalPtr+1       ;
-LBAD6:  STA SprtPalPtrUB        ;
+LBAD6:  STA SpritePalettePointerUB        ;
 
 LBAD8:  JSR PalFadeOut          ;($C212)Fade out both background and sprite palettes.
 
@@ -7000,14 +7000,14 @@ LBB5D:  LDA #%00011000          ;
 LBB5F:  STA PPUControl1         ;Turn on sprites and background.
 
 LBB62:  LDA EndBossPal2Ptr      ;
-LBB65:  STA SprtPalPtrLB        ;Get sprite palette pointer for end boss.
+LBB65:  STA SpritePalettePointerLB        ;Get sprite palette pointer for end boss.
 LBB67:  LDA EndBossPal2Ptr+1    ;
-LBB6A:  STA SprtPalPtrUB        ;
+LBB6A:  STA SpritePalettePointerUB        ;
 
 LBB6C:  LDA EndBossPal1Ptr      ;
-LBB6F:  STA BGPalPtrLB          ;Get background palette pointer for end boss.
+LBB6F:  STA BackgroundPalettePointerLB          ;Get background palette pointer for end boss.
 LBB71:  LDA EndBossPal1Ptr+1    ;
-LBB74:  STA BGPalPtrUB          ;
+LBB74:  STA BackgroundPalettePointerUB          ;
 
 LBB76:  LDA #$00                ;
 LBB78:  STA ScrollX             ;Zero out the scroll registers.

@@ -83,7 +83,7 @@
 
 .alias TreasureGoldLB       $00     ;Lower byte of gold received from treasure chest.
 .alias TreasureGoldUB       $01     ;Upper byte of gold received from treasure chest.
-.alias NMIStatus        $02     ;#$00 = in NMI(VBlank).
+.alias NMIStatusus        $02     ;#$00 = in NMI(VBlank).
 .alias PPUEntCount      $03     ;Number of entries load from PPU buffer to PPU.
 .alias PPUBufCount      $04     ;Number of bytes to load from PPU buffer to PPU.
 .alias ScrollX          $05     ;PPU scroll x position.
@@ -116,7 +116,7 @@
 .alias CoverDataPointer      $17     ;Pointer to map covered area data.
 .alias CoverDataLB       $17     ;Pointer to map covered area data, lower byte.
 .alias CoverDataUB       $18     ;Pointer to map covered area data, upper byte.
-.alias CoverStatus      $19     ;#$00=Not covered, #$08=Under cover.
+.alias CoverStatusus      $19     ;#$00=Not covered, #$08=Under cover.
 
 .alias ThisTempIndex    $1A     ;Working index into temp buffer.
 .alias DescEntry        $1A     ;Entry number for item description.
@@ -128,8 +128,8 @@
 .alias _ColsRemaining   $1B     ;When doing window calculations, cols remaining in current row.
 .alias ColsRemaining    $1C     ;When displaying dialog, remaining chars in row.
 
-.alias TxtRowNumber        $1A     ;Target row in dialog window.
-.alias TxtRowStart      $1B     ;Offset into target row(column).
+.alias TextRowNumber        $1A     ;Target row in dialog window.
+.alias TextRowStart      $1B     ;Offset into target row(column).
 
 .alias PPURowBytesLB    $1B     ;Stores lower number of bytes un a PPU row(32).
 .alias PPURowBytesUB    $1C     ;Stores upper number of bytes un a PPU row(0).
@@ -596,7 +596,7 @@
 
 .alias PPUControl0      $2000   ;
 .alias PPUControl1      $2001   ;
-.alias PPUStatus        $2002   ;
+.alias PPUStatusus        $2002   ;
 .alias SPRAddress       $2003   ;PPU hardware control registers.
 .alias SPRIOReg         $2004   ;
 .alias PPUScroll        $2005   ;

@@ -348,7 +348,7 @@ L819F:  RTS                     ;
 
 InitMusicSFX:
 L81A0:  LDX #$FF                ;Indicate the sound engine is active.
-L81A2:  STX SndEngineStat       ;
+L81A2:  STX SoundEngineStatus       ;
 L81A5:  TAX                     ;
 L81A6:  BMI DoSFX               ;If MSB set, branch to process SFX.
 
@@ -389,7 +389,7 @@ L81D6:  STA NoteOffset          ;
 L81D8:  STA SQ1Quiet            ;
 L81DA:  STA SQ2Quiet            ;Clear various status variables.
 L81DC:  STA TRIQuiet            ;
-L81DE:  STA SndEngineStat       ;
+L81DE:  STA SoundEngineStatus       ;
 L81E1:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -414,7 +414,7 @@ L81F9:  STA SQ2Cntrl0           ;volume for SQ2 and noise channels.
 L81FC:  STA NoiseControl0         ;
 
 L81FF:  LDA #$00                ;
-L8201:  STA SndEngineStat       ;Indicate sound engine finished.
+L8201:  STA SoundEngineStatus       ;Indicate sound engine finished.
 L8204:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -5692,26 +5692,26 @@ LA6E8:  .byte DisplayedDefense, DisplayedMaxHP, DisplayedMaxMP
 ;----------------------------------------------------------------------------------------------------
 
 IndexedMult:
-LA6EB:  STA IndMultByte         ;
+LA6EB:  STA IndexedMultiplyByte         ;
 LA6EE:  LDA #$00                ;
-LA6F0:  STA IndMultNum1         ;
-LA6F3:  STA IndMultNum2         ;
-LA6F6:* LSR IndMultByte         ;
+LA6F0:  STA IndexedMultiplyNum1         ;
+LA6F3:  STA IndexedMultiplyNum2         ;
+LA6F6:* LSR IndexedMultiplyByte         ;
 LA6F9:  BCC +                   ;The indexed register contains the multiplication word.
 LA6FB:  LDA GenPtr00LB,X        ;The accumulator contains the multiplication byte.
 LA6FD:  CLC                     ;
-LA6FE:  ADC IndMultNum1         ;
-LA701:  STA IndMultNum1         ;
+LA6FE:  ADC IndexedMultiplyNum1         ;
+LA701:  STA IndexedMultiplyNum1         ;
 LA704:  LDA GenPtr00UB,X        ;This function takes 2 bytes and multiplies them together.
-LA706:  ADC IndMultNum2         ;The 16-bit result is stored in the registers indexed by X.
-LA709:  STA IndMultNum2         ;
+LA706:  ADC IndexedMultiplyNum2         ;The 16-bit result is stored in the registers indexed by X.
+LA709:  STA IndexedMultiplyNum2         ;
 LA70C:* ASL GenPtr00LB,X        ;
 LA70E:  ROL GenPtr00UB,X        ;
-LA710:  LDA IndMultByte         ;
+LA710:  LDA IndexedMultiplyByte         ;
 LA713:  BNE --                  ;
-LA715:  LDA IndMultNum1         ;
+LA715:  LDA IndexedMultiplyNum1         ;
 LA718:  STA GenPtr00LB,X        ;
-LA71A:  LDA IndMultNum2         ;
+LA71A:  LDA IndexedMultiplyNum2         ;
 LA71D:  STA GenPtr00UB,X        ;
 LA71F:  RTS                     ;
 
@@ -9202,15 +9202,15 @@ LBAA5:* RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 CalcWndYByteNum:
-LBAA6:  STA TxtRowNum           ;Store row number in lower byte of multiplicand word.
+LBAA6:  STA TextRowNum           ;Store row number in lower byte of multiplicand word.
 LBAA8:  LDA #$00                ;
-LBAAA:  STA TxtRowStart         ;Upper byte is always 0. Always start at beginning of row.
+LBAAA:  STA TextRowStart         ;Upper byte is always 0. Always start at beginning of row.
 
-LBAAC:  LDX #TxtRowNum          ;Index to multiplicand word.
+LBAAC:  LDX #TextRowNum          ;Index to multiplicand word.
 LBAAE:  LDA #$16                ;22 text characters per line.
 LBAB0:  JSR IndexedMult         ;($A6EB)Find buffer index for start of row.
 
-LBAB3:  LDA TxtRowNum           ;
+LBAB3:  LDA TextRowNum           ;
 LBAB5:  CLC                     ;Store results in A and return.
 LBAB6:  RTS                     ;
 
