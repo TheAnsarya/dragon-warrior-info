@@ -152,7 +152,71 @@ $bankFiles = @()
 
 # Check if we have generated assets
 $generatedMonstersASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "monster_data.asm"
+$generatedItemCostASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "item_cost_table.asm"
 $useGeneratedMonsters = $UseAssets -and (Test-Path $generatedMonstersASM)
+$useGeneratedItems = $UseAssets -and (Test-Path $generatedItemCostASM)
+
+# Generate item cost table if using assets
+if ($UseAssets) {
+    $itemCostGenerator = Join-Path $ToolsDir "generate_item_cost_table.py"
+    if (Test-Path $itemCostGenerator) {
+        Write-Host "`n💰 Generating item cost table..." -ForegroundColor Cyan
+        try {
+            & $Python $itemCostGenerator 2>&1 | Out-Null
+            if (Test-Path $generatedItemCostASM) {
+                Write-Host "   ✓ Item cost table generated" -ForegroundColor Green
+                $useGeneratedItems = $true
+            }
+        } catch {
+            Write-Host "   ⚠️  Could not generate item cost table: $_" -ForegroundColor Yellow
+            $useGeneratedItems = $false
+        }
+    }
+}
+
+# If using generated assets, swap item cost data in Bank00.asm
+$bank00Backup = $null
+if ($useGeneratedItems) {
+    Write-Host "`n💡 Integrating generated item costs into Bank00.asm..." -ForegroundColor Cyan
+
+    $bank00Path = Join-Path $SourceDir "Bank00.asm"
+    $bank00Backup = Join-Path $SourceDir "Bank00_backup_temp.asm"
+
+    # Backup original
+    Copy-Item $bank00Path $bank00Backup -Force
+
+    try {
+        # Read files
+        $bank00Content = Get-Content $bank00Path -Raw
+        $generatedItems = Get-Content $generatedItemCostASM -Raw
+
+        # Find and replace the item cost data section between markers
+        $pattern = '(?s); === GENERATED_ITEM_COST_DATA_START ===.*?; === GENERATED_ITEM_COST_DATA_END ==='
+
+        if ($bank00Content -match $pattern) {
+            # Escape $ in replacement string
+            $escapedReplacement = $generatedItems -replace '\$', '$$$$'
+
+            # Use the generated content directly (it already has markers)
+            $newBank00Content = [regex]::Replace($bank00Content, $pattern, $escapedReplacement)
+
+            # Write modified Bank00.asm
+            [System.IO.File]::WriteAllText($bank00Path, $newBank00Content)
+
+            Write-Host "   ✓ Item cost data replaced with JSON-generated ASM" -ForegroundColor Green
+        } else {
+            Write-Host "   ⚠️  Could not find item cost data section markers in Bank00.asm" -ForegroundColor Yellow
+            $useGeneratedItems = $false
+        }
+    } catch {
+        Write-Host "   ❌ Error swapping item cost data: $_" -ForegroundColor Red
+        # Restore original if error
+        if (Test-Path $bank00Backup) {
+            Copy-Item $bank00Backup $bank00Path -Force
+        }
+        $useGeneratedItems = $false
+    }
+}
 
 # If using generated assets, swap monster data in Bank01.asm
 $bank01Backup = $null
@@ -225,12 +289,20 @@ foreach ($bank in $banks) {
     $bankFiles += $bankOutput
 }
 
+# Restore original Bank00.asm if we modified it
+if ($bank00Backup -and (Test-Path $bank00Backup)) {
+    $bank00Path = Join-Path $SourceDir "Bank00.asm"
+    Copy-Item $bank00Backup $bank00Path -Force
+    Remove-Item $bank00Backup -Force
+    Write-Host "`n   ↻ Restored original Bank00.asm" -ForegroundColor DarkGray
+}
+
 # Restore original Bank01.asm if we modified it
 if ($bank01Backup -and (Test-Path $bank01Backup)) {
     $bank01Path = Join-Path $SourceDir "Bank01.asm"
     Copy-Item $bank01Backup $bank01Path -Force
     Remove-Item $bank01Backup -Force
-    Write-Host "`n   ↻ Restored original Bank01.asm" -ForegroundColor DarkGray
+    Write-Host "   ↻ Restored original Bank01.asm" -ForegroundColor DarkGray
 }
 
 # Step 6: Extract CHR-ROM
@@ -335,11 +407,16 @@ if ($UseAssets) {
     Write-Host "`nℹ️  Asset Integration Status:" -ForegroundColor Cyan
     if ($useGeneratedMonsters) {
         Write-Host "   ✅ Monster Data: Integrated from assets/json/monsters_verified.json" -ForegroundColor Green
-        Write-Host "      Your JSON monster edits ARE in the ROM!" -ForegroundColor Green
     } else {
-        Write-Host "   ⚠️  Monster Data: No generated ASM found, using original" -ForegroundColor Yellow
+        Write-Host "   ⚠️  Monster Data: Not integrated" -ForegroundColor Yellow
     }
-    Write-Host "   ⚠️  Item/Spell Data: Not yet integrated" -ForegroundColor Yellow
+    if ($useGeneratedItems) {
+        Write-Host "   ✅ Item Cost Data: Integrated from assets/json/items_corrected.json" -ForegroundColor Green
+        Write-Host "      Your JSON item price edits ARE in the ROM!" -ForegroundColor Green
+    } else {
+        Write-Host "   ⚠️  Item Cost Data: Not integrated" -ForegroundColor Yellow
+    }
+    Write-Host "   ⚠️  Spell Data: Not yet integrated (MP costs ready, needs Bank integration)" -ForegroundColor Yellow
     Write-Host "   ⚠️  PNG → CHR: Not yet implemented" -ForegroundColor Yellow
 }
 

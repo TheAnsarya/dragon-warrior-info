@@ -201,20 +201,18 @@ class AssetReinserter:
 				item = items[str(item_id)]
 				flags = (int(item['equippable']) | (int(item['useable']) << 1))
 
-			asm_lines.extend([
-				f"",
-				f"; {item['name']} (ID: {item_id})",
-				f"Item_{item_id:02d}_Stats:",
-				f"	.byte ${item.get('attack_power', item.get('attack_bonus', 0)):02X}			; Attack Power: {item.get('attack_power', item.get('attack_bonus', 0))}",
-				f"	.byte ${item.get('defense_power', item.get('defense_bonus', 0)):02X}			 ; Defense Power: {item.get('defense_power', item.get('defense_bonus', 0))}",
-				f"	.word ${item['buy_price']:04X}				 ; Buy Price: {item['buy_price']}",
-				f"	.word ${item['sell_price']:04X}				; Sell Price: {item['sell_price']}",
-				f"	.byte ${flags:02X}							 ; Flags: Equip={item['equippable']}, Use={item['useable']}",
-				f"	.byte ${item['item_type']:02X}				 ; Item Type: {item['item_type']}",
-				f"	.byte ${item['sprite_id']:02X}				 ; Sprite ID: {item['sprite_id']}"
-				])
-
-			# Add pointer table
+				asm_lines.extend([
+					f"",
+					f"; {item['name']} (ID: {item_id})",
+					f"Item_{item_id:02d}_Stats:",
+					f"	.byte ${item.get('attack_power', item.get('attack_bonus', 0)):02X}			; Attack Power: {item.get('attack_power', item.get('attack_bonus', 0))}",
+					f"	.byte ${item.get('defense_power', item.get('defense_bonus', 0)):02X}			 ; Defense Power: {item.get('defense_power', item.get('defense_bonus', 0))}",
+					f"	.word ${item['buy_price']:04X}				 ; Buy Price: {item['buy_price']}",
+					f"	.word ${item['sell_price']:04X}				; Sell Price: {item['sell_price']}",
+					f"	.byte ${flags:02X}							 ; Flags: Equip={item['equippable']}, Use={item['useable']}",
+					f"	.byte ${int(item['item_type']):02X}				 ; Item Type: {int(item['item_type'])}",
+					f"	.byte ${int(item.get('sprite_id', 0)):02X}				 ; Sprite ID: {int(item.get('sprite_id', 0))}"
+				])			# Add pointer table
 			asm_lines.extend([
 				"",
 				"; Item Stats Pointer Table",
@@ -436,21 +434,31 @@ class AssetReinserter:
 				"",
 				".segment \"SpellData\"",
 				"",
-				"SpellDataTable:"
+				"; Spell MP Cost Table",
+				"SpellMPCosts:"
 			]
 
 			for spell_id in sorted([int(k) for k in spells.keys()]):
 				spell = spells[str(spell_id)]
+				asm_lines.append(f"	.byte ${spell['mp_cost']:02X}				; {spell['name']}: {spell['mp_cost']} MP")
 
-				asm_lines.extend([
-					f"",
-					f"; {spell['name']} (ID: {spell_id})",
-					f"Spell_{spell_id:02d}_Data:",
-					f"	.byte ${spell['mp_cost']:02X}				; MP Cost: {spell['mp_cost']}",
-					f"	.byte ${spell['power']:02X}					; Power: {spell['power']}",
-					f"	.byte ${spell['learn_level']:02X}			; Learn Level: {spell['learn_level']}",
-					f"	.byte ${spell['spell_type']:02X}			 ; Spell Type: {spell['spell_type']}"
-				])
+			# Add additional spell metadata if available
+			asm_lines.extend([
+				"",
+				"; Spell Effect Types",
+				"SpellEffectTypes:"
+			])
+			
+			for spell_id in sorted([int(k) for k in spells.keys()]):
+				spell = spells[str(spell_id)]
+				effect_type = spell.get('effect_type', 'unknown')
+				# Map effect types to numeric IDs
+				effect_map = {
+					'heal': 0, 'damage': 1, 'status': 2, 
+					'teleport': 3, 'field': 4, 'unknown': 255
+				}
+				effect_id = effect_map.get(effect_type, 255)
+				asm_lines.append(f"	.byte ${effect_id:02X}				; {spell['name']}: {effect_type}")
 
 			asm_content = "\n".join(asm_lines)
 
@@ -461,7 +469,9 @@ class AssetReinserter:
 			return output_file
 
 		except Exception as e:
-			console.print(f"[red]❌ Error generating spell assembly: {e}[/red]")
+			print(f"Error generating spell assembly: {e}")
+			import traceback
+			traceback.print_exc()
 			return None
 
 	def _generate_dialog_assembly(self, json_file: Path) -> Optional[Path]:

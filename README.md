@@ -372,7 +372,7 @@ Comprehensive documentation is available in the `docs/` directory:
 - **[📊 Binary Format Spec](docs/build/BINARY_FORMAT_SPEC.md)** - Binary file format specifications
 - **[🔄 Binary Pipeline Tutorial](docs/build/BINARY_PIPELINE_TUTORIAL.md)** - Step-by-step build pipeline guide
 - **[⚡ Optimization Guide](docs/build/OPTIMIZATION_GUIDE.md)** - Build optimization techniques
-- **[📦 Asset First Build](docs/build/ASSET_FIRST_BUILD_IMPLEMENTATION.md)** - Asset-driven build process
+- **[📦 Asset First Build](docs/ASSET_FIRST_BUILD_IMPLEMENTATION.md)** - Asset-driven build process
 - **[📄 Assets Not Used](docs/build/ASSETS_NOT_USED_IN_BUILD.md)** - Unused asset analysis
 - **[📊 Build Process Analysis](docs/build/BUILD_PROCESS_DETAILED_ANALYSIS.md)** - Detailed build analysis
 - **[📥 ROM Data Extraction](docs/build/ROM_DATA_EXTRACTION.md)** - Extraction process documentation
@@ -398,6 +398,8 @@ For logs about the **development process** of creating this project (rather than
   - [Session Logs](~docs/session-logs/) - Development session summaries
   - [Chat Logs](~docs/chat-logs/) - Detailed conversation transcripts
   - Design decisions and implementation notes
+- **[📊 Session Summary](docs/SESSION_SUMMARY_2024_11.md)** - November 2024 documentation enhancement session summary
+- **[🔍 Documentation Reachability](docs/DOCUMENTATION_REACHABILITY.md)** - Documentation structure and reachability analysis
 
 ## 🤝 Contributing
 

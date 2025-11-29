@@ -8,7 +8,9 @@
 ; Using edited/modified assets
 .define USE_EDITED_ASSETS
 .include "monster_data.asm"
+.include "item_data.asm"
 .include "shop_data.asm"
+.include "spell_data.asm"
 .include "dialog_data.asm"
 .include "graphics_data.asm"
 .include "palette_data.asm"

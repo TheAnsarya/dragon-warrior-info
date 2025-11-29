@@ -2136,6 +2136,7 @@ L9944:  .byte DIR_DOWN,  DIR_DOWN, DIR_DOWN
 ;inventory window.  This table is used to calculate the cost when items are bought and
 ;sold. The order of the items is slightly different between tables.
 
+; === GENERATED_ITEM_COST_DATA_START ===
 ItemCostTbl:
 L9947:  .word $000A             ;Bamboo pole        - 10    gold.
 L9949:  .word $003C             ;Club               - 60    gold.
@@ -2170,6 +2171,7 @@ L9981:  .word $0960             ;Death necklace     - 2400  gold.
 L9983:  .word $0000             ;Stones of sunlight - 0     gold.
 L9985:  .word $0000             ;Staff of rain      - 0     gold.
 L9987:  .word $0000             ;Rainbow drop       - 0     gold.
+; === GENERATED_ITEM_COST_DATA_END ===
 
 ;----------------------------------------------------------------------------------------------------
 

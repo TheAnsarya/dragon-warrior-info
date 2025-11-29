@@ -113,11 +113,13 @@ In the `dragon-warrior-info` project, ***update the readme file*** (`README.md`)
 
 git comment and push everything that is uncommited; **continue!**; make sure every documentation `md` file is in the documentation tree starting in `readme.md` so you can click links to link from readme to the sub-document, make a list of any files unreachable from readme, there shouldn't be any that are relevant to understand and using the project; make sure everything is updated; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space; create a todo-list and some github issues (make sure the guthub issues are updated and reflect all work) for this effort, and also for any future efforts you see to ---- the point is to have guides that show where to make changes in code to change things, and what assets to edit and how, to romhack the game, starting with a fork of this project; the project will build the original rom from code and documentation and assets and build process, but future projects will use this as a base to make asset and code changes and build a new rom;
 
+make sure every documentation `md` file is in the documentation tree starting in `readme.md` so you can click links to link from readme to the sub-document, make a list of any files unreachable from readme, there shouldn't be any that are relevant to understand and using the project;
 
+in the `gameinfo` project (folder = `C:\Users\me\source\repos\GameInfo\Dragon Warrior (NES)\Wiki\`) while using the `dragon-warrior-info` project (folder = `C:\Users\me\source\repos\dragon-warrior-info`) for reference, create and update the documentation files for the wiki `DataCrystal` which is at `https://datacrystal.tcrf.net/wiki/Dragon_Warrior` so we can use these `wikitext` files to update the wiki and use FFMQ `https://datacrystal.tcrf.net/wiki/Final_Fantasy:_Mystic_Quest` as an example and make sub pages for the rom map and the ram map and make documentation for how every system works;
 
+git comment and push everything that is uncommited; **continue!**; 
 
-
-
+build the rom with assets, and verify that the built rom matches the reference rom; make sure all extracted assets are used in the build process and reinserted; editors should use the extracted assets which sre then inserted into the rom; check the todo-lists and guithub issues; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
 
 
