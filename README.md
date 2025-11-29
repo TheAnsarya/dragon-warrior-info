@@ -127,16 +127,29 @@ modifier.generate_modification_report(Path("output/reports"))
 
 ### Building ROM
 
+The recommended build workflow uses JSON asset files for game data:
+
 ```powershell
-# Basic build
-.\build.ps1
+# Build with JSON assets (recommended - default)
+.\build_with_assets.ps1
 
-# Clean build with testing
-.\build.ps1 -Clean -Test -Verbose
+# Build without assets (raw ASM only)
+.\build_with_assets.ps1 -UseAssets:$false
 
-# Build with debug symbols
-.\build.ps1 -Symbols -Output "dragon_warrior_modified.nes"
+# Clean build with assets
+.\build_with_assets.ps1 -Clean
+
+# Basic build script (also works)
+.\build_rom.ps1
 ```
+
+**Asset Integration Status:**
+
+- ✅ Monster Stats → `assets/json/monsters_verified.json`
+- ✅ Item Prices → `assets/json/items_corrected.json`  
+- ⚠️ Spell Data → Generated but needs Bank integration
+- ⚠️ Shop Data → Generated but needs Bank integration
+- ❌ PNG→CHR → Not yet implemented
 
 ## 📊 Current Status
 

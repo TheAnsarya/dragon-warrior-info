@@ -3349,7 +3349,7 @@ SetWndBackFore:
 
 WindowRemoveRowLoop:
 WindowRemo_Load_A81C:  LDA #$00                ;
-        STA AttributeBufIndex   ;($A81E)Reset buffer index to remove a new row.
+        STA AttribBufIndex   ;($A81E)Reset buffer index to remove a new row.
 WindowRemo_Store_A820:  STA WindowLineBufferIndex       ;
 
         LDA StartSignedXPos     ;($A822)Set the X position to start erasing row.
@@ -3371,7 +3371,7 @@ WindowRemo_Count_A836:  INC BlockAddrUB         ;
 WindowRemo_Count_A838:* INC WindowLineBufferIndex       ;Increment the window line buffer index by 2.
 WindowRemo_Count_A83A:  INC WindowLineBufferIndex       ;
 
-WindowRemo_Count_A83C:  INC AttributeBufIndex      ;Increment the attribute table buffer index.
+WindowRemo_Count_A83C:  INC AttribBufIndex      ;Increment the attribute table buffer index.
 
 WindowRemo_Count_A83E:  INC XPosFromCenter      ;Increment to the next block in the row(2X2 tiles per block).
 WindowRemo_Count_A840:  INC XPosFromCenter      ;
@@ -3530,7 +3530,7 @@ UncoverWin_Branch_A917:  BNE StoreAttribByte     ;Branch always.
         * LDA #$03              ;($A919)Set attribute table values for battle scene horizon tiles.
 
 StoreAttribByte:
-        LDX AttributeBufIndex   ;($A91B)
+        LDX AttribBufIndex   ;($A91B)
         STA AttributeTblBuf,X   ;($A91D)Store the attribute table byte in the buffer.
 StoreAttri_Exit_A920:  RTS                     ;
 
@@ -3735,7 +3735,7 @@ CalcBlockI_Store_AA2F:  STA PPUDataByte         ;
 CalcBlockI_Load_AA31:  LDA AddAttribData       ;Should always be 0. Add attribute table data to buffer.
         BNE ModWndExit          ;($AA33)Never branch.
 
-        LDX AttributeBufIndex   ;($AA35)
+        LDX AttribBufIndex   ;($AA35)
 CalcBlockI_Load_AA37:  LDA PPUDataByte         ;Add attribute table data to buffer for the corresponding block.
 CalcBlockI_Store_AA39:  STA AttributeTblBuf,X      ;
 
@@ -5728,7 +5728,7 @@ AttributeC_Call_B46A:  JSR DoSprites           ;($B6DA)Update player and NPC spr
 
 AttributeC_Load_B46D:  LDA XPosFromCenter      ;
         CMP #$14                ;($B46F)Done clearing this row?
-        BNE VerticalAttribLoop1 ;($B471)If not, branch to clear another section.
+        BNE VertAttribLoop1 ;($B471)If not, branch to clear another section.
 
         LDA #$10                ;($B473)Prepare to update blocks starting 16 tiles below the player.
         STA YPosFromCenter      ;($B475)
@@ -5750,7 +5750,7 @@ VertBlockLoop1:
         INC XPosFromCenter      ;($B48D)
 
         DEC TileCounter         ;($B48F)Done changing block section?
-VertBlockL_Branch_B491:  BNE VerticalBlockLoop1      ;If not, branch to do more.
+VertBlockL_Branch_B491:  BNE VertBlockLoop1      ;If not, branch to do more.
 
 VertBlockL_Count_B493:  INC ScrollY             ;Move player down 1 pixel.
 VertBlockL_Count_B495:  INC CharYPixelsLB       ;
@@ -5758,7 +5758,7 @@ VertBlockL_Count_B495:  INC CharYPixelsLB       ;
 VertBlockL_Call_B497:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 VertBlockL_Load_B49A:  LDA XPosFromCenter      ;
 VertBlockL_Cmp_B49C:  CMP #$12                ;Done changing block row?
-        BNE VerticalRowLoop1    ;($B49E)If not, branch to do more.
+        BNE VertRowLoop1    ;($B49E)If not, branch to do more.
 
         JSR WaitForNMI          ;($B4A0)($FF74)Wait for VBlank interrupt.
 
@@ -5816,14 +5816,14 @@ VertDgnBlo_Call_B4E3:  JSR ModMapBlock         ;($AD66)Change block on map.
 
         LDA YPosFromCenter      ;($B4EA)Have all the rows been changed?
 VertDgnBlo_Cmp_B4EC:  CMP #$09                ;
-        BNE VerticalDgnBlockLoop;($B4EE)If not, branch to do another row.
+        BNE VertDgnBlockLoop;($B4EE)If not, branch to do another row.
 
         INC XPosFromCenter      ;($B4F0)Move to next block in row. Block is 2 tiles wide.
         INC XPosFromCenter      ;($B4F2)
 
 VertDgnBlo_Load_B4F4:  LDA XPosFromCenter      ;Have all the columns been changed?
         CMP #$08                ;($B4F6)
-        BNE VerticalDgnRowLoop  ;($B4F8)If not, branch to do another column.
+        BNE VertDgnRowLoop  ;($B4F8)If not, branch to do another column.
 
         JSR WaitForNMI          ;($B4FA)($FF74)Wait for VBlank interrupt.
 
@@ -5912,7 +5912,7 @@ VertBlockL_Count_B573:  INC XPosFromCenter      ;Increment to next block in row.
 VertBlockL_Count_B575:  INC XPosFromCenter      ;
 
         DEC TileCounter         ;($B577)Done changing block section?
-        BNE VerticalBlockLoop2  ;($B579)If not, branch to do more.
+        BNE VertBlockLoop2  ;($B579)If not, branch to do more.
 
 VertBlockL_Count_B57B:  DEC ScrollY             ;Decrement vertical scroll register and pixel position.
         DEC CharYPixelsLB       ;($B57D)
@@ -5920,7 +5920,7 @@ VertBlockL_Count_B57B:  DEC ScrollY             ;Decrement vertical scroll regis
 
         LDA XPosFromCenter      ;($B582)
 VertBlockL_Cmp_B584:  CMP #$12                ;Done clearing this row?
-VertBlockL_Branch_B586:  BNE VerticalRowLoop2        ;If not, branch to clear another section.
+VertBlockL_Branch_B586:  BNE VertRowLoop2        ;If not, branch to clear another section.
 
         LDA #$F0                ;($B588)Prepare to update blocks starting -16 tiles above the player.
         STA YPosFromCenter      ;($B58A)
@@ -5949,7 +5949,7 @@ AttributeC_Count_B5A5:  DEC ScrollY             ;Decrement vertical scroll and p
 
 AttributeC_Load_B5AC:  LDA XPosFromCenter      ;
 AttributeC_Cmp_B5AE:  CMP #$14                ;Done clearing this row?
-        BNE VerticalAttribLoop2 ;($B5B0)If not, branch to clear another section.
+        BNE VertAttribLoop2 ;($B5B0)If not, branch to clear another section.
 
 AttributeC_Load_B5B2:  LDA #$F0                ;Prepare to update blocks starting -16 tiles above the player.
         STA YPosFromCenter      ;($B5B4)
@@ -5972,7 +5972,7 @@ VertBlockL_Count_B5CA:  INC XPosFromCenter      ;Increment to next block in row.
 VertBlockL_Count_B5CC:  INC XPosFromCenter      ;
 
 VertBlockL_Count_B5CE:  DEC TileCounter         ;Done changing block section?
-VertBlockL_Branch_B5D0:  BNE VerticalBlockLoop3      ;If not, branch to do more.
+VertBlockL_Branch_B5D0:  BNE VertBlockLoop3      ;If not, branch to do more.
 
         DEC ScrollY             ;($B5D2)Move player up 1 pixel.
         DEC CharYPixelsLB       ;($B5D4)
@@ -5980,7 +5980,7 @@ VertBlockL_Branch_B5D0:  BNE VerticalBlockLoop3      ;If not, branch to do more.
         JSR DoSprites           ;($B5D6)($B6DA)Update player and NPC sprites.
         LDA XPosFromCenter      ;($B5D9)
         CMP #$12                ;($B5DB)Done changing block row?
-VertBlockL_Branch_B5DD:  BNE VerticalRowLoop3        ;If not, branch to do more.
+VertBlockL_Branch_B5DD:  BNE VertRowLoop3        ;If not, branch to do more.
 
 VertBlockL_Call_B5DF:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
