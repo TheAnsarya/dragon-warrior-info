@@ -575,6 +575,628 @@ Load `build/dragon_warrior_rebuilt.nes` in emulator and battle a Slime.
 
 ---
 
+## Step-by-Step Modification Examples
+
+This section provides complete, copy-paste ready examples for common ROM hacks.
+
+### Example 1: Make Slime Have 100 HP
+
+**Goal:** Buff the weakest enemy to be challenging.
+
+**Method 1: Edit JSON (Recommended)**
+
+1. Extract monster data:
+
+```powershell
+python tools/extraction/data_extractor.py extract-monsters
+```
+
+2. Edit `extracted_assets/json/monsters.json`:
+
+```json
+{
+  "0": {
+    "id": 0,
+    "name": "Slime",
+    "hp": 100,         // Changed from 3
+    "strength": 5,
+    "agility": 15,
+    "attack_power": 5,
+    "defense": 3,
+    "magic_defense": 1,
+    "experience_reward": 1,
+    "gold_reward": 2,
+    "spell": 0
+  }
+}
+```
+
+3. Save and rebuild:
+
+```powershell
+.\build_enhanced.ps1
+```
+
+**Method 2: Edit Assembly Directly**
+
+1. Open `source_files/Bank01.asm`
+
+2. Find the Slime data (around line 4439):
+
+```assembly
+;Enemy $00-Slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld
+L9E4B:  .byte $05, $03, $03, $00, $0F, $01, $01, $02
+```
+
+3. Change HP from `$03` to `$64` (100 in hex):
+
+```assembly
+;Enemy $00-Slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld
+L9E4B:  .byte $05, $03, $64, $00, $0F, $01, $01, $02
+```
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Battle a Slime - should have 100 HP now!
+
+---
+
+### Example 2: Change Club to Do 10 Damage
+
+**Goal:** Make the Club weapon stronger.
+
+**Location:** Weapon attack table in `Bank01.asm`
+
+**Steps:**
+
+1. Open `source_files/Bank01.asm`
+
+2. Find weapon data table (around line 7600):
+
+```assembly
+WeaponAttackTable:
+    .byte $04  ; Unarmed (+4 ATK)
+    .byte $02  ; Bamboo Pole (+2 ATK)
+    .byte $04  ; Club (+4 ATK)        <- Change this
+    .byte $0A  ; Copper Sword (+10 ATK)
+    .byte $0F  ; Hand Axe (+15 ATK)
+    .byte $14  ; Broad Sword (+20 ATK)
+    .byte $1C  ; Flame Sword (+28 ATK)
+    .byte $28  ; Erdrick's Sword (+40 ATK)
+```
+
+3. Change Club value from `$04` to `$0A` (10 in hex):
+
+```assembly
+WeaponAttackTable:
+    .byte $04  ; Unarmed (+4 ATK)
+    .byte $02  ; Bamboo Pole (+2 ATK)
+    .byte $0A  ; Club (+10 ATK)        <- Changed!
+    .byte $0A  ; Copper Sword (+10 ATK)
+    .byte $0F  ; Hand Axe (+15 ATK)
+    .byte $14  ; Broad Sword (+20 ATK)
+    .byte $1C  ; Flame Sword (+28 ATK)
+    .byte $28  ; Erdrick's Sword (+40 ATK)
+```
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Equip Club, check Status screen - ATK should increase by +10 instead of +4.
+
+**Damage Formula Reminder:**
+
+```
+Damage = (PlayerATK / 2) - (EnemyDEF / 4) + Random(0-4)
+```
+
+So +10 ATK → +5 average damage per hit.
+
+---
+
+### Example 3: Make HEAL Cost 1 MP
+
+**Goal:** Make healing magic very cheap for early game.
+
+**Method 1: Edit Assembly (Quick)**
+
+1. Open `source_files/Bank01.asm`
+
+2. Find spell MP cost table (around line 8300):
+
+```assembly
+SpellMPCostTable:
+    .byte $04  ; HEAL (4 MP)          <- Change this
+    .byte $02  ; HURT (2 MP)
+    .byte $02  ; SLEEP (2 MP)
+    .byte $03  ; RADIANT (3 MP)
+    .byte $02  ; STOPSPELL (2 MP)
+    .byte $06  ; OUTSIDE (6 MP)
+    .byte $08  ; RETURN (8 MP)
+    .byte $02  ; REPEL (2 MP)
+    .byte $0A  ; HEALMORE (10 MP)
+    .byte $05  ; HURTMORE (5 MP)
+```
+
+3. Change HEAL cost from `$04` to `$01`:
+
+```assembly
+SpellMPCostTable:
+    .byte $01  ; HEAL (1 MP)          <- Changed!
+    .byte $02  ; HURT (2 MP)
+    .byte $02  ; SLEEP (2 MP)
+    .byte $03  ; RADIANT (3 MP)
+    .byte $02  ; STOPSPELL (2 MP)
+    .byte $06  ; OUTSIDE (6 MP)
+    .byte $08  ; RETURN (8 MP)
+    .byte $02  ; REPEL (2 MP)
+    .byte $0A  ; HEALMORE (10 MP)
+    .byte $05  ; HURTMORE (5 MP)
+```
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Method 2: Edit JSON**
+
+1. Extract spell data:
+
+```powershell
+python tools/extraction/data_extractor.py extract-spells
+```
+
+2. Edit `extracted_assets/json/spells.json`:
+
+```json
+{
+  "0": {
+    "id": 0,
+    "name": "HEAL",
+    "mp_cost": 1,      // Changed from 4
+    "effect": "Restore HP",
+    "formula": "10-17 HP"
+  }
+}
+```
+
+3. Rebuild:
+
+```powershell
+.\build_enhanced.ps1
+```
+
+**Test:** Cast HEAL - should cost only 1 MP!
+
+---
+
+### Example 4: Increase Gold from Metal Slime
+
+**Goal:** Make Metal Slime drop 500 Gold instead of 6.
+
+**Steps:**
+
+1. Open `source_files/Bank01.asm`
+
+2. Find Metal Slime data (ID 0x10, around line 4550):
+
+```assembly
+;Enemy $10-Metal Slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld
+LA0BB:  .byte $0A, $FF, $04, $00, $FF, $03, $73, $06
+                                                  ; ^^ Gold value
+```
+
+3. Change gold from `$06` to `$F4` (244) or max `$FF` (255):
+
+```assembly
+;Enemy $10-Metal Slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld
+LA0BB:  .byte $0A, $FF, $04, $00, $FF, $03, $73, $F4
+```
+
+**Note:** Gold reward is 8-bit (max 255), but actual gold given can be higher due to formula.
+
+4. For 500+ gold, also modify gold calculation routine in `Bank03.asm` (advanced).
+
+5. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Defeat Metal Slime (if you can catch it!) - check gold reward.
+
+---
+
+### Example 5: Add New Dialog to King Lorik
+
+**Goal:** Change what the King says when you first meet him.
+
+**Steps:**
+
+1. Open `source_files/Bank02.asm`
+
+2. Find King's dialog (search for "King Lorik" or "TextBlock"):
+
+```assembly
+TextBlock5Entry2:  ; King's greeting
+    .text "I am Lorik, King of", LINE
+    .text "Alefgard.", WAIT, CLEAR
+    .text "It is told in legend that", LINE
+    .text "in ages past a great hero", LINE
+    .text "saved this land...", END
+```
+
+3. Modify the text:
+
+```assembly
+TextBlock5Entry2:  ; King's greeting
+    .text "I am Lorik, King of", LINE
+    .text "Alefgard.", WAIT, CLEAR
+    .text "Welcome, brave ", HERO, "!", LINE
+    .text "Your quest to defeat the", LINE
+    .text "Dragonlord begins now!", END
+```
+
+**Text Encoding Notes:**
+- `LINE` - New line
+- `WAIT` - Wait for button press
+- `CLEAR` - Clear text window
+- `END` - End of text block
+- `HERO` - Insert player's name
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Start new game, talk to King Lorik.
+
+**Important:** Text is compressed. Long text may overflow allocated space. Keep modifications similar in length to original.
+
+---
+
+### Example 6: Change Starting Stats
+
+**Goal:** Start with higher HP/MP for easier early game.
+
+**Steps:**
+
+1. Open `source_files/Bank03.asm`
+
+2. Find initialization routine (search for "InitPlayer" or starting stats, around line 500):
+
+```assembly
+InitPlayerStats:
+    LDA #$0F       ; Starting HP (15)
+    STA PlayerHP
+    LDA #$00       ; Starting MP (0)
+    STA PlayerMP
+    LDA #$04       ; Starting STR (4)
+    STA PlayerSTR
+    LDA #$04       ; Starting AGI (4)
+    STA PlayerAGI
+```
+
+3. Change values:
+
+```assembly
+InitPlayerStats:
+    LDA #$32       ; Starting HP (50)   <- Changed!
+    STA PlayerHP
+    LDA #$14       ; Starting MP (20)   <- Changed!
+    STA PlayerMP
+    LDA #$0A       ; Starting STR (10)  <- Changed!
+    STA PlayerSTR
+    LDA #$0A       ; Starting AGI (10)  <- Changed!
+    STA PlayerAGI
+```
+
+**Hex Reference:**
+- `$0F` = 15
+- `$14` = 20
+- `$32` = 50
+- `$64` = 100
+- `$FF` = 255 (max for 8-bit)
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Start new game - check Status screen for higher starting stats.
+
+---
+
+### Example 7: Make Erdrick's Sword Stronger
+
+**Goal:** Buff the legendary sword from +40 ATK to +100 ATK.
+
+**Steps:**
+
+1. Open `source_files/Bank01.asm`
+
+2. Find weapon attack table (around line 7600):
+
+```assembly
+WeaponAttackTable:
+    .byte $04  ; Unarmed (+4 ATK)
+    .byte $02  ; Bamboo Pole (+2 ATK)
+    .byte $04  ; Club (+4 ATK)
+    .byte $0A  ; Copper Sword (+10 ATK)
+    .byte $0F  ; Hand Axe (+15 ATK)
+    .byte $14  ; Broad Sword (+20 ATK)
+    .byte $1C  ; Flame Sword (+28 ATK)
+    .byte $28  ; Erdrick's Sword (+40 ATK)  <- Change this
+```
+
+3. Change to `$64` (100 decimal):
+
+```assembly
+WeaponAttackTable:
+    .byte $04  ; Unarmed (+4 ATK)
+    .byte $02  ; Bamboo Pole (+2 ATK)
+    .byte $04  ; Club (+4 ATK)
+    .byte $0A  ; Copper Sword (+10 ATK)
+    .byte $0F  ; Hand Axe (+15 ATK)
+    .byte $14  ; Broad Sword (+20 ATK)
+    .byte $1C  ; Flame Sword (+28 ATK)
+    .byte $64  ; Erdrick's Sword (+100 ATK) <- Changed!
+```
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Equip Erdrick's Sword - ATK should be much higher! Battles will be very easy.
+
+---
+
+### Example 8: Adjust Enemy Encounter Rates
+
+**Goal:** Reduce random battle frequency in grasslands (make exploration easier).
+
+**Steps:**
+
+1. Open `source_files/Bank03.asm`
+
+2. Find encounter rate table (around line 9500):
+
+```assembly
+EncounterRateTable:
+    .byte $10  ; Tantegel area (very low)
+    .byte $20  ; Grassland (32/256 = 12.5%)  <- Change this
+    .byte $30  ; Forest (higher)
+    .byte $40  ; Hills (higher)
+    .byte $50  ; Mountains (high)
+    .byte $60  ; Swamp (very high)
+```
+
+3. Change grassland from `$20` (32) to `$10` (16) - half the encounters:
+
+```assembly
+EncounterRateTable:
+    .byte $10  ; Tantegel area (very low)
+    .byte $10  ; Grassland (16/256 = 6.25%)  <- Changed!
+    .byte $30  ; Forest (higher)
+    .byte $40  ; Hills (higher)
+    .byte $50  ; Mountains (high)
+    .byte $60  ; Swamp (very high)
+```
+
+**Encounter Math:**
+- Value / 256 = % chance per step counter tick
+- `$10` (16) = 6.25% chance
+- `$20` (32) = 12.5% chance
+- `$40` (64) = 25% chance
+- `$80` (128) = 50% chance
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Walk around in grassland areas - encounters should be much less frequent.
+
+**To disable encounters entirely:** Set all rates to `$00`
+
+---
+
+### Example 9: Make Player Invincible (God Mode)
+
+**Goal:** Take no damage from enemies (for testing or challenge runs).
+
+**Steps:**
+
+1. Open `source_files/Bank03.asm`
+
+2. Find enemy damage calculation (around line 4200):
+
+```assembly
+CalcEnemyDamage:
+    ; ... damage calculation code ...
+    STA TempDamage    ; Store calculated damage
+    ; Apply to player
+    LDA PlayerHP
+    SEC
+    SBC TempDamage    ; Subtract damage
+    STA PlayerHP
+```
+
+3. Make player take no damage:
+
+```assembly
+CalcEnemyDamage:
+    ; ... damage calculation code ...
+    LDA #$00          ; Force damage to 0
+    STA TempDamage    ; Store 0 damage
+    ; Apply to player (nothing happens)
+    LDA PlayerHP
+    SEC
+    SBC TempDamage    ; Subtract 0 = no change
+    STA PlayerHP
+```
+
+**Alternative: Always set damage to 0 before application**
+
+```assembly
+CalcEnemyDamage:
+    ; Skip all calculation
+    LDA #$00          ; Return 0 damage
+    RTS               ; Return early
+```
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Get into battle - enemy attacks deal 0 damage!
+
+**Note:** This is great for testing but removes all difficulty.
+
+---
+
+### Example 10: Increase Experience Gain
+
+**Goal:** Level up faster by doubling all experience rewards.
+
+**Method 1: Modify Each Monster**
+
+1. Open `source_files/Bank01.asm`
+
+2. Find each monster's EXP value and double it:
+
+```assembly
+;Enemy $00-Slime.
+;             Att  Def   HP  Spel Agi  Mdef Exp  Gld
+L9E4B:  .byte $05, $03, $03, $00, $0F, $01, $01, $02
+                                              ; ^^ EXP = 1
+
+; Change to:
+L9E4B:  .byte $05, $03, $03, $00, $0F, $01, $02, $02
+                                              ; ^^ EXP = 2
+```
+
+Repeat for all 40 monsters.
+
+**Method 2: Modify EXP Gain Formula (Better)**
+
+1. Open `source_files/Bank03.asm`
+
+2. Find battle victory routine (around line 5500):
+
+```assembly
+BattleVictory:
+    ; ... code ...
+    LDA EnemyExpReward  ; Load enemy's EXP value
+    ; Add to player EXP
+    CLC
+    ADC PlayerExpLow
+    STA PlayerExpLow
+```
+
+3. Double the EXP before adding:
+
+```assembly
+BattleVictory:
+    ; ... code ...
+    LDA EnemyExpReward  ; Load enemy's EXP value
+    ASL A               ; Multiply by 2 (shift left)
+    ; Add to player EXP
+    CLC
+    ADC PlayerExpLow
+    STA PlayerExpLow
+```
+
+**ASL (Arithmetic Shift Left) = multiply by 2**
+
+For 3x EXP, use:
+
+```assembly
+    LDA EnemyExpReward
+    ASL A               ; x2
+    CLC
+    ADC EnemyExpReward  ; +original = x3 total
+```
+
+4. Rebuild:
+
+```powershell
+.\build_rom.ps1
+```
+
+**Test:** Win battle - EXP gain should be doubled!
+
+---
+
+### Modification Tips
+
+**Hex to Decimal Conversion:**
+
+| Hex | Decimal | Hex | Decimal |
+|-----|---------|-----|---------|
+| $01 | 1 | $0A | 10 |
+| $02 | 2 | $0F | 15 |
+| $03 | 3 | $10 | 16 |
+| $04 | 4 | $14 | 20 |
+| $05 | 5 | $1E | 30 |
+| $06 | 6 | $32 | 50 |
+| $07 | 7 | $64 | 100 |
+| $08 | 8 | $C8 | 200 |
+| $09 | 9 | $FF | 255 |
+
+**Assembly Quick Reference:**
+
+| Instruction | Meaning |
+|-------------|---------|
+| LDA #$10 | Load value 16 into A register |
+| STA $0010 | Store A to memory address $0010 |
+| ASL A | Multiply A by 2 (shift left) |
+| LSR A | Divide A by 2 (shift right) |
+| CLC | Clear carry flag (for addition) |
+| SEC | Set carry flag (for subtraction) |
+| ADC #$05 | Add 5 to A (with carry) |
+| SBC #$05 | Subtract 5 from A (with borrow) |
+
+**Common Mistakes:**
+
+1. **Forgetting $ for hex:** `$0A` (hex 10) ≠ `0A` (decimal 10)
+2. **Overflow:** 8-bit max is 255 ($FF), 16-bit max is 65535 ($FFFF)
+3. **Text length:** Compressed text has strict size limits
+4. **Register clobbering:** Changing A/X/Y affects other code
+5. **Carry flag:** Forgetting CLC/SEC before ADC/SBC causes wrong results
+
+**Testing Checklist:**
+
+- [ ] ROM builds without errors
+- [ ] Emulator loads ROM successfully  
+- [ ] Changes visible in game
+- [ ] No graphical glitches
+- [ ] No crashes or freezes
+- [ ] Save/load still works
+- [ ] Other game systems unaffected
+
+---
+
 ## Asset Extraction
 
 ### Extract All Assets
