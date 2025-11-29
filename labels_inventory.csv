@@ -3867,11 +3867,10 @@ Bank00.asm,,LB5CA,LB5CA,LB5CA,1,PPU,Remove lower 2 tiles from the block | PPU ro
 Bank00.asm,,LB5CC,LB5CC,LB5CC,1,PPU,PPU row write. | ($AD66)Change block on map. | Increment to next block in row.
 Bank00.asm,,LB5CE,LB5CE,LB5CE,1,Map,($AD66)Change block on map. | Increment to next block in row. | Done changing block section?
 Bank00.asm,,LB5D0,LB5D0,LB5D0,1,Map,"Increment to next block in row. | Done changing block section? | If not, branch to do more."
-Bank00.asm,,LB5D2,LB5D2,LB5D2,1,Map,"Done changing block section? | If not, branch to do more. | Move player up 1 pixel."
-Bank00.asm,,LB5D4,LB5D4,LB5D4,0,Map,"Done changing block section? | If not, branch to do more. | Move player up 1 pixel."
-Bank00.asm,,LB5D6,LB5D6,LB5D6,0,Graphics,"If not, branch to do more. | Move player up 1 pixel. | ($B6DA)Update player and NPC sprites."
-Bank00.asm,,LB5D9,LB5D9,LB5D9,0,Graphics,Move player up 1 pixel. | ($B6DA)Update player and NPC sprites. | Done changing block row?
-Bank00.asm,,LB5DB,LB5DB,LB5DB,0,Graphics,Move player up 1 pixel. | ($B6DA)Update player and NPC sprites. | Done changing block row?
+Bank00.asm,,LB5D4,LB5D4,LB5D4,0,Map,"Done changing block section? | If not, branch to do more. | ($B5D2)Move player up 1 pixel."
+Bank00.asm,,LB5D6,LB5D6,LB5D6,0,Graphics,"If not, branch to do more. | ($B5D2)Move player up 1 pixel. | ($B6DA)Update player and NPC sprites."
+Bank00.asm,,LB5D9,LB5D9,LB5D9,0,Graphics,($B5D2)Move player up 1 pixel. | ($B6DA)Update player and NPC sprites. | Done changing block row?
+Bank00.asm,,LB5DB,LB5DB,LB5DB,0,Graphics,($B5D2)Move player up 1 pixel. | ($B6DA)Update player and NPC sprites. | Done changing block row?
 Bank00.asm,,LB5DD,LB5DD,LB5DD,1,Graphics,"($B6DA)Update player and NPC sprites. | Done changing block row? | If not, branch to do more."
 Bank00.asm,,LB5DF,LB5DF,LB5DF,1,Graphics,"($B6DA)Update player and NPC sprites. | Done changing block row? | If not, branch to do more."
 Bank00.asm,,LB5E2,LB5E2,LB5E2,1,Map,"Done changing block row? | If not, branch to do more. | ($FF74)Wait for VBlank interrupt."
@@ -11015,7 +11014,7 @@ Bank01.asm,,LB5CA,LB5CA,LB5CA,1,Dialog,"Get next character in the word buffer. |
 Bank01.asm,,LB5CC,LB5CC,LB5CC,1,Dialog,"Get next character in the word buffer. | Has a space in the word buffer been found? | If so, branch to see if it will fit it into text window."
 Bank01.asm,,LB5CE,LB5CE,LB5CE,1,Dialog,"Has a space in the word buffer been found? | If so, branch to see if it will fit it into text window. | Has a sub-buffer end character been found?"
 Bank01.asm,,LB5D0,LB5D0,LB5D0,1,Dialog,"Has a space in the word buffer been found? | If so, branch to see if it will fit it into text window. | Has a sub-buffer end character been found?"
-Bank01.asm,,LB5D2,LB5D2,LB5D2,1,Dialog,"If so, branch to see if it will fit it into text window. | Has a sub-buffer end character been found? | If so, branch to see if word will fit it into text window."
+Bank01.asm,,LB5D2,LB5D2,LB5D2,0,Dialog,"If so, branch to see if it will fit it into text window. | Has a sub-buffer end character been found? | If so, branch to see if word will fit it into text window."
 Bank01.asm,,LB5D5,LB5D5,LB5D5,0,Dialog,"Has a sub-buffer end character been found? | If so, branch to see if word will fit it into text window. | Increment window position pointer."
 Bank01.asm,,LB5D8,LB5D8,LB5D8,0,Dialog,"If so, branch to see if word will fit it into text window. | Increment window position pointer. | ($B8F9)Check for non-word character."
 Bank01.asm,,LB5DA,LB5DA,LB5DA,0,General,"($B8F9)Check for non-word character. | Still in word? If so, branch. | Is X position at beginning of line?"
