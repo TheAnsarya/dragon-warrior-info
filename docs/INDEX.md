@@ -9,6 +9,8 @@ Welcome to the comprehensive documentation for the Dragon Warrior NES disassembl
 Essential guides for getting started with the project.
 
 - [**ROM Hacking Guide**](guides/ROM_HACKING_GUIDE.md) - Complete guide to modifying Dragon Warrior
+- [**ROM Hacking Quick Start**](guides/ROM_HACKING_QUICKSTART.md) - Get started modding in under 10 minutes!
+- [**Modification Reference**](guides/MODIFICATION_REFERENCE.md) - Quick lookup guide: "I want to change X" → "Edit file Y"
 - [**Tools Documentation**](guides/TOOLS_DOCUMENTATION.md) - Complete reference for all ROM hacking tools
 - [**Verification Checklist**](guides/VERIFICATION_CHECKLIST.md) - Manual verification procedures
 - [**Advanced Editors Guide**](guides/ADVANCED_EDITORS_GUIDE.md) - GUI editor usage
@@ -24,6 +26,7 @@ Essential guides for getting started with the project.
 
 In-depth technical information about Dragon Warrior's systems.
 
+- [**Game Formulas and Constants**](technical/GAME_FORMULAS.md) - Complete reference for all game calculations
 - [**Unified Editor Design**](technical/UNIFIED_EDITOR_DESIGN.md) - Architecture of the integrated editor
 - [**Optimization Techniques**](technical/OPTIMIZATION_TECHNIQUES.md) - Performance optimization
 - [**ROM Map**](datacrystal/ROM_MAP.md) - Complete memory map in DataCrystal format
@@ -54,6 +57,7 @@ DataCrystal.org compatible wiki documentation for ROM hacking reference.
 Project status, contributing, and implementation details.
 
 - [**Project Status**](project/PROJECT_STATUS.md) - Current development status
+- [**Project Status Complete**](project/PROJECT_STATUS_COMPLETE.md) - Feature completion matrix (historical)
 - [**Project Summary**](project/PROJECT_SUMMARY.md) - Project overview
 - [**Contributing**](project/CONTRIBUTING.md) - How to contribute
 - [**Code of Conduct**](project/CODE_OF_CONDUCT.md) - Community guidelines

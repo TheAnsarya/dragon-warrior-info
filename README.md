@@ -343,6 +343,9 @@ Comprehensive documentation is available in the `docs/` directory:
 
 ### User Guides
 
+- **[🎮 ROM Hacking Guide](docs/guides/ROM_HACKING_GUIDE.md)** - Complete guide to modifying Dragon Warrior
+- **[🚀 ROM Hacking Quick Start](docs/guides/ROM_HACKING_QUICKSTART.md)** - Get started modding in 10 minutes!
+- **[📝 Modification Reference](docs/guides/MODIFICATION_REFERENCE.md)** - Quick lookup: "Change X" → "Edit file Y"
 - **[🔧 Tools Documentation](docs/guides/TOOLS_DOCUMENTATION.md)** - Complete reference for all ROM hacking tools
 - **[✅ Verification Checklist](docs/guides/VERIFICATION_CHECKLIST.md)** - Manual verification of extracted data and ROM modifications
 - **[🎨 Advanced Editors Guide](docs/guides/ADVANCED_EDITORS_GUIDE.md)** - GUI editor usage and features

@@ -704,6 +704,197 @@ When modifying, test:
 
 ---
 
+## Assembly Bank Contents
+
+Dragon Warrior uses the MMC1 mapper with 4 banks of 16 KB PRG-ROM. Understanding what each bank contains helps you locate specific game systems for modification.
+
+### Bank00 (0x8000-0xBFFF)
+
+**Primary Contents:** Graphics, rendering, and map systems
+
+**Key Sections:**
+
+| Address Range | Contents | Line # (approx) |
+|---------------|----------|-----------------|
+| 0x8000-0x81FF | Block Graphics Data | Lines 50-200 |
+| 0x8200-0x83FF | Map Rendering Routines | Lines 200-400 |
+| 0x8400-0x85FF | Scroll System | Lines 400-600 |
+| 0x8600-0x89FF | Map Data (Overworld) | Lines 600-1200 |
+| 0x8A00-0x8DFF | Town/Dungeon Map Data | Lines 1200-2000 |
+| 0x8E00-0x91FF | Collision Detection | Lines 2000-2400 |
+| 0x9200-0x95FF | Map Tile Updates | Lines 2400-2800 |
+| 0x9600-0x9FFF | Battle Graphics Setup | Lines 2800-3200 |
+| 0xA000-0xAFFF | Battle Animations | Lines 3200-4000 |
+| 0xB000-0xBFFF | Menu Rendering | Lines 4000-5000 |
+
+**Important Labels:**
+- `BlockGraphicsTable` - Tile graphics for map blocks
+- `OverworldMap` - Alefgard map data
+- `TantegelMap` - Tantegel Castle interior
+- `BattleRenderLoop` - Combat graphics engine
+- `DrawMenu` - Menu window renderer
+
+**Modification Examples:**
+- Change map layout → Edit map data tables
+- Modify collision → Adjust collision detection routines
+- Change battle backgrounds → Edit battle graphics data
+
+### Bank01 (0x8000-0xBFFF)
+
+**Primary Contents:** Game data tables and music engine
+
+**Key Sections:**
+
+| Address Range | Contents | Line # (approx) |
+|---------------|----------|-----------------|
+| 0x8000-0x87FF | Music Engine | Lines 50-800 |
+| 0x8800-0x8DFF | Sound Effect Data | Lines 800-1400 |
+| 0x8E00-0x92FF | Monster Data Tables | Lines 1400-2200 |
+| 0x9300-0x95FF | Monster Graphics Pointers | Lines 2200-2600 |
+| 0x9600-0x97FF | Item Data Tables | Lines 2600-2900 |
+| 0x9800-0x99FF | Spell Data Tables | Lines 2900-3100 |
+| 0x9A00-0x9BFF | Shop Data | Lines 3100-3300 |
+| 0x9C00-0x9EFF | Experience Tables | Lines 3300-3600 |
+| 0x9F00-0xAFFF | Monster Sprite Definitions | Lines 3600-4800 |
+| 0xB000-0xBFFF | Music Pattern Data | Lines 4800-6000 |
+
+**Important Labels:**
+- `MonsterStats` - HP, STR, AGI, MP, EXP, Gold for all enemies
+- `MonsterNames` - Compressed monster name strings
+- `ItemPrices` - Shop prices for all items
+- `WeaponData` - Attack values for weapons
+- `ArmorData` - Defense values for armor
+- `SpellCosts` - MP costs for spells
+- `ExpRequirements` - Experience needed per level
+- `MusicEngine` - Main music playback code
+
+**Modification Examples:**
+- Buff enemy stats → Edit `MonsterStats` table
+- Change item prices → Edit `ItemPrices` table
+- Modify weapon damage → Edit `WeaponData` table
+- Adjust spell costs → Edit `SpellCosts` table
+
+### Bank02 (0x8000-0xBFFF)
+
+**Primary Contents:** Dialog text and story sequences
+
+**Key Sections:**
+
+| Address Range | Contents | Line # (approx) |
+|---------------|----------|---|
+| 0x8000-0x83FF | Text Dictionary | Lines 50-400 |
+| 0x8400-0x87FF | Dialog Pointers | Lines 400-700 |
+| 0x8800-0x95FF | NPC Dialog Text | Lines 700-2500 |
+| 0x9600-0x99FF | King's Dialog | Lines 2500-3000 |
+| 0x9A00-0x9DFF | Princess Dialog | Lines 3000-3400 |
+| 0x9E00-0xA1FF | Merchants Dialog | Lines 3400-3800 |
+| 0xA200-0xA7FF | Battle Messages | Lines 3800-4400 |
+| 0xA800-0xADFF | System Messages | Lines 4400-5000 |
+| 0xAE00-0xB3FF | Intro Text | Lines 5000-5600 |
+| 0xB400-0xBFFF | Ending Text | Lines 5600-6500 |
+
+**Important Labels:**
+- `TextDictionary` - Common words/phrases for compression
+- `KingDialog` - All King Lorik's lines
+- `PrincessDialog` - Princess Gwaelin's dialog
+- `BattleText` - Combat messages ("The X attacks!")
+- `MenuText` - Menu option text
+- `IntroSequence` - Opening story text
+- `EndingSequence` - Victory ending text
+
+**Modification Examples:**
+- Change NPC dialog → Edit compressed text strings
+- Modify battle messages → Edit `BattleText` section
+- Customize intro → Edit `IntroSequence`
+- Change endings → Edit `EndingSequence`
+
+### Bank03 (0x8000-0xBFFF, 0xC000-0xFFFF)
+
+**Primary Contents:** Main game loop, battle system, core mechanics
+
+**Key Sections:**
+
+| Address Range | Contents | Line # (approx) |
+|---------------|----------|-----------------|
+| 0x8000-0x83FF | Initialization | Lines 50-400 |
+| 0x8400-0x89FF | Main Game Loop | Lines 400-1200 |
+| 0x8A00-0x8FFF | Movement System | Lines 1200-2000 |
+| 0x9000-0x96FF | Menu System | Lines 2000-2800 |
+| 0x9700-0x9FFF | Battle System Core | Lines 2800-3800 |
+| 0xA000-0xA7FF | Damage Calculation | Lines 3800-4600 |
+| 0xA800-0xAFFF | Spell Effects | Lines 4600-5400 |
+| 0xB000-0xB7FF | Item Usage | Lines 5400-6200 |
+| 0xB800-0xBFFF | Save/Load System | Lines 6200-7000 |
+| 0xC000-0xCFFF | NPC Interaction | Lines 7000-8000 |
+| 0xD000-0xDFFF | Map Transitions | Lines 8000-9000 |
+| 0xE000-0xEFFF | Status Effects | Lines 9000-10000 |
+| 0xF000-0xFF8F | Helper Routines | Lines 10000-11000 |
+| 0xFF90-0xFFFF | Interrupt Vectors | Lines 11000-11200 |
+
+**Important Labels:**
+- `MainLoop` - Core game state machine
+- `ProcessInput` - Controller input handling
+- `MovePlayer` - Player movement logic
+- `InitBattle` - Battle initialization
+- `BattleLoop` - Combat state machine
+- `CalcPhysicalDamage` - Player/enemy attack damage
+- `CalcSpellDamage` - Spell damage formulas
+- `UseItem` - Item effect processing
+- `SaveGame` - Save state to battery RAM
+- `LoadGame` - Load saved game
+- `CheckCollision` - Tile collision detection
+- `EncounterCheck` - Random battle trigger
+- `NPCInteraction` - Talk to NPCs
+
+**Modification Examples:**
+- Change damage formulas → Edit `CalcPhysicalDamage`/`CalcSpellDamage`
+- Modify encounter rate → Edit `EncounterCheck`
+- Adjust movement speed → Edit `MovePlayer`
+- Change spell effects → Edit spell effect routines
+- Modify save format → Edit `SaveGame`/`LoadGame`
+
+### Finding Code for Specific Features
+
+**Want to modify:**
+
+| Feature | Primary Bank | Key Labels/Sections |
+|---------|--------------|---------------------|
+| Monster HP/stats | Bank01 | `MonsterStats` table |
+| Weapon damage | Bank01 | `WeaponData` table |
+| Spell costs | Bank01 | `SpellCosts` table |
+| Item prices | Bank01 | `ItemPrices` table |
+| Experience curves | Bank01 | `ExpRequirements` table |
+| Dialog text | Bank02 | NPC-specific sections |
+| Battle messages | Bank02 | `BattleText` section |
+| Damage calculation | Bank03 | `CalcPhysicalDamage` |
+| Encounter rates | Bank03 | `EncounterCheck` |
+| Movement speed | Bank03 | `MovePlayer` routine |
+| Map layout | Bank00 | Map data tables |
+| Graphics rendering | Bank00 | Rendering routines |
+| Music/SFX | Bank01 | Music engine |
+
+### Memory Map Quick Reference
+
+```
+$0000-$07FF  RAM (2KB)
+$0200-$02FF  OAM (sprite data)
+$0300-$07FF  Game variables, buffers
+$6000-$7FFF  Battery-backed SRAM (save data)
+$8000-$BFFF  Switchable PRG-ROM (Banks 0-3)
+$C000-$FFFF  Fixed Bank (Bank 3 always mapped)
+```
+
+**Key RAM Addresses:**
+- `$0010-$001F` - Player stats (HP, MP, Level, etc.)
+- `$0020-$002F` - Battle variables
+- `$0030-$003F` - Menu state
+- `$0040-$005F` - Map position, scroll state
+- `$0200-$02FF` - Sprite OAM buffer
+
+See `Dragon_Warrior_Defines.asm` for complete RAM map.
+
+---
+
 ## Advanced Topics
 
 ### Text Compression
