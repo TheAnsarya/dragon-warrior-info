@@ -11,6 +11,7 @@ Essential guides for getting started with the project.
 - [**ROM Hacking Guide**](guides/ROM_HACKING_GUIDE.md) - Complete guide to modifying Dragon Warrior
 - [**ROM Hacking Quick Start**](guides/ROM_HACKING_QUICKSTART.md) - Get started modding in under 10 minutes!
 - [**Modification Reference**](guides/MODIFICATION_REFERENCE.md) - Quick lookup guide: "I want to change X" → "Edit file Y"
+- [**CHR Graphics Workflow**](guides/CHR_GRAPHICS_WORKFLOW.md) - Complete guide to editing graphics (sprites, tiles, fonts)
 - [**Tools Documentation**](guides/TOOLS_DOCUMENTATION.md) - Complete reference for all ROM hacking tools
 - [**Verification Checklist**](guides/VERIFICATION_CHECKLIST.md) - Manual verification procedures
 - [**Advanced Editors Guide**](guides/ADVANCED_EDITORS_GUIDE.md) - GUI editor usage

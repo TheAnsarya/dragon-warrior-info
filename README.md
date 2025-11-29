@@ -346,6 +346,7 @@ Comprehensive documentation is available in the `docs/` directory:
 - **[🎮 ROM Hacking Guide](docs/guides/ROM_HACKING_GUIDE.md)** - Complete guide to modifying Dragon Warrior
 - **[🚀 ROM Hacking Quick Start](docs/guides/ROM_HACKING_QUICKSTART.md)** - Get started modding in 10 minutes!
 - **[📝 Modification Reference](docs/guides/MODIFICATION_REFERENCE.md)** - Quick lookup: "Change X" → "Edit file Y"
+- **[🎨 CHR Graphics Workflow](docs/guides/CHR_GRAPHICS_WORKFLOW.md)** - Complete guide to editing sprites, tiles, and fonts
 - **[🔧 Tools Documentation](docs/guides/TOOLS_DOCUMENTATION.md)** - Complete reference for all ROM hacking tools
 - **[✅ Verification Checklist](docs/guides/VERIFICATION_CHECKLIST.md)** - Manual verification of extracted data and ROM modifications
 - **[🎨 Advanced Editors Guide](docs/guides/ADVANCED_EDITORS_GUIDE.md)** - GUI editor usage and features
@@ -359,6 +360,7 @@ Comprehensive documentation is available in the `docs/` directory:
 
 ### Technical Documentation
 
+- **[📐 Game Formulas and Constants](docs/technical/GAME_FORMULAS.md)** - Complete reference for all game calculations
 - **[🏗️ Unified Editor Design](docs/technical/UNIFIED_EDITOR_DESIGN.md)** - Architecture of the integrated editor
 - **[⚡ Optimization Techniques](docs/technical/OPTIMIZATION_TECHNIQUES.md)** - Performance optimization strategies
 - **[🗺️ ROM Map](docs/datacrystal/ROM_MAP.md)** - DataCrystal format memory mapping
