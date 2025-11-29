@@ -174,98 +174,16 @@ if ($UseAssets) {
     }
 }
 
-# If using generated assets, swap item cost data in Bank00.asm
-$bank00Backup = $null
+# Item cost table is now included via .include directive in Bank00.asm
+# No need to modify the ASM file - the generated file will be automatically included during assembly
 if ($useGeneratedItems) {
-    Write-Host "`n💡 Integrating generated item costs into Bank00.asm..." -ForegroundColor Cyan
-
-    $bank00Path = Join-Path $SourceDir "Bank00.asm"
-    $bank00Backup = Join-Path $SourceDir "Bank00_backup_temp.asm"
-
-    # Backup original
-    Copy-Item $bank00Path $bank00Backup -Force
-
-    try {
-        # Read files
-        $bank00Content = Get-Content $bank00Path -Raw
-        $generatedItems = Get-Content $generatedItemCostASM -Raw
-
-        # Find and replace the item cost data section between markers
-        $pattern = '(?s); === GENERATED_ITEM_COST_DATA_START ===.*?; === GENERATED_ITEM_COST_DATA_END ==='
-
-        if ($bank00Content -match $pattern) {
-            # Escape $ in replacement string
-            $escapedReplacement = $generatedItems -replace '\$', '$$$$'
-
-            # Use the generated content directly (it already has markers)
-            $newBank00Content = [regex]::Replace($bank00Content, $pattern, $escapedReplacement)
-
-            # Write modified Bank00.asm
-            [System.IO.File]::WriteAllText($bank00Path, $newBank00Content)
-
-            Write-Host "   ✓ Item cost data replaced with JSON-generated ASM" -ForegroundColor Green
-        } else {
-            Write-Host "   ⚠️  Could not find item cost data section markers in Bank00.asm" -ForegroundColor Yellow
-            $useGeneratedItems = $false
-        }
-    } catch {
-        Write-Host "   ❌ Error swapping item cost data: $_" -ForegroundColor Red
-        # Restore original if error
-        if (Test-Path $bank00Backup) {
-            Copy-Item $bank00Backup $bank00Path -Force
-        }
-        $useGeneratedItems = $false
-    }
-}
-
-# If using generated assets, swap monster data in Bank01.asm
-$bank01Backup = $null
+    Write-Host "`n💡 Generated item cost data: $generatedItemCostASM" -ForegroundColor Cyan
+    Write-Host "   ✓ Will be included during Bank00 assembly via .include directive" -ForegroundColor Green
+}# Monster data is now included via .include directive in Bank01.asm
+# No need to modify the ASM file - the generated file will be automatically included during assembly
 if ($useGeneratedMonsters) {
-    Write-Host "`n💡 Integrating generated monster data into Bank01.asm..." -ForegroundColor Cyan
-
-    $bank01Path = Join-Path $SourceDir "Bank01.asm"
-    $bank01Backup = Join-Path $SourceDir "Bank01_backup_temp.asm"
-
-    # Backup original
-    Copy-Item $bank01Path $bank01Backup -Force
-
-    try {
-        # Read files
-        $bank01Content = Get-Content $bank01Path -Raw
-        $generatedMonsters = Get-Content $generatedMonstersASM -Raw
-
-        # Find and replace the monster data section between simple markers
-        $pattern = '(?s); === GENERATED_MONSTER_DATA_START ===.*?; === GENERATED_MONSTER_DATA_END ==='
-
-        if ($bank01Content -match $pattern) {
-            # Need to escape $ in the replacement string to prevent regex interpretation
-            $escapedReplacement = $generatedMonsters -replace '\$', '$$$$'
-
-            # Add markers back
-            $fullReplacement = "; === GENERATED_MONSTER_DATA_START ===`r`n" + $escapedReplacement + "`r`n; === GENERATED_MONSTER_DATA_END ==="            # Use [regex]::Replace for better control
-            $newBank01Content = [regex]::Replace($bank01Content, $pattern, $fullReplacement)
-
-            # Verify the replacement worked
-            $sizeChange = $newBank01Content.Length - $bank01Content.Length
-            $expectedChange = $generatedMonsters.Length - $matches[0].Length
-            Write-Host "   → Size change: $sizeChange bytes (expected ~$expectedChange)" -ForegroundColor DarkGray
-
-            # Write modified Bank01.asm
-            [System.IO.File]::WriteAllText($bank01Path, $newBank01Content)
-
-            Write-Host "   ✓ Monster data replaced with JSON-generated ASM" -ForegroundColor Green
-        } else {
-            Write-Host "   ⚠️  Could not find monster data section markers in Bank01.asm" -ForegroundColor Yellow
-            $useGeneratedMonsters = $false
-        }
-    } catch {
-        Write-Host "   ❌ Error swapping monster data: $_" -ForegroundColor Red
-        # Restore original if error
-        if (Test-Path $bank01Backup) {
-            Copy-Item $bank01Backup $bank01Path -Force
-        }
-        $useGeneratedMonsters = $false
-    }
+    Write-Host "`n💡 Generated monster data: $generatedMonstersASM" -ForegroundColor Cyan
+    Write-Host "   ✓ Will be included during Bank01 assembly via .include directive" -ForegroundColor Green
 }
 
 foreach ($bank in $banks) {
@@ -289,21 +207,11 @@ foreach ($bank in $banks) {
     $bankFiles += $bankOutput
 }
 
-# Restore original Bank00.asm if we modified it
-if ($bank00Backup -and (Test-Path $bank00Backup)) {
-    $bank00Path = Join-Path $SourceDir "Bank00.asm"
-    Copy-Item $bank00Backup $bank00Path -Force
-    Remove-Item $bank00Backup -Force
-    Write-Host "`n   ↻ Restored original Bank00.asm" -ForegroundColor DarkGray
-}
+# No need to restore Bank00.asm - we never modified it!
+# The .include directive pulls in generated data automatically
 
-# Restore original Bank01.asm if we modified it
-if ($bank01Backup -and (Test-Path $bank01Backup)) {
-    $bank01Path = Join-Path $SourceDir "Bank01.asm"
-    Copy-Item $bank01Backup $bank01Path -Force
-    Remove-Item $bank01Backup -Force
-    Write-Host "   ↻ Restored original Bank01.asm" -ForegroundColor DarkGray
-}
+# No need to restore Bank01.asm - we never modified it!
+# The .include directive pulls in generated data automatically
 
 # Step 6: Extract CHR-ROM
 Write-Host "[6/6] Extracting CHR-ROM..." -ForegroundColor Yellow

@@ -54,9 +54,9 @@ class AssetReinserter:
 		if master_file:
 			generated_files.append(master_file)
 
-		console.print(f"[green]✅ Generated {len(generated_files)} assembly files:[/green]")
+		print(f"Generated {len(generated_files)} assembly files:")
 		for file_path in generated_files:
-			console.print(f"	 📄 {file_path}")
+			print(f"   {file_path}")
 
 		return generated_files
 
@@ -448,13 +448,13 @@ class AssetReinserter:
 				"; Spell Effect Types",
 				"SpellEffectTypes:"
 			])
-			
+
 			for spell_id in sorted([int(k) for k in spells.keys()]):
 				spell = spells[str(spell_id)]
 				effect_type = spell.get('effect_type', 'unknown')
 				# Map effect types to numeric IDs
 				effect_map = {
-					'heal': 0, 'damage': 1, 'status': 2, 
+					'heal': 0, 'damage': 1, 'status': 2,
 					'teleport': 3, 'field': 4, 'unknown': 255
 				}
 				effect_id = effect_map.get(effect_type, 255)
@@ -730,10 +730,10 @@ def reinsert_assets(assets_dir: str, output_dir: str, extract_defaults: bool):
 	reinserter = AssetReinserter(assets_dir, output_dir)
 	generated_files = reinserter.generate_all_assembly(extract_defaults=extract_defaults)
 
-	console.print(f"\n[green]🎯 Asset reinsertion code generation complete![/green]")
-	console.print(f"[cyan]Include 'dragon_warrior_assets.asm' in your main assembly file.[/cyan]")
+	print(f"\nAsset reinsertion code generation complete!")
+	print(f"Include 'dragon_warrior_assets.asm' in your main assembly file.")
 	if extract_defaults:
-		console.print(f"[yellow]Default assets extracted to build/default_assets/[/yellow]")
+		print(f"Default assets extracted to build/default_assets/")
 
 if __name__ == "__main__":
 	reinsert_assets()

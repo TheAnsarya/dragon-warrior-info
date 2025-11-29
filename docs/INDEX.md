@@ -27,6 +27,7 @@ Essential guides for getting started with the project.
 
 In-depth technical information about Dragon Warrior's systems.
 
+- [**Label Inventory**](LABEL_INVENTORY.md) - Complete catalog of 22,949+ assembly labels with expansion suggestions
 - [**Game Formulas and Constants**](technical/GAME_FORMULAS.md) - Complete reference for all game calculations
 - [**Unified Editor Design**](technical/UNIFIED_EDITOR_DESIGN.md) - Architecture of the integrated editor
 - [**Optimization Techniques**](technical/OPTIMIZATION_TECHNIQUES.md) - Performance optimization

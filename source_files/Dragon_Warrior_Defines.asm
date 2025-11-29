@@ -27,6 +27,9 @@
 .alias GeneralPointer22         $22     ;General use pointer.
 .alias GeneralPointer22LB       $22     ;General use pointer, lower byte.
 .alias GeneralPointer22UB       $23     ;General use pointer, upper byte.
+.alias GenPtr22                 GeneralPointer22     ;Abbreviated alias
+.alias GenPtr22LB               GeneralPointer22LB   ;Abbreviated alias
+.alias GenPtr22UB               GeneralPointer22UB   ;Abbreviated alias
 
 .alias GenByte24        $24     ;General use byte.
 .alias GenByte25        $25     ;General use byte.
@@ -53,6 +56,8 @@
 .alias GeneralPointer3E         $3E     ;General use pointer.
 .alias GeneralPointer3ELB       $3E     ;General use pointer, lower byte.
 .alias GeneralPointer3EUB       $3F     ;General use pointer, upper byte.
+.alias GenPtr3ELB               GeneralPointer3ELB   ;Abbreviated alias
+.alias GenPtr3EUB               GeneralPointer3EUB   ;Abbreviated alias
 
 .alias GenWord3E        $3E     ;General use word.
 .alias GenWord3ELB      $3E     ;General use word, lower byte.
@@ -88,6 +93,7 @@
 .alias PPUBufCount      $04     ;Number of bytes to load from PPU buffer to PPU.
 .alias ScrollX          $05     ;PPU scroll x position.
 .alias ActiveNameTable      $06     ;Active name table $#00= nametable0, #$01=nametable1.
+.alias ActiveNmTbl          ActiveNameTable  ;Abbreviated alias
 .alias ScrollY          $07     ;PPU scroll y position.
 .alias PPUDataByte      $08     ;Data byte to be stored in PPU.
 .alias IsEnemyMirrored     $09     ;#$80=Enemy sprites mirrored, #$00=Enemy sprites not mirrored.
@@ -108,6 +114,8 @@
 .alias MapDataPointer        $11     ;Pointer to base address of map data.
 .alias MapDataPointerLB      $11     ;Pointer to base address of map data, lower byte.
 .alias MapDataPointerUB      $12     ;Pointer to base address of map data, upper byte.
+.alias MapDatPtrLB          MapDataPointerLB ;Abbreviated alias
+.alias MapDatPtrUB          MapDataPointerUB ;Abbreviated alias
 .alias MapWidth         $13     ;Width of current map in blocks.
 .alias MapHeight        $14     ;Height of current map in blocks.
 .alias BoundryBlock     $15     ;Block ID of for blocks beyond the map boundaries.
@@ -116,6 +124,8 @@
 .alias CoverDataPointer      $17     ;Pointer to map covered area data.
 .alias CoverDataLB       $17     ;Pointer to map covered area data, lower byte.
 .alias CoverDataUB       $18     ;Pointer to map covered area data, upper byte.
+.alias CoverDatLB           CoverDataLB    ;Abbreviated alias
+.alias CoverDatUB           CoverDataUB    ;Abbreviated alias
 .alias CoverStatusus      $19     ;#$00=Not covered, #$08=Under cover.
 
 .alias ThisTempIndex    $1A     ;Working index into temp buffer.
@@ -153,8 +163,9 @@
 .alias PlayerDataPointerLB   $22     ;Pointer for loading/saving player stats, lower byte.
 .alias PlayerDataPointerUB   $23     ;Pointer for loading/saving player stats, upper byte.
 
-.alias WindowLineBufferIndex    $22     ;Index into window line buffer.
+; WindowLineBufferIndex is defined at $64AC in the RAM section below
 .alias AttributeBufferIndex   $23     ;Index into attribute table buffer
+.alias AttribBufIndex       AttributeBufferIndex  ;Abbreviated alias
 
 .alias WindowTypeCopy      $23     ;Temporary copy of current window type.
 
@@ -162,9 +173,10 @@
 .alias NPCYCheck        $23     ;Y position to check for NPC.
 .alias NPCCounter       $24     ;Counter for finding direction of character sprites.
 .alias NPCOffset        $25     ;Offset to NPC position data.
+.alias NPCOffsetSet         NPCOffset  ;Abbreviated alias (despite name, used as setter)
 .alias NPCNewFace       $25     ;New direction NPC should face to talk to player.
 .alias NPCNumber        $26     ;NPC being worked on.
-.alias NPCSprite Counter    $27     ;Counter used for loading NPC sprite data.
+.alias NPCSpriteCounter    $27     ;Counter used for loading NPC sprite data.
 .alias NPCSpriteRAMIndex    $28     ;Index into sprite RAM for current NPC sprite.
 
 .alias JMPFuncPointer       $0030   ;JUMP command for IRQ function pointer.
@@ -218,6 +230,8 @@
 .alias NPCDataPointer        $3C     ;Data pointer to NPC data.
 .alias NPCDataPointerLB      $3C     ;Data pointer to NPC data, lower byte.
 .alias NPCDataPointerUB      $3D     ;Data pointer to NPC data, upper byte.
+.alias NPCDatPtr            NPCDataPointer    ;Abbreviated alias
+.alias NPCDatPtrLB          NPCDataPointerLB  ;Abbreviated alias
 
 .alias CoveredStsNext   $3D     ;Indicates the covered status after player movement.
 
@@ -250,6 +264,8 @@
 .alias DivideNum1UB        $3D     ;Divide number 1, upper byte.
 .alias DivideNum2          $3E     ;Divide number 2.
 .alias DivideNum2NU        $3F     ;Divide number 2 (not used).
+.alias DivideNumber1LB      DivideNum1LB  ;Abbreviated alias
+.alias DivideNumber2        DivideNum2    ;Abbreviated alias
 .alias DivideQuotient      $3C     ;Divide results, quotient.
 .alias DivideRemainder     $40     ;Divide results, remainder.
 
@@ -285,6 +301,9 @@
 .alias BlockDataPointer     $40     ;Pointer to block graphics data.
 .alias BlockDataPointerLB   $40     ;Pointer to block graphics data, lower byte.
 .alias BlockDataPointerUB   $41     ;Pointer to block graphics data, upper byte.
+.alias BlockDataPtr         BlockDataPointer     ;Abbreviated alias
+.alias BlockDataPtrLB       BlockDataPointerLB   ;Abbreviated alias
+.alias BlockDataPtrUB       BlockDataPointerUB   ;Abbreviated alias
 
 .alias CRCCopyLB        $40     ;Copy of saved game CRC, lower byte for verification purposes.
 .alias CRCCopyUB        $41     ;Copy of saved game CRC, upper byte for verification purposes.
@@ -292,10 +311,16 @@
 .alias MapBytePointer       $40     ;Pointer to map data byte.
 .alias MapBytePointerLB     $40     ;Pointer to map data byte, lower byte.
 .alias MapBytePointerUB     $41     ;Pointer to map data byte, upper byte.
+.alias MapBytePtrLB         MapBytePointerLB     ;Abbreviated alias
+.alias MapBytePtrUB         MapBytePointerUB     ;Abbreviated alias
+.alias MapBytePtr           MapBytePointer       ;Abbreviated alias
 
 .alias WorldMapPointer       $40     ;Pointer to overworld map row data.
 .alias WorldMapPointerLB     $40     ;Pointer to overworld map row data, lower byte.
 .alias WorldMapPointerUB     $41     ;Pointer to overworld map row data, upper byte.
+.alias WrldMapPtr           WorldMapPointer      ;Abbreviated alias
+.alias WrldMapPtrLB         WorldMapPointerLB    ;Abbreviated alias
+.alias WrldMapPtrUB         WorldMapPointerUB    ;Abbreviated alias
 
 .alias WindowBlock      $40     ;#$FF-No window data at selected block.
 .alias NPCOnScreen      $41     ;#$FF-NPC on screen, #$00-NPC not on screen.
@@ -329,6 +354,7 @@
 .alias NTBlockX         $4A     ;Nametable X block position, #$00-#$1F(1/2 X tile position).
 .alias NTBlockY         $4B     ;Nametable Y block position, #$00-#$0E(1/2 y tile position).
 .alias BlockRemoveFlags    $4C     ;Lower nibble is flags of tiles to remove when changing a map block.
+.alias BlkRemoveFlgs        BlockRemoveFlags     ;Abbreviated alias
 				;1-upper left, 2-upper right, 4-lower left, 8-lower right.
 .alias BridgeFlashCounter  $4C     ;Used to count palette flash cycles when rainbow bridge is created.
 .alias TileCounter      $4D     ;Used to count tiles when modifying blocks.
@@ -370,6 +396,7 @@
 .alias StopNPCMove      $96     ;#$FF-Stop NPCs from moving, #$00-Allow NPCs to move.
 .alias WindowColumnPosition    $97     ;Window column position, in tiles.
 .alias WindowRowPosition       $98     ;Window row position, in tiles.
+.alias WindowRowPos         WindowRowPosition    ;Abbreviated alias
 .alias BlockCounter     $98     ;Counts blocks placed when putting combat background on screen.
 
 .alias BlockAddr        $99     ;Current block address in buffer.
@@ -383,6 +410,9 @@
 .alias DataPointer1         $99     ;
 .alias DataPointer1LB       $99     ;Stores a pointer to the start of data tables.
 .alias DataPointer1UB       $9A     ;
+.alias DatPntr1             DataPointer1     ;Abbreviated alias
+.alias DatPntr1LB           DataPointer1LB   ;Abbreviated alias
+.alias DatPntrLUB           DataPointer1UB   ;Abbreviated alias
 
 .alias StartSignedXPos  $9D     ;Starting X position in tiles of window row. signed from center.
 .alias WindowBlockWidth    $9E     ;Block width of window being removed.
@@ -421,6 +451,7 @@
 .alias GoldLB           $BC     ;Current gold, lower byte.
 .alias GoldUB           $BD     ;Current gold, upper bytee.
 .alias EquippedItems     $BE     ;Current equipped items %WWWAAASS W-weapon, A-armor, S-shield
+.alias EqippedItems         EquippedItems  ;Abbreviated alias (typo in original)
 				;Value  Weapon           Armor            Shield
 				;--------------------------------------------------------------------
 				; 000   None             None             None
@@ -465,6 +496,7 @@
 				;%01000000-Return
 				;%10000000-Repel
 .alias ModifiersAndSpells      $CF     ;Two more spell flags and stat enhancing items.
+.alias ModsNSpells          ModifiersAndSpells   ;Abbreviated alias
 				;%00000001-Healmore Spell.
 				;%00000010-Hurtmore Spell.
 				;%00000100-Dragonlord castle secret passage found.
@@ -642,6 +674,7 @@
 .alias SoundEngineStatus    $6005   ;If not 0, sound engine is processing.
 
 .alias DragonlordPalette       $600A   ;Read only once and loads a special palette when
+.alias DrgnLrdPal               DragonlordPalette    ;Abbreviated alias
 				;the dradonlord is defeated. The palette does not
 				;seemed to be used for anything.
 
@@ -649,6 +682,8 @@
 .alias DoorYPos         $600D   ;Through $601B. opened on the current map.
 .alias TreasureXPos         $601C   ;Through $602A. X and y positions of treasure
 .alias TreasureYPos         $601D   ;Through $602B. chests picked up on the current map.
+.alias TrsrXPos             TreasureXPos  ;Abbreviated alias
+.alias TrsrYPos             TreasureYPos  ;Abbreviated alias
 
 .alias UpdateBGTiles    $602C   ;MSB set = update on-screen background tiles.
 
@@ -685,13 +720,16 @@
 .alias WindowEraseHeight     $6007   ;Window erase height in blocks.
 .alias WindowEraseWidth     $6008   ;Window erase width in tiles.
 .alias WindowErasePosition      $6009   ;Window erase position in blocks, Y=upper nibble, X=lower nibble.
+.alias WindEraseWdth        WindowEraseWidth     ;Abbreviated alias
 
 .alias WindowLineBuffer       $6436   ;Through $6471. 60 bytes. buffers 2 window tile rows.
 
 .alias AttributeTableBuffer     $6496   ;Through $64A5. Attribute table buffer for 1 on-screen block row.
+.alias AttributeTblBuf      AttributeTableBuffer ;Abbreviated alias
 
 .alias WindowWidthTemp     $64A6   ;Temp copy of WindowWidth.
 .alias _WndPosition     $64A7   ;Working copy of WindowPosition.
+.alias _WindowPosition      _WndPosition         ;Abbreviated alias
 
 .alias WindowBlockTileRow    $64A9   ;Either #$02 or #$01. Which row of block is being processed.
 .alias _WindowWidth        $64AA   ;Working copy of WindowWidth.

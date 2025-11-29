@@ -360,6 +360,7 @@ Comprehensive documentation is available in the `docs/` directory:
 
 ### Technical Documentation
 
+- **[🏷️ Label Inventory](docs/LABEL_INVENTORY.md)** - Complete catalog of 22,949+ assembly labels with AI-generated expansion suggestions (`labels_inventory.csv`)
 - **[📐 Game Formulas and Constants](docs/technical/GAME_FORMULAS.md)** - Complete reference for all game calculations
 - **[🏗️ Unified Editor Design](docs/technical/UNIFIED_EDITOR_DESIGN.md)** - Architecture of the integrated editor
 - **[⚡ Optimization Techniques](docs/technical/OPTIMIZATION_TECHNIQUES.md)** - Performance optimization strategies

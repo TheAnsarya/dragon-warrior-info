@@ -13,6 +13,7 @@
 .alias ClearAttribByte          $C244
 .alias UpdateRandNumber            $C55B
 .alias CalcPPUBufferAddr           $C596
+.alias CalcPPUBufAddr           CalcPPUBufferAddr    ;Abbreviated alias
 .alias DoAddressCalculation               $C5AA
 .alias PrepSPPalLoad            $C632
 .alias PrepBGPalLoad            $C63D
@@ -23,12 +24,43 @@
 .alias ChangeMaps               $D9E2
 .alias MapTargetTbl             $F461
 .alias GFXTilesPointer              $F5B3
+.alias GFXTilesPtr              GFXTilesPointer  ;Abbreviated alias
 .alias Bank1ToCHR0              $FC98
 .alias Bank0ToCHR0              $FCA3
 .alias Bank0ToCHR1              $FCA8
 .alias Bank2ToCHR1              $FCAD
 .alias WaitForNMI               $FF74
 .alias _DoReset                 $FF8E
+
+;--------------------------------[ Table name aliases ]--------------------------------------
+; Map full table names (used in references) to abbreviated names (actual labels)
+
+.alias ThroneRoomMobileTable    ThRmMobTbl
+.alias ThroneRoomStaticTable    ThRmStatTbl
+.alias DrgnLrdBFMobileTable     DLBFMobTbl
+.alias DrgnLrdBFStaticTable     DLBFStatTbl
+.alias KolMobileTable           KolMobTbl
+.alias KolStaticTable           KolStatTbl
+.alias BrecconaryMobileTable    BrecMobTbl
+.alias BrecconaryStaticTable    BrecStatTbl
+.alias GarinhamMobileTable      GarMobTbl
+.alias GarinhamStaticTable      GarStatTbl
+.alias CantlinMobileTable       CantMobTbl
+.alias CantlinStaticTable       CantStatTbl
+.alias RimuldarMobileTable      RimMobTbl
+.alias RimuldarStaticTable      RimStatTbl
+.alias TantSLMobileTable        TaSLMobTbl
+.alias TantSLStaticTable        TaSLStatTbl
+.alias RainCaveMobileTable      RainMobTbl
+.alias RainCaveStaticTable      RainStatTbl
+.alias RainbowCaveMobileTable   RnbwMobTbl
+.alias RainbowCaveStaticTable   RnbwStatTbl
+.alias TantDLMobileTable        TaDLMobTbl
+.alias TantDLStaticTable        TaDLStatTbl
+.alias TantagelStaticTable      TantStatTbl
+.alias MapDatTbl                MapDataTable         ;Abbreviated alias for internal table
+.alias NPCMobPtrTbl             NPCMobilePointerTable ;Abbreviated alias for internal table
+.alias BrecCvrdDatPtr           BrecCvrdDatPointer   ;Abbreviated alias for internal label
 
 ;-----------------------------------------[ Start of code ]------------------------------------------
 
@@ -1853,7 +1885,7 @@ L9746:  .word RainCaveMobileTable     ;($97EF)Staff of rain cave mobile NPCs.
 L9748:  .word RainbowCaveMobileTable  ;($97F4)Rainbow drop cave mobile NPCs.
 L974A:  .word TantDLMobileTable       ;($97B8)Tantagel castle, after dragonlord defeat mobile NPCs.
 
-NPCStaticPointerTable:erTable:
+NPCStaticPointerTable:
 L974C:  .word TantagelStaticTable     ;($9783)Tantagel castle, ground floor static NPCs.
 L974E:  .word ThroneRoomStaticTable   ;($97A6)Throne room, static NPCs.
 L9750:  .word DrgnLrdBFStaticTable    ;($97EB)Dragonlord's castle, bottom floor static NPCs. NPCs.
@@ -2136,42 +2168,11 @@ L9944:  .byte DIR_DOWN,  DIR_DOWN, DIR_DOWN
 ;inventory window.  This table is used to calculate the cost when items are bought and
 ;sold. The order of the items is slightly different between tables.
 
-; === GENERATED_ITEM_COST_DATA_START ===
-ItemCostTbl:
-L9947:  .word $000A             ;Bamboo pole        - 10    gold.
-L9949:  .word $003C             ;Club               - 60    gold.
-L994B:  .word $00B4             ;Copper sword       - 180   gold.
-L994D:  .word $0230             ;Hand axe           - 560   gold.
-L994F:  .word $05DC             ;Broad sword        - 1500  gold.
-L9951:  .word $2648             ;Flame sword        - 9800  gold.
-L9953:  .word $0002             ;Erdrick's sword    - 2     gold.
-L9955:  .word $0014             ;Clothes            - 20    gold.
-L9957:  .word $0046             ;Leather armor      - 70    gold.
-L9959:  .word $012C             ;Chain mail         - 300   gold.
-L995B:  .word $03E8             ;Half plate         - 1000  gold.
-L995D:  .word $0BB8             ;Full plate         - 3000  gold.
-L995F:  .word $1E14             ;Magic armor        - 7700  gold.
-L9961:  .word $0002             ;Erdrick's armor    - 2     gold.
-L9963:  .word $005A             ;Small shield       - 90    gold.
-L9965:  .word $0320             ;Large shield       - 800   gold.
-L9967:  .word $39D0             ;Silver shield      - 14800 gold.
-L9969:  .word $0018             ;Herb               - 24    gold.
-L996B:  .word $0035             ;Magic key          - 53    gold.
-L996D:  .word $0008             ;Torch              - 8     gold.
-L996F:  .word $0026             ;Fairy water        - 38    gold.
-L9971:  .word $0046             ;Wings              - 70    gold.
-L9973:  .word $0014             ;Dragon's scale     - 20    gold.
-L9975:  .word $0000             ;Fairy flute        - 0     gold.
-L9977:  .word $001E             ;Fighter's ring     - 30    gold.
-L9979:  .word $0000             ;Erdrick's token    - 0     gold.
-L997B:  .word $0000             ;Gwaelin's love     - 0     gold.
-L997D:  .word $0168             ;Cursed belt        - 360   gold.
-L997F:  .word $0000             ;Silver harp        - 0     gold.
-L9981:  .word $0960             ;Death necklace     - 2400  gold.
-L9983:  .word $0000             ;Stones of sunlight - 0     gold.
-L9985:  .word $0000             ;Staff of rain      - 0     gold.
-L9987:  .word $0000             ;Rainbow drop       - 0     gold.
-; === GENERATED_ITEM_COST_DATA_END ===
+;----------------------------------------------------------------------------------------------------
+; Item Cost Table - Generated from assets/json/items_corrected.json
+; To modify item prices, edit the JSON file and rebuild
+;----------------------------------------------------------------------------------------------------
+.include "generated/item_cost_table.asm"
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -5727,7 +5728,7 @@ LB46A:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 
 LB46D:  LDA XPosFromCenter      ;
 LB46F:  CMP #$14                ;Done clearing this row?
-LB471:  BNEVerticalAttribLoop1     ;If not, branch to clear another section.
+LB471:  BNE VerticalAttribLoop1     ;If not, branch to clear another section.
 
 LB473:  LDA #$10                ;Prepare to update blocks starting 16 tiles below the player.
 LB475:  STA YPosFromCenter      ;
@@ -5749,7 +5750,7 @@ LB48B:  INC XPosFromCenter      ;Increment to next block in row.
 LB48D:  INC XPosFromCenter      ;
 
 LB48F:  DEC TileCounter         ;Done changing block section?
-LB491:  BNEVerticalBlockLoop1      ;If not, branch to do more.
+LB491:  BNE VerticalBlockLoop1      ;If not, branch to do more.
 
 LB493:  INC ScrollY             ;Move player down 1 pixel.
 LB495:  INC CharYPixelsLB       ;
@@ -5757,7 +5758,7 @@ LB495:  INC CharYPixelsLB       ;
 LB497:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 LB49A:  LDA XPosFromCenter      ;
 LB49C:  CMP #$12                ;Done changing block row?
-LB49E:  BNEVerticalRowLoop1        ;If not, branch to do more.
+LB49E:  BNE VerticalRowLoop1        ;If not, branch to do more.
 
 LB4A0:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -5815,14 +5816,14 @@ LB4E8:  INC YPosFromCenter      ;
 
 LB4EA:  LDA YPosFromCenter      ;Have all the rows been changed?
 LB4EC:  CMP #$09                ;
-LB4EE:  BNEVerticalDgnBlockLoop    ;If not, branch to do another row.
+LB4EE:  BNE VerticalDgnBlockLoop    ;If not, branch to do another row.
 
 LB4F0:  INC XPosFromCenter      ;Move to next block in row. Block is 2 tiles wide.
 LB4F2:  INC XPosFromCenter      ;
 
 LB4F4:  LDA XPosFromCenter      ;Have all the columns been changed?
 LB4F6:  CMP #$08                ;
-LB4F8:  BNEVerticalDgnRowLoop      ;If not, branch to do another column.
+LB4F8:  BNE VerticalDgnRowLoop      ;If not, branch to do another column.
 
 LB4FA:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
@@ -5911,7 +5912,7 @@ LB573:  INC XPosFromCenter      ;Increment to next block in row.
 LB575:  INC XPosFromCenter      ;
 
 LB577:  DEC TileCounter         ;Done changing block section?
-LB579:  BNEVerticalBlockLoop2      ;If not, branch to do more.
+LB579:  BNE VerticalBlockLoop2      ;If not, branch to do more.
 
 LB57B:  DEC ScrollY             ;Decrement vertical scroll register and pixel position.
 LB57D:  DEC CharYPixelsLB       ;
@@ -5919,7 +5920,7 @@ LB57F:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 
 LB582:  LDA XPosFromCenter      ;
 LB584:  CMP #$12                ;Done clearing this row?
-LB586:  BNEVerticalRowLoop2        ;If not, branch to clear another section.
+LB586:  BNE VerticalRowLoop2        ;If not, branch to clear another section.
 
 LB588:  LDA #$F0                ;Prepare to update blocks starting -16 tiles above the player.
 LB58A:  STA YPosFromCenter      ;
@@ -5948,7 +5949,7 @@ LB5A9:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 
 LB5AC:  LDA XPosFromCenter      ;
 LB5AE:  CMP #$14                ;Done clearing this row?
-LB5B0:  BNEVerticalAttribLoop2     ;If not, branch to clear another section.
+LB5B0:  BNE VerticalAttribLoop2     ;If not, branch to clear another section.
 
 LB5B2:  LDA #$F0                ;Prepare to update blocks starting -16 tiles above the player.
 LB5B4:  STA YPosFromCenter      ;
@@ -5971,15 +5972,15 @@ LB5CA:  INC XPosFromCenter      ;Increment to next block in row.
 LB5CC:  INC XPosFromCenter      ;
 
 LB5CE:  DEC TileCounter         ;Done changing block section?
-LB5D0:  BNEVerticalBlockLoop3      ;If not, branch to do more.
+LB5D0:  BNE VerticalBlockLoop3      ;If not, branch to do more.
 
-LB5D2:  DEC ScrollY             ;Move player up 1 pixel.
+        DEC ScrollY             ;($B5D2)Move player up 1 pixel.
 LB5D4:  DEC CharYPixelsLB       ;
 
 LB5D6:  JSR DoSprites           ;($B6DA)Update player and NPC sprites.
 LB5D9:  LDA XPosFromCenter      ;
 LB5DB:  CMP #$12                ;Done changing block row?
-LB5DD:  BNEVerticalRowLoop3        ;If not, branch to do more.
+LB5DD:  BNE VerticalRowLoop3        ;If not, branch to do more.
 
 LB5DF:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 
