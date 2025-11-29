@@ -55,6 +55,251 @@ Dragon Warrior has two versions:
 
 ---
 
+## What and Where to Edit
+
+This section provides quick reference for finding and modifying specific game content.
+
+### Monster Graphics
+
+**Location:** `extracted_assets/chr_organized/sprites_monsters_*.png`
+
+Monster sprites are extracted as organized PNG files:
+
+- `sprites_monsters_01_slimes.png` - Slimes and basic enemies
+- `sprites_monsters_02_dragons.png` - Dragon family
+- `sprites_monsters_03_undead.png` - Ghosts, skeletons, wraiths
+- `sprites_monsters_04_humanoid.png` - Knights, wizards, golems
+- `sprites_monsters_05_special.png` - Metal slime, Dragonlord forms
+
+**Format:** 8×8 tiles in PNG format with proper NES palettes
+**Restrictions:**
+- Must use 4-color NES palettes (3 colors + transparency)
+- Maximum 64 8×8 tiles per sprite sheet
+- Each tile is 8×8 pixels
+- Reinsertion requires CHR-ROM rebuild
+
+**How to Edit:**
+1. Edit PNG files in graphics editor (GIMP, Aseprite, etc.)
+2. Maintain NES color restrictions
+3. Use `tools/graphics_reinserter.py` to rebuild CHR-ROM *(when implemented)*
+4. Rebuild ROM with `build_rom.ps1`
+
+### Monster Stats
+
+**Location:** `extracted_assets/data/monsters.json`
+
+**Also in Assembly:** `source_files/Bank01.asm` at line ~4000+ (offset 0x5E5B)
+
+**Format (JSON):**
+
+```json
+{
+  "0": {
+    "id": 0,
+    "name": "Slime",
+    "hp": 3,
+    "strength": 5,
+    "agility": 15,
+    "attack_power": 5,
+    "defense": 3,
+    "magic_defense": 1,
+    "experience_reward": 1,
+    "gold_reward": 2,
+    "spell": 0
+  }
+}
+```
+
+**Restrictions:**
+- All stats 0-255 (1 byte each)
+- 39 monsters total (ID 0-38)
+- Spell field is bitflag (0 = no spell)
+
+**How to Edit:**
+1. Method A: Edit `monsters.json` and use `tools/reinsert_assets.py`
+2. Method B: Edit `Bank01.asm` directly at monster data table
+3. Rebuild ROM
+
+### Palettes
+
+**Location:** `extracted_assets/palettes/` (when extracted)
+
+**Also in Assembly:** `source_files/Bank01.asm` - Search for "palette" or "PPU"
+
+NES has 8 palettes (4 background, 4 sprite):
+- Each palette = 4 colors (1 shared background + 3 unique)
+- Colors from NES 64-color master palette
+
+**Common Palette Addresses:**
+- Background palettes: Various addresses in Bank01/Bank03
+- Sprite palettes: Set dynamically via PPU writes
+
+**How to Edit:**
+1. Find palette data in `Bank01.asm` or `Bank03.asm`
+2. Edit color values (0x00-0x3F from NES palette)
+3. Rebuild ROM
+4. Test in emulator to verify colors
+
+### Dialog and Text
+
+**Location (Assembly):** `source_files/Bank02.asm`
+
+**Structure:**
+- TextBlock1 through TextBlock19 - All game dialog
+- Special control codes: HERO, WAIT, LINE, PAGE, CHOICE, etc.
+
+**Encoding:**
+- 0x00-0x5F: Basic ASCII (offset by 0x20)
+- 0x60-0x7F: Extended characters
+- 0x80-0x8F: Word compression ("the", "thou", "thy", etc.)
+- 0xF0-0xFF: Control codes
+
+**Example:**
+
+```assembly
+TextBlock1Entry0:
+	.text "Welcome to Alefgard,", LINE
+	.text HERO, ".", END
+```
+
+**Restrictions:**
+- Text is compressed using dictionary words
+- Must fit within ROM space limits
+- Control codes must be used correctly
+- Text encoding is custom (not pure ASCII)
+
+**How to Edit:**
+1. Edit dialog strings in `Bank02.asm`
+2. Use provided text encoding (see `extracted_assets/text/` for encoding table)
+3. Stay within line length limits
+4. Rebuild ROM
+
+### Maps
+
+**Location:** `extracted_assets/maps/*.json`
+
+**Also in Assembly:** `source_files/Bank00.asm` and map data tables
+
+**Format:**
+
+```json
+{
+  "id": 1,
+  "name": "Tantegel Castle - Throne Room",
+  "width": 30,
+  "height": 30,
+  "tiles": [ /* 2D array of tile IDs */ ],
+  "npcs": [ /* NPC positions */ ],
+  "chests": [ /* Treasure locations */ ]
+}
+```
+
+**Map Files:**
+- 22 interior maps (towns, castles, caves)
+- Overworld map (special format, larger)
+
+**Restrictions:**
+- Maximum map size varies by location
+- Tile IDs must reference valid CHR tiles
+- Collision data stored separately
+- NPC count limits per map
+
+**How to Edit:**
+1. Edit map JSON files
+2. Use map editor tool *(when implemented)*
+3. Or edit map data directly in `Bank00.asm`
+4. Rebuild ROM
+
+### Attack Calculations and Game Mechanics
+
+**Location:** `source_files/Bank00.asm` and `Bank03.asm`
+
+**Key Routines:**
+
+**Damage Calculation** - `Bank03.asm` around line 3000+
+
+```assembly
+; Player attack damage
+; Damage = (Attack / 2) - (EnemyDef / 4) + Random(0-3)
+CalcPlayerDamage:
+	LDA PlayerAttack
+	LSR A               ; Divide by 2
+	; ... more calculation code
+```
+
+**Enemy AI** - `Bank03.asm` enemy behavior routines
+
+**Battle System** - `Bank00.asm` and `Bank03.asm` battle management
+
+**Spell Effects** - `Bank03.asm` spell calculation routines
+
+**Experience/Leveling** - `Bank03.asm` level-up calculations
+
+**How to Edit:**
+1. Find specific routine in assembly source
+2. Modify calculation formulas
+3. Be careful with stack operations and register usage
+4. Rebuild and test extensively
+5. **Advanced:** Use emulator debugger to trace execution
+
+### Spells
+
+**Location:** `extracted_assets/data/spells.json`
+
+**Also in Assembly:** `source_files/Bank01.asm` at MP cost table (offset 0x7CFD)
+
+**Format:**
+
+```json
+{
+  "0": {
+    "id": 0,
+    "name": "HEAL",
+    "mp_cost": 4,
+    "effect": "Restore HP",
+    "formula": "10-17 HP restored"
+  }
+}
+```
+
+**How to Edit:**
+1. Edit `spells.json` and use `tools/reinsert_assets.py`
+2. Or edit MP costs in `Bank01.asm`
+3. Spell effects coded in `Bank03.asm`
+
+### Equipment (Weapons, Armor, Shields)
+
+**Location:** `extracted_assets/data/items_equipment.json`
+
+**Also in Assembly:** `source_files/Bank01.asm` stat tables
+
+**Stats Tables (Bank01):**
+- Weapons: Offset 0x7CF5 (7 weapons)
+- Armor: Offset 0x7D05 (7 armor pieces)
+- Shields: Offset 0x7D0D (3 shields)
+
+**How to Edit:**
+1. Edit `items_equipment.json`
+2. Or edit stat values directly in `Bank01.asm`
+3. Rebuild ROM
+
+### Graphics Restrictions Summary
+
+**NES PPU Limitations:**
+- 4 background palettes (4 colors each)
+- 4 sprite palettes (4 colors each)
+- Maximum 64 sprites on screen (8 per scanline)
+- 8×8 pixel tiles only
+- 2-bit color depth (4 colors per palette)
+- 256×240 resolution
+
+**CHR-ROM:**
+- Total 1024 tiles (512 background + 512 sprites)
+- Each tile = 16 bytes
+- Cannot exceed 16KB total CHR data
+
+---
+
 ## ROM Structure
 
 ### File Layout

@@ -107,7 +107,15 @@ first, update chat and session logs then git comment and push everything that is
 
 first, update chat and session logs then git comment and push everything that is uncommited; continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
-first, update chat and session logs then git comment and push everything that is uncommited; `Idx` and `Indx` bot mean/expand to `Index` continue!; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+update chat and session logs; `Idx` and `Indx` both mean/expand to `Index`; continue!; also, build with the assets and maybe make sure we are using the asset files and the outputted/compiled rom matches exactly our reference rom (PRG1) byte-for-byte; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+
+In the `dragon-warrior-info` project, ***update the readme file*** (`README.md`) and linked documentation files (most of this documentation is supposed be in the `\docs\` folder (or a subfolder) but might not be so move it there), and add links to all of the other documentation about the game/editors/scripts/tools/build we've made, and maybe move them into organized subfolders (of `.\docs`) by subject and make sure all internal documentation links are valid after your changes; Also add links at the bottom of `readme.md` to the session and chat logs folders (make an index file md or something) and other documentation that's about _making_ the project rather than the project itself; and update the documentation to reflect current reality; do we have documentation about where and what to edit when you want o romhack the game? like where the monster pngs are and palettes, and restrictions, and dialog, and maps, and attack calculations in code, etc;
+
+git comment and push everything that is uncommited; **continue!**; make sure every documentation `md` file is in the documentation tree starting in `readme.md` so you can click links to link from readme to the sub-document, make a list of any files unreachable from readme, there shouldn't be any that are relevant to understand and using the project; make sure everything is updated; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space; create a todo-list and some github issues (make sure the guthub issues are updated and reflect all work) for this effort, and also for any future efforts you see to ---- the point is to have guides that show where to make changes in code to change things, and what assets to edit and how, to romhack the game, starting with a fork of this project; the project will build the original rom from code and documentation and assets and build process, but future projects will use this as a base to make asset and code changes and build a new rom;
+
+
+
+
 
 
 

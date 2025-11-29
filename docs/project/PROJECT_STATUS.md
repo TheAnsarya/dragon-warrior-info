@@ -48,13 +48,13 @@ The Dragon Warrior ROM Hacking Toolkit is a comprehensive Python-based suite for
 | Document | Pages | Status |
 |----------|-------|--------|
 | README.md | 5 | ✅ Complete |
-| VERIFICATION_CHECKLIST.md | 12 | ✅ Complete |
-| SCREENSHOT_WORKFLOW.md | 15 | ✅ Complete |
-| UNIFIED_EDITOR_DESIGN.md | 25 | ✅ Complete |
-| BINARY_FORMAT_SPEC.md | 60 | ✅ Complete |
-| OPTIMIZATION_GUIDE.md | 15 | ✅ Complete |
-| CONTRIBUTING.md | 18 | ✅ Complete |
-| CODE_OF_CONDUCT.md | 12 | ✅ Complete |
+| docs/guides/VERIFICATION_CHECKLIST.md | 12 | ✅ Complete |
+| docs/guides/SCREENSHOT_WORKFLOW.md | 15 | ✅ Complete |
+| docs/technical/UNIFIED_EDITOR_DESIGN.md | 25 | ✅ Complete |
+| docs/build/BINARY_FORMAT_SPEC.md | 60 | ✅ Complete |
+| docs/build/OPTIMIZATION_GUIDE.md | 15 | ✅ Complete |
+| docs/project/CONTRIBUTING.md | 18 | ✅ Complete |
+| docs/project/CODE_OF_CONDUCT.md | 12 | ✅ Complete |
 | **Total** | **162 pages** | **100%** |
 
 ### Advanced ROM Hacks (100% Complete)
@@ -395,15 +395,15 @@ Open for contributions:
 ### Documentation
 
 - **README.md** - Quick start and overview
-- **docs/ROM_HACKING_GUIDE.md** - Complete ROM hacking guide
-- **VERIFICATION_CHECKLIST.md** - Testing procedures
-- **BINARY_FORMAT_SPEC.md** - Binary format specification
+- **docs/guides/ROM_HACKING_GUIDE.md** - Complete ROM hacking guide
+- **docs/guides/VERIFICATION_CHECKLIST.md** - Testing procedures
+- **docs/build/BINARY_FORMAT_SPEC.md** - Binary format specification
 
 ### Examples
 
 - **tools/advanced_rom_hacks/** - ROM modification examples
 - **tools/example_rom_hack.py** - Basic modifications
-- **SCREENSHOT_WORKFLOW.md** - Verification workflow
+- **docs/guides/SCREENSHOT_WORKFLOW.md** - Verification workflow
 
 ### Community
 

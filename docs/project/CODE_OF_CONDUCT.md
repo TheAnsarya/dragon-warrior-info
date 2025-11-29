@@ -228,8 +228,8 @@ in the toolkit?"
 
 For those new to ROM hacking:
 
-- **docs/ROM_HACKING_GUIDE.md** - Introduction to ROM hacking
-- **VERIFICATION_CHECKLIST.md** - Testing procedures
+- **docs/guides/ROM_HACKING_GUIDE.md** - Introduction to ROM hacking
+- **docs/guides/VERIFICATION_CHECKLIST.md** - Testing procedures
 - **CONTRIBUTING.md** - How to contribute
 
 ### Community Support

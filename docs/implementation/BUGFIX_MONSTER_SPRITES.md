@@ -162,7 +162,7 @@ OAM Entry 6: Y=146, Tile=254, Attr=246, X=146
 ## References
 
 - **extracted_assets/graphics_comprehensive/monsters/monsters_database.json** - Source of truth for sprite tile data
-- **OPTIMIZATION_GUIDE.md** - Documents CHR-ROM organization (lines 80-100)
+- **docs/build/OPTIMIZATION_GUIDE.md** - Documents CHR-ROM organization (lines 80-100)
 - **GRAPHICS_EXTRACTION_COMPLETE.md** - Documents correct CHR offset (0x10010)
 - **extracted_assets/reports/monster_sprite_allocation.md** - Documents sprite sharing patterns
 

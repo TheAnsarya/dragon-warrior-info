@@ -332,10 +332,67 @@ dragon-warrior-info/
 
 Comprehensive documentation is available in the `docs/` directory:
 
-- **[Documentation Index](docs/INDEX.md)** - Complete navigation and overview
-- **[ROM Map](docs/datacrystal/ROM_MAP.md)** - DataCrystal format memory mapping
-- **[Quick Start](docs/guides/QUICK_START.md)** - Get started in 5 minutes *(planned)*
-- **[Developer Guide](docs/guides/DEVELOPER_ONBOARDING.md)** - Contributing information *(planned)*
+### Core Documentation
+
+- **[📖 Documentation Index](docs/INDEX.md)** - Complete navigation and overview of all documentation
+- **[🎮 ROM Hacking Guide](docs/guides/ROM_HACKING_GUIDE.md)** - Complete guide to modifying Dragon Warrior
+  - ROM structure and memory maps
+  - Where to find and edit: monsters, spells, items, maps, dialogs, graphics
+  - Modification workflow and testing
+  - Advanced topics: text compression, bank switching, CHR editing
+
+### User Guides
+
+- **[🔧 Tools Documentation](docs/guides/TOOLS_DOCUMENTATION.md)** - Complete reference for all ROM hacking tools
+- **[✅ Verification Checklist](docs/guides/VERIFICATION_CHECKLIST.md)** - Manual verification of extracted data and ROM modifications
+- **[🎨 Advanced Editors Guide](docs/guides/ADVANCED_EDITORS_GUIDE.md)** - GUI editor usage and features
+- **[🖼️ Sprite Sharing Guide](docs/guides/SPRITE_SHARING_GUIDE.md)** - Working with graphics and sprites
+- **[🌐 Community Examples](docs/guides/COMMUNITY_EXAMPLES.md)** - Example ROM hacks and modifications
+- **[🔍 Quick Reference](docs/guides/QUICK_REFERENCE.md)** - Fast lookup for common tasks
+- **[❓ Troubleshooting](docs/guides/TROUBLESHOOTING.md)** - Common issues and solutions
+- **[📸 Screenshot Workflow](docs/guides/SCREENSHOT_WORKFLOW.md)** - Capturing and documenting changes
+- **[🎨 Enhanced Graphics](docs/guides/ENHANCED_GRAPHICS_README.md)** - Working with enhanced sprite sheets
+- **[📦 Asset System](docs/guides/README_ASSET_SYSTEM.md)** - Understanding the asset management system
+
+### Technical Documentation
+
+- **[🏗️ Unified Editor Design](docs/technical/UNIFIED_EDITOR_DESIGN.md)** - Architecture of the integrated editor
+- **[⚡ Optimization Techniques](docs/technical/OPTIMIZATION_TECHNIQUES.md)** - Performance optimization strategies
+- **[🗺️ ROM Map](docs/datacrystal/ROM_MAP.md)** - DataCrystal format memory mapping
+
+### Build System Documentation
+
+- **[📋 Build Process Files](docs/build/BUILD_PROCESS_FILES.md)** - Complete list of build system files
+- **[🔧 Build Verification](docs/build/BUILD_VERIFICATION.md)** - Testing and validation procedures
+- **[📊 Binary Format Spec](docs/build/BINARY_FORMAT_SPEC.md)** - Binary file format specifications
+- **[🔄 Binary Pipeline Tutorial](docs/build/BINARY_PIPELINE_TUTORIAL.md)** - Step-by-step build pipeline guide
+- **[⚡ Optimization Guide](docs/build/OPTIMIZATION_GUIDE.md)** - Build optimization techniques
+- **[📦 Asset First Build](docs/build/ASSET_FIRST_BUILD_IMPLEMENTATION.md)** - Asset-driven build process
+- **[📄 Assets Not Used](docs/build/ASSETS_NOT_USED_IN_BUILD.md)** - Unused asset analysis
+- **[📊 Build Process Analysis](docs/build/BUILD_PROCESS_DETAILED_ANALYSIS.md)** - Detailed build analysis
+- **[📥 ROM Data Extraction](docs/build/ROM_DATA_EXTRACTION.md)** - Extraction process documentation
+- **[💿 ROM Requirements](docs/build/ROM_REQUIREMENTS.md)** - ROM version and setup requirements
+
+### Project & Implementation
+
+- **[📊 Project Status](docs/project/PROJECT_STATUS.md)** - Current development status
+- **[✅ Project Summary](docs/project/PROJECT_SUMMARY.md)** - Project overview and accomplishments
+- **[🤝 Contributing](docs/project/CONTRIBUTING.md)** - How to contribute to the project
+- **[📜 Code of Conduct](docs/project/CODE_OF_CONDUCT.md)** - Community guidelines
+- **[🐛 Bug Fixes](docs/implementation/BUGFIX_MONSTER_SPRITES.md)** - Monster sprite allocation fixes
+- **[📊 Implementation Summary](docs/implementation/IMPLEMENTATION_SUMMARY.md)** - Overall implementation notes
+- **[🎨 Graphics Extraction](docs/implementation/GRAPHICS_EXTRACTION_COMPLETE.md)** - Graphics extraction completion
+- **[🗂️ Item Extraction Fix](docs/implementation/ITEM_EXTRACTION_FIX_SUMMARY.md)** - Item extraction improvements
+- **[🚀 Improvement Plan](docs/implementation/COMPREHENSIVE_IMPROVEMENT_PLAN.md)** - Future improvements
+
+### Development Logs & Meta-Documentation
+
+For logs about the **development process** of creating this project (rather than using it):
+
+- **[📝 Development Logs Index](~docs/INDEX.md)** - Session logs, chat logs, and development history
+  - [Session Logs](~docs/session-logs/) - Development session summaries
+  - [Chat Logs](~docs/chat-logs/) - Detailed conversation transcripts
+  - Design decisions and implementation notes
 
 ## 🤝 Contributing
 
@@ -344,7 +401,8 @@ This project welcomes contributions! See the documentation for:
 - **Code Standards** - `.editorconfig` enforced formatting (tabs, CRLF, UTF-8)
 - **Testing Requirements** - All tools must have comprehensive test coverage
 - **Documentation Standards** - Markdown with DataCrystal compatibility
-- **Session Logging** - All development work is logged in `~docs/session-logs/`
+- **[Contributing Guide](docs/project/CONTRIBUTING.md)** - Detailed contribution guidelines
+- **[Code of Conduct](docs/project/CODE_OF_CONDUCT.md)** - Community standards
 
 ### Development Workflow
 
@@ -354,7 +412,7 @@ This project welcomes contributions! See the documentation for:
 4. Implement changes with test coverage
 5. Update documentation as needed
 6. Commit with detailed messages following conventional commits
-7. Update session logs in `~docs/session-logs/`
+7. Update session logs in `~docs/session-logs/` (for significant work)
 
 ## 🏛️ Heritage and Attribution
 
@@ -409,166 +467,6 @@ This project builds upon excellent existing work:
 - ⏳ Community mod sharing platform
 - ⏳ Complete documentation publication
 
-## 📚 Manual & Reference Documentation
-
-### Build Process Documentation
-- **[Build Process Files](docs/build/BUILD_PROCESS_FILES.md)** - Complete list of all files used in the build system
-  - Build scripts (PowerShell & Python)
-  - Data extraction tools
-  - Asset processing tools
-  - ASM source files
-  - Asset files (JSON & graphics)
-  - Configuration files
-
-- **[Assets Not Used in Build](docs/build/ASSETS_NOT_USED_IN_BUILD.md)** - Analysis of asset files not currently integrated
-  - JSON files vs. ASM sources
-  - Graphics extraction vs. reinsertion
-  - Editor integration gaps
-  - Recommendations for future integration
-
-### Testing Procedures
-
-#### Testing the ROM Build
-1. **Verify Prerequisites**:
-   ```powershell
-   python --version  # Verify Python 3.x
-   Test-Path "Ophis/ophis.exe"  # Verify assembler
-   Test-Path "roms/Dragon Warrior (U) (PRG1) [!].nes"  # Verify reference ROM
-   ```
-
-2. **Run Build**:
-   ```powershell
-   .\build_rom.ps1  # Basic ROM assembly
-   # Expected: dragon_warrior_rebuilt.nes (81,936 bytes)
-   ```
-
-3. **Verify Build Output**:
-   - Check `build/dragon_warrior_rebuilt.nes` exists
-   - Verify size: 81,936 bytes (80.02 KB)
-   - Test ROM in emulator (FCEUX, Mesen, Nestopia)
-
-4. **Compare Against Reference**:
-   ```powershell
-   # Use build_rom.ps1's automatic comparison feature
-   # Expected: Byte-identical or documented differences
-   ```
-
-#### Testing the Asset Editors
-
-1. **Item Editor** (`tools/editors/item_editor_standalone.py`):
-   ```powershell
-   # Install Rich library if needed
-   pip install rich
-   
-   # Run item editor
-   python tools/editors/item_editor_standalone.py
-   
-   # Test workflow:
-   # 1. List all items (menu option 1)
-   # 2. View item details (menu option 2, select item 1 - Club)
-   # 3. Edit item (menu option 3, change attack power)
-   # 4. Save changes (menu option 6)
-   # 5. Verify backup created in assets/backups/
-   ```
-
-2. **AssetManager** (`tools/asset_manager.py`):
-   ```powershell
-   # Run AssetManager demonstration
-   python demo_asset_manager.py
-   
-   # Expected output:
-   # ✓ Demo 1: Load assets (items, monsters)
-   # ✓ Demo 2: Modify and save with backup
-   # ✓ Demo 3: Validation (catch errors)
-   # ✓ Demo 4: Metadata display
-   # ✓ Demo 5: Complete workflow
-   ```
-
-3. **Asset Extraction**:
-   ```powershell
-   # Extract items from ROM
-   python tools/extraction/data_extractor.py
-   
-   # Expected: assets/json/items.json created with 29 items
-   # Verify: Club (ID 1) has attack_power: 1
-   ```
-
-#### Testing ROM Changes
-
-1. **Modify Assets**:
-   ```powershell
-   # Edit assets/json/items_corrected.json
-   # Example: Change Club attack_power to 5
-   ```
-
-2. **Regenerate ASM** (when integrated):
-   ```powershell
-   # Future: Automatic JSON → ASM generation
-   python tools/asset_reinserter.py --input assets/json/items_corrected.json --output source_files/items.asm
-   ```
-
-3. **Rebuild ROM**:
-   ```powershell
-   .\build_rom.ps1
-   ```
-
-4. **Test in Emulator**:
-   - Load `build/dragon_warrior_rebuilt.nes`
-   - Start new game
-   - Buy Club from weapon shop
-   - Verify attack power changed
-   - Test in battle to confirm
-
-### Manual Workflows
-
-#### Complete Asset-to-ROM Pipeline
-```
-1. Extract Assets
-   ├─ Run: python tools/extraction/data_extractor.py
-   └─ Output: assets/json/*.json
-
-2. Edit Assets
-   ├─ Method A: Use item_editor_standalone.py (CLI)
-   ├─ Method B: Edit JSON files directly
-   └─ AssetManager validates changes
-
-3. Generate ASM (FUTURE - Not yet integrated)
-   ├─ Run: python tools/asset_reinserter.py
-   └─ Output: Updated Bank00-03.asm files
-
-4. Build ROM
-   ├─ Run: .\build_rom.ps1
-   └─ Output: build/dragon_warrior_rebuilt.nes
-
-5. Test ROM
-   ├─ Load in emulator
-   └─ Verify changes in-game
-```
-
-#### Current Limitations
-⚠️ **JSON edits DO NOT automatically affect ROM builds**
-- Current build uses ASM source files (`Bank00-03.asm`)
-- JSON files are for editing/reference only
-- Must manually update ASM to see changes in ROM
-
-**To make JSON changes active**:
-1. Edit JSON files using editors
-2. Run `tools/asset_reinserter.py` to generate ASM *(when integrated)*
-3. Replace sections in `Bank00-03.asm` with generated ASM
-4. Rebuild ROM with `build_rom.ps1`
-
-### Documentation Structure
-
-All documentation has been reorganized into `docs/` with subdirectories:
-
-- **`docs/session-logs/`** - Development session summaries and logs
-- **`docs/build/`** - Build system documentation
-- **`docs/implementation/`** - Implementation details and bug fixes
-- **`docs/project/`** - Project status, contributing guidelines
-- **`docs/guides/`** - User guides and reference materials
-
-See [docs/INDEX.md](docs/INDEX.md) for complete documentation index.
-
 ## 📋 License
 
 This project respects all original copyrights and is intended for educational and preservation purposes. You must own a legal copy of Dragon Warrior to use these tools.
@@ -578,4 +476,5 @@ This project respects all original copyrights and is intended for educational an
 - **Original Disassembly Authors** - For the foundational 33,000+ line disassembly
 - **FFMQ Project** - For proven patterns and project structure inspiration
 - **NES Development Community** - For tools, documentation, and support
-- **DataCrystal.org** - For documentation standards and hacking knowledge  
+- **DataCrystal.org** - For documentation standards and hacking knowledge
+
