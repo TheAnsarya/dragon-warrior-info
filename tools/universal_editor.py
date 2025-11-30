@@ -67,6 +67,117 @@ class AssetStatus:
 	last_modified: str
 
 
+@dataclass
+class UndoAction:
+	"""Represents a single undoable action."""
+	description: str
+	asset_type: str
+	record_index: int
+	field: str
+	old_value: Any
+	new_value: Any
+	timestamp: str
+
+
+class UndoManager:
+	"""Manages undo/redo stack for all editors."""
+
+	def __init__(self, max_history: int = 100):
+		self.undo_stack: List[UndoAction] = []
+		self.redo_stack: List[UndoAction] = []
+		self.max_history = max_history
+		self.listeners = []
+
+	def add_listener(self, callback):
+		"""Add a listener for undo/redo state changes."""
+		self.listeners.append(callback)
+
+	def notify_listeners(self):
+		"""Notify all listeners of state change."""
+		for callback in self.listeners:
+			try:
+				callback()
+			except:
+				pass
+
+	def record(self, description: str, asset_type: str, record_index: int,
+			   field: str, old_value: Any, new_value: Any):
+		"""Record an action for undo."""
+		action = UndoAction(
+			description=description,
+			asset_type=asset_type,
+			record_index=record_index,
+			field=field,
+			old_value=old_value,
+			new_value=new_value,
+			timestamp=datetime.now().strftime("%H:%M:%S")
+		)
+		self.undo_stack.append(action)
+
+		# Clear redo stack when new action is recorded
+		self.redo_stack.clear()
+
+		# Limit history size
+		if len(self.undo_stack) > self.max_history:
+			self.undo_stack.pop(0)
+
+		self.notify_listeners()
+
+	def can_undo(self) -> bool:
+		"""Check if undo is available."""
+		return len(self.undo_stack) > 0
+
+	def can_redo(self) -> bool:
+		"""Check if redo is available."""
+		return len(self.redo_stack) > 0
+
+	def undo(self) -> Optional[UndoAction]:
+		"""Get the action to undo and move to redo stack."""
+		if not self.can_undo():
+			return None
+
+		action = self.undo_stack.pop()
+		self.redo_stack.append(action)
+		self.notify_listeners()
+		return action
+
+	def redo(self) -> Optional[UndoAction]:
+		"""Get the action to redo and move to undo stack."""
+		if not self.can_redo():
+			return None
+
+		action = self.redo_stack.pop()
+		self.undo_stack.append(action)
+		self.notify_listeners()
+		return action
+
+	def get_undo_description(self) -> str:
+		"""Get description of next undo action."""
+		if self.can_undo():
+			return self.undo_stack[-1].description
+		return ""
+
+	def get_redo_description(self) -> str:
+		"""Get description of next redo action."""
+		if self.can_redo():
+			return self.redo_stack[-1].description
+		return ""
+
+	def clear(self):
+		"""Clear all history."""
+		self.undo_stack.clear()
+		self.redo_stack.clear()
+		self.notify_listeners()
+
+	def get_history(self, count: int = 10) -> List[str]:
+		"""Get recent history descriptions."""
+		return [f"[{a.timestamp}] {a.description}" for a in self.undo_stack[-count:]]
+
+
+# Global undo manager instance
+undo_manager = UndoManager()
+
+
 # ============================================================================
 # ASSET MANAGER
 # ============================================================================
@@ -1712,6 +1823,822 @@ class NpcEditorTab(ttk.Frame):
 
 
 # ============================================================================
+# GRAPHICS EDITOR TAB
+# ============================================================================
+
+class GraphicsEditorTab(ttk.Frame):
+	"""Visual CHR tile editor with preview and export capabilities."""
+
+	# NES palette colors (NTSC standard approximation)
+	NES_PALETTE = [
+		(84, 84, 84),    # 0x00 - Dark gray
+		(0, 30, 116),    # 0x01 - Dark blue
+		(8, 16, 144),    # 0x02 - Blue
+		(48, 0, 136),    # 0x03 - Purple
+		(68, 0, 100),    # 0x04 - Dark purple
+		(92, 0, 48),     # 0x05 - Dark red
+		(84, 4, 0),      # 0x06 - Dark brown
+		(60, 24, 0),     # 0x07 - Brown
+		(32, 42, 0),     # 0x08 - Dark olive
+		(8, 58, 0),      # 0x09 - Dark green
+		(0, 64, 0),      # 0x0A - Green
+		(0, 60, 0),      # 0x0B - Green variant
+		(0, 50, 60),     # 0x0C - Teal
+		(0, 0, 0),       # 0x0D - Black
+		(0, 0, 0),       # 0x0E - Black
+		(0, 0, 0),       # 0x0F - Black
+		(152, 150, 152), # 0x10 - Gray
+		(8, 76, 196),    # 0x11 - Medium blue
+		(48, 50, 236),   # 0x12 - Bright blue
+		(92, 30, 228),   # 0x13 - Violet
+		(136, 20, 176),  # 0x14 - Magenta
+		(160, 20, 100),  # 0x15 - Pink-red
+		(152, 34, 32),   # 0x16 - Red
+		(120, 60, 0),    # 0x17 - Orange
+		(84, 90, 0),     # 0x18 - Olive
+		(40, 114, 0),    # 0x19 - Green
+		(8, 124, 0),     # 0x1A - Bright green
+		(0, 118, 40),    # 0x1B - Green-cyan
+		(0, 102, 120),   # 0x1C - Cyan
+		(0, 0, 0),       # 0x1D - Black
+		(0, 0, 0),       # 0x1E - Black
+		(0, 0, 0),       # 0x1F - Black
+		(236, 238, 236), # 0x20 - White
+		(76, 154, 236),  # 0x21 - Light blue
+		(120, 124, 236), # 0x22 - Periwinkle
+		(176, 98, 236),  # 0x23 - Light violet
+		(228, 84, 236),  # 0x24 - Light magenta
+		(236, 88, 180),  # 0x25 - Light pink
+		(236, 106, 100), # 0x26 - Salmon
+		(212, 136, 32),  # 0x27 - Light orange
+		(160, 170, 0),   # 0x28 - Yellow-green
+		(116, 196, 0),   # 0x29 - Lime
+		(76, 208, 32),   # 0x2A - Light green
+		(56, 204, 108),  # 0x2B - Mint
+		(56, 180, 204),  # 0x2C - Light cyan
+		(60, 60, 60),    # 0x2D - Dark gray
+		(0, 0, 0),       # 0x2E - Black
+		(0, 0, 0),       # 0x2F - Black
+		(236, 238, 236), # 0x30 - White
+		(168, 204, 236), # 0x31 - Pale blue
+		(188, 188, 236), # 0x32 - Pale violet
+		(212, 178, 236), # 0x33 - Pale purple
+		(236, 174, 236), # 0x34 - Pale pink
+		(236, 174, 212), # 0x35 - Pale rose
+		(236, 180, 176), # 0x36 - Pale salmon
+		(228, 196, 144), # 0x37 - Pale orange
+		(204, 210, 120), # 0x38 - Pale yellow
+		(180, 222, 120), # 0x39 - Pale lime
+		(168, 226, 144), # 0x3A - Pale green
+		(152, 226, 180), # 0x3B - Pale mint
+		(160, 214, 228), # 0x3C - Pale cyan
+		(160, 162, 160), # 0x3D - Light gray
+		(0, 0, 0),       # 0x3E - Black
+		(0, 0, 0),       # 0x3F - Black
+	]
+
+	# Default Dragon Warrior palette indices
+	DW_PALETTE = [0x0F, 0x27, 0x30, 0x16]  # Black, Orange, White, Red
+
+	def __init__(self, parent, asset_manager: AssetManager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.tiles = []
+		self.tile_images = []
+		self.selected_tile = None
+		self.zoom = 4  # Default zoom for tile grid
+		self.preview_zoom = 16  # Zoom for selected tile preview
+		self.current_palette = list(self.DW_PALETTE)
+
+		self.create_widgets()
+		self.load_tiles()
+
+	def create_widgets(self):
+		"""Create graphics editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="🎨 Graphics Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		ttk.Button(header, text="🔄 Reload Tiles", command=self.load_tiles).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="⚡ Regenerate CHR", command=self.regenerate_chr).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="📂 Open Graphics Folder", command=self.open_folder).pack(side=tk.RIGHT, padx=5)
+
+		# Main content
+		content = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
+		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Left panel: Tile grid
+		left_panel = ttk.LabelFrame(content, text="CHR Tiles (144 tiles)", padding=5)
+		content.add(left_panel, weight=3)
+
+		# Category filter
+		filter_frame = ttk.Frame(left_panel)
+		filter_frame.pack(fill=tk.X, pady=5)
+
+		ttk.Label(filter_frame, text="Category:").pack(side=tk.LEFT, padx=5)
+		self.category_var = tk.StringVar(value="All")
+		categories = ["All", "Hero", "Monsters", "NPCs", "Items", "UI"]
+		category_combo = ttk.Combobox(filter_frame, textvariable=self.category_var,
+									  values=categories, state='readonly', width=12)
+		category_combo.pack(side=tk.LEFT, padx=5)
+		category_combo.bind('<<ComboboxSelected>>', lambda e: self.filter_tiles())
+
+		# Tile canvas with scrolling
+		canvas_frame = ttk.Frame(left_panel)
+		canvas_frame.pack(fill=tk.BOTH, expand=True)
+
+		self.tile_canvas = tk.Canvas(canvas_frame, bg='#1a1a2e', width=400, height=400)
+		scrollbar_y = ttk.Scrollbar(canvas_frame, orient=tk.VERTICAL, command=self.tile_canvas.yview)
+		scrollbar_x = ttk.Scrollbar(canvas_frame, orient=tk.HORIZONTAL, command=self.tile_canvas.xview)
+
+		self.tile_canvas.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+
+		scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
+		scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+		self.tile_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+		self.tile_canvas.bind('<Button-1>', self.on_tile_click)
+		self.tile_canvas.bind('<Configure>', self.on_canvas_resize)
+
+		# Right panel: Selected tile preview and info
+		right_panel = ttk.Frame(content)
+		content.add(right_panel, weight=1)
+
+		# Preview section
+		preview_frame = ttk.LabelFrame(right_panel, text="Selected Tile", padding=10)
+		preview_frame.pack(fill=tk.X, pady=(0, 10))
+
+		self.preview_canvas = tk.Canvas(preview_frame, bg='#1a1a2e',
+										width=8*self.preview_zoom, height=8*self.preview_zoom)
+		self.preview_canvas.pack(pady=10)
+
+		# Tile info
+		self.tile_info = ttk.Label(preview_frame, text="No tile selected")
+		self.tile_info.pack(pady=5)
+
+		# Palette section
+		palette_frame = ttk.LabelFrame(right_panel, text="Palette", padding=10)
+		palette_frame.pack(fill=tk.X, pady=(0, 10))
+
+		self.palette_canvas = tk.Canvas(palette_frame, bg='#333', width=160, height=40)
+		self.palette_canvas.pack(pady=5)
+		self.draw_palette()
+
+		# Palette preset buttons
+		preset_frame = ttk.Frame(palette_frame)
+		preset_frame.pack(fill=tk.X, pady=5)
+
+		palettes = [
+			("Hero", [0x0F, 0x27, 0x30, 0x16]),
+			("Monster", [0x0F, 0x16, 0x30, 0x12]),
+			("Grass", [0x0F, 0x29, 0x30, 0x19]),
+			("Water", [0x0F, 0x12, 0x30, 0x21]),
+		]
+		for name, pal in palettes:
+			btn = ttk.Button(preset_frame, text=name, width=8,
+							 command=lambda p=pal: self.set_palette(p))
+			btn.pack(side=tk.LEFT, padx=2)
+
+		# Actions section
+		actions_frame = ttk.LabelFrame(right_panel, text="Actions", padding=10)
+		actions_frame.pack(fill=tk.X, pady=(0, 10))
+
+		ttk.Button(actions_frame, text="📤 Export Selected as PNG",
+				   command=self.export_tile).pack(fill=tk.X, pady=2)
+		ttk.Button(actions_frame, text="📤 Export All Tiles",
+				   command=self.export_all_tiles).pack(fill=tk.X, pady=2)
+		ttk.Button(actions_frame, text="📝 Edit in External App",
+				   command=self.edit_external).pack(fill=tk.X, pady=2)
+
+		# Statistics
+		stats_frame = ttk.LabelFrame(right_panel, text="Statistics", padding=10)
+		stats_frame.pack(fill=tk.BOTH, expand=True)
+
+		self.stats_text = tk.Text(stats_frame, height=8, width=25, font=('Courier', 9))
+		self.stats_text.pack(fill=tk.BOTH, expand=True)
+
+	def load_tiles(self):
+		"""Load all tile PNGs from graphics folder."""
+		self.tiles = []
+		self.tile_images = []
+
+		graphics_path = ASSETS_GRAPHICS
+
+		if not graphics_path.exists():
+			self.update_stats()
+			return
+
+		# Get all PNG files
+		png_files = sorted(graphics_path.glob("*.png"))
+
+		for png_file in png_files:
+			try:
+				# Parse filename to get tile info
+				name = png_file.stem
+				parts = name.split('_')
+
+				category = parts[0] if len(parts) > 0 else 'unknown'
+				tile_idx = int(parts[-1]) if len(parts) > 1 and parts[-1].isdigit() else 0
+
+				tile_info = {
+					'path': png_file,
+					'name': name,
+					'category': category,
+					'index': tile_idx,
+				}
+				self.tiles.append(tile_info)
+
+			except Exception as e:
+				print(f"Error loading {png_file}: {e}")
+
+		self.draw_tile_grid()
+		self.update_stats()
+
+	def draw_tile_grid(self):
+		"""Draw the tile grid on the canvas."""
+		self.tile_canvas.delete('all')
+		self.tile_images = []
+
+		if not HAS_PIL:
+			self.tile_canvas.create_text(200, 200, text="PIL not installed\nCannot display tiles",
+										 fill='white', font=('Arial', 12))
+			return
+
+		# Filter tiles by category
+		category = self.category_var.get()
+		if category == "All":
+			filtered_tiles = self.tiles
+		else:
+			cat_map = {'Hero': 'hero', 'Monsters': 'monsters', 'NPCs': 'npcs',
+					   'Items': 'items', 'UI': 'ui'}
+			cat_key = cat_map.get(category, category.lower())
+			filtered_tiles = [t for t in self.tiles if t['category'] == cat_key]
+
+		if not filtered_tiles:
+			self.tile_canvas.create_text(200, 200, text="No tiles found",
+										 fill='white', font=('Arial', 12))
+			return
+
+		# Calculate grid dimensions
+		tile_size = 8 * self.zoom
+		padding = 2
+		cols = max(1, self.tile_canvas.winfo_width() // (tile_size + padding))
+		if cols < 1:
+			cols = 8
+
+		rows = (len(filtered_tiles) + cols - 1) // cols
+
+		# Set scroll region
+		canvas_height = rows * (tile_size + padding) + padding
+		self.tile_canvas.configure(scrollregion=(0, 0, cols * (tile_size + padding), canvas_height))
+
+		# Draw each tile
+		for i, tile in enumerate(filtered_tiles):
+			row = i // cols
+			col = i % cols
+
+			x = col * (tile_size + padding) + padding
+			y = row * (tile_size + padding) + padding
+
+			try:
+				# Load and scale tile
+				img = Image.open(tile['path'])
+				img = img.resize((tile_size, tile_size), 0)  # 0 = NEAREST
+				photo = ImageTk.PhotoImage(img)
+				self.tile_images.append(photo)
+
+				# Draw on canvas
+				self.tile_canvas.create_image(x, y, anchor=tk.NW, image=photo, tags=f"tile_{tile['index']}")
+
+				# Store position for click detection
+				tile['canvas_pos'] = (x, y, x + tile_size, y + tile_size)
+
+			except Exception as e:
+				# Draw placeholder
+				self.tile_canvas.create_rectangle(x, y, x + tile_size, y + tile_size,
+												  fill='#333', outline='#666')
+
+	def filter_tiles(self):
+		"""Filter tiles by selected category."""
+		self.draw_tile_grid()
+
+	def on_canvas_resize(self, event):
+		"""Handle canvas resize."""
+		self.draw_tile_grid()
+
+	def on_tile_click(self, event):
+		"""Handle click on tile canvas."""
+		# Convert to canvas coordinates
+		canvas_x = self.tile_canvas.canvasx(event.x)
+		canvas_y = self.tile_canvas.canvasy(event.y)
+
+		# Find clicked tile
+		for tile in self.tiles:
+			if 'canvas_pos' in tile:
+				x1, y1, x2, y2 = tile['canvas_pos']
+				if x1 <= canvas_x <= x2 and y1 <= canvas_y <= y2:
+					self.select_tile(tile)
+					return
+
+	def select_tile(self, tile):
+		"""Select and show tile preview."""
+		self.selected_tile = tile
+
+		# Update info label
+		self.tile_info.config(text=f"Tile {tile['index']}: {tile['name']}\n{tile['category'].title()}")
+
+		# Draw large preview
+		self.draw_preview()
+
+	def draw_preview(self):
+		"""Draw selected tile at large scale."""
+		self.preview_canvas.delete('all')
+
+		if not self.selected_tile or not HAS_PIL:
+			return
+
+		try:
+			# Load tile
+			img = Image.open(self.selected_tile['path'])
+
+			# Convert to indexed if needed
+			if img.mode != 'P':
+				img = img.convert('RGB')
+
+			# Scale up
+			size = 8 * self.preview_zoom
+			img = img.resize((size, size), 0)  # 0 = NEAREST
+
+			photo = ImageTk.PhotoImage(img)
+			self.preview_image = photo  # Keep reference
+
+			self.preview_canvas.create_image(0, 0, anchor=tk.NW, image=photo)
+
+			# Draw pixel grid
+			for i in range(9):
+				x = i * self.preview_zoom
+				self.preview_canvas.create_line(x, 0, x, size, fill='#444')
+				self.preview_canvas.create_line(0, x, size, x, fill='#444')
+
+		except Exception as e:
+			self.preview_canvas.create_text(64, 64, text=f"Error: {e}", fill='red')
+
+	def draw_palette(self):
+		"""Draw palette preview."""
+		self.palette_canvas.delete('all')
+
+		box_size = 35
+		for i, pal_idx in enumerate(self.current_palette):
+			color = self.NES_PALETTE[pal_idx % len(self.NES_PALETTE)]
+			hex_color = f'#{color[0]:02x}{color[1]:02x}{color[2]:02x}'
+
+			x = i * (box_size + 5) + 5
+			self.palette_canvas.create_rectangle(x, 5, x + box_size, 35,
+												 fill=hex_color, outline='white')
+			self.palette_canvas.create_text(x + box_size//2, 20,
+											text=f'${pal_idx:02X}', fill='white' if sum(color) < 384 else 'black',
+											font=('Courier', 8))
+
+	def set_palette(self, palette):
+		"""Set current palette."""
+		self.current_palette = list(palette)
+		self.draw_palette()
+		# Could re-render tiles with new palette here if we had raw CHR data
+
+	def export_tile(self):
+		"""Export selected tile as PNG."""
+		if not self.selected_tile:
+			messagebox.showinfo("Info", "No tile selected")
+			return
+
+		filename = filedialog.asksaveasfilename(
+			defaultextension=".png",
+			filetypes=[("PNG files", "*.png")],
+			initialfile=f"{self.selected_tile['name']}.png"
+		)
+
+		if filename:
+			try:
+				import shutil
+				shutil.copy(self.selected_tile['path'], filename)
+				messagebox.showinfo("Success", f"Exported to {filename}")
+			except Exception as e:
+				messagebox.showerror("Error", str(e))
+
+	def export_all_tiles(self):
+		"""Export all tiles to a folder."""
+		folder = filedialog.askdirectory(title="Select export folder")
+		if folder:
+			try:
+				import shutil
+				count = 0
+				for tile in self.tiles:
+					dest = Path(folder) / tile['path'].name
+					shutil.copy(tile['path'], dest)
+					count += 1
+				messagebox.showinfo("Success", f"Exported {count} tiles to {folder}")
+			except Exception as e:
+				messagebox.showerror("Error", str(e))
+
+	def edit_external(self):
+		"""Open selected tile in external editor."""
+		if not self.selected_tile:
+			messagebox.showinfo("Info", "No tile selected")
+			return
+
+		try:
+			os.startfile(str(self.selected_tile['path']))
+		except Exception as e:
+			messagebox.showerror("Error", str(e))
+
+	def open_folder(self):
+		"""Open graphics folder."""
+		try:
+			os.startfile(str(ASSETS_GRAPHICS))
+		except:
+			messagebox.showinfo("Path", str(ASSETS_GRAPHICS))
+
+	def regenerate_chr(self):
+		"""Regenerate CHR ROM from PNGs."""
+		try:
+			result = subprocess.run(
+				[sys.executable, str(TOOLS_DIR / "generate_chr_from_pngs.py")],
+				cwd=str(PROJECT_ROOT),
+				capture_output=True,
+				text=True,
+				timeout=30
+			)
+
+			if result.returncode == 0:
+				messagebox.showinfo("Success", "Regenerated CHR-ROM!\n\n" + result.stdout[:500])
+			else:
+				messagebox.showerror("Error", result.stderr[:500] if result.stderr else "Unknown error")
+		except Exception as e:
+			messagebox.showerror("Error", str(e))
+
+	def update_stats(self):
+		"""Update statistics display."""
+		self.stats_text.delete('1.0', tk.END)
+
+		lines = []
+		lines.append("CHR Tile Statistics")
+		lines.append("=" * 22)
+		lines.append(f"Total tiles: {len(self.tiles)}")
+		lines.append("")
+
+		# Count by category
+		categories = {}
+		for tile in self.tiles:
+			cat = tile.get('category', 'unknown')
+			categories[cat] = categories.get(cat, 0) + 1
+
+		lines.append("By Category:")
+		for cat, count in sorted(categories.items()):
+			lines.append(f"  {cat.title()}: {count}")
+
+		lines.append("")
+		lines.append("Tile Format:")
+		lines.append("  8x8 pixels")
+		lines.append("  2-bit (4 colors)")
+		lines.append("  16 bytes/tile")
+
+		lines.append("")
+		lines.append("CHR Banks:")
+		lines.append("  2 x 256 tiles")
+		lines.append("  = 8KB per bank")
+		lines.append("  = 16KB total")
+
+		self.stats_text.insert('1.0', '\n'.join(lines))
+
+
+# ============================================================================
+# MAP EDITOR TAB
+# ============================================================================
+
+class MapEditorTab(ttk.Frame):
+	"""Visual map viewer and editor."""
+
+	# Terrain colors for visualization
+	TERRAIN_COLORS = {
+		0: '#000080',  # Water/Barrier - dark blue
+		1: '#008800',  # Grass - green
+		2: '#00aa00',  # Forest - darker green
+		3: '#aaaa00',  # Desert - yellow
+		4: '#884400',  # Hills - brown
+		5: '#666666',  # Mountain - gray
+		6: '#aaaaaa',  # Town - light gray
+		7: '#ffaa00',  # Castle - gold
+		8: '#004488',  # Bridge - blue-gray
+		9: '#220022',  # Cave - dark purple
+		10: '#440000', # Swamp - dark red
+		11: '#ffffff', # Stairs - white
+		12: '#888888', # Door - gray
+	}
+
+	def __init__(self, parent, asset_manager: AssetManager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.map_data = None
+		self.current_map = None
+		self.current_map_id = "0"
+		self.zoom = 4
+		self.offset_x = 0
+		self.offset_y = 0
+		self.dragging = False
+		self.last_mouse_pos = (0, 0)
+
+		self.create_widgets()
+		self.load_maps()
+
+	def create_widgets(self):
+		"""Create map editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="🗺️ Map Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		# Map selector
+		ttk.Label(header, text="Map:").pack(side=tk.LEFT, padx=(20, 5))
+		self.map_var = tk.StringVar()
+		self.map_combo = ttk.Combobox(header, textvariable=self.map_var, state='readonly', width=30)
+		self.map_combo.pack(side=tk.LEFT, padx=5)
+		self.map_combo.bind('<<ComboboxSelected>>', self.on_map_select)
+
+		# Zoom controls
+		ttk.Label(header, text="Zoom:").pack(side=tk.LEFT, padx=(20, 5))
+		ttk.Button(header, text="-", width=3, command=self.zoom_out).pack(side=tk.LEFT)
+		self.zoom_label = ttk.Label(header, text="4x")
+		self.zoom_label.pack(side=tk.LEFT, padx=5)
+		ttk.Button(header, text="+", width=3, command=self.zoom_in).pack(side=tk.LEFT)
+
+		# Content
+		content = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
+		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Left: Map canvas
+		canvas_frame = ttk.LabelFrame(content, text="Map View", padding=5)
+		content.add(canvas_frame, weight=4)
+
+		self.map_canvas = tk.Canvas(canvas_frame, bg='#1a1a2e', width=600, height=500)
+		scrollbar_y = ttk.Scrollbar(canvas_frame, orient=tk.VERTICAL, command=self.map_canvas.yview)
+		scrollbar_x = ttk.Scrollbar(canvas_frame, orient=tk.HORIZONTAL, command=self.map_canvas.xview)
+
+		self.map_canvas.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+
+		scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
+		scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+		self.map_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+		# Canvas bindings
+		self.map_canvas.bind('<Button-1>', self.on_map_click)
+		self.map_canvas.bind('<B1-Motion>', self.on_map_drag)
+		self.map_canvas.bind('<ButtonRelease-1>', self.on_drag_end)
+		self.map_canvas.bind('<MouseWheel>', self.on_mousewheel)
+
+		# Right: Info panel
+		info_panel = ttk.Frame(content)
+		content.add(info_panel, weight=1)
+
+		# Map info
+		info_frame = ttk.LabelFrame(info_panel, text="Map Info", padding=10)
+		info_frame.pack(fill=tk.X, pady=(0, 10))
+
+		self.info_labels = {}
+		info_fields = ['Name', 'Size', 'Tiles', 'Walkable', 'Encounters']
+		for field in info_fields:
+			row = ttk.Frame(info_frame)
+			row.pack(fill=tk.X, pady=2)
+			ttk.Label(row, text=f"{field}:", width=10).pack(side=tk.LEFT)
+			lbl = ttk.Label(row, text="-")
+			lbl.pack(side=tk.LEFT)
+			self.info_labels[field.lower()] = lbl
+
+		# Tile info
+		tile_frame = ttk.LabelFrame(info_panel, text="Selected Tile", padding=10)
+		tile_frame.pack(fill=tk.X, pady=(0, 10))
+
+		self.tile_labels = {}
+		tile_fields = ['Position', 'Tile ID', 'Terrain', 'Walkable', 'Encounters']
+		for field in tile_fields:
+			row = ttk.Frame(tile_frame)
+			row.pack(fill=tk.X, pady=2)
+			ttk.Label(row, text=f"{field}:", width=10).pack(side=tk.LEFT)
+			lbl = ttk.Label(row, text="-")
+			lbl.pack(side=tk.LEFT)
+			self.tile_labels[field.lower()] = lbl
+
+		# Legend
+		legend_frame = ttk.LabelFrame(info_panel, text="Terrain Legend", padding=10)
+		legend_frame.pack(fill=tk.BOTH, expand=True)
+
+		legend_canvas = tk.Canvas(legend_frame, bg='#2a2a3e', height=200)
+		legend_canvas.pack(fill=tk.BOTH, expand=True)
+
+		terrain_names = [
+			(0, "Water/Barrier"),
+			(1, "Grass"),
+			(2, "Forest"),
+			(3, "Desert"),
+			(4, "Hills"),
+			(5, "Mountain"),
+			(6, "Town"),
+			(7, "Castle"),
+			(8, "Bridge"),
+			(9, "Cave"),
+			(10, "Swamp"),
+		]
+
+		for i, (terrain_id, name) in enumerate(terrain_names):
+			y = i * 18 + 5
+			color = self.TERRAIN_COLORS.get(terrain_id, '#888888')
+			legend_canvas.create_rectangle(5, y, 20, y+14, fill=color, outline='white')
+			legend_canvas.create_text(25, y+7, text=name, anchor=tk.W, fill='white', font=('Arial', 9))
+
+	def load_maps(self):
+		"""Load map data."""
+		self.map_data = self.asset_manager.load_json('maps')
+
+		if not self.map_data:
+			return
+
+		# Populate map combo
+		map_names = []
+		for map_id, map_info in self.map_data.items():
+			name = map_info.get('name', f'Map {map_id}')
+			map_names.append(f"{map_id}: {name}")
+
+		self.map_combo['values'] = map_names
+		if map_names:
+			self.map_combo.current(0)
+			self.on_map_select(None)
+
+	def on_map_select(self, event):
+		"""Handle map selection."""
+		selection = self.map_var.get()
+		if not selection:
+			return
+
+		# Extract map ID
+		map_id = selection.split(':')[0].strip()
+		self.current_map_id = map_id
+		self.current_map = self.map_data.get(map_id)
+
+		if self.current_map:
+			self.update_map_info()
+			self.draw_map()
+
+	def update_map_info(self):
+		"""Update map info display."""
+		if not self.current_map:
+			return
+
+		self.info_labels['name'].config(text=self.current_map.get('name', 'Unknown'))
+
+		width = self.current_map.get('width', 0)
+		height = self.current_map.get('height', 0)
+		self.info_labels['size'].config(text=f"{width} x {height}")
+
+		tiles = self.current_map.get('tiles', [])
+		total_tiles = sum(len(row) for row in tiles) if tiles else 0
+		self.info_labels['tiles'].config(text=str(total_tiles))
+
+		# Count walkable tiles
+		walkable = 0
+		encounter_tiles = 0
+		for row in tiles:
+			for tile in row:
+				if isinstance(tile, dict):
+					if tile.get('walkable', False):
+						walkable += 1
+					if tile.get('encounter_rate', 0) > 0:
+						encounter_tiles += 1
+
+		self.info_labels['walkable'].config(text=str(walkable))
+		self.info_labels['encounters'].config(text=str(encounter_tiles))
+
+	def draw_map(self):
+		"""Draw the map on canvas."""
+		self.map_canvas.delete('all')
+
+		if not self.current_map:
+			return
+
+		tiles = self.current_map.get('tiles', [])
+		if not tiles:
+			self.map_canvas.create_text(300, 250, text="No tile data", fill='white', font=('Arial', 14))
+			return
+
+		width = self.current_map.get('width', len(tiles[0]) if tiles else 0)
+		height = self.current_map.get('height', len(tiles))
+
+		# Set scroll region
+		canvas_width = width * self.zoom
+		canvas_height = height * self.zoom
+		self.map_canvas.configure(scrollregion=(0, 0, canvas_width, canvas_height))
+
+		# Draw tiles (limit for performance)
+		max_tiles = 10000  # Limit tiles to draw
+		tiles_drawn = 0
+
+		for y, row in enumerate(tiles):
+			if tiles_drawn >= max_tiles:
+				break
+			for x, tile in enumerate(row):
+				if tiles_drawn >= max_tiles:
+					break
+
+				# Get terrain type and color
+				if isinstance(tile, dict):
+					terrain = tile.get('terrain_type', 0)
+				else:
+					terrain = tile if isinstance(tile, int) else 0
+
+				color = self.TERRAIN_COLORS.get(terrain, '#888888')
+
+				# Draw tile
+				x1 = x * self.zoom
+				y1 = y * self.zoom
+				x2 = x1 + self.zoom
+				y2 = y1 + self.zoom
+
+				self.map_canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline='')
+				tiles_drawn += 1
+
+		# Status message for large maps
+		if tiles_drawn >= max_tiles:
+			self.map_canvas.create_text(10, 10, text=f"Showing {max_tiles} tiles (zoom in for detail)",
+									   anchor=tk.NW, fill='yellow', font=('Arial', 10))
+
+	def on_map_click(self, event):
+		"""Handle map click."""
+		if not self.current_map:
+			return
+
+		# Convert to canvas coordinates
+		canvas_x = self.map_canvas.canvasx(event.x)
+		canvas_y = self.map_canvas.canvasy(event.y)
+
+		# Calculate tile position
+		tile_x = int(canvas_x // self.zoom)
+		tile_y = int(canvas_y // self.zoom)
+
+		self.update_tile_info(tile_x, tile_y)
+
+	def on_map_drag(self, event):
+		"""Handle map dragging."""
+		pass  # Scrolling handled by scrollbars
+
+	def on_drag_end(self, event):
+		"""Handle drag end."""
+		pass
+
+	def on_mousewheel(self, event):
+		"""Handle mouse wheel for scrolling."""
+		self.map_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+	def update_tile_info(self, x, y):
+		"""Update tile info display."""
+		if not self.current_map:
+			return
+
+		tiles = self.current_map.get('tiles', [])
+		if not tiles or y >= len(tiles) or x >= len(tiles[y]):
+			return
+
+		tile = tiles[y][x]
+
+		self.tile_labels['position'].config(text=f"({x}, {y})")
+
+		if isinstance(tile, dict):
+			self.tile_labels['tile id'].config(text=str(tile.get('tile_id', '-')))
+			self.tile_labels['terrain'].config(text=str(tile.get('terrain_type', '-')))
+			self.tile_labels['walkable'].config(text='Yes' if tile.get('walkable', False) else 'No')
+			self.tile_labels['encounters'].config(text=str(tile.get('encounter_rate', 0)))
+		else:
+			self.tile_labels['tile id'].config(text=str(tile))
+			self.tile_labels['terrain'].config(text='-')
+			self.tile_labels['walkable'].config(text='-')
+			self.tile_labels['encounters'].config(text='-')
+
+	def zoom_in(self):
+		"""Zoom in."""
+		if self.zoom < 16:
+			self.zoom = min(16, self.zoom * 2)
+			self.zoom_label.config(text=f"{self.zoom}x")
+			self.draw_map()
+
+	def zoom_out(self):
+		"""Zoom out."""
+		if self.zoom > 1:
+			self.zoom = max(1, self.zoom // 2)
+			self.zoom_label.config(text=f"{self.zoom}x")
+			self.draw_map()
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -1740,6 +2667,9 @@ class UniversalEditor:
 		# Bindings
 		self.root.bind('<Control-s>', lambda e: self.save_all())
 		self.root.bind('<Control-r>', lambda e: self.refresh())
+		self.root.bind('<Control-z>', lambda e: self.do_undo())
+		self.root.bind('<Control-y>', lambda e: self.do_redo())
+		self.root.bind('<Control-Shift-z>', lambda e: self.do_redo())  # Alt redo
 		self.root.bind('<F5>', lambda e: self.build_rom())
 
 	def create_menu(self):
@@ -1757,6 +2687,14 @@ class UniversalEditor:
 		file_menu.add_separator()
 		file_menu.add_command(label="Exit", command=self.root.quit)
 
+		# Edit menu
+		edit_menu = tk.Menu(menubar, tearoff=0)
+		menubar.add_cascade(label="Edit", menu=edit_menu)
+		edit_menu.add_command(label="Undo", command=self.do_undo, accelerator="Ctrl+Z")
+		edit_menu.add_command(label="Redo", command=self.do_redo, accelerator="Ctrl+Y")
+		edit_menu.add_separator()
+		edit_menu.add_command(label="Undo History...", command=self.show_undo_history)
+
 		# Build menu
 		build_menu = tk.Menu(menubar, tearoff=0)
 		menubar.add_cascade(label="Build", menu=build_menu)
@@ -1770,6 +2708,17 @@ class UniversalEditor:
 		menubar.add_cascade(label="Tools", menu=tools_menu)
 		tools_menu.add_command(label="Extract All Assets", command=self.extract_all)
 		tools_menu.add_command(label="Generate Documentation", command=self.generate_docs)
+		tools_menu.add_separator()
+
+		# Export submenu
+		export_menu = tk.Menu(tools_menu, tearoff=0)
+		tools_menu.add_cascade(label="Export Data", menu=export_menu)
+		export_menu.add_command(label="Export Monsters to CSV", command=lambda: self.export_to_csv('monsters'))
+		export_menu.add_command(label="Export Items to CSV", command=lambda: self.export_to_csv('items'))
+		export_menu.add_command(label="Export Spells to CSV", command=lambda: self.export_to_csv('spells'))
+		export_menu.add_command(label="Export All to CSV", command=self.export_all_to_csv)
+		export_menu.add_separator()
+		export_menu.add_command(label="Generate HTML Report", command=self.generate_html_report)
 
 		# Help menu
 		help_menu = tk.Menu(menubar, tearoff=0)
@@ -1787,8 +2736,20 @@ class UniversalEditor:
 
 		ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=10)
 
+		# Undo/Redo buttons
+		self.undo_btn = ttk.Button(toolbar, text="↩️ Undo", command=self.do_undo)
+		self.undo_btn.pack(side=tk.LEFT, padx=2)
+		self.redo_btn = ttk.Button(toolbar, text="↪️ Redo", command=self.do_redo)
+		self.redo_btn.pack(side=tk.LEFT, padx=2)
+
+		ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=10)
+
 		ttk.Button(toolbar, text="🔨 Build ROM", command=self.build_rom).pack(side=tk.LEFT, padx=2)
 		ttk.Button(toolbar, text="⚡ Regen ASM", command=self.regenerate_all).pack(side=tk.LEFT, padx=2)
+
+		# Add listener for undo state changes
+		undo_manager.add_listener(self.update_undo_buttons)
+		self.update_undo_buttons()
 
 	def create_tabs(self):
 		"""Create all editor tabs."""
@@ -1828,11 +2789,11 @@ class UniversalEditor:
 		self.notebook.add(self.equipment_tab, text="⚔️ Equipment")
 
 		# Tab 8: Maps
-		self.map_tab = JsonEditorTab(self.notebook, self.asset_manager, 'maps', '🗺️ Maps')
+		self.map_tab = MapEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.map_tab, text="🗺️ Maps")
 
 		# Tab 9: Graphics
-		self.graphics_tab = JsonEditorTab(self.notebook, self.asset_manager, 'graphics', '🎨 Graphics')
+		self.graphics_tab = GraphicsEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.graphics_tab, text="🎨 Graphics")
 
 		# Tab 10: Statistics
@@ -1942,6 +2903,205 @@ class UniversalEditor:
 		except Exception as e:
 			messagebox.showerror("Error", str(e))
 
+	def export_to_csv(self, asset_type: str):
+		"""Export asset data to CSV file."""
+		data = self.asset_manager.load_json(asset_type)
+		if not data:
+			messagebox.showerror("Error", f"No data found for {asset_type}")
+			return
+
+		# Get records
+		records = None
+		if isinstance(data, list):
+			records = data
+		elif isinstance(data, dict):
+			for key in ['monsters', 'items', 'spells', 'dialogs', 'npcs', 'shops']:
+				if key in data:
+					records = data[key]
+					break
+			if records is None:
+				records = list(data.values())
+
+		if not records:
+			messagebox.showerror("Error", f"No records found for {asset_type}")
+			return
+
+		# Ask for save location
+		filename = filedialog.asksaveasfilename(
+			defaultextension=".csv",
+			filetypes=[("CSV files", "*.csv")],
+			initialfile=f"{asset_type}_export.csv"
+		)
+
+		if not filename:
+			return
+
+		try:
+			import csv
+
+			# Get all unique fields
+			all_fields = set()
+			for record in records:
+				if isinstance(record, dict):
+					all_fields.update(record.keys())
+			fields = sorted(all_fields)
+
+			with open(filename, 'w', newline='', encoding='utf-8') as f:
+				writer = csv.DictWriter(f, fieldnames=fields)
+				writer.writeheader()
+				for record in records:
+					if isinstance(record, dict):
+						writer.writerow(record)
+
+			messagebox.showinfo("Success", f"Exported {len(records)} records to:\n{filename}")
+			self.status_var.set(f"Exported {asset_type} to CSV")
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Export failed: {e}")
+
+	def export_all_to_csv(self):
+		"""Export all asset types to CSV files."""
+		folder = filedialog.askdirectory(title="Select export folder")
+		if not folder:
+			return
+
+		exported = []
+		for asset_type in ['monsters', 'items', 'spells', 'shops', 'npcs']:
+			data = self.asset_manager.load_json(asset_type)
+			if not data:
+				continue
+
+			# Get records
+			records = None
+			if isinstance(data, list):
+				records = data
+			elif isinstance(data, dict):
+				for key in ['monsters', 'items', 'spells', 'dialogs', 'npcs', 'shops']:
+					if key in data:
+						records = data[key]
+						break
+				if records is None:
+					records = list(data.values())
+
+			if not records:
+				continue
+
+			try:
+				import csv
+
+				# Get all unique fields
+				all_fields = set()
+				for record in records:
+					if isinstance(record, dict):
+						all_fields.update(record.keys())
+				fields = sorted(all_fields)
+
+				filepath = Path(folder) / f"{asset_type}_export.csv"
+				with open(filepath, 'w', newline='', encoding='utf-8') as f:
+					writer = csv.DictWriter(f, fieldnames=fields)
+					writer.writeheader()
+					for record in records:
+						if isinstance(record, dict):
+							writer.writerow(record)
+
+				exported.append(asset_type)
+			except:
+				pass
+
+		messagebox.showinfo("Export Complete", f"Exported: {', '.join(exported)}\nTo: {folder}")
+
+	def generate_html_report(self):
+		"""Generate an HTML report of all game data."""
+		filename = filedialog.asksaveasfilename(
+			defaultextension=".html",
+			filetypes=[("HTML files", "*.html")],
+			initialfile="dragon_warrior_report.html"
+		)
+
+		if not filename:
+			return
+
+		try:
+			html = ['<!DOCTYPE html>', '<html>', '<head>',
+				'<meta charset="UTF-8">',
+				'<title>Dragon Warrior Data Report</title>',
+				'<style>',
+				'body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a2e; color: #eee; }',
+				'h1, h2 { color: #f8b500; }',
+				'table { border-collapse: collapse; width: 100%; margin: 20px 0; }',
+				'th, td { border: 1px solid #444; padding: 8px; text-align: left; }',
+				'th { background: #16213e; color: #f8b500; }',
+				'tr:nth-child(even) { background: #232346; }',
+				'tr:hover { background: #2a2a5a; }',
+				'.stats { display: flex; gap: 20px; margin: 20px 0; }',
+				'.stat-box { background: #232346; padding: 15px; border-radius: 8px; }',
+				'.stat-box h3 { margin: 0 0 10px 0; color: #f8b500; }',
+				'</style>',
+				'</head>', '<body>',
+				'<h1>Dragon Warrior Data Report</h1>',
+				f'<p>Generated: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</p>']
+
+			# Summary stats
+			html.append('<div class="stats">')
+			for asset_type in ['monsters', 'items', 'spells', 'shops']:
+				status = self.asset_manager.assets.get(asset_type)
+				if status:
+					html.append(f'<div class="stat-box"><h3>{status.name}</h3><p>{status.record_count} records</p></div>')
+			html.append('</div>')
+
+			# Monsters table
+			monsters = self.asset_manager.load_json('monsters')
+			if monsters:
+				monster_list = monsters.get('monsters', monsters) if isinstance(monsters, dict) else monsters
+				html.append('<h2>Monsters</h2>')
+				html.append('<table><tr><th>#</th><th>Name</th><th>HP</th><th>STR</th><th>AGI</th><th>XP</th><th>Gold</th></tr>')
+				for i, m in enumerate(monster_list[:40]):  # Limit
+					if isinstance(m, dict):
+						html.append(f"<tr><td>{i}</td><td>{m.get('name', '-')}</td><td>{m.get('hp', '-')}</td>"
+							f"<td>{m.get('strength', '-')}</td><td>{m.get('agility', '-')}</td>"
+							f"<td>{m.get('xp', '-')}</td><td>{m.get('gold', '-')}</td></tr>")
+				html.append('</table>')
+
+			# Items table
+			items = self.asset_manager.load_json('items')
+			if items:
+				item_list = items.get('items', items) if isinstance(items, dict) else items
+				html.append('<h2>Items</h2>')
+				html.append('<table><tr><th>#</th><th>Name</th><th>Buy</th><th>Sell</th><th>Type</th></tr>')
+				for i, item in enumerate(item_list[:30]):
+					if isinstance(item, dict):
+						html.append(f"<tr><td>{i}</td><td>{item.get('name', '-')}</td>"
+							f"<td>{item.get('buy_price', '-')}</td><td>{item.get('sell_price', '-')}</td>"
+							f"<td>{item.get('type', '-')}</td></tr>")
+				html.append('</table>')
+
+			# Spells table
+			spells = self.asset_manager.load_json('spells')
+			if spells:
+				spell_list = spells.get('spells', spells) if isinstance(spells, dict) else spells
+				html.append('<h2>Spells</h2>')
+				html.append('<table><tr><th>#</th><th>Name</th><th>MP</th><th>Effect</th><th>Level</th></tr>')
+				for i, spell in enumerate(spell_list[:20]):
+					if isinstance(spell, dict):
+						html.append(f"<tr><td>{i}</td><td>{spell.get('name', '-')}</td>"
+							f"<td>{spell.get('mp_cost', '-')}</td><td>{spell.get('effect', '-')}</td>"
+							f"<td>{spell.get('learn_level', '-')}</td></tr>")
+				html.append('</table>')
+
+			html.extend(['</body>', '</html>'])
+
+			with open(filename, 'w', encoding='utf-8') as f:
+				f.write('\n'.join(html))
+
+			messagebox.showinfo("Success", f"HTML report generated:\n{filename}")
+
+			# Optionally open in browser
+			if messagebox.askyesno("Open Report?", "Would you like to open the report in your browser?"):
+				os.startfile(filename)
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Report generation failed: {e}")
+
 	def open_json_folder(self):
 		"""Open JSON folder."""
 		os.startfile(str(ASSETS_JSON))
@@ -1949,6 +3109,93 @@ class UniversalEditor:
 	def open_source_folder(self):
 		"""Open source folder."""
 		os.startfile(str(GENERATED))
+
+	def do_undo(self):
+		"""Perform undo operation."""
+		action = undo_manager.undo()
+		if action:
+			self.apply_undo_action(action, is_redo=False)
+			self.status_var.set(f"Undone: {action.description}")
+		else:
+			self.status_var.set("Nothing to undo")
+
+	def do_redo(self):
+		"""Perform redo operation."""
+		action = undo_manager.redo()
+		if action:
+			self.apply_undo_action(action, is_redo=True)
+			self.status_var.set(f"Redone: {action.description}")
+		else:
+			self.status_var.set("Nothing to redo")
+
+	def apply_undo_action(self, action: UndoAction, is_redo: bool):
+		"""Apply an undo/redo action to the data."""
+		# Determine which value to apply
+		value = action.new_value if is_redo else action.old_value
+
+		# Load the asset data
+		data = self.asset_manager.load_json(action.asset_type)
+		if not data:
+			return
+
+		# Navigate to the right record
+		records = None
+		if isinstance(data, list):
+			records = data
+		elif isinstance(data, dict):
+			for key in ['monsters', 'items', 'spells', 'dialogs', 'npcs', 'shops']:
+				if key in data:
+					records = data[key]
+					break
+			if records is None:
+				records = list(data.values())
+
+		# Apply the change
+		if records and 0 <= action.record_index < len(records):
+			record = records[action.record_index]
+			if isinstance(record, dict):
+				record[action.field] = value
+
+			# Save back
+			self.asset_manager.save_json(action.asset_type, data)
+
+			# Refresh the appropriate tab
+			self.refresh()
+
+	def update_undo_buttons(self):
+		"""Update undo/redo button states."""
+		if hasattr(self, 'undo_btn'):
+			if undo_manager.can_undo():
+				self.undo_btn.config(state=tk.NORMAL)
+			else:
+				self.undo_btn.config(state=tk.DISABLED)
+
+		if hasattr(self, 'redo_btn'):
+			if undo_manager.can_redo():
+				self.redo_btn.config(state=tk.NORMAL)
+			else:
+				self.redo_btn.config(state=tk.DISABLED)
+
+	def show_undo_history(self):
+		"""Show undo history dialog."""
+		history_window = tk.Toplevel(self.root)
+		history_window.title("Undo History")
+		history_window.geometry("400x300")
+
+		ttk.Label(history_window, text="Recent Changes:", font=('Arial', 12, 'bold')).pack(pady=10)
+
+		history_list = tk.Listbox(history_window, width=50, height=15)
+		history_list.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		history = undo_manager.get_history(20)
+		if history:
+			for item in reversed(history):
+				history_list.insert(tk.END, item)
+		else:
+			history_list.insert(tk.END, "(No history)")
+
+		ttk.Button(history_window, text="Clear History",
+				   command=lambda: [undo_manager.clear(), history_window.destroy()]).pack(pady=10)
 
 	def show_docs(self):
 		"""Show documentation."""
@@ -1970,6 +3217,8 @@ class UniversalEditor:
 				"• Graphics: View graphics metadata\n\n"
 				"Keyboard Shortcuts:\n"
 				"  Ctrl+S - Save all\n"
+				"  Ctrl+Z - Undo\n"
+				"  Ctrl+Y - Redo\n"
 				"  Ctrl+R - Refresh\n"
 				"  F5 - Build ROM")
 
@@ -1983,7 +3232,8 @@ class UniversalEditor:
 			"• Asset extraction & editing\n"
 			"• JSON-based data management\n"
 			"• ASM code generation\n"
-			"• Build pipeline integration\n\n"
+			"• Build pipeline integration\n"
+			"• Undo/Redo support\n\n"
 			"Python 3.x + tkinter")
 
 	def run(self):
