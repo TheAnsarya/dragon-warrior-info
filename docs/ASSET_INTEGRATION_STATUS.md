@@ -35,6 +35,13 @@ These assets are edited via JSON and automatically included in the ROM build.
 - **Extractor**: `tools/extract_shops_from_rom.py` (extracts correct shop data from ROM)
 - **Status**: ✅ Complete (Added 2025-11-29)
 
+### Equipment Bonuses (Attack/Defense)
+- **JSON File**: `assets/json/equipment_bonuses.json`
+- **Generator**: `tools/generate_equipment_bonus_tables.py` → `source_files/generated/equipment_bonus_tables.asm`
+- **Bank Integration**: Bank00.asm via `.include "generated/equipment_bonus_tables.asm"`
+- **Tables Generated**: WeaponsBonusTbl, ArmorBonusTbl, ShieldBonusTbl
+- **Status**: ✅ Complete (Added 2025-11-29)
+
 ---
 
 ## ⚠️ Generated But Not Linked

@@ -2197,40 +2197,10 @@ InnCostTbl_Byte_9990:  .byte $37               ;Rimuldar           - 55    gold.
 .include "generated/shop_items_table.asm"
 
 ;----------------------------------------------------------------------------------------------------
-;This table contains weapon bonuses added to the
-;strength score to produce the attack power stat.
-
-WeaponsBonusTbl:
-        .byte $00               ;($99CF)None            +0.
-WeaponsBon_Byte_99D0:  .byte $02   ;Bamboo pole     +2.
-WeaponsBon_Byte_99D1:  .byte $04   ;Club            +4.
-        .byte $0A               ;($99D2)Copper sword    +10.
-WeaponsBon_Byte_99D3:  .byte $0F   ;Hand axe        +15.
-        .byte $14               ;($99D4)Broad sword     +20.
-WeaponsBon_Byte_99D5:  .byte $1C   ;Flame sword     +28
-WeaponsBon_Byte_99D6:  .byte $28   ;Erdrick's sword +40.
-
-;This table contains armor bonuses added to the
-;agility score to produce the defense power stat.
-
-ArmorBonusTbl:
-        .byte $00               ;($99D7)None            +0.
-ArmorBonus_Byte_99D8:  .byte $02   ;Clothes         +2.
-        .byte $04               ;($99D9)Leather armor   +4.
-ArmorBonus_Byte_99DA:  .byte $0A   ;Chain mail      +10.
-ArmorBonus_Byte_99DB:  .byte $10   ;Half plate      +16.
-ArmorBonus_Byte_99DC:  .byte $18   ;Full plate      +24.
-ArmorBonus_Byte_99DD:  .byte $18   ;Magic armor     +24.
-        .byte $1C               ;($99DE)Erdrick's armor +28.
-
-;This table contains shield bonuses added to the
-;agility score to produce the defense power stat.
-
-ShieldBonusTbl:
-ShieldBonus_Byte_99DF:  .byte $00   ;None            +0.
-        .byte $04               ;($99E0)Small shield    +4.
-ShieldBonus_Byte_99E1:  .byte $0A   ;Large shield    +10.
-ShieldBonus_Byte_99E2:  .byte $14   ;Silver shield   +20.
+; Equipment Bonus Tables - Generated from assets/json/equipment_bonuses.json
+; To modify equipment stats, edit the JSON file and rebuild
+;----------------------------------------------------------------------------------------------------
+.include "generated/equipment_bonus_tables.asm"
 
 ;----------------------------------------------------------------------------------------------------
 
