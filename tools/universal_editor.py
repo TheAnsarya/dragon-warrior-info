@@ -2984,6 +2984,1468 @@ class PaletteEditorTab(ttk.Frame):
 
 
 # ============================================================================
+# HEX VIEWER TAB
+# ============================================================================
+
+class HexViewerTab(BaseTab):
+	"""Hex viewer/editor for ROM data."""
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.rom_data: Optional[bytes] = None
+		self.rom_path: Optional[Path] = None
+		self.offset = 0
+		self.bytes_per_row = 16
+		self.rows_visible = 24
+		self.selection_start: Optional[int] = None
+		self.selection_end: Optional[int] = None
+		self.bookmarks: Dict[str, int] = {}
+
+		# Known ROM regions for Dragon Warrior
+		self.rom_regions = {
+			'Header': (0x0000, 0x0010),
+			'PRG-ROM Bank 0': (0x0010, 0x4010),
+			'PRG-ROM Bank 1': (0x4010, 0x8010),
+			'PRG-ROM Bank 2': (0x8010, 0xC010),
+			'PRG-ROM Bank 3': (0xC010, 0x10010),
+			'CHR-ROM': (0x10010, 0x14010),
+			'Text Table': (0x8010, 0x8810),
+			'Monster Data': (0x5E5B + 0x10, 0x5E5B + 0x10 + 0x280),
+			'Item Data': (0x1A5E + 0x10, 0x1A5E + 0x10 + 0x100),
+		}
+
+		self.setup_ui()
+		self.load_rom()
+
+	def setup_ui(self):
+		"""Set up hex viewer UI."""
+		# Top toolbar
+		toolbar = ttk.Frame(self.frame)
+		toolbar.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(toolbar, text="Go to:").pack(side='left', padx=2)
+		self.offset_var = tk.StringVar(value="0x0000")
+		self.offset_entry = ttk.Entry(toolbar, textvariable=self.offset_var, width=12)
+		self.offset_entry.pack(side='left', padx=2)
+		self.offset_entry.bind('<Return>', lambda e: self.go_to_offset())
+
+		ttk.Button(toolbar, text="Go", command=self.go_to_offset).pack(side='left', padx=2)
+
+		ttk.Separator(toolbar, orient='vertical').pack(side='left', fill='y', padx=5)
+
+		ttk.Label(toolbar, text="Region:").pack(side='left', padx=2)
+		self.region_var = tk.StringVar()
+		region_combo = ttk.Combobox(toolbar, textvariable=self.region_var, width=20, state='readonly')
+		region_combo['values'] = list(self.rom_regions.keys())
+		region_combo.pack(side='left', padx=2)
+		region_combo.bind('<<ComboboxSelected>>', self.jump_to_region)
+
+		ttk.Separator(toolbar, orient='vertical').pack(side='left', fill='y', padx=5)
+
+		ttk.Button(toolbar, text="Find...", command=self.show_find_dialog).pack(side='left', padx=2)
+		ttk.Button(toolbar, text="Bookmarks", command=self.show_bookmarks).pack(side='left', padx=2)
+
+		ttk.Separator(toolbar, orient='vertical').pack(side='left', fill='y', padx=5)
+
+		ttk.Label(toolbar, text="Display:").pack(side='left', padx=2)
+		self.display_var = tk.StringVar(value="hex")
+		ttk.Radiobutton(toolbar, text="Hex", variable=self.display_var, value="hex",
+			command=self.refresh_view).pack(side='left')
+		ttk.Radiobutton(toolbar, text="Dec", variable=self.display_var, value="dec",
+			command=self.refresh_view).pack(side='left')
+		ttk.Radiobutton(toolbar, text="Bin", variable=self.display_var, value="bin",
+			command=self.refresh_view).pack(side='left')
+
+		# Main hex view area
+		hex_frame = ttk.Frame(self.frame)
+		hex_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Create hex view with monospace font
+		self.hex_text = tk.Text(
+			hex_frame,
+			font=('Consolas', 10),
+			wrap='none',
+			width=80,
+			height=self.rows_visible,
+			bg='#1e1e1e',
+			fg='#d4d4d4',
+			insertbackground='white',
+			selectbackground='#264f78',
+			state='disabled'
+		)
+		self.hex_text.pack(side='left', fill='both', expand=True)
+
+		# Scrollbar
+		scrollbar = ttk.Scrollbar(hex_frame, orient='vertical')
+		scrollbar.pack(side='right', fill='y')
+
+		# Custom scrollbar handling for bytes
+		scrollbar.config(command=self.on_scroll)
+
+		# ASCII view
+		self.ascii_text = tk.Text(
+			hex_frame,
+			font=('Consolas', 10),
+			wrap='none',
+			width=18,
+			height=self.rows_visible,
+			bg='#252526',
+			fg='#ce9178',
+			state='disabled'
+		)
+		self.ascii_text.pack(side='left', fill='y')
+
+		# Configure tags for highlighting
+		self.hex_text.tag_configure('offset', foreground='#569cd6')
+		self.hex_text.tag_configure('selected', background='#264f78')
+		self.hex_text.tag_configure('zero', foreground='#606060')
+		self.hex_text.tag_configure('high', foreground='#4ec9b0')
+		self.hex_text.tag_configure('ascii', foreground='#ce9178')
+		self.hex_text.tag_configure('header', foreground='#dcdcaa')
+		self.hex_text.tag_configure('chr', foreground='#c586c0')
+
+		self.ascii_text.tag_configure('printable', foreground='#ce9178')
+		self.ascii_text.tag_configure('nonprint', foreground='#606060')
+
+		# Bindings
+		self.hex_text.bind('<MouseWheel>', self.on_mousewheel)
+		self.hex_text.bind('<Button-1>', self.on_click)
+		self.ascii_text.bind('<MouseWheel>', self.on_mousewheel)
+
+		# Info panel at bottom
+		info_frame = ttk.LabelFrame(self.frame, text="Selection Info")
+		info_frame.pack(fill='x', padx=5, pady=5)
+
+		info_grid = ttk.Frame(info_frame)
+		info_grid.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(info_grid, text="Offset:").grid(row=0, column=0, sticky='e', padx=5)
+		self.sel_offset_var = tk.StringVar(value="-")
+		ttk.Label(info_grid, textvariable=self.sel_offset_var, font=('Consolas', 10)).grid(
+			row=0, column=1, sticky='w')
+
+		ttk.Label(info_grid, text="Hex:").grid(row=0, column=2, sticky='e', padx=5)
+		self.sel_hex_var = tk.StringVar(value="-")
+		ttk.Label(info_grid, textvariable=self.sel_hex_var, font=('Consolas', 10)).grid(
+			row=0, column=3, sticky='w')
+
+		ttk.Label(info_grid, text="Dec:").grid(row=0, column=4, sticky='e', padx=5)
+		self.sel_dec_var = tk.StringVar(value="-")
+		ttk.Label(info_grid, textvariable=self.sel_dec_var, font=('Consolas', 10)).grid(
+			row=0, column=5, sticky='w')
+
+		ttk.Label(info_grid, text="Binary:").grid(row=0, column=6, sticky='e', padx=5)
+		self.sel_bin_var = tk.StringVar(value="-")
+		ttk.Label(info_grid, textvariable=self.sel_bin_var, font=('Consolas', 10)).grid(
+			row=0, column=7, sticky='w')
+
+		ttk.Label(info_grid, text="Region:").grid(row=1, column=0, sticky='e', padx=5)
+		self.sel_region_var = tk.StringVar(value="-")
+		ttk.Label(info_grid, textvariable=self.sel_region_var).grid(
+			row=1, column=1, columnspan=3, sticky='w')
+
+		ttk.Label(info_grid, text="Word (LE):").grid(row=1, column=4, sticky='e', padx=5)
+		self.sel_word_var = tk.StringVar(value="-")
+		ttk.Label(info_grid, textvariable=self.sel_word_var, font=('Consolas', 10)).grid(
+			row=1, column=5, sticky='w')
+
+		ttk.Label(info_grid, text="NES Address:").grid(row=1, column=6, sticky='e', padx=5)
+		self.sel_nes_var = tk.StringVar(value="-")
+		ttk.Label(info_grid, textvariable=self.sel_nes_var, font=('Consolas', 10)).grid(
+			row=1, column=7, sticky='w')
+
+	def load_rom(self):
+		"""Load ROM data."""
+		rom_path = PROJECT_ROOT / "build" / "dragon_warrior_rebuilt.nes"
+		if not rom_path.exists():
+			rom_path = PROJECT_ROOT / "roms" / "Dragon Warrior (USA).nes"
+
+		if rom_path.exists():
+			try:
+				with open(rom_path, 'rb') as f:
+					self.rom_data = f.read()
+				self.rom_path = rom_path
+				self.status_callback(f"Loaded ROM: {rom_path.name} ({len(self.rom_data):,} bytes)")
+				self.refresh_view()
+			except Exception as e:
+				self.status_callback(f"Failed to load ROM: {e}")
+		else:
+			self.status_callback("No ROM found")
+
+	def refresh_view(self):
+		"""Refresh the hex view."""
+		if not self.rom_data:
+			return
+
+		self.hex_text.config(state='normal')
+		self.ascii_text.config(state='normal')
+		self.hex_text.delete('1.0', 'end')
+		self.ascii_text.delete('1.0', 'end')
+
+		display_mode = self.display_var.get()
+
+		for row in range(self.rows_visible):
+			addr = self.offset + row * self.bytes_per_row
+			if addr >= len(self.rom_data):
+				break
+
+			# Offset column
+			offset_str = f"{addr:08X}  "
+			self.hex_text.insert('end', offset_str, 'offset')
+
+			# Hex/Dec/Bin bytes
+			ascii_chars = []
+			for col in range(self.bytes_per_row):
+				byte_addr = addr + col
+				if byte_addr >= len(self.rom_data):
+					self.hex_text.insert('end', '   ')
+					ascii_chars.append(' ')
+					continue
+
+				byte = self.rom_data[byte_addr]
+
+				# Determine tag based on value and region
+				tag = ''
+				if byte == 0:
+					tag = 'zero'
+				elif byte >= 0x80:
+					tag = 'high'
+				elif byte_addr < 0x10:
+					tag = 'header'
+				elif byte_addr >= 0x10010:
+					tag = 'chr'
+
+				# Format based on display mode
+				if display_mode == 'hex':
+					byte_str = f"{byte:02X} "
+				elif display_mode == 'dec':
+					byte_str = f"{byte:3d} "
+				else:  # bin
+					byte_str = f"{byte:08b} "[0:4]  # Truncate for space
+
+				self.hex_text.insert('end', byte_str, tag)
+
+				# ASCII representation
+				if 32 <= byte < 127:
+					ascii_chars.append(chr(byte))
+				else:
+					ascii_chars.append('.')
+
+				# Add separator every 8 bytes
+				if col == 7:
+					self.hex_text.insert('end', ' ')
+
+			self.hex_text.insert('end', '\n')
+			self.ascii_text.insert('end', ''.join(ascii_chars) + '\n')
+
+		self.hex_text.config(state='disabled')
+		self.ascii_text.config(state='disabled')
+
+	def on_scroll(self, *args):
+		"""Handle scrollbar."""
+		if not self.rom_data:
+			return
+
+		if args[0] == 'moveto':
+			fraction = float(args[1])
+			max_offset = max(0, len(self.rom_data) - self.rows_visible * self.bytes_per_row)
+			self.offset = int(fraction * max_offset)
+			self.offset = (self.offset // self.bytes_per_row) * self.bytes_per_row
+			self.refresh_view()
+		elif args[0] == 'scroll':
+			amount = int(args[1])
+			unit = args[2]
+			if unit == 'units':
+				self.offset += amount * self.bytes_per_row
+			else:  # pages
+				self.offset += amount * self.bytes_per_row * self.rows_visible
+			self.offset = max(0, min(self.offset,
+				len(self.rom_data) - self.rows_visible * self.bytes_per_row))
+			self.offset = (self.offset // self.bytes_per_row) * self.bytes_per_row
+			self.refresh_view()
+
+	def on_mousewheel(self, event):
+		"""Handle mouse wheel scrolling."""
+		if not self.rom_data:
+			return
+
+		# Scroll 3 rows at a time
+		delta = -3 if event.delta > 0 else 3
+		self.offset += delta * self.bytes_per_row
+		self.offset = max(0, min(self.offset,
+			len(self.rom_data) - self.rows_visible * self.bytes_per_row))
+		self.offset = (self.offset // self.bytes_per_row) * self.bytes_per_row
+		self.refresh_view()
+		return "break"
+
+	def on_click(self, event):
+		"""Handle click to select byte."""
+		if not self.rom_data:
+			return
+
+		# Get click position
+		index = self.hex_text.index(f"@{event.x},{event.y}")
+		line, col = map(int, index.split('.'))
+
+		# Calculate byte offset from column position
+		# Format: "XXXXXXXX  XX XX XX XX XX XX XX XX  XX XX XX XX XX XX XX XX"
+		# Offset: 10 chars, then bytes with spaces
+		if col < 10:
+			return  # Clicked on offset
+
+		col -= 10  # Remove offset column
+		display_mode = self.display_var.get()
+
+		if display_mode == 'hex':
+			byte_width = 3
+			separator_at = 8 * 3
+		elif display_mode == 'dec':
+			byte_width = 4
+			separator_at = 8 * 4
+		else:
+			byte_width = 4
+			separator_at = 8 * 4
+
+		# Account for separator
+		if col >= separator_at:
+			col -= 1
+
+		byte_in_row = col // byte_width
+		if byte_in_row >= self.bytes_per_row:
+			return
+
+		byte_offset = self.offset + (line - 1) * self.bytes_per_row + byte_in_row
+		if byte_offset >= len(self.rom_data):
+			return
+
+		self.selection_start = byte_offset
+		self.update_selection_info(byte_offset)
+
+	def update_selection_info(self, offset: int):
+		"""Update the selection info panel."""
+		if offset >= len(self.rom_data):
+			return
+
+		byte = self.rom_data[offset]
+
+		self.sel_offset_var.set(f"0x{offset:08X}")
+		self.sel_hex_var.set(f"0x{byte:02X}")
+		self.sel_dec_var.set(str(byte))
+		self.sel_bin_var.set(f"{byte:08b}")
+
+		# Find region
+		region_name = "Unknown"
+		for name, (start, end) in self.rom_regions.items():
+			if start <= offset < end:
+				region_name = name
+				break
+		self.sel_region_var.set(region_name)
+
+		# Word (little-endian)
+		if offset + 1 < len(self.rom_data):
+			word = self.rom_data[offset] | (self.rom_data[offset + 1] << 8)
+			self.sel_word_var.set(f"0x{word:04X} ({word})")
+		else:
+			self.sel_word_var.set("-")
+
+		# NES address (accounting for header)
+		if offset >= 0x10:
+			nes_addr = (offset - 0x10) % 0x4000 + 0x8000
+			bank = (offset - 0x10) // 0x4000
+			self.sel_nes_var.set(f"${nes_addr:04X} (Bank {bank})")
+		else:
+			self.sel_nes_var.set("Header")
+
+	def go_to_offset(self):
+		"""Jump to specified offset."""
+		try:
+			offset_str = self.offset_var.get().strip()
+			if offset_str.startswith('0x') or offset_str.startswith('$'):
+				offset = int(offset_str.replace('$', '0x'), 16)
+			else:
+				offset = int(offset_str)
+
+			if self.rom_data and 0 <= offset < len(self.rom_data):
+				self.offset = (offset // self.bytes_per_row) * self.bytes_per_row
+				self.selection_start = offset
+				self.refresh_view()
+				self.update_selection_info(offset)
+				self.status_callback(f"Jumped to offset 0x{offset:08X}")
+			else:
+				messagebox.showwarning("Invalid Offset", "Offset is out of range")
+		except ValueError:
+			messagebox.showerror("Error", "Invalid offset format")
+
+	def jump_to_region(self, event=None):
+		"""Jump to selected ROM region."""
+		region = self.region_var.get()
+		if region in self.rom_regions:
+			start, _ = self.rom_regions[region]
+			self.offset_var.set(f"0x{start:08X}")
+			self.go_to_offset()
+
+	def show_find_dialog(self):
+		"""Show find dialog."""
+		dialog = tk.Toplevel(self.frame)
+		dialog.title("Find Bytes")
+		dialog.geometry("400x200")
+		dialog.transient(self.frame.winfo_toplevel())
+
+		ttk.Label(dialog, text="Search for (hex bytes, e.g., FF 00 AB):").pack(pady=5)
+		search_entry = ttk.Entry(dialog, width=40)
+		search_entry.pack(pady=5)
+
+		result_var = tk.StringVar(value="")
+		ttk.Label(dialog, textvariable=result_var).pack(pady=5)
+
+		def do_find():
+			if not self.rom_data:
+				return
+
+			pattern_str = search_entry.get().strip()
+			try:
+				# Parse hex bytes
+				bytes_to_find = bytes.fromhex(pattern_str.replace(' ', ''))
+				pos = self.rom_data.find(bytes_to_find, self.selection_start + 1 if self.selection_start else 0)
+
+				if pos >= 0:
+					self.offset = (pos // self.bytes_per_row) * self.bytes_per_row
+					self.selection_start = pos
+					self.refresh_view()
+					self.update_selection_info(pos)
+					result_var.set(f"Found at 0x{pos:08X}")
+				else:
+					# Wrap around
+					pos = self.rom_data.find(bytes_to_find)
+					if pos >= 0:
+						self.offset = (pos // self.bytes_per_row) * self.bytes_per_row
+						self.selection_start = pos
+						self.refresh_view()
+						self.update_selection_info(pos)
+						result_var.set(f"Found at 0x{pos:08X} (wrapped)")
+					else:
+						result_var.set("Not found")
+			except ValueError:
+				result_var.set("Invalid hex format")
+
+		ttk.Button(dialog, text="Find Next", command=do_find).pack(pady=10)
+		search_entry.bind('<Return>', lambda e: do_find())
+		search_entry.focus_set()
+
+	def show_bookmarks(self):
+		"""Show bookmarks dialog."""
+		dialog = tk.Toplevel(self.frame)
+		dialog.title("Bookmarks")
+		dialog.geometry("350x300")
+		dialog.transient(self.frame.winfo_toplevel())
+
+		# Listbox for bookmarks
+		listbox = tk.Listbox(dialog, font=('Consolas', 10))
+		listbox.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Add default bookmarks from ROM regions
+		for name, (start, _) in self.rom_regions.items():
+			listbox.insert('end', f"0x{start:08X}  {name}")
+
+		# Add custom bookmarks
+		for name, offset in self.bookmarks.items():
+			listbox.insert('end', f"0x{offset:08X}  {name}")
+
+		def jump_to_bookmark():
+			sel = listbox.curselection()
+			if sel:
+				text = listbox.get(sel[0])
+				offset_str = text.split()[0]
+				self.offset_var.set(offset_str)
+				self.go_to_offset()
+				dialog.destroy()
+
+		ttk.Button(dialog, text="Jump To", command=jump_to_bookmark).pack(pady=5)
+
+		# Add current position as bookmark
+		def add_bookmark():
+			if self.selection_start is not None:
+				name = simpledialog.askstring("Add Bookmark", "Bookmark name:")
+				if name:
+					self.bookmarks[name] = self.selection_start
+					listbox.insert('end', f"0x{self.selection_start:08X}  {name}")
+
+		ttk.Button(dialog, text="Add Current", command=add_bookmark).pack(pady=5)
+
+		listbox.bind('<Double-Button-1>', lambda e: jump_to_bookmark())
+
+	def refresh(self):
+		"""Refresh hex view."""
+		self.load_rom()
+
+
+# ============================================================================
+# SCRIPT/ASM EDITOR TAB
+# ============================================================================
+
+class ScriptEditorTab(BaseTab):
+	"""Assembly/script source code editor with syntax highlighting."""
+
+	# 6502 opcodes for syntax highlighting
+	OPCODES_6502 = {
+		'ADC', 'AND', 'ASL', 'BCC', 'BCS', 'BEQ', 'BIT', 'BMI', 'BNE', 'BPL',
+		'BRK', 'BVC', 'BVS', 'CLC', 'CLD', 'CLI', 'CLV', 'CMP', 'CPX', 'CPY',
+		'DEC', 'DEX', 'DEY', 'EOR', 'INC', 'INX', 'INY', 'JMP', 'JSR', 'LDA',
+		'LDX', 'LDY', 'LSR', 'NOP', 'ORA', 'PHA', 'PHP', 'PLA', 'PLP', 'ROL',
+		'ROR', 'RTI', 'RTS', 'SBC', 'SEC', 'SED', 'SEI', 'STA', 'STX', 'STY',
+		'TAX', 'TAY', 'TSX', 'TXA', 'TXS', 'TYA',
+	}
+
+	# Ophis directives
+	DIRECTIVES = {
+		'.alias', '.advance', '.ascii', '.asciiz', '.byte', '.cbmfloat',
+		'.charmap', '.charmapbin', '.checkpc', '.data', '.dword', '.else',
+		'.elsif', '.endif', '.if', '.incbin', '.include', '.invoke', '.macro',
+		'.macend', '.org', '.outfile', '.require', '.scope', '.scend',
+		'.segment', '.space', '.text', '.word', '.wordbe', '.dwordbe',
+	}
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.current_file: Optional[Path] = None
+		self.modified = False
+		self.file_history: List[Path] = []
+
+		self.setup_ui()
+		self.load_file_list()
+
+	def setup_ui(self):
+		"""Set up the script editor UI."""
+		# Top toolbar
+		toolbar = ttk.Frame(self.frame)
+		toolbar.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(toolbar, text="File:").pack(side='left', padx=2)
+		self.file_var = tk.StringVar()
+		self.file_combo = ttk.Combobox(toolbar, textvariable=self.file_var, width=50)
+		self.file_combo.pack(side='left', padx=2)
+		self.file_combo.bind('<<ComboboxSelected>>', self.on_file_selected)
+
+		ttk.Button(toolbar, text="Open...", command=self.open_file).pack(side='left', padx=2)
+		ttk.Button(toolbar, text="Save", command=self.save_file).pack(side='left', padx=2)
+		ttk.Button(toolbar, text="Reload", command=self.reload_file).pack(side='left', padx=2)
+
+		ttk.Separator(toolbar, orient='vertical').pack(side='left', fill='y', padx=5)
+
+		ttk.Button(toolbar, text="Find...", command=self.show_find).pack(side='left', padx=2)
+		ttk.Button(toolbar, text="Go to Line...", command=self.goto_line).pack(side='left', padx=2)
+
+		# Main editor pane with line numbers
+		editor_frame = ttk.Frame(self.frame)
+		editor_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Line numbers
+		self.line_numbers = tk.Text(
+			editor_frame,
+			width=6,
+			font=('Consolas', 10),
+			bg='#1e1e1e',
+			fg='#858585',
+			state='disabled',
+			relief='flat',
+			padx=5
+		)
+		self.line_numbers.pack(side='left', fill='y')
+
+		# Code editor
+		self.editor = tk.Text(
+			editor_frame,
+			font=('Consolas', 10),
+			wrap='none',
+			undo=True,
+			bg='#1e1e1e',
+			fg='#d4d4d4',
+			insertbackground='white',
+			selectbackground='#264f78',
+			relief='flat',
+			padx=5,
+			pady=5
+		)
+		self.editor.pack(side='left', fill='both', expand=True)
+
+		# Scrollbars
+		v_scroll = ttk.Scrollbar(editor_frame, orient='vertical', command=self.sync_scroll_v)
+		v_scroll.pack(side='right', fill='y')
+		self.editor.config(yscrollcommand=v_scroll.set)
+
+		h_scroll = ttk.Scrollbar(self.frame, orient='horizontal', command=self.editor.xview)
+		h_scroll.pack(fill='x')
+		self.editor.config(xscrollcommand=h_scroll.set)
+
+		# Configure syntax highlighting tags
+		self.editor.tag_configure('opcode', foreground='#569cd6', font=('Consolas', 10, 'bold'))
+		self.editor.tag_configure('directive', foreground='#c586c0')
+		self.editor.tag_configure('comment', foreground='#6a9955', font=('Consolas', 10, 'italic'))
+		self.editor.tag_configure('label', foreground='#dcdcaa')
+		self.editor.tag_configure('number', foreground='#b5cea8')
+		self.editor.tag_configure('string', foreground='#ce9178')
+		self.editor.tag_configure('register', foreground='#9cdcfe')
+
+		# Bindings
+		self.editor.bind('<KeyRelease>', self.on_key_release)
+		self.editor.bind('<Control-s>', lambda e: self.save_file())
+		self.editor.bind('<Control-g>', lambda e: self.goto_line())
+		self.editor.bind('<Control-f>', lambda e: self.show_find())
+
+		# Status line
+		status_frame = ttk.Frame(self.frame)
+		status_frame.pack(fill='x', padx=5, pady=2)
+
+		self.line_col_var = tk.StringVar(value="Line 1, Col 1")
+		ttk.Label(status_frame, textvariable=self.line_col_var).pack(side='left')
+
+		self.file_info_var = tk.StringVar(value="No file loaded")
+		ttk.Label(status_frame, textvariable=self.file_info_var).pack(side='right')
+
+		self.editor.bind('<ButtonRelease-1>', self.update_cursor_pos)
+		self.editor.bind('<KeyRelease>', self.update_cursor_pos)
+
+	def sync_scroll_v(self, *args):
+		"""Synchronize vertical scrolling between line numbers and editor."""
+		self.editor.yview(*args)
+		self.line_numbers.yview(*args)
+
+	def load_file_list(self):
+		"""Load list of ASM/source files."""
+		files = []
+
+		# Source files from source_files directory
+		source_dir = PROJECT_ROOT / "source_files"
+		if source_dir.exists():
+			files.extend(sorted(source_dir.glob("*.asm")))
+			files.extend(sorted(source_dir.glob("*.inc")))
+			files.extend(sorted(source_dir.glob("*.cfg")))
+
+		# Build reinsertion files
+		reinsertion_dir = PROJECT_ROOT / "build" / "reinsertion"
+		if reinsertion_dir.exists():
+			files.extend(sorted(reinsertion_dir.glob("*.asm")))
+
+		# Asset generated files
+		assets_text_dir = PROJECT_ROOT / "assets" / "text"
+		if assets_text_dir.exists():
+			files.extend(sorted(assets_text_dir.glob("*.asm")))
+
+		self.file_list = files
+		self.file_combo['values'] = [f.name for f in files]
+
+		if files:
+			self.file_var.set(files[0].name)
+			self.load_file(files[0])
+
+	def on_file_selected(self, event=None):
+		"""Handle file selection from combo."""
+		name = self.file_var.get()
+		for f in self.file_list:
+			if f.name == name:
+				self.load_file(f)
+				break
+
+	def load_file(self, path: Path):
+		"""Load a file into the editor."""
+		if self.modified:
+			if messagebox.askyesno("Save Changes?", "Save changes to current file?"):
+				self.save_file()
+
+		try:
+			with open(path, 'r', encoding='utf-8', errors='replace') as f:
+				content = f.read()
+
+			self.editor.delete('1.0', 'end')
+			self.editor.insert('1.0', content)
+			self.current_file = path
+			self.modified = False
+
+			self.file_info_var.set(f"{path.name} ({len(content):,} bytes, {content.count(chr(10)):,} lines)")
+			self.status_callback(f"Loaded: {path.name}")
+
+			self.update_line_numbers()
+			self.highlight_syntax()
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to load file: {e}")
+
+	def open_file(self):
+		"""Open a file dialog."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			initialdir=PROJECT_ROOT / "source_files",
+			filetypes=[
+				("ASM files", "*.asm"),
+				("Include files", "*.inc"),
+				("All files", "*.*")
+			]
+		)
+		if path:
+			self.load_file(Path(path))
+
+	def save_file(self):
+		"""Save current file."""
+		if not self.current_file:
+			return
+
+		try:
+			content = self.editor.get('1.0', 'end-1c')
+			with open(self.current_file, 'w', encoding='utf-8') as f:
+				f.write(content)
+
+			self.modified = False
+			self.status_callback(f"Saved: {self.current_file.name}")
+			messagebox.showinfo("Saved", f"Saved {self.current_file.name}")
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to save: {e}")
+
+	def reload_file(self):
+		"""Reload current file."""
+		if self.current_file:
+			self.load_file(self.current_file)
+
+	def update_line_numbers(self):
+		"""Update line number display."""
+		self.line_numbers.config(state='normal')
+		self.line_numbers.delete('1.0', 'end')
+
+		content = self.editor.get('1.0', 'end-1c')
+		line_count = content.count('\n') + 1
+
+		line_nums = '\n'.join(str(i) for i in range(1, line_count + 1))
+		self.line_numbers.insert('1.0', line_nums)
+		self.line_numbers.config(state='disabled')
+
+	def highlight_syntax(self):
+		"""Apply syntax highlighting to the entire file."""
+		# Clear existing tags
+		for tag in ['opcode', 'directive', 'comment', 'label', 'number', 'string', 'register']:
+			self.editor.tag_remove(tag, '1.0', 'end')
+
+		content = self.editor.get('1.0', 'end')
+		lines = content.split('\n')
+
+		for line_num, line in enumerate(lines, 1):
+			if not line.strip():
+				continue
+
+			# Comments (;)
+			if ';' in line:
+				comment_start = line.index(';')
+				start = f"{line_num}.{comment_start}"
+				end = f"{line_num}.end"
+				self.editor.tag_add('comment', start, end)
+				line = line[:comment_start]  # Only process before comment
+
+			# Labels (word followed by :)
+			import re
+			label_match = re.match(r'^(\w+):', line)
+			if label_match:
+				self.editor.tag_add('label', f"{line_num}.0", f"{line_num}.{label_match.end()}")
+
+			# Directives (start with .)
+			for match in re.finditer(r'\.\w+', line):
+				if match.group().lower() in self.DIRECTIVES:
+					self.editor.tag_add('directive', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+			# Opcodes (3-letter uppercase)
+			for match in re.finditer(r'\b([A-Za-z]{3})\b', line):
+				if match.group().upper() in self.OPCODES_6502:
+					self.editor.tag_add('opcode', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+			# Numbers (hex: $xx, 0x, #$, decimal)
+			for match in re.finditer(r'(\$[0-9A-Fa-f]+|#\$[0-9A-Fa-f]+|0x[0-9A-Fa-f]+|\b[0-9]+\b)', line):
+				self.editor.tag_add('number', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+			# Strings
+			for match in re.finditer(r'"[^"]*"', line):
+				self.editor.tag_add('string', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+			# Registers (A, X, Y)
+			for match in re.finditer(r'\b[AXY]\b', line):
+				self.editor.tag_add('register', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+	def on_key_release(self, event):
+		"""Handle key release for live updates."""
+		self.modified = True
+		self.update_cursor_pos(event)
+
+		# Update line numbers if line count changed
+		self.update_line_numbers()
+
+		# Simplified syntax highlighting for current line only
+		line = self.editor.index('insert').split('.')[0]
+		self.highlight_line(int(line))
+
+	def highlight_line(self, line_num: int):
+		"""Highlight a single line."""
+		import re
+		start = f"{line_num}.0"
+		end = f"{line_num}.end"
+
+		# Clear tags on this line
+		for tag in ['opcode', 'directive', 'comment', 'label', 'number', 'string', 'register']:
+			self.editor.tag_remove(tag, start, end)
+
+		line = self.editor.get(start, end)
+		if not line.strip():
+			return
+
+		# Comments
+		if ';' in line:
+			comment_start = line.index(';')
+			self.editor.tag_add('comment', f"{line_num}.{comment_start}", end)
+			line = line[:comment_start]
+
+		# Labels
+		label_match = re.match(r'^(\w+):', line)
+		if label_match:
+			self.editor.tag_add('label', start, f"{line_num}.{label_match.end()}")
+
+		# Directives
+		for match in re.finditer(r'\.\w+', line):
+			if match.group().lower() in self.DIRECTIVES:
+				self.editor.tag_add('directive', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+		# Opcodes
+		for match in re.finditer(r'\b([A-Za-z]{3})\b', line):
+			if match.group().upper() in self.OPCODES_6502:
+				self.editor.tag_add('opcode', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+		# Numbers
+		for match in re.finditer(r'(\$[0-9A-Fa-f]+|#\$[0-9A-Fa-f]+|0x[0-9A-Fa-f]+|\b[0-9]+\b)', line):
+			self.editor.tag_add('number', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+		# Strings
+		for match in re.finditer(r'"[^"]*"', line):
+			self.editor.tag_add('string', f"{line_num}.{match.start()}", f"{line_num}.{match.end()}")
+
+	def update_cursor_pos(self, event=None):
+		"""Update cursor position display."""
+		pos = self.editor.index('insert')
+		line, col = pos.split('.')
+		self.line_col_var.set(f"Line {line}, Col {int(col) + 1}")
+
+	def show_find(self):
+		"""Show find dialog."""
+		dialog = tk.Toplevel(self.frame)
+		dialog.title("Find")
+		dialog.geometry("400x150")
+		dialog.transient(self.frame.winfo_toplevel())
+
+		ttk.Label(dialog, text="Find:").pack(pady=5)
+		search_var = tk.StringVar()
+		search_entry = ttk.Entry(dialog, textvariable=search_var, width=40)
+		search_entry.pack(pady=5)
+
+		result_var = tk.StringVar()
+		ttk.Label(dialog, textvariable=result_var).pack(pady=5)
+
+		def do_find():
+			pattern = search_var.get()
+			if not pattern:
+				return
+
+			# Start from current position
+			start = self.editor.index('insert+1c')
+			pos = self.editor.search(pattern, start, nocase=True)
+
+			if not pos:
+				# Wrap around
+				pos = self.editor.search(pattern, '1.0', nocase=True)
+
+			if pos:
+				# Select found text
+				self.editor.tag_remove('sel', '1.0', 'end')
+				end = f"{pos}+{len(pattern)}c"
+				self.editor.tag_add('sel', pos, end)
+				self.editor.mark_set('insert', pos)
+				self.editor.see(pos)
+				result_var.set(f"Found at {pos}")
+			else:
+				result_var.set("Not found")
+
+		ttk.Button(dialog, text="Find Next", command=do_find).pack(pady=10)
+		search_entry.bind('<Return>', lambda e: do_find())
+		search_entry.focus_set()
+
+	def goto_line(self):
+		"""Go to specific line number."""
+		line = simpledialog.askinteger("Go to Line", "Line number:")
+		if line:
+			self.editor.mark_set('insert', f"{line}.0")
+			self.editor.see(f"{line}.0")
+			self.update_cursor_pos()
+
+	def refresh(self):
+		"""Refresh file list."""
+		self.load_file_list()
+
+
+# ============================================================================
+# ROM COMPARISON TAB
+# ============================================================================
+
+class RomComparisonTab(BaseTab):
+	"""Compare original ROM with rebuilt ROM to find differences."""
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.original_rom: Optional[bytes] = None
+		self.rebuilt_rom: Optional[bytes] = None
+		self.differences: List[Tuple[int, int, int]] = []  # (offset, original_byte, rebuilt_byte)
+
+		self.setup_ui()
+
+	def setup_ui(self):
+		"""Set up comparison UI."""
+		# Top controls
+		control_frame = ttk.Frame(self.frame)
+		control_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(control_frame, text="Original ROM:").grid(row=0, column=0, sticky='e', padx=5)
+		self.original_var = tk.StringVar()
+		ttk.Entry(control_frame, textvariable=self.original_var, width=50).grid(row=0, column=1, padx=5)
+		ttk.Button(control_frame, text="Browse...", command=self.browse_original).grid(row=0, column=2, padx=5)
+
+		ttk.Label(control_frame, text="Rebuilt ROM:").grid(row=1, column=0, sticky='e', padx=5)
+		self.rebuilt_var = tk.StringVar()
+		ttk.Entry(control_frame, textvariable=self.rebuilt_var, width=50).grid(row=1, column=1, padx=5)
+		ttk.Button(control_frame, text="Browse...", command=self.browse_rebuilt).grid(row=1, column=2, padx=5)
+
+		ttk.Button(control_frame, text="Compare", command=self.compare_roms).grid(row=0, column=3, rowspan=2, padx=10)
+
+		# Filter options
+		filter_frame = ttk.LabelFrame(self.frame, text="Filter")
+		filter_frame.pack(fill='x', padx=5, pady=5)
+
+		self.filter_var = tk.StringVar(value="all")
+		ttk.Radiobutton(filter_frame, text="All Differences", variable=self.filter_var,
+			value="all", command=self.apply_filter).pack(side='left', padx=5)
+		ttk.Radiobutton(filter_frame, text="PRG-ROM Only", variable=self.filter_var,
+			value="prg", command=self.apply_filter).pack(side='left', padx=5)
+		ttk.Radiobutton(filter_frame, text="CHR-ROM Only", variable=self.filter_var,
+			value="chr", command=self.apply_filter).pack(side='left', padx=5)
+		ttk.Radiobutton(filter_frame, text="Header Only", variable=self.filter_var,
+			value="header", command=self.apply_filter).pack(side='left', padx=5)
+
+		# Summary
+		summary_frame = ttk.LabelFrame(self.frame, text="Summary")
+		summary_frame.pack(fill='x', padx=5, pady=5)
+
+		self.summary_text = tk.Text(summary_frame, height=4, font=('Consolas', 10), wrap='word')
+		self.summary_text.pack(fill='x', padx=5, pady=5)
+
+		# Difference list
+		list_frame = ttk.LabelFrame(self.frame, text="Differences")
+		list_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Treeview for differences
+		columns = ('offset', 'nes_addr', 'region', 'original', 'rebuilt', 'diff')
+		self.diff_tree = ttk.Treeview(list_frame, columns=columns, show='headings', height=15)
+
+		self.diff_tree.heading('offset', text='File Offset')
+		self.diff_tree.heading('nes_addr', text='NES Address')
+		self.diff_tree.heading('region', text='Region')
+		self.diff_tree.heading('original', text='Original')
+		self.diff_tree.heading('rebuilt', text='Rebuilt')
+		self.diff_tree.heading('diff', text='XOR')
+
+		self.diff_tree.column('offset', width=100)
+		self.diff_tree.column('nes_addr', width=100)
+		self.diff_tree.column('region', width=120)
+		self.diff_tree.column('original', width=80)
+		self.diff_tree.column('rebuilt', width=80)
+		self.diff_tree.column('diff', width=80)
+
+		scrollbar = ttk.Scrollbar(list_frame, orient='vertical', command=self.diff_tree.yview)
+		self.diff_tree.configure(yscrollcommand=scrollbar.set)
+
+		self.diff_tree.pack(side='left', fill='both', expand=True)
+		scrollbar.pack(side='right', fill='y')
+
+		# Set default paths
+		original = PROJECT_ROOT / "roms" / "Dragon Warrior (USA).nes"
+		rebuilt = PROJECT_ROOT / "build" / "dragon_warrior_rebuilt.nes"
+
+		if original.exists():
+			self.original_var.set(str(original))
+		if rebuilt.exists():
+			self.rebuilt_var.set(str(rebuilt))
+
+	def browse_original(self):
+		"""Browse for original ROM."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			initialdir=PROJECT_ROOT / "roms",
+			filetypes=[("NES ROMs", "*.nes"), ("All files", "*.*")]
+		)
+		if path:
+			self.original_var.set(path)
+
+	def browse_rebuilt(self):
+		"""Browse for rebuilt ROM."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			initialdir=PROJECT_ROOT / "build",
+			filetypes=[("NES ROMs", "*.nes"), ("All files", "*.*")]
+		)
+		if path:
+			self.rebuilt_var.set(path)
+
+	def compare_roms(self):
+		"""Compare the two ROMs."""
+		original_path = self.original_var.get()
+		rebuilt_path = self.rebuilt_var.get()
+
+		if not original_path or not rebuilt_path:
+			messagebox.showwarning("Missing Files", "Please select both ROMs to compare")
+			return
+
+		try:
+			with open(original_path, 'rb') as f:
+				self.original_rom = f.read()
+			with open(rebuilt_path, 'rb') as f:
+				self.rebuilt_rom = f.read()
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to read ROMs: {e}")
+			return
+
+		# Find differences
+		self.differences = []
+		min_len = min(len(self.original_rom), len(self.rebuilt_rom))
+
+		for i in range(min_len):
+			if self.original_rom[i] != self.rebuilt_rom[i]:
+				self.differences.append((i, self.original_rom[i], self.rebuilt_rom[i]))
+
+		# Size differences
+		size_diff = len(self.original_rom) - len(self.rebuilt_rom)
+
+		# Update summary
+		self.summary_text.delete('1.0', 'end')
+		summary_lines = [
+			f"Original: {len(self.original_rom):,} bytes ({Path(original_path).name})",
+			f"Rebuilt:  {len(self.rebuilt_rom):,} bytes ({Path(rebuilt_path).name})",
+			f"Size Difference: {abs(size_diff):,} bytes {'(original larger)' if size_diff > 0 else '(rebuilt larger)' if size_diff < 0 else '(same size)'}",
+			f"Byte Differences: {len(self.differences):,} bytes differ"
+		]
+		self.summary_text.insert('1.0', '\n'.join(summary_lines))
+
+		self.apply_filter()
+		self.status_callback(f"Comparison complete: {len(self.differences)} differences found")
+
+	def get_region(self, offset: int) -> str:
+		"""Get the region name for an offset."""
+		if offset < 0x10:
+			return "Header"
+		elif offset < 0x10010:
+			bank = (offset - 0x10) // 0x4000
+			return f"PRG-ROM Bank {bank}"
+		else:
+			return "CHR-ROM"
+
+	def get_nes_address(self, offset: int) -> str:
+		"""Get NES address for an offset."""
+		if offset < 0x10:
+			return "Header"
+		elif offset < 0x10010:
+			return f"${(offset - 0x10) % 0x4000 + 0x8000:04X}"
+		else:
+			return f"CHR ${offset - 0x10010:04X}"
+
+	def apply_filter(self):
+		"""Apply filter to difference list."""
+		# Clear tree
+		for item in self.diff_tree.get_children():
+			self.diff_tree.delete(item)
+
+		filter_type = self.filter_var.get()
+
+		count = 0
+		for offset, orig, rebuilt in self.differences:
+			region = self.get_region(offset)
+
+			# Apply filter
+			if filter_type == 'header' and offset >= 0x10:
+				continue
+			elif filter_type == 'prg' and (offset < 0x10 or offset >= 0x10010):
+				continue
+			elif filter_type == 'chr' and offset < 0x10010:
+				continue
+
+			xor = orig ^ rebuilt
+
+			self.diff_tree.insert('', 'end', values=(
+				f"0x{offset:08X}",
+				self.get_nes_address(offset),
+				region,
+				f"0x{orig:02X} ({orig})",
+				f"0x{rebuilt:02X} ({rebuilt})",
+				f"0x{xor:02X}"
+			))
+
+			count += 1
+			if count >= 5000:  # Limit display
+				break
+
+	def refresh(self):
+		"""Refresh comparison."""
+		if self.original_rom and self.rebuilt_rom:
+			self.compare_roms()
+
+
+# ============================================================================
+# CHEAT CODE GENERATOR TAB
+# ============================================================================
+
+class CheatCodeTab(BaseTab):
+	"""Generate Game Genie and Pro Action Replay codes."""
+
+	# NES Game Genie encoding
+	GENIE_CHARS = 'APZLGITYEOXUKSVN'
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.rom_data: Optional[bytes] = None
+		self.generated_codes: List[Dict] = []
+
+		self.setup_ui()
+		self.load_rom()
+
+	def setup_ui(self):
+		"""Set up cheat code generator UI."""
+		# Main paned window
+		paned = ttk.PanedWindow(self.frame, orient='horizontal')
+		paned.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Left side: Code generator
+		left_frame = ttk.LabelFrame(paned, text="Code Generator")
+		paned.add(left_frame, weight=1)
+
+		# Address input
+		addr_frame = ttk.Frame(left_frame)
+		addr_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(addr_frame, text="ROM Offset:").grid(row=0, column=0, sticky='e', padx=5)
+		self.addr_var = tk.StringVar(value="0x")
+		ttk.Entry(addr_frame, textvariable=self.addr_var, width=12).grid(row=0, column=1, padx=5)
+
+		ttk.Label(addr_frame, text="New Value:").grid(row=0, column=2, sticky='e', padx=5)
+		self.value_var = tk.StringVar(value="0x")
+		ttk.Entry(addr_frame, textvariable=self.value_var, width=8).grid(row=0, column=3, padx=5)
+
+		ttk.Label(addr_frame, text="Compare (opt):").grid(row=1, column=0, sticky='e', padx=5)
+		self.compare_var = tk.StringVar()
+		ttk.Entry(addr_frame, textvariable=self.compare_var, width=12).grid(row=1, column=1, padx=5)
+
+		ttk.Button(addr_frame, text="Generate Code", command=self.generate_code).grid(
+			row=1, column=2, columnspan=2, padx=5, pady=5)
+
+		# Code type selection
+		type_frame = ttk.LabelFrame(left_frame, text="Code Type")
+		type_frame.pack(fill='x', padx=5, pady=5)
+
+		self.code_type_var = tk.StringVar(value="genie")
+		ttk.Radiobutton(type_frame, text="Game Genie", variable=self.code_type_var,
+			value="genie").pack(side='left', padx=10)
+		ttk.Radiobutton(type_frame, text="Pro Action Replay", variable=self.code_type_var,
+			value="par").pack(side='left', padx=10)
+		ttk.Radiobutton(type_frame, text="Raw Patch", variable=self.code_type_var,
+			value="raw").pack(side='left', padx=10)
+
+		# Common cheats preset
+		preset_frame = ttk.LabelFrame(left_frame, text="Common Cheats")
+		preset_frame.pack(fill='x', padx=5, pady=5)
+
+		presets = [
+			("Infinite HP", self.generate_infinite_hp),
+			("Infinite MP", self.generate_infinite_mp),
+			("Infinite Gold", self.generate_infinite_gold),
+			("Max Stats", self.generate_max_stats),
+			("Walk Through Walls", self.generate_walk_through),
+			("No Random Encounters", self.generate_no_encounters),
+		]
+
+		for i, (name, cmd) in enumerate(presets):
+			row, col = divmod(i, 3)
+			ttk.Button(preset_frame, text=name, command=cmd).grid(row=row, column=col, padx=5, pady=2)
+
+		# Generated code output
+		output_frame = ttk.LabelFrame(left_frame, text="Generated Code")
+		output_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		self.code_output = tk.Text(output_frame, height=8, font=('Consolas', 12), bg='#1e1e1e', fg='#4ec9b0')
+		self.code_output.pack(fill='both', expand=True, padx=5, pady=5)
+
+		ttk.Button(output_frame, text="Copy to Clipboard", command=self.copy_code).pack(pady=5)
+
+		# Right side: Code library
+		right_frame = ttk.LabelFrame(paned, text="Saved Codes")
+		paned.add(right_frame, weight=1)
+
+		# Code library treeview
+		columns = ('name', 'code', 'type')
+		self.code_tree = ttk.Treeview(right_frame, columns=columns, show='headings')
+		self.code_tree.heading('name', text='Name')
+		self.code_tree.heading('code', text='Code')
+		self.code_tree.heading('type', text='Type')
+		self.code_tree.column('name', width=150)
+		self.code_tree.column('code', width=120)
+		self.code_tree.column('type', width=80)
+		self.code_tree.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Buttons
+		btn_frame = ttk.Frame(right_frame)
+		btn_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Button(btn_frame, text="Save Code", command=self.save_code).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Delete", command=self.delete_code).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Export All", command=self.export_codes).pack(side='left', padx=5)
+
+		# Load existing codes
+		self.load_saved_codes()
+
+	def load_rom(self):
+		"""Load ROM data for reference."""
+		rom_path = PROJECT_ROOT / "build" / "dragon_warrior_rebuilt.nes"
+		if not rom_path.exists():
+			rom_path = PROJECT_ROOT / "roms" / "Dragon Warrior (USA).nes"
+
+		if rom_path.exists():
+			try:
+				with open(rom_path, 'rb') as f:
+					self.rom_data = f.read()
+			except:
+				pass
+
+	def generate_code(self):
+		"""Generate cheat code from inputs."""
+		try:
+			# Parse address
+			addr_str = self.addr_var.get().strip()
+			if addr_str.startswith('0x') or addr_str.startswith('$'):
+				address = int(addr_str.replace('$', '0x'), 16)
+			else:
+				address = int(addr_str)
+
+			# Parse value
+			val_str = self.value_var.get().strip()
+			if val_str.startswith('0x') or val_str.startswith('$'):
+				value = int(val_str.replace('$', '0x'), 16)
+			else:
+				value = int(val_str)
+
+			# Parse compare (optional)
+			compare_str = self.compare_var.get().strip()
+			compare = None
+			if compare_str:
+				if compare_str.startswith('0x') or compare_str.startswith('$'):
+					compare = int(compare_str.replace('$', '0x'), 16)
+				else:
+					compare = int(compare_str)
+
+			# Generate based on type
+			code_type = self.code_type_var.get()
+
+			if code_type == 'genie':
+				code = self.encode_game_genie(address, value, compare)
+			elif code_type == 'par':
+				code = self.encode_par(address, value)
+			else:
+				code = f"ROM[0x{address:06X}] = 0x{value:02X}"
+
+			self.code_output.delete('1.0', 'end')
+			self.code_output.insert('1.0', code)
+			self.status_callback(f"Generated {code_type} code: {code}")
+
+		except ValueError as e:
+			messagebox.showerror("Error", f"Invalid input: {e}")
+
+	def encode_game_genie(self, address: int, value: int, compare: Optional[int] = None) -> str:
+		"""Encode Game Genie code."""
+		# Convert ROM offset to NES CPU address
+		# Assuming PRG-ROM starts at 0x8000
+		if address >= 0x10:  # Skip header
+			nes_address = 0x8000 + ((address - 0x10) % 0x8000)
+		else:
+			nes_address = address
+
+		# Game Genie encoding
+		# 6-letter code: AAAA VVVV (address bits scrambled, value bits scrambled)
+		# 8-letter code: adds compare value
+
+		n = [0] * 8
+
+		if compare is None:
+			# 6-letter code
+			n[0] = (value >> 4) & 0x08
+			n[0] |= (value >> 0) & 0x07
+			n[1] = (nes_address >> 4) & 0x08
+			n[1] |= (value >> 4) & 0x07
+			n[2] = (nes_address >> 4) & 0x07
+			n[2] |= (nes_address >> 12) & 0x08
+			n[3] = (nes_address >> 0) & 0x08
+			n[3] |= (nes_address >> 8) & 0x07
+			n[4] = (nes_address >> 8) & 0x08
+			n[4] |= (nes_address >> 0) & 0x07
+			n[5] = (nes_address >> 12) & 0x07
+			n[5] |= (nes_address >> 0) & 0x08  # Set bit to indicate 6-letter
+
+			return ''.join(self.GENIE_CHARS[n[i]] for i in range(6))
+		else:
+			# 8-letter code with compare
+			n[0] = (value >> 4) & 0x08
+			n[0] |= (value >> 0) & 0x07
+			n[1] = (nes_address >> 4) & 0x08
+			n[1] |= (value >> 4) & 0x07
+			n[2] = (nes_address >> 4) & 0x07
+			n[2] |= 0x00  # Clear bit to indicate 8-letter
+			n[3] = (nes_address >> 0) & 0x08
+			n[3] |= (nes_address >> 8) & 0x07
+			n[4] = (compare >> 4) & 0x08
+			n[4] |= (nes_address >> 0) & 0x07
+			n[5] = (nes_address >> 12) & 0x07
+			n[5] |= (compare >> 0) & 0x08
+			n[6] = (nes_address >> 12) & 0x08
+			n[6] |= (compare >> 0) & 0x07
+			n[7] = (compare >> 0) & 0x08
+			n[7] |= (compare >> 4) & 0x07
+
+			return ''.join(self.GENIE_CHARS[n[i]] for i in range(8))
+
+	def encode_par(self, address: int, value: int) -> str:
+		"""Encode Pro Action Replay code."""
+		# Simple format: AAAA:VV
+		if address >= 0x10:
+			nes_address = 0x8000 + ((address - 0x10) % 0x8000)
+		else:
+			nes_address = address
+		return f"{nes_address:04X}:{value:02X}"
+
+	def generate_infinite_hp(self):
+		"""Generate infinite HP code."""
+		# HP is typically at RAM $00C5
+		self.code_output.delete('1.0', 'end')
+		self.code_output.insert('1.0', "SXSZLGVG\n; Infinite HP - Prevents HP from decreasing in battle")
+
+	def generate_infinite_mp(self):
+		"""Generate infinite MP code."""
+		self.code_output.delete('1.0', 'end')
+		self.code_output.insert('1.0', "SXSXLZVG\n; Infinite MP - Prevents MP from decreasing")
+
+	def generate_infinite_gold(self):
+		"""Generate infinite gold code."""
+		self.code_output.delete('1.0', 'end')
+		self.code_output.insert('1.0', "AEKZTZGA\n; Infinite Gold - Gold doesn't decrease when buying")
+
+	def generate_max_stats(self):
+		"""Generate max stats codes."""
+		self.code_output.delete('1.0', 'end')
+		codes = [
+			"AAAPZPPA  ; Max Strength",
+			"AAASXPPA  ; Max Agility",
+			"AAAVTPPA  ; Max HP Growth",
+			"AAAEUPPA  ; Max MP Growth",
+		]
+		self.code_output.insert('1.0', '\n'.join(codes))
+
+	def generate_walk_through(self):
+		"""Generate walk-through-walls code."""
+		self.code_output.delete('1.0', 'end')
+		self.code_output.insert('1.0', "AAOIZTPA\n; Walk Through Walls - Can walk on any terrain")
+
+	def generate_no_encounters(self):
+		"""Generate no random encounters code."""
+		self.code_output.delete('1.0', 'end')
+		self.code_output.insert('1.0', "SXEOKOSE\n; No Random Encounters - No battles on world map")
+
+	def copy_code(self):
+		"""Copy generated code to clipboard."""
+		code = self.code_output.get('1.0', 'end-1c').split('\n')[0]  # First line only
+		self.frame.clipboard_clear()
+		self.frame.clipboard_append(code)
+		self.status_callback(f"Copied: {code}")
+
+	def save_code(self):
+		"""Save code to library."""
+		code = self.code_output.get('1.0', 'end-1c').split('\n')[0]
+		if not code:
+			return
+
+		name = simpledialog.askstring("Save Code", "Enter a name for this code:")
+		if name:
+			code_type = self.code_type_var.get()
+			self.generated_codes.append({'name': name, 'code': code, 'type': code_type})
+			self.code_tree.insert('', 'end', values=(name, code, code_type))
+			self.save_codes_to_file()
+
+	def delete_code(self):
+		"""Delete selected code from library."""
+		selection = self.code_tree.selection()
+		if selection:
+			for item in selection:
+				values = self.code_tree.item(item, 'values')
+				self.generated_codes = [c for c in self.generated_codes if c['code'] != values[1]]
+				self.code_tree.delete(item)
+			self.save_codes_to_file()
+
+	def load_saved_codes(self):
+		"""Load saved codes from file."""
+		codes_file = PROJECT_ROOT / "assets" / "data" / "cheat_codes.json"
+		if codes_file.exists():
+			try:
+				with open(codes_file, 'r') as f:
+					self.generated_codes = json.load(f)
+				for code in self.generated_codes:
+					self.code_tree.insert('', 'end', values=(code['name'], code['code'], code['type']))
+			except:
+				pass
+
+	def save_codes_to_file(self):
+		"""Save codes to file."""
+		codes_file = PROJECT_ROOT / "assets" / "data" / "cheat_codes.json"
+		codes_file.parent.mkdir(parents=True, exist_ok=True)
+		try:
+			with open(codes_file, 'w') as f:
+				json.dump(self.generated_codes, f, indent=2)
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to save codes: {e}")
+
+	def export_codes(self):
+		"""Export all codes to text file."""
+		if not self.generated_codes:
+			messagebox.showinfo("Info", "No codes to export")
+			return
+
+		from tkinter import filedialog
+		path = filedialog.asksaveasfilename(
+			defaultextension=".txt",
+			filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
+			initialfile="dragon_warrior_cheats.txt"
+		)
+
+		if path:
+			try:
+				with open(path, 'w') as f:
+					f.write("Dragon Warrior - Cheat Codes\n")
+					f.write("=" * 40 + "\n\n")
+					for code in self.generated_codes:
+						f.write(f"{code['name']}\n")
+						f.write(f"  Code: {code['code']}\n")
+						f.write(f"  Type: {code['type']}\n\n")
+				messagebox.showinfo("Success", f"Exported {len(self.generated_codes)} codes")
+			except Exception as e:
+				messagebox.showerror("Error", f"Export failed: {e}")
+
+	def refresh(self):
+		"""Refresh tab."""
+		self.load_rom()
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -3148,7 +4610,23 @@ class UniversalEditor:
 		self.palette_tab = PaletteEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.palette_tab, text="🖌️ Palettes")
 
-		# Tab 11: Statistics
+		# Tab 11: Hex Viewer
+		self.hex_tab = HexViewerTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.hex_tab, text="🔢 Hex Viewer")
+
+		# Tab 12: Script/ASM Editor
+		self.script_tab = ScriptEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.script_tab, text="📝 Script Editor")
+
+		# Tab 13: ROM Comparison
+		self.comparison_tab = RomComparisonTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.comparison_tab, text="🔍 Compare ROMs")
+
+		# Tab 14: Cheat Codes
+		self.cheat_tab = CheatCodeTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.cheat_tab, text="🎮 Cheat Codes")
+
+		# Tab 15: Statistics
 		stats_tab = ttk.Frame(self.notebook)
 		self.notebook.add(stats_tab, text="📊 Statistics")
 
