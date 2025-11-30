@@ -327,7 +327,7 @@ def format_for_json(dialogs: List[Dict[str, Any]]) -> Dict[str, Any]:
 				'block': d.get('block', 'Unknown'),
 				'text': d['text'],
 				'text_cleaned': d['text'].replace('{END}', '').replace('{WAIT}', '').strip(),
-				'bytes': d['bytes'],
+				'bytes_hex': d['bytes_hex'],
 			}
 			for i, d in enumerate(dialogs)
 		]
@@ -392,12 +392,34 @@ def main():
 	if args.verbose:
 		print(f"Found {len(dialogs)} dialog entries")
 
-	# Format and save
+	# Format and save with compact arrays
 	output_data = format_for_json(dialogs)
 
 	output_path.parent.mkdir(parents=True, exist_ok=True)
+
+	# Custom JSON formatting: keep bytes_hex arrays on single lines
+	json_str = json.dumps(output_data, indent='\t', ensure_ascii=False)
+
+	# Compact the bytes_hex arrays to single lines
+	import re
+	def compact_array(match):
+		# Get the array content and compact it
+		content = match.group(0)
+		# Remove newlines and tabs within the array, keeping single spaces
+		compacted = re.sub(r'\[\s*', '[', content)
+		compacted = re.sub(r'\s*\]', ']', compacted)
+		compacted = re.sub(r'",\s+', '", ', compacted)
+		return compacted
+
+	# Match bytes_hex arrays
+	json_str = re.sub(
+		r'"bytes_hex":\s*\[(?:[^\]]*)\]',
+		compact_array,
+		json_str
+	)
+
 	with open(output_path, 'w', encoding='utf-8') as f:
-		json.dump(output_data, f, indent='\t', ensure_ascii=False)
+		f.write(json_str)
 
 	print(f"Extracted {len(dialogs)} dialogs to: {output_path}")
 

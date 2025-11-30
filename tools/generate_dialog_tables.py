@@ -256,8 +256,12 @@ def generate_dialog_asm(
 		for dialog in block_dialogs:
 			label = dialog.get('label', f'Dialog_{dialog.get("id", 0)}')
 
-			# Get bytes - either from stored bytes or encode from text
-			if 'bytes' in dialog and dialog['bytes']:
+			# Get bytes - either from stored bytes_hex or encode from text
+			if 'bytes_hex' in dialog and dialog['bytes_hex']:
+				# Convert hex strings like "$F4" to integers
+				byte_data = [int(b.replace('$', '0x'), 16) for b in dialog['bytes_hex']]
+			elif 'bytes' in dialog and dialog['bytes']:
+				# Legacy format - integer array
 				byte_data = dialog['bytes']
 			else:
 				text = dialog.get('text', '')
