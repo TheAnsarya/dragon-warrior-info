@@ -49,19 +49,28 @@ These assets are edited via JSON and automatically included in the ROM build.
 These assets have JSON data and generate ASM, but are not yet linked to Bank files.
 
 ### Dialog Text
-- **JSON File**: `assets/json/dialogs.json`
-- **Generator**: `tools/asset_reinserter.py` → `source_files/generated/dialog_data.asm`
-- **Bank Location**: Multiple banks with pointer tables
-- **Editor**: `tools/editors/dialog_editor.py`
-- **Blocker**: Complex pointer table system, text compression
-- **Effort**: High - Requires pointer recalculation
-- **Status**: 🔴 Needs significant work
+- **JSON File**: `assets/json/dialogs_extracted.json` (298 dialogs)
+- **Extractor**: `tools/extract_dialogs_from_asm.py` - Extracts from Bank02.asm
+- **Generator**: `tools/generate_dialog_tables.py` → `source_files/generated/dialog_data.asm`
+- **Encoding Module**: `tools/dw_text_encoding.py` - TBL-based text encoding
+- **Bank Location**: Bank02.asm (TextBlock1-TextBlock19)
+- **Editor**: `tools/dialog_editor.py` (needs update to use dw_text_encoding)
+- **GitHub Issue**: #11 "Integrate Dialog Text Data into Asset Pipeline"
+- **Status**: 🟡 Extraction complete, needs Bank integration
 
 **Technical Details:**
-- Dragon Warrior uses word substitution compression (0x80-0x8F)
-- Dialog has pointer tables pointing to text strings
-- Changing text length requires updating all following pointers
-- Need careful space management
+- Uses TBL character encoding (0x00-0x5F for chars, 0xF0-0xFD for control codes)
+- Control codes: {NAME}, {ITEM}, {SPEL}, {ENMY}, {AMNT}, {WAIT}, {END}, etc.
+- 19 text blocks with 298 total dialog entries
+- Dialog entries use variable-length encoding ending with $FC (END)
+- Changing text length requires updating block boundaries
+
+**Progress (2025-11-30):**
+- ✅ Created extract_dialogs_from_asm.py - extracts 298 dialogs
+- ✅ Created generate_dialog_tables.py - generates dialog_data.asm
+- ✅ Created dw_text_encoding.py - correct TBL encoding module
+- ⏳ Bank02.asm needs to be updated to use .include directive
+- ⏳ Dialog editor needs to import dw_text_encoding module
 
 ---
 
@@ -125,6 +134,7 @@ These assets have JSON data and generate ASM, but are not yet linked to Bank fil
 | #4 | Build CHR Reinsertion Tool | Open |
 | #5 | Create Interactive Map Editor Tool | Open |
 | #7 | Create Music/Sound Effect Editing Guide | Open |
+| #11 | Integrate Dialog Text Data into Asset Pipeline | Open |
 
 ---
 
@@ -155,4 +165,4 @@ These assets have JSON data and generate ASM, but are not yet linked to Bank fil
 
 ---
 
-*Last updated: 2025-11-29*
+*Last updated: 2025-11-30*
