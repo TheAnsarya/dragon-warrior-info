@@ -930,6 +930,358 @@ class DialogEditorTab(ttk.Frame):
 
 
 # ============================================================================
+# ITEM EDITOR TAB
+# ============================================================================
+
+class ItemEditorTab(ttk.Frame):
+	"""Specialized item editor with form fields."""
+
+	def __init__(self, parent, asset_manager: AssetManager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.data = None
+		self.current_idx = -1
+
+		self.create_widgets()
+		self.load_data()
+
+	def create_widgets(self):
+		"""Create item editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="📦 Item Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		ttk.Button(header, text="💾 Save All", command=self.save_all).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="⚡ Generate ASM", command=self.generate_asm).pack(side=tk.RIGHT, padx=5)
+
+		# Content
+		content = ttk.Frame(self)
+		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Left: Item list
+		list_frame = ttk.LabelFrame(content, text="Items", padding=5)
+		list_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
+
+		self.item_list = tk.Listbox(list_frame, width=25, height=20)
+		self.item_list.pack(fill=tk.BOTH, expand=True)
+		self.item_list.bind('<<ListboxSelect>>', self.on_select)
+
+		# Right: Item editor
+		edit_frame = ttk.LabelFrame(content, text="Item Properties", padding=10)
+		edit_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+		# Item fields
+		self.field_vars = {}
+
+		fields = [
+			('name', 'Name', 'entry', 0),
+			('buy_price', 'Buy Price', 'spinbox', 1),
+			('sell_price', 'Sell Price', 'spinbox', 2),
+			('attack_bonus', 'Attack Bonus', 'spinbox', 3),
+			('defense_bonus', 'Defense Bonus', 'spinbox', 4),
+			('item_type', 'Item Type', 'combo', 5),
+			('equippable', 'Equippable', 'check', 6),
+			('useable', 'Useable', 'check', 7),
+		]
+
+		item_types = ['Weapon', 'Armor', 'Shield', 'Consumable', 'Key Item']
+
+		for field, label, widget_type, row in fields:
+			ttk.Label(edit_frame, text=f"{label}:").grid(row=row, column=0, sticky=tk.W, pady=3)
+
+			if widget_type == 'entry':
+				var = tk.StringVar()
+				widget = ttk.Entry(edit_frame, textvariable=var, width=20)
+			elif widget_type == 'spinbox':
+				var = tk.IntVar(value=0)
+				widget = ttk.Spinbox(edit_frame, textvariable=var, from_=0, to=65535, width=10)
+			elif widget_type == 'combo':
+				var = tk.StringVar()
+				widget = ttk.Combobox(edit_frame, textvariable=var, values=item_types, width=15)
+			elif widget_type == 'check':
+				var = tk.BooleanVar()
+				widget = ttk.Checkbutton(edit_frame, variable=var)
+
+			widget.grid(row=row, column=1, padx=5, pady=3, sticky=tk.W)
+			self.field_vars[field] = var
+
+		# Save button
+		ttk.Button(edit_frame, text="💾 Save Item", command=self.save_current).grid(
+			row=8, column=0, columnspan=2, pady=20
+		)
+
+	def load_data(self):
+		"""Load item data."""
+		self.data = self.asset_manager.load_json('items')
+		self.item_list.delete(0, tk.END)
+
+		if self.data:
+			# Handle both list and dict formats
+			if isinstance(self.data, dict) and 'items' in self.data:
+				items = self.data['items']
+			elif isinstance(self.data, dict):
+				items = list(self.data.values())
+			else:
+				items = self.data
+
+			for i, item in enumerate(items):
+				name = item.get('name', f'Item {i}')
+				self.item_list.insert(tk.END, f"{i:02d}: {name}")
+
+	def on_select(self, event):
+		"""Handle item selection."""
+		selection = self.item_list.curselection()
+		if not selection:
+			return
+
+		self.current_idx = selection[0]
+
+		# Get item data
+		if isinstance(self.data, dict) and 'items' in self.data:
+			items = self.data['items']
+		elif isinstance(self.data, dict):
+			items = list(self.data.values())
+		else:
+			items = self.data
+
+		if self.current_idx < len(items):
+			item = items[self.current_idx]
+
+			# Populate fields
+			self.field_vars['name'].set(item.get('name', ''))
+			self.field_vars['buy_price'].set(item.get('buy_price', 0))
+			self.field_vars['sell_price'].set(item.get('sell_price', 0))
+			self.field_vars['attack_bonus'].set(item.get('attack_bonus', item.get('attack_power', 0)))
+			self.field_vars['defense_bonus'].set(item.get('defense_bonus', item.get('defense_power', 0)))
+			self.field_vars['item_type'].set(['Weapon', 'Armor', 'Shield', 'Consumable', 'Key Item'][item.get('item_type', 0) % 5])
+			self.field_vars['equippable'].set(item.get('equippable', False))
+			self.field_vars['useable'].set(item.get('useable', False))
+
+	def save_current(self):
+		"""Save current item."""
+		if self.current_idx < 0:
+			return
+
+		# Get items list
+		if isinstance(self.data, dict) and 'items' in self.data:
+			items = self.data['items']
+		elif isinstance(self.data, dict):
+			items = list(self.data.values())
+		else:
+			items = self.data
+
+		if self.current_idx < len(items):
+			item = items[self.current_idx]
+
+			# Update fields
+			item['name'] = self.field_vars['name'].get()
+			item['buy_price'] = int(self.field_vars['buy_price'].get() or 0)
+			item['sell_price'] = int(self.field_vars['sell_price'].get() or 0)
+			item['attack_bonus'] = int(self.field_vars['attack_bonus'].get() or 0)
+			item['defense_bonus'] = int(self.field_vars['defense_bonus'].get() or 0)
+
+			type_map = {'Weapon': 0, 'Armor': 1, 'Shield': 2, 'Consumable': 3, 'Key Item': 4}
+			item['item_type'] = type_map.get(self.field_vars['item_type'].get(), 0)
+
+			item['equippable'] = self.field_vars['equippable'].get()
+			item['useable'] = self.field_vars['useable'].get()
+
+			messagebox.showinfo("Saved", f"Item '{item['name']}' updated.\nUse 'Save All' to write to file.")
+
+	def save_all(self):
+		"""Save all items to file."""
+		if self.asset_manager.save_json('items', self.data):
+			messagebox.showinfo("Success", "All items saved!")
+		else:
+			messagebox.showerror("Error", "Failed to save")
+
+	def generate_asm(self):
+		"""Generate item assembly."""
+		success, message = self.asset_manager.run_generator('items')
+		if success:
+			messagebox.showinfo("Success", "Generated item assembly!")
+		else:
+			messagebox.showerror("Error", message[:500])
+
+
+# ============================================================================
+# SPELL EDITOR TAB
+# ============================================================================
+
+class SpellEditorTab(ttk.Frame):
+	"""Specialized spell editor with form fields."""
+
+	def __init__(self, parent, asset_manager: AssetManager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.data = None
+		self.current_idx = -1
+
+		self.create_widgets()
+		self.load_data()
+
+	def create_widgets(self):
+		"""Create spell editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="✨ Spell Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		ttk.Button(header, text="💾 Save All", command=self.save_all).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="⚡ Generate ASM", command=self.generate_asm).pack(side=tk.RIGHT, padx=5)
+
+		# Content
+		content = ttk.Frame(self)
+		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Left: Spell list
+		list_frame = ttk.LabelFrame(content, text="Spells", padding=5)
+		list_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
+
+		self.spell_list = tk.Listbox(list_frame, width=20, height=15)
+		self.spell_list.pack(fill=tk.BOTH, expand=True)
+		self.spell_list.bind('<<ListboxSelect>>', self.on_select)
+
+		# Right: Spell editor
+		edit_frame = ttk.LabelFrame(content, text="Spell Properties", padding=10)
+		edit_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+		# Spell fields
+		self.field_vars = {}
+
+		fields = [
+			('name', 'Name', 'entry', 0),
+			('mp_cost', 'MP Cost', 'spinbox', 1),
+			('min_effect', 'Min Effect', 'spinbox', 2),
+			('max_effect', 'Max Effect', 'spinbox', 3),
+			('type', 'Type', 'combo', 4),
+			('learn_level', 'Learn Level', 'spinbox', 5),
+		]
+
+		spell_types = ['Healing', 'Damage', 'Utility', 'Travel', 'Status']
+
+		for field, label, widget_type, row in fields:
+			ttk.Label(edit_frame, text=f"{label}:").grid(row=row, column=0, sticky=tk.W, pady=3)
+
+			if widget_type == 'entry':
+				var = tk.StringVar()
+				widget = ttk.Entry(edit_frame, textvariable=var, width=15)
+			elif widget_type == 'spinbox':
+				var = tk.IntVar(value=0)
+				widget = ttk.Spinbox(edit_frame, textvariable=var, from_=0, to=255, width=10)
+			elif widget_type == 'combo':
+				var = tk.StringVar()
+				widget = ttk.Combobox(edit_frame, textvariable=var, values=spell_types, width=12)
+
+			widget.grid(row=row, column=1, padx=5, pady=3, sticky=tk.W)
+			self.field_vars[field] = var
+
+		# Description
+		ttk.Label(edit_frame, text="Description:").grid(row=6, column=0, sticky=tk.NW, pady=3)
+		self.desc_text = tk.Text(edit_frame, width=30, height=4)
+		self.desc_text.grid(row=6, column=1, padx=5, pady=3)
+
+		# Save button
+		ttk.Button(edit_frame, text="💾 Save Spell", command=self.save_current).grid(
+			row=7, column=0, columnspan=2, pady=20
+		)
+
+	def load_data(self):
+		"""Load spell data."""
+		self.data = self.asset_manager.load_json('spells')
+		self.spell_list.delete(0, tk.END)
+
+		if self.data:
+			# Handle both list and dict formats
+			if isinstance(self.data, dict) and 'spells' in self.data:
+				spells = self.data['spells']
+			elif isinstance(self.data, dict):
+				spells = list(self.data.values())
+			else:
+				spells = self.data
+
+			for i, spell in enumerate(spells):
+				name = spell.get('name', f'Spell {i}')
+				self.spell_list.insert(tk.END, f"{name}")
+
+	def on_select(self, event):
+		"""Handle spell selection."""
+		selection = self.spell_list.curselection()
+		if not selection:
+			return
+
+		self.current_idx = selection[0]
+
+		# Get spell data
+		if isinstance(self.data, dict) and 'spells' in self.data:
+			spells = self.data['spells']
+		elif isinstance(self.data, dict):
+			spells = list(self.data.values())
+		else:
+			spells = self.data
+
+		if self.current_idx < len(spells):
+			spell = spells[self.current_idx]
+
+			# Populate fields
+			self.field_vars['name'].set(spell.get('name', ''))
+			self.field_vars['mp_cost'].set(spell.get('mp_cost', 0))
+			self.field_vars['min_effect'].set(spell.get('min_effect', 0))
+			self.field_vars['max_effect'].set(spell.get('max_effect', 0))
+			self.field_vars['type'].set(spell.get('type', 'Healing'))
+			self.field_vars['learn_level'].set(spell.get('learn_level', 1))
+
+			# Description
+			self.desc_text.delete('1.0', tk.END)
+			self.desc_text.insert('1.0', spell.get('description', ''))
+
+	def save_current(self):
+		"""Save current spell."""
+		if self.current_idx < 0:
+			return
+
+		# Get spells list
+		if isinstance(self.data, dict) and 'spells' in self.data:
+			spells = self.data['spells']
+		elif isinstance(self.data, dict):
+			spells = list(self.data.values())
+		else:
+			spells = self.data
+
+		if self.current_idx < len(spells):
+			spell = spells[self.current_idx]
+
+			# Update fields
+			spell['name'] = self.field_vars['name'].get()
+			spell['mp_cost'] = int(self.field_vars['mp_cost'].get() or 0)
+			spell['min_effect'] = int(self.field_vars['min_effect'].get() or 0)
+			spell['max_effect'] = int(self.field_vars['max_effect'].get() or 0)
+			spell['type'] = self.field_vars['type'].get()
+			spell['learn_level'] = int(self.field_vars['learn_level'].get() or 1)
+			spell['description'] = self.desc_text.get('1.0', tk.END).strip()
+
+			messagebox.showinfo("Saved", f"Spell '{spell['name']}' updated.\nUse 'Save All' to write to file.")
+
+	def save_all(self):
+		"""Save all spells to file."""
+		if self.asset_manager.save_json('spells', self.data):
+			messagebox.showinfo("Success", "All spells saved!")
+		else:
+			messagebox.showerror("Error", "Failed to save")
+
+	def generate_asm(self):
+		"""Generate spell assembly."""
+		success, message = self.asset_manager.run_generator('spells')
+		if success:
+			messagebox.showinfo("Success", "Generated spell assembly!")
+		else:
+			messagebox.showerror("Error", message[:500])
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -1022,11 +1374,11 @@ class UniversalEditor:
 		self.notebook.add(self.monster_tab, text="👾 Monsters")
 
 		# Tab 2: Items
-		self.item_tab = JsonEditorTab(self.notebook, self.asset_manager, 'items', '📦 Items')
+		self.item_tab = ItemEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.item_tab, text="📦 Items")
 
 		# Tab 3: Spells
-		self.spell_tab = JsonEditorTab(self.notebook, self.asset_manager, 'spells', '✨ Spells')
+		self.spell_tab = SpellEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.spell_tab, text="✨ Spells")
 
 		# Tab 4: Shops
@@ -1041,15 +1393,19 @@ class UniversalEditor:
 		self.npc_tab = JsonEditorTab(self.notebook, self.asset_manager, 'npcs', '🧙 NPCs')
 		self.notebook.add(self.npc_tab, text="🧙 NPCs")
 
-		# Tab 7: Maps
+		# Tab 7: Equipment
+		self.equipment_tab = JsonEditorTab(self.notebook, self.asset_manager, 'equipment', '⚔️ Equipment')
+		self.notebook.add(self.equipment_tab, text="⚔️ Equipment")
+
+		# Tab 8: Maps
 		self.map_tab = JsonEditorTab(self.notebook, self.asset_manager, 'maps', '🗺️ Maps')
 		self.notebook.add(self.map_tab, text="🗺️ Maps")
 
-		# Tab 8: Graphics
+		# Tab 9: Graphics
 		self.graphics_tab = JsonEditorTab(self.notebook, self.asset_manager, 'graphics', '🎨 Graphics')
 		self.notebook.add(self.graphics_tab, text="🎨 Graphics")
 
-		# Tab 9: Statistics
+		# Tab 10: Statistics
 		stats_tab = ttk.Frame(self.notebook)
 		self.notebook.add(stats_tab, text="📊 Statistics")
 
