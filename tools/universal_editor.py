@@ -2716,6 +2716,274 @@ class MapEditorTab(ttk.Frame):
 
 
 # ============================================================================
+# PALETTE EDITOR TAB
+# ============================================================================
+
+class PaletteEditorTab(ttk.Frame):
+	"""NES palette editor with visual color picker."""
+
+	# Full NES color palette (64 colors)
+	NES_PALETTE = [
+		(84, 84, 84), (0, 30, 116), (8, 16, 144), (48, 0, 136),
+		(68, 0, 100), (92, 0, 48), (84, 4, 0), (60, 24, 0),
+		(32, 42, 0), (8, 58, 0), (0, 64, 0), (0, 60, 0),
+		(0, 50, 60), (0, 0, 0), (0, 0, 0), (0, 0, 0),
+		(152, 150, 152), (8, 76, 196), (48, 50, 236), (92, 30, 228),
+		(136, 20, 176), (160, 20, 100), (152, 34, 32), (120, 60, 0),
+		(84, 90, 0), (40, 114, 0), (8, 124, 0), (0, 118, 40),
+		(0, 102, 120), (0, 0, 0), (0, 0, 0), (0, 0, 0),
+		(236, 238, 236), (76, 154, 236), (120, 124, 236), (176, 98, 236),
+		(228, 84, 236), (236, 88, 180), (236, 106, 100), (212, 136, 32),
+		(160, 170, 0), (116, 196, 0), (76, 208, 32), (56, 204, 108),
+		(56, 180, 204), (60, 60, 60), (0, 0, 0), (0, 0, 0),
+		(236, 238, 236), (168, 204, 236), (188, 188, 236), (212, 178, 236),
+		(236, 174, 236), (236, 174, 212), (236, 180, 176), (228, 196, 144),
+		(204, 210, 120), (180, 222, 120), (168, 226, 144), (152, 226, 180),
+		(160, 214, 228), (160, 162, 160), (0, 0, 0), (0, 0, 0),
+	]
+
+	# Default Dragon Warrior palettes
+	DW_PALETTES = {
+		'Background 0': [0x0F, 0x30, 0x10, 0x00],  # Main background
+		'Background 1': [0x0F, 0x30, 0x27, 0x07],  # Desert/sand
+		'Background 2': [0x0F, 0x30, 0x19, 0x09],  # Grass/forest
+		'Background 3': [0x0F, 0x30, 0x12, 0x02],  # Water
+		'Sprite 0': [0x0F, 0x27, 0x30, 0x16],      # Hero
+		'Sprite 1': [0x0F, 0x16, 0x30, 0x12],      # Monster 1
+		'Sprite 2': [0x0F, 0x29, 0x30, 0x19],      # NPC
+		'Sprite 3': [0x0F, 0x30, 0x27, 0x17],      # Items
+	}
+
+	def __init__(self, parent, asset_manager: AssetManager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.current_palette_name = 'Sprite 0'
+		self.current_palette = list(self.DW_PALETTES['Sprite 0'])
+		self.selected_slot = 0
+
+		self.create_widgets()
+
+	def create_widgets(self):
+		"""Create palette editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="🎨 Palette Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		ttk.Button(header, text="💾 Save Palettes", command=self.save_palettes).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="🔄 Reset", command=self.reset_palettes).pack(side=tk.RIGHT, padx=5)
+
+		# Main content
+		content = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
+		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Left: Palette selector and editor
+		left_panel = ttk.Frame(content)
+		content.add(left_panel, weight=1)
+
+		# Palette selector
+		selector_frame = ttk.LabelFrame(left_panel, text="Game Palettes", padding=10)
+		selector_frame.pack(fill=tk.X, pady=(0, 10))
+
+		self.palette_var = tk.StringVar(value=self.current_palette_name)
+		for name in self.DW_PALETTES.keys():
+			rb = ttk.Radiobutton(selector_frame, text=name, value=name,
+								 variable=self.palette_var, command=self.on_palette_select)
+			rb.pack(anchor=tk.W)
+
+		# Current palette display
+		edit_frame = ttk.LabelFrame(left_panel, text="Edit Palette", padding=10)
+		edit_frame.pack(fill=tk.X, pady=(0, 10))
+
+		# Palette slot buttons
+		slot_frame = ttk.Frame(edit_frame)
+		slot_frame.pack(fill=tk.X, pady=10)
+
+		ttk.Label(slot_frame, text="Colors:").pack(side=tk.LEFT)
+
+		self.slot_buttons = []
+		self.slot_canvases = []
+		for i in range(4):
+			frame = ttk.Frame(slot_frame)
+			frame.pack(side=tk.LEFT, padx=5)
+
+			canvas = tk.Canvas(frame, width=50, height=50, bg='black', cursor='hand2')
+			canvas.pack()
+			canvas.bind('<Button-1>', lambda e, idx=i: self.select_slot(idx))
+			self.slot_canvases.append(canvas)
+
+			ttk.Label(frame, text=f"${self.current_palette[i]:02X}").pack()
+
+		self.update_slot_display()
+
+		# Color info
+		info_frame = ttk.LabelFrame(left_panel, text="Selected Color", padding=10)
+		info_frame.pack(fill=tk.X)
+
+		self.color_info = ttk.Label(info_frame, text="Click a slot to select")
+		self.color_info.pack()
+
+		# Right: NES color picker
+		right_panel = ttk.LabelFrame(content, text="NES Color Palette (64 Colors)", padding=10)
+		content.add(right_panel, weight=2)
+
+		# Create color grid
+		self.color_canvas = tk.Canvas(right_panel, width=400, height=200, bg='#1a1a2e')
+		self.color_canvas.pack(pady=10)
+		self.draw_color_grid()
+
+		# Hex input
+		hex_frame = ttk.Frame(right_panel)
+		hex_frame.pack(fill=tk.X, pady=10)
+
+		ttk.Label(hex_frame, text="Hex Value:").pack(side=tk.LEFT)
+		self.hex_var = tk.StringVar(value="0F")
+		hex_entry = ttk.Entry(hex_frame, textvariable=self.hex_var, width=5)
+		hex_entry.pack(side=tk.LEFT, padx=5)
+		ttk.Button(hex_frame, text="Set", command=self.set_from_hex).pack(side=tk.LEFT)
+
+		# Preview
+		preview_frame = ttk.LabelFrame(right_panel, text="Palette Preview", padding=10)
+		preview_frame.pack(fill=tk.X)
+
+		self.preview_canvas = tk.Canvas(preview_frame, width=380, height=60, bg='#000000')
+		self.preview_canvas.pack()
+		self.update_preview()
+
+	def draw_color_grid(self):
+		"""Draw the NES color selection grid."""
+		self.color_canvas.delete('all')
+
+		box_size = 24
+		padding = 2
+		cols = 16
+		rows = 4
+
+		for i, color in enumerate(self.NES_PALETTE):
+			row = i // cols
+			col = i % cols
+
+			x = col * (box_size + padding) + padding
+			y = row * (box_size + padding) + padding
+
+			hex_color = f'#{color[0]:02x}{color[1]:02x}{color[2]:02x}'
+
+			rect = self.color_canvas.create_rectangle(
+				x, y, x + box_size, y + box_size,
+				fill=hex_color, outline='#666', tags=f'color_{i}'
+			)
+
+			# Bind click
+			self.color_canvas.tag_bind(f'color_{i}', '<Button-1>',
+				lambda e, idx=i: self.select_color(idx))
+
+		# Draw labels
+		for col in range(cols):
+			x = col * (box_size + padding) + padding + box_size // 2
+			self.color_canvas.create_text(x, rows * (box_size + padding) + 10,
+				text=f'{col:X}', fill='#888', font=('Courier', 8))
+
+		for row in range(rows):
+			y = row * (box_size + padding) + padding + box_size // 2
+			self.color_canvas.create_text(-5, y, text=f'{row}', fill='#888',
+				font=('Courier', 8), anchor=tk.E)
+
+	def select_slot(self, slot_idx: int):
+		"""Select a palette slot for editing."""
+		self.selected_slot = slot_idx
+		self.update_slot_display()
+
+		color_idx = self.current_palette[slot_idx]
+		color = self.NES_PALETTE[color_idx]
+		self.color_info.config(text=f"Slot {slot_idx}: ${color_idx:02X} - RGB({color[0]}, {color[1]}, {color[2]})")
+		self.hex_var.set(f"{color_idx:02X}")
+
+	def select_color(self, color_idx: int):
+		"""Select a color from the NES palette."""
+		self.current_palette[self.selected_slot] = color_idx
+		self.update_slot_display()
+		self.update_preview()
+
+		color = self.NES_PALETTE[color_idx]
+		self.color_info.config(text=f"Slot {self.selected_slot}: ${color_idx:02X} - RGB({color[0]}, {color[1]}, {color[2]})")
+		self.hex_var.set(f"{color_idx:02X}")
+
+	def update_slot_display(self):
+		"""Update the slot button colors."""
+		for i, canvas in enumerate(self.slot_canvases):
+			color_idx = self.current_palette[i]
+			color = self.NES_PALETTE[color_idx % len(self.NES_PALETTE)]
+			hex_color = f'#{color[0]:02x}{color[1]:02x}{color[2]:02x}'
+
+			canvas.delete('all')
+			canvas.create_rectangle(2, 2, 48, 48, fill=hex_color, outline='white' if i == self.selected_slot else '#666')
+
+	def update_preview(self):
+		"""Update the palette preview."""
+		self.preview_canvas.delete('all')
+
+		# Draw palette colors as larger boxes
+		box_width = 90
+		for i, color_idx in enumerate(self.current_palette):
+			color = self.NES_PALETTE[color_idx % len(self.NES_PALETTE)]
+			hex_color = f'#{color[0]:02x}{color[1]:02x}{color[2]:02x}'
+
+			x = i * (box_width + 5) + 5
+			self.preview_canvas.create_rectangle(x, 5, x + box_width, 55, fill=hex_color, outline='white')
+			self.preview_canvas.create_text(x + box_width // 2, 30, text=f'${color_idx:02X}',
+				fill='white' if sum(color) < 384 else 'black', font=('Courier', 10, 'bold'))
+
+	def on_palette_select(self):
+		"""Handle palette selection change."""
+		self.current_palette_name = self.palette_var.get()
+		self.current_palette = list(self.DW_PALETTES[self.current_palette_name])
+		self.update_slot_display()
+		self.update_preview()
+
+	def set_from_hex(self):
+		"""Set color from hex input."""
+		try:
+			value = int(self.hex_var.get(), 16)
+			if 0 <= value < 64:
+				self.select_color(value)
+		except ValueError:
+			messagebox.showerror("Error", "Invalid hex value (00-3F)")
+
+	def save_palettes(self):
+		"""Save palettes to JSON."""
+		# Update the DW_PALETTES with current edits
+		self.DW_PALETTES[self.current_palette_name] = list(self.current_palette)
+
+		# Save to palettes.json
+		palette_data = {name: colors for name, colors in self.DW_PALETTES.items()}
+
+		try:
+			palette_path = ASSETS_JSON / "palettes.json"
+			with open(palette_path, 'w', encoding='utf-8') as f:
+				json.dump(palette_data, f, indent='\t')
+			messagebox.showinfo("Success", "Palettes saved!")
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to save: {e}")
+
+	def reset_palettes(self):
+		"""Reset to default palettes."""
+		self.DW_PALETTES = {
+			'Background 0': [0x0F, 0x30, 0x10, 0x00],
+			'Background 1': [0x0F, 0x30, 0x27, 0x07],
+			'Background 2': [0x0F, 0x30, 0x19, 0x09],
+			'Background 3': [0x0F, 0x30, 0x12, 0x02],
+			'Sprite 0': [0x0F, 0x27, 0x30, 0x16],
+			'Sprite 1': [0x0F, 0x16, 0x30, 0x12],
+			'Sprite 2': [0x0F, 0x29, 0x30, 0x19],
+			'Sprite 3': [0x0F, 0x30, 0x27, 0x17],
+		}
+		self.current_palette = list(self.DW_PALETTES[self.current_palette_name])
+		self.update_slot_display()
+		self.update_preview()
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -2876,7 +3144,11 @@ class UniversalEditor:
 		self.graphics_tab = GraphicsEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.graphics_tab, text="🎨 Graphics")
 
-		# Tab 10: Statistics
+		# Tab 10: Palettes
+		self.palette_tab = PaletteEditorTab(self.notebook, self.asset_manager)
+		self.notebook.add(self.palette_tab, text="🖌️ Palettes")
+
+		# Tab 11: Statistics
 		stats_tab = ttk.Frame(self.notebook)
 		self.notebook.add(stats_tab, text="📊 Statistics")
 
