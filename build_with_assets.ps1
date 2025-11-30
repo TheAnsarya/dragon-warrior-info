@@ -63,7 +63,7 @@ if (-not (Test-Path $BuildDir)) {
     New-Item -ItemType Directory -Path $BuildDir | Out-Null
 }
 
-Write-Host "🏗️  Dragon Warrior Asset-First ROM Builder" -ForegroundColor Cyan
+Write-Host "🏗  Dragon Warrior Asset-First ROM Builder" -ForegroundColor Cyan
 Write-Host "==========================================`n" -ForegroundColor Cyan
 
 # NEW STEP: Generate ASM from JSON assets
@@ -108,23 +108,23 @@ if ($UseAssets) {
                 Write-Host "   ✓ Generated ASM files in $generatedDir" -ForegroundColor Green
                 Write-Host "   ✓ Master include: dragon_warrior_assets.asm" -ForegroundColor Green
             } else {
-                Write-Host "   ⚠️  Warning: No master include file generated" -ForegroundColor Yellow
+                Write-Host "   ⚠  Warning: No master include file generated" -ForegroundColor Yellow
             }
         } catch {
             Write-Host "   ❌ Error running asset_reinserter: $_" -ForegroundColor Red
-            Write-Host "   ℹ️  Continuing with original ASM data" -ForegroundColor DarkGray
+            Write-Host "   ℹ  Continuing with original ASM data" -ForegroundColor DarkGray
         }
 
     } else {
-        Write-Host "   ⚠️  No JSON assets found, using original ASM data" -ForegroundColor Yellow
+        Write-Host "   ⚠  No JSON assets found, using original ASM data" -ForegroundColor Yellow
     }
 }
 
 # NEW STEP: Generate CHR-ROM from PNG graphics (optional, future feature)
 if ($UseGraphics) {
     Write-Host "[GRAPHICS] Generating CHR-ROM from PNG sprites..." -ForegroundColor Magenta
-    Write-Host "   ⚠️  Graphics reinsertion not yet implemented" -ForegroundColor Yellow
-    Write-Host "   ℹ️  Using existing chr_rom.bin" -ForegroundColor DarkGray
+    Write-Host "   ⚠  Graphics reinsertion not yet implemented" -ForegroundColor Yellow
+    Write-Host "   ℹ  Using existing chr_rom.bin" -ForegroundColor DarkGray
 
     # Future implementation:
     # $graphicsToChr = Join-Path $ToolsDir "graphics_to_chr.py"
@@ -170,7 +170,7 @@ if ($UseAssets) {
                 $useGeneratedItems = $true
             }
         } catch {
-            Write-Host "   ⚠️  Could not generate item cost table: $_" -ForegroundColor Yellow
+            Write-Host "   ⚠  Could not generate item cost table: $_" -ForegroundColor Yellow
             $useGeneratedItems = $false
         }
     }
@@ -186,7 +186,7 @@ if ($UseAssets) {
                 $useGeneratedSpells = $true
             }
         } catch {
-            Write-Host "   ⚠️  Could not generate spell cost table: $_" -ForegroundColor Yellow
+            Write-Host "   ⚠  Could not generate spell cost table: $_" -ForegroundColor Yellow
             $useGeneratedSpells = $false
         }
     }
@@ -202,7 +202,7 @@ if ($UseAssets) {
                 Write-Host "   ✓ Shop items table generated" -ForegroundColor Green
             }
         } catch {
-            Write-Host "   ⚠️  Could not generate shop items table: $_" -ForegroundColor Yellow
+            Write-Host "   ⚠  Could not generate shop items table: $_" -ForegroundColor Yellow
         }
     }
 
@@ -210,14 +210,14 @@ if ($UseAssets) {
     $equipmentBonusGenerator = Join-Path $ToolsDir "generate_equipment_bonus_tables.py"
     $generatedEquipmentBonusASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "equipment_bonus_tables.asm"
     if (Test-Path $equipmentBonusGenerator) {
-        Write-Host "⚔️  Generating equipment bonus tables..." -ForegroundColor Cyan
+        Write-Host "⚔  Generating equipment bonus tables..." -ForegroundColor Cyan
         try {
             & $Python $equipmentBonusGenerator 2>&1 | Out-Null
             if (Test-Path $generatedEquipmentBonusASM) {
                 Write-Host "   ✓ Equipment bonus tables generated" -ForegroundColor Green
             }
         } catch {
-            Write-Host "   ⚠️  Could not generate equipment bonus tables: $_" -ForegroundColor Yellow
+            Write-Host "   ⚠  Could not generate equipment bonus tables: $_" -ForegroundColor Yellow
         }
     }
 
@@ -232,7 +232,7 @@ if ($UseAssets) {
                 Write-Host "   ✓ NPC tables generated" -ForegroundColor Green
             }
         } catch {
-            Write-Host "   ⚠️  Could not generate NPC tables: $_" -ForegroundColor Yellow
+            Write-Host "   ⚠  Could not generate NPC tables: $_" -ForegroundColor Yellow
         }
     }
 }
@@ -262,7 +262,7 @@ foreach ($bank in $banks) {
     $expectedSize = 16384  # 16KB
 
     if ($bankSize -ne $expectedSize) {
-        Write-Host "   ⚠️  Warning: $bank is $bankSize bytes (expected $expectedSize)" -ForegroundColor Yellow
+        Write-Host "   ⚠  Warning: $bank is $bankSize bytes (expected $expectedSize)" -ForegroundColor Yellow
     } else {
         Write-Host "   ✓ ${bank}: $bankSize bytes" -ForegroundColor Green
     }
@@ -309,7 +309,7 @@ if ($UseGraphics -and (Test-Path $generatedChr)) {
     Write-Host "   ✓ CHR-ROM (from reference ROM): $chrSize bytes" -ForegroundColor Green
 } else {
     # Empty placeholder
-    Write-Host "   ⚠️  No CHR-ROM source found, using placeholder" -ForegroundColor Yellow
+    Write-Host "   ⚠  No CHR-ROM source found, using placeholder" -ForegroundColor Yellow
     $chrData = New-Object byte[] 16384
     [System.IO.File]::WriteAllBytes($chrOutput, $chrData)
 }
@@ -345,7 +345,7 @@ if (Test-Path $ReferenceROM) {
     $builtData = [System.IO.File]::ReadAllBytes($OutputROM)
 
     if ($refData.Length -ne $builtData.Length) {
-        Write-Host "   ⚠️  Size mismatch: Reference=$($refData.Length) Built=$($builtData.Length)" -ForegroundColor Yellow
+        Write-Host "   ⚠  Size mismatch: Reference=$($refData.Length) Built=$($builtData.Length)" -ForegroundColor Yellow
     } else {
         $differences = 0
         $firstDiff = -1
@@ -362,10 +362,10 @@ if (Test-Path $ReferenceROM) {
         if ($differences -eq 0) {
             Write-Host "   ✅ PERFECT MATCH! ROM is identical to reference." -ForegroundColor Green
         } else {
-            Write-Host "   ⚠️  Found $differences byte differences" -ForegroundColor Yellow
+            Write-Host "   ⚠  Found $differences byte differences" -ForegroundColor Yellow
             Write-Host "   First difference at offset 0x$($firstDiff.ToString('X6'))" -ForegroundColor Yellow
             if ($UseAssets) {
-                Write-Host "   ℹ️  This is expected when using modified JSON assets" -ForegroundColor DarkGray
+                Write-Host "   ℹ  This is expected when using modified JSON assets" -ForegroundColor DarkGray
             }
         }
     }
@@ -375,33 +375,33 @@ Write-Host "`n✅ Build complete!" -ForegroundColor Green
 Write-Host "Output: $OutputROM" -ForegroundColor White
 
 if ($UseAssets) {
-    Write-Host "`nℹ️  Asset Integration Status:" -ForegroundColor Cyan
+    Write-Host "`nℹ  Asset Integration Status:" -ForegroundColor Cyan
     if ($useGeneratedMonsters) {
         Write-Host "   ✅ Monster Data: Integrated from assets/json/monsters_verified.json" -ForegroundColor Green
     } else {
-        Write-Host "   ⚠️  Monster Data: Not integrated" -ForegroundColor Yellow
+        Write-Host "   ⚠  Monster Data: Not integrated" -ForegroundColor Yellow
     }
     if ($useGeneratedItems) {
         Write-Host "   ✅ Item Cost Data: Integrated from assets/json/items_corrected.json" -ForegroundColor Green
     } else {
-        Write-Host "   ⚠️  Item Cost Data: Not integrated" -ForegroundColor Yellow
+        Write-Host "   ⚠  Item Cost Data: Not integrated" -ForegroundColor Yellow
     }
     if ($useGeneratedSpells) {
         Write-Host "   ✅ Spell Cost Data: Integrated from assets/json/spells.json" -ForegroundColor Green
     } else {
-        Write-Host "   ⚠️  Spell Cost Data: Not integrated" -ForegroundColor Yellow
+        Write-Host "   ⚠  Spell Cost Data: Not integrated" -ForegroundColor Yellow
     }
     if (Test-Path (Join-Path $SourceDir "generated" | Join-Path -ChildPath "shop_items_table.asm")) {
         Write-Host "   ✅ Shop Data: Integrated from assets/json/shops.json" -ForegroundColor Green
     } else {
-        Write-Host "   ⚠️  Shop Data: Not integrated" -ForegroundColor Yellow
+        Write-Host "   ⚠  Shop Data: Not integrated" -ForegroundColor Yellow
     }
     if (Test-Path (Join-Path $SourceDir "generated" | Join-Path -ChildPath "equipment_bonus_tables.asm")) {
         Write-Host "   ✅ Equipment Bonuses: Integrated from assets/json/equipment_bonuses.json" -ForegroundColor Green
     } else {
-        Write-Host "   ⚠️  Equipment Bonuses: Not integrated" -ForegroundColor Yellow
+        Write-Host "   ⚠  Equipment Bonuses: Not integrated" -ForegroundColor Yellow
     }
-    Write-Host "   ⚠️  PNG → CHR: Not yet implemented" -ForegroundColor Yellow
+    Write-Host "   ⚠  PNG → CHR: Not yet implemented" -ForegroundColor Yellow
 }
 
 Write-Host ""

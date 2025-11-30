@@ -32,7 +32,7 @@ if (-not (Test-Path $BuildDir)) {
 	New-Item -ItemType Directory -Path $BuildDir | Out-Null
 }
 
-Write-Host "🏗️  Dragon Warrior ROM Builder" -ForegroundColor Cyan
+Write-Host "🏗  Dragon Warrior ROM Builder" -ForegroundColor Cyan
 Write-Host "================================`n" -ForegroundColor Cyan
 
 # Step 1: Assemble Header
@@ -65,7 +65,7 @@ foreach ($bank in $banks) {
 	$expectedSize = 16384  # 16KB
 
 	if ($bankSize -ne $expectedSize) {
-		Write-Host "   ⚠️  Warning: $bank is $bankSize bytes (expected $expectedSize)" -ForegroundColor Yellow
+		Write-Host "   ⚠  Warning: $bank is $bankSize bytes (expected $expectedSize)" -ForegroundColor Yellow
 	} else {
 		Write-Host "   ✓ ${bank}: $bankSize bytes" -ForegroundColor Green
 	}
@@ -95,7 +95,7 @@ if (Test-Path $sourceChrRom) {
 	[System.IO.File]::WriteAllBytes($chrOutput, $chrData)
 	Write-Host "   ✓ CHR-ROM: $chrSize bytes" -ForegroundColor Green
 } else {
-	Write-Host "   ⚠️  No CHR-ROM source found" -ForegroundColor Yellow
+	Write-Host "   ⚠  No CHR-ROM source found" -ForegroundColor Yellow
 	Write-Host "   Using placeholder CHR-ROM" -ForegroundColor Yellow
 
 	# Create empty CHR-ROM
@@ -135,7 +135,7 @@ if (Test-Path $ReferenceROM) {
 	$builtData = [System.IO.File]::ReadAllBytes($OutputROM)
 
 	if ($refData.Length -ne $builtData.Length) {
-		Write-Host "   ⚠️  Size mismatch: Reference=$($refData.Length) Built=$($builtData.Length)" -ForegroundColor Yellow
+		Write-Host "   ⚠  Size mismatch: Reference=$($refData.Length) Built=$($builtData.Length)" -ForegroundColor Yellow
 	} else {
 		$differences = 0
 		$firstDiff = -1
@@ -152,7 +152,7 @@ if (Test-Path $ReferenceROM) {
 		if ($differences -eq 0) {
 			Write-Host "   ✅ PERFECT MATCH! ROM is identical to reference." -ForegroundColor Green
 		} else {
-			Write-Host "   ⚠️  Found $differences byte differences" -ForegroundColor Yellow
+			Write-Host "   ⚠  Found $differences byte differences" -ForegroundColor Yellow
 			Write-Host "   First difference at offset 0x$($firstDiff.ToString('X6'))" -ForegroundColor Yellow
 		}
 	}
