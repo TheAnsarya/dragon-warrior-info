@@ -22,70 +22,70 @@ CHAR_TO_BYTE = {
 	'0': 0x00, '1': 0x01, '2': 0x02, '3': 0x03, '4': 0x04,
 	'5': 0x05, '6': 0x06, '7': 0x07, '8': 0x08, '9': 0x09,
 	# Lowercase letters
-	'a': 0x0A, 'b': 0x0B, 'c': 0x0C, 'd': 0x0D, 'e': 0x0E,
-	'f': 0x0F, 'g': 0x10, 'h': 0x11, 'i': 0x12, 'j': 0x13,
+	'a': 0x0a, 'b': 0x0b, 'c': 0x0c, 'd': 0x0d, 'e': 0x0e,
+	'f': 0x0f, 'g': 0x10, 'h': 0x11, 'i': 0x12, 'j': 0x13,
 	'k': 0x14, 'l': 0x15, 'm': 0x16, 'n': 0x17, 'o': 0x18,
-	'p': 0x19, 'q': 0x1A, 'r': 0x1B, 's': 0x1C, 't': 0x1D,
-	'u': 0x1E, 'v': 0x1F, 'w': 0x20, 'x': 0x21, 'y': 0x22,
+	'p': 0x19, 'q': 0x1a, 'r': 0x1b, 's': 0x1c, 't': 0x1d,
+	'u': 0x1e, 'v': 0x1f, 'w': 0x20, 'x': 0x21, 'y': 0x22,
 	'z': 0x23,
 	# Uppercase letters
 	'A': 0x24, 'B': 0x25, 'C': 0x26, 'D': 0x27, 'E': 0x28,
-	'F': 0x29, 'G': 0x2A, 'H': 0x2B, 'I': 0x2C, 'J': 0x2D,
-	'K': 0x2E, 'L': 0x2F, 'M': 0x30, 'N': 0x31, 'O': 0x32,
+	'F': 0x29, 'G': 0x2a, 'H': 0x2b, 'I': 0x2c, 'J': 0x2d,
+	'K': 0x2e, 'L': 0x2f, 'M': 0x30, 'N': 0x31, 'O': 0x32,
 	'P': 0x33, 'Q': 0x34, 'R': 0x35, 'S': 0x36, 'T': 0x37,
-	'U': 0x38, 'V': 0x39, 'W': 0x3A, 'X': 0x3B, 'Y': 0x3C,
-	'Z': 0x3D,
+	'U': 0x38, 'V': 0x39, 'W': 0x3a, 'X': 0x3b, 'Y': 0x3c,
+	'Z': 0x3d,
 	# Punctuation and special characters
-	'"': 0x3E,  # Double quote
+	'"': 0x3e,  # Double quote
 	':': 0x44,
 	'.': 0x47,  # Period (use 0x46 or 0x47)
 	',': 0x48,
 	'-': 0x49,
-	'?': 0x4B,
-	'!': 0x4C,
-	';': 0x4D,
-	')': 0x4E,
-	'(': 0x4F,
+	'?': 0x4b,
+	'!': 0x4c,
+	';': 0x4d,
+	')': 0x4e,
+	'(': 0x4f,
 	'`': 0x50,  # Opening single quote
 	"'": 0x53,  # Apostrophe
-	' ': 0x5F,  # Space
+	' ': 0x5f,  # Space
 }
 
 # Control codes: tag -> byte value
 CONTROL_TO_BYTE = {
 	'{INDT}': 0x57,
-	'{PLRL}': 0xF0,
-	'{ENM2}': 0xF1,
-	'{AMTP}': 0xF3,
-	'{ENMY}': 0xF4,
-	'{AMNT}': 0xF5,
-	'{SPEL}': 0xF6,
-	'{ITEM}': 0xF7,
-	'{NAME}': 0xF8,
-	'{WAIT}': 0xFB,
-	'{END}': 0xFC,
-	'\n': 0xFD,
+	'{PLRL}': 0xf0,
+	'{ENM2}': 0xf1,
+	'{AMTP}': 0xf3,
+	'{ENMY}': 0xf4,
+	'{AMNT}': 0xf5,
+	'{SPEL}': 0xf6,
+	'{ITEM}': 0xf7,
+	'{NAME}': 0xf8,
+	'{WAIT}': 0xfb,
+	'{END}': 0xfc,
+	'\n': 0xfd,
 }
 
 # Control code names for comments
 CONTROL_NAMES = {
 	0x57: 'INDT',
-	0xF0: 'PLRL',
-	0xF1: 'ENM2',
-	0xF3: 'AMTP',
-	0xF4: 'ENMY',
-	0xF5: 'AMNT',
-	0xF6: 'SPEL',
-	0xF7: 'ITEM',
-	0xF8: 'NAME',
-	0xFB: 'WAIT',
-	0xFC: 'END',
-	0xFD: '\\n',
+	0xf0: 'PLRL',
+	0xf1: 'ENM2',
+	0xf3: 'AMTP',
+	0xf4: 'ENMY',
+	0xf5: 'AMNT',
+	0xf6: 'SPEL',
+	0xf7: 'ITEM',
+	0xf8: 'NAME',
+	0xfb: 'WAIT',
+	0xfc: 'END',
+	0xfd: '\\n',
 }
 
 # Byte to character for comment generation
 BYTE_TO_CHAR = {v: k for k, v in CHAR_TO_BYTE.items()}
-BYTE_TO_CHAR[0x5F] = '_'  # Show space as underscore in comments
+BYTE_TO_CHAR[0x5f] = '_'  # Show space as underscore in comments
 BYTE_TO_CHAR[0x60] = '_'  # Indent marker
 BYTE_TO_CHAR[0x40] = "'"  # Alternate apostrophe
 BYTE_TO_CHAR[0x52] = ".'"  # Period + apostrophe combo
@@ -118,7 +118,7 @@ def encode_text(text: str) -> List[int]:
 
 		# Check for newline
 		if text[i] == '\n':
-			result.append(0xFD)
+			result.append(0xfd)
 			i += 1
 			continue
 
@@ -141,7 +141,7 @@ def encode_text(text: str) -> List[int]:
 		else:
 			# Unknown character - skip or use placeholder
 			print(f"Warning: Unknown character '{char}' (0x{ord(char):02X})")
-			result.append(0x5F)  # Replace with space
+			result.append(0x5f)  # Replace with space
 
 		i += 1
 
@@ -258,7 +258,7 @@ def generate_dialog_asm(
 
 			# Get bytes - either from stored bytes_hex or encode from text
 			if 'bytes_hex' in dialog and dialog['bytes_hex']:
-				# Convert hex strings like "$F4" to integers
+				# Convert hex strings like "$f4" to integers
 				byte_data = [int(b.replace('$', '0x'), 16) for b in dialog['bytes_hex']]
 			elif 'bytes' in dialog and dialog['bytes']:
 				# Legacy format - integer array

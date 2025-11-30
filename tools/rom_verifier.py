@@ -32,17 +32,17 @@ class ROMVerifier:
 		self.rom_segments = {
 			"nes_header": (0x0000, 0x0010),
 			"trainer": (0x0010, 0x0210),  # If present
-			"prg_rom_bank0": (0x8010, 0xC000),
-			"prg_rom_bank1": (0xC000, 0x10000),
+			"prg_rom_bank0": (0x8010, 0xc000),
+			"prg_rom_bank1": (0xc000, 0x10000),
 			"chr_rom": (0x10000, 0x12000),
 		}
 
 		# Critical ROM areas that should match exactly
 		self.critical_areas = {
 			"nes_header": "NES header and ROM configuration",
-			"reset_vector": (0xFFFC, 0xFFFE, "CPU reset vector"),
-			"nmi_vector": (0xFFFA, 0xFFFC, "NMI interrupt vector"),
-			"irq_vector": (0xFFFE, 0x10000, "IRQ interrupt vector"),
+			"reset_vector": (0xfffc, 0xfffe, "CPU reset vector"),
+			"nmi_vector": (0xfffa, 0xfffc, "NMI interrupt vector"),
+			"irq_vector": (0xfffe, 0x10000, "IRQ interrupt vector"),
 		}
 
 	def verify_roms(self) -> Dict[str, Any]:

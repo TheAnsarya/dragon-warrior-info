@@ -42,7 +42,7 @@ class Tile:
 	8×8 map tile
 
 	Attributes:
-		id: Tile ID (0x00-0xFF)
+		id: Tile ID (0x00-0xff)
 		name: Tile name (e.g., "Grass", "Water")
 		walkable: Can player walk on this tile?
 		damage: Damage taken per step (e.g., swamp)
@@ -112,12 +112,12 @@ class MapData:
 		0x07: Tile(0x07, "Cave", walkable=True),
 		0x08: Tile(0x08, "Castle", walkable=True),
 		0x09: Tile(0x09, "Bridge", walkable=True),
-		0x0A: Tile(0x0A, "Stairs Down", walkable=True),
-		0x0B: Tile(0x0B, "Stairs Up", walkable=True),
-		0x0C: Tile(0x0C, "Barrier", walkable=False),
-		0x0D: Tile(0x0D, "Treasure", walkable=True),
-		0x0E: Tile(0x0E, "Door", walkable=True),
-		0x0F: Tile(0x0F, "Brick Wall", walkable=False),
+		0x0a: Tile(0x0a, "Stairs Down", walkable=True),
+		0x0b: Tile(0x0b, "Stairs Up", walkable=True),
+		0x0c: Tile(0x0c, "Barrier", walkable=False),
+		0x0d: Tile(0x0d, "Treasure", walkable=True),
+		0x0e: Tile(0x0e, "Door", walkable=True),
+		0x0f: Tile(0x0f, "Brick Wall", walkable=False),
 		# Add more as needed...
 	}
 
@@ -133,12 +133,12 @@ class MapData:
 		0x07: '○',  # Cave
 		0x08: '▣',  # Castle
 		0x09: '=',  # Bridge
-		0x0A: '↓',  # Stairs down
-		0x0B: '↑',  # Stairs up
-		0x0C: '#',  # Barrier
-		0x0D: '$',  # Treasure
-		0x0E: '+',  # Door
-		0x0F: '█',  # Wall
+		0x0a: '↓',  # Stairs down
+		0x0b: '↑',  # Stairs up
+		0x0c: '#',  # Barrier
+		0x0d: '$',  # Treasure
+		0x0e: '+',  # Door
+		0x0f: '█',  # Wall
 	}
 
 	def __init__(self, width: int, height: int, name: str = "Untitled"):
@@ -170,7 +170,7 @@ class MapData:
 	def get_tile(self, x: int, y: int) -> int:
 		"""Get tile ID at position"""
 		if not self.in_bounds(x, y):
-			return 0xFF
+			return 0xff
 		return self.tiles[y][x]
 
 	def set_tile(self, x: int, y: int, tile_id: int) -> bool:
@@ -691,15 +691,15 @@ def extract_map_from_rom(rom_path: str, map_type: str) -> MapData:
 	# Dragon Warrior map offsets (approximate)
 	if map_type == "overworld":
 		# Overworld is 120×120
-		offset = 0x1B3B0
+		offset = 0x1b3b0
 		width, height = 120, 120
 		name = "Alefgard Overworld"
 	elif map_type == "tantegel":
-		offset = 0x1C000
+		offset = 0x1c000
 		width, height = 30, 30
 		name = "Tantegel Castle"
 	elif map_type == "charlock":
-		offset = 0x1C500
+		offset = 0x1c500
 		width, height = 30, 30
 		name = "Charlock Castle"
 	else:

@@ -44,7 +44,7 @@ Examples:
 	python tools/disasm_annotator.py rom.nes --analyze --output labels.json
 
 	# Find all references to an address
-	python tools/disasm_annotator.py labels.json --xref 0xC000
+	python tools/disasm_annotator.py labels.json --xref 0xc000
 
 Author: Dragon Warrior ROM Hacking Toolkit
 Version: 1.0
@@ -209,7 +209,7 @@ class LabelDatabase:
 
 		# Check for invalid addresses
 		for addr in self.symbols:
-			if addr < 0 or addr > 0xFFFF:
+			if addr < 0 or addr > 0xffff:
 				errors.append(f"Invalid address: 0x{addr:04X}")
 
 		return errors
@@ -226,16 +226,16 @@ class CodeAnalyzer:
 	INSTRUCTION_SIZES = {
 		# Implied
 		0x00: 1, 0x08: 1, 0x18: 1, 0x28: 1, 0x38: 1, 0x40: 1, 0x48: 1, 0x58: 1,
-		0x60: 1, 0x68: 1, 0x78: 1, 0x88: 1, 0x8A: 1, 0x98: 1, 0x9A: 1, 0xA8: 1,
-		0xAA: 1, 0xB8: 1, 0xBA: 1, 0xC8: 1, 0xCA: 1, 0xD8: 1, 0xE8: 1, 0xEA: 1,
-		0xF8: 1,
+		0x60: 1, 0x68: 1, 0x78: 1, 0x88: 1, 0x8a: 1, 0x98: 1, 0x9a: 1, 0xa8: 1,
+		0xaa: 1, 0xb8: 1, 0xba: 1, 0xc8: 1, 0xca: 1, 0xd8: 1, 0xe8: 1, 0xea: 1,
+		0xf8: 1,
 		# Immediate
-		0x09: 2, 0x29: 2, 0x49: 2, 0x69: 2, 0xA0: 2, 0xA2: 2, 0xA9: 2, 0xC0: 2,
-		0xC9: 2, 0xE0: 2, 0xE9: 2,
+		0x09: 2, 0x29: 2, 0x49: 2, 0x69: 2, 0xa0: 2, 0xa2: 2, 0xa9: 2, 0xc0: 2,
+		0xc9: 2, 0xe0: 2, 0xe9: 2,
 		# Absolute
-		0x0D: 3, 0x0E: 3, 0x20: 3, 0x2C: 3, 0x2D: 3, 0x2E: 3, 0x4C: 3, 0x4D: 3,
-		0x4E: 3, 0x6D: 3, 0x6E: 3, 0x8C: 3, 0x8D: 3, 0x8E: 3, 0xAC: 3, 0xAD: 3,
-		0xAE: 3, 0xCC: 3, 0xCD: 3, 0xCE: 3, 0xEC: 3, 0xED: 3, 0xEE: 3,
+		0x0d: 3, 0x0e: 3, 0x20: 3, 0x2c: 3, 0x2d: 3, 0x2e: 3, 0x4c: 3, 0x4d: 3,
+		0x4e: 3, 0x6d: 3, 0x6e: 3, 0x8c: 3, 0x8d: 3, 0x8e: 3, 0xac: 3, 0xad: 3,
+		0xae: 3, 0xcc: 3, 0xcd: 3, 0xce: 3, 0xec: 3, 0xed: 3, 0xee: 3,
 		# Add more as needed...
 	}
 
@@ -278,8 +278,8 @@ class CodeAnalyzer:
 						db.add_symbol(target, f"sub_{target:04X}", SymbolType.CODE)
 					db.add_xref(addr, target, ReferenceType.CALL, "JSR")
 
-			# JMP (0x4C)
-			elif opcode == 0x4C and rom_addr + 2 < len(rom_data):
+			# JMP (0x4c)
+			elif opcode == 0x4c and rom_addr + 2 < len(rom_data):
 				target = struct.unpack('<H', rom_data[rom_addr + 1:rom_addr + 3])[0]
 
 				if 0x8000 <= target < 0x10000:
@@ -308,7 +308,7 @@ class FCEUXFormat:
 				if not line or line.startswith('#'):
 					continue
 
-				# Format: $ADDR#Label#Comment
+				# Format: $addR#Label#Comment
 				match = re.match(r'\$([0-9A-Fa-f]+)#([^#]+)(?:#(.+))?', line)
 				if match:
 					addr = int(match.group(1), 16)

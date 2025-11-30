@@ -45,11 +45,11 @@ class DragonWarriorROMModifier:
 			)
 
 		# Data offsets (from extract_all_data.py)
-		self.MONSTER_STATS_OFFSET = 0x5E5B  # 39 monsters, 16 bytes each
-		self.SPELL_DATA_OFFSET = 0x7CFD     # 10 spells, MP costs
-		self.WEAPON_DATA_OFFSET = 0x7CF5    # 7 weapons, attack power
-		self.ARMOR_DATA_OFFSET = 0x7D05     # 7 armor, defense power
-		self.SHIELD_DATA_OFFSET = 0x7D0D    # 3 shields, defense power
+		self.MONSTER_STATS_OFFSET = 0x5e5b  # 39 monsters, 16 bytes each
+		self.SPELL_DATA_OFFSET = 0x7cfd     # 10 spells, MP costs
+		self.WEAPON_DATA_OFFSET = 0x7cf5    # 7 weapons, attack power
+		self.ARMOR_DATA_OFFSET = 0x7d05     # 7 armor, defense power
+		self.SHIELD_DATA_OFFSET = 0x7d0d    # 3 shields, defense power
 
 		# Modification log
 		self.modifications = []

@@ -6,7 +6,7 @@ Extracts monster sprites directly from ROM using correct NES sprite format.
 Uses Pattern Table 2 for monster tiles and proper OAM positioning.
 
 Format (from ROM_HACKING_GUIDE.md):
-  - Pointer table at 0x59F4 (39 monsters × 2 bytes)
+  - Pointer table at 0x59f4 (39 monsters × 2 bytes)
   - Each sprite: triplets of (tile, attr_y, x_pal) terminated by 0x00
   - attr_y = VHYYYYYY (V=vflip, H=hflip, Y=Y offset 0-63)
   - x_pal = XXXXXXPP (X=X position 0-63, P=palette 0-3)
@@ -71,10 +71,10 @@ MONSTER_NAMES = [
 
 # Default palettes (these should ideally be read from ROM palette tables)
 DEFAULT_PALETTES = [
-	[0x0F, 0x1C, 0x15, 0x30],  # Cyan/Magenta/White (Slime)
-	[0x0F, 0x16, 0x0D, 0x30],  # Red/Black/White (Red Slime)
-	[0x0F, 0x01, 0x15, 0x30],  # Blue/Magenta/White (Drakee)
-	[0x0F, 0x13, 0x15, 0x30],  # Purple/Magenta/White (Ghost)
+	[0x0f, 0x1c, 0x15, 0x30],  # Cyan/Magenta/White (Slime)
+	[0x0f, 0x16, 0x0d, 0x30],  # Red/Black/White (Red Slime)
+	[0x0f, 0x01, 0x15, 0x30],  # Blue/Magenta/White (Drakee)
+	[0x0f, 0x13, 0x15, 0x30],  # Purple/Magenta/White (Ghost)
 ]
 
 
@@ -146,7 +146,7 @@ def decode_pattern_table(chr_data: bytes, table_id: int) -> List[np.ndarray]:
 class ROMExtractor:
 	"""Extract monster sprites from ROM."""
 
-	SPRITE_PTR_TABLE = 0x59F4  # Pointer table offset
+	SPRITE_PTR_TABLE = 0x59f4  # Pointer table offset
 	CHR_OFFSET = 0x10010  # CHR-ROM offset
 	CHR_SIZE = 0x4000  # 16KB
 
@@ -191,10 +191,10 @@ class ROMExtractor:
 			# Decode attr_y (VHYYYYYY)
 			v_flip = (attr_y & 0x80) != 0
 			h_flip = (attr_y & 0x40) != 0
-			y = attr_y & 0x3F
+			y = attr_y & 0x3f
 
 			# Decode x_pal (XXXXXXPP)
-			x = (x_pal >> 2) & 0x3F
+			x = (x_pal >> 2) & 0x3f
 			palette = x_pal & 0x03
 
 			entry = SpriteEntry(

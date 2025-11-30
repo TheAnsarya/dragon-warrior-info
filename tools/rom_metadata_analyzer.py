@@ -136,24 +136,24 @@ class NESHeader:
 		self.battery = bool(self.flags6 & 0x02)
 		self.trainer = bool(self.flags6 & 0x04)
 		self.four_screen = bool(self.flags6 & 0x08)
-		mapper_low = (self.flags6 & 0xF0) >> 4
+		mapper_low = (self.flags6 & 0xf0) >> 4
 
 		# Flags 7
 		self.vs_system = bool(self.flags7 & 0x01)
 		self.playchoice10 = bool(self.flags7 & 0x02)
-		self.nes2_format = (self.flags7 & 0x0C) == 0x08
-		mapper_high = (self.flags7 & 0xF0) >> 4
+		self.nes2_format = (self.flags7 & 0x0c) == 0x08
+		mapper_high = (self.flags7 & 0xf0) >> 4
 
 		# Mapper number
 		self.mapper_number = (mapper_high << 4) | mapper_low
 
 		if self.nes2_format:
 			# NES 2.0 format
-			self.submapper = (self.flags8 & 0xF0) >> 4
+			self.submapper = (self.flags8 & 0xf0) >> 4
 
 			# Calculate PRG-RAM/CHR-RAM sizes
-			prg_ram_shift = self.flags10 & 0x0F
-			chr_ram_shift = (self.flags10 & 0xF0) >> 4
+			prg_ram_shift = self.flags10 & 0x0f
+			chr_ram_shift = (self.flags10 & 0xf0) >> 4
 
 			if prg_ram_shift > 0:
 				self.prg_ram_size = 64 << prg_ram_shift
@@ -306,7 +306,7 @@ class ROMAnalyzer:
 		md5 = hashlib.md5(self.rom_data).hexdigest()
 		sha1 = hashlib.sha1(self.rom_data).hexdigest()
 		sha256 = hashlib.sha256(self.rom_data).hexdigest()
-		crc32 = format(binascii.crc32(self.rom_data) & 0xFFFFFFFF, '08x')
+		crc32 = format(binascii.crc32(self.rom_data) & 0xffffffff, '08x')
 
 		checksums = ROMChecksums(
 			md5=md5,
@@ -323,14 +323,14 @@ class ROMAnalyzer:
 			prg_data = self.rom_data[16:16 + prg_size]
 			checksums.prg_md5 = hashlib.md5(prg_data).hexdigest()
 			checksums.prg_sha1 = hashlib.sha1(prg_data).hexdigest()
-			checksums.prg_crc32 = format(binascii.crc32(prg_data) & 0xFFFFFFFF, '08x')
+			checksums.prg_crc32 = format(binascii.crc32(prg_data) & 0xffffffff, '08x')
 
 			# CHR-ROM only (if present)
 			if chr_size > 0:
 				chr_data = self.rom_data[16 + prg_size:16 + prg_size + chr_size]
 				checksums.chr_md5 = hashlib.md5(chr_data).hexdigest()
 				checksums.chr_sha1 = hashlib.sha1(chr_data).hexdigest()
-				checksums.chr_crc32 = format(binascii.crc32(chr_data) & 0xFFFFFFFF, '08x')
+				checksums.chr_crc32 = format(binascii.crc32(chr_data) & 0xffffffff, '08x')
 
 		return checksums
 

@@ -37,18 +37,18 @@ DEFAULT_ROM = "roms/Dragon Warrior (U) (PRG1) [!].nes"
 # In actual ROM, text uses custom encoding with control codes
 DW_CHARSET = {
 	0x41: 'A', 0x42: 'B', 0x43: 'C', 0x44: 'D', 0x45: 'E', 0x46: 'F', 0x47: 'G',
-	0x48: 'H', 0x49: 'I', 0x4A: 'J', 0x4B: 'K', 0x4C: 'L', 0x4D: 'M', 0x4E: 'N',
-	0x4F: 'O', 0x50: 'P', 0x51: 'Q', 0x52: 'R', 0x53: 'S', 0x54: 'T', 0x55: 'U',
-	0x56: 'V', 0x57: 'W', 0x58: 'X', 0x59: 'Y', 0x5A: 'Z',
-	0x20: ' ', 0x2C: ',', 0x2E: '.', 0x21: '!', 0x3F: '?', 0x27: "'",
+	0x48: 'H', 0x49: 'I', 0x4a: 'J', 0x4b: 'K', 0x4c: 'L', 0x4d: 'M', 0x4e: 'N',
+	0x4f: 'O', 0x50: 'P', 0x51: 'Q', 0x52: 'R', 0x53: 'S', 0x54: 'T', 0x55: 'U',
+	0x56: 'V', 0x57: 'W', 0x58: 'X', 0x59: 'Y', 0x5a: 'Z',
+	0x20: ' ', 0x2c: ',', 0x2e: '.', 0x21: '!', 0x3f: '?', 0x27: "'",
 	# Control codes
-	0xFC: '{HERO}',
-	0xFD: '{WAIT}',
-	0xFE: '{NEWLINE}',
-	0xFF: '{END}',
+	0xfc: '{HERO}',
+	0xfd: '{WAIT}',
+	0xfe: '{NEWLINE}',
+	0xff: '{END}',
 }
 
-# Current word substitutions (0x80-0x8F in ROM)
+# Current word substitutions (0x80-0x8f in ROM)
 CURRENT_SUBSTITUTIONS = {
 	0x80: "SWORD",
 	0x81: "STAFF",
@@ -60,17 +60,17 @@ CURRENT_SUBSTITUTIONS = {
 	0x87: "KING",
 	0x88: "MONSTER",
 	0x89: "MAGIC",
-	0x8A: "WEAPON",
-	0x8B: "HEALING",
-	0x8C: "BATTLE",
-	0x8D: "TOWN",
-	0x8E: "DUNGEON",
-	0x8F: "TREASURE",
+	0x8a: "WEAPON",
+	0x8b: "HEALING",
+	0x8c: "BATTLE",
+	0x8d: "TOWN",
+	0x8e: "DUNGEON",
+	0x8f: "TREASURE",
 }
 
 # Text data region (estimated)
 TEXT_START = 0x6400
-TEXT_END = 0x8FFF
+TEXT_END = 0x8fff
 
 
 class TextFrequencyAnalyzer:
@@ -130,14 +130,14 @@ class TextFrequencyAnalyzer:
 			if byte in DW_CHARSET:
 				char = DW_CHARSET[byte]
 				decoded.append(char)
-			elif 0x80 <= byte <= 0x8F:
+			elif 0x80 <= byte <= 0x8f:
 				# Word substitution
 				word = CURRENT_SUBSTITUTIONS.get(byte, f"{{SUB{byte:02X}}}")
 				decoded.append(word)
 			elif byte == 0x00:
 				# Skip null bytes
 				pass
-			elif 0x41 <= byte <= 0x5A or 0x61 <= byte <= 0x7A:
+			elif 0x41 <= byte <= 0x5a or 0x61 <= byte <= 0x7a:
 				# Printable ASCII (fallback)
 				decoded.append(chr(byte))
 			else:
@@ -263,7 +263,7 @@ class TextFrequencyAnalyzer:
 		total_savings = 0
 
 		for i, (word, count, savings) in enumerate(candidates):
-			code = 0x90 + i  # Next available codes after 0x8F
+			code = 0x90 + i  # Next available codes after 0x8f
 
 			rec = {
 				'code': f"0x{code:02X}",

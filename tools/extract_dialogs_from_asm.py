@@ -7,23 +7,23 @@ special control codes.
 
 Control Codes:
 - $57: INDT (indent following lines by 1 space)
-- $F0: PLRL (plural "s " or " ") / PNTS (Point or Points)
-- $F1: ENM2 (enemy name with "a" or "an" prefix)
-- $F3: AMTP (numeric amount followed by Point/Points)
-- $F4: ENMY (enemy name)
-- $F5: AMNT (numeric amount)
-- $F6: SPEL (spell name)
-- $F7: ITEM (item name)
-- $F8: NAME (player name)
-- $FB: WAIT (wait for button press)
-- $FC: END (end of text)
-- $FD: \\n (newline)
+- $f0: PLRL (plural "s " or " ") / PNTS (Point or Points)
+- $f1: ENM2 (enemy name with "a" or "an" prefix)
+- $f3: AMTP (numeric amount followed by Point/Points)
+- $f4: ENMY (enemy name)
+- $f5: AMNT (numeric amount)
+- $f6: SPEL (spell name)
+- $f7: ITEM (item name)
+- $f8: NAME (player name)
+- $fb: WAIT (wait for button press)
+- $fc: END (end of text)
+- $fd: \\n (newline)
 
 Character Encoding (from TBL):
 - $00-$09: 0-9
-- $0A-$23: a-z
-- $24-$3D: A-Z
-- $3E-$5F: punctuation and special characters
+- $0a-$23: a-z
+- $24-$3d: A-Z
+- $3e-$5f: punctuation and special characters
 """
 
 import json
@@ -48,38 +48,38 @@ def load_tbl_encoding(tbl_path: Optional[str] = None) -> Dict[int, str]:
 		0x00: '0', 0x01: '1', 0x02: '2', 0x03: '3', 0x04: '4',
 		0x05: '5', 0x06: '6', 0x07: '7', 0x08: '8', 0x09: '9',
 		# Lowercase letters
-		0x0A: 'a', 0x0B: 'b', 0x0C: 'c', 0x0D: 'd', 0x0E: 'e',
-		0x0F: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
+		0x0a: 'a', 0x0b: 'b', 0x0c: 'c', 0x0d: 'd', 0x0e: 'e',
+		0x0f: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
 		0x14: 'k', 0x15: 'l', 0x16: 'm', 0x17: 'n', 0x18: 'o',
-		0x19: 'p', 0x1A: 'q', 0x1B: 'r', 0x1C: 's', 0x1D: 't',
-		0x1E: 'u', 0x1F: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
+		0x19: 'p', 0x1a: 'q', 0x1b: 'r', 0x1c: 's', 0x1d: 't',
+		0x1e: 'u', 0x1f: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
 		0x23: 'z',
 		# Uppercase letters
 		0x24: 'A', 0x25: 'B', 0x26: 'C', 0x27: 'D', 0x28: 'E',
-		0x29: 'F', 0x2A: 'G', 0x2B: 'H', 0x2C: 'I', 0x2D: 'J',
-		0x2E: 'K', 0x2F: 'L', 0x30: 'M', 0x31: 'N', 0x32: 'O',
+		0x29: 'F', 0x2a: 'G', 0x2b: 'H', 0x2c: 'I', 0x2d: 'J',
+		0x2e: 'K', 0x2f: 'L', 0x30: 'M', 0x31: 'N', 0x32: 'O',
 		0x33: 'P', 0x34: 'Q', 0x35: 'R', 0x36: 'S', 0x37: 'T',
-		0x38: 'U', 0x39: 'V', 0x3A: 'W', 0x3B: 'X', 0x3C: 'Y',
-		0x3D: 'Z',
+		0x38: 'U', 0x39: 'V', 0x3a: 'W', 0x3b: 'X', 0x3c: 'Y',
+		0x3d: 'Z',
 		# Punctuation and special characters
-		0x3E: '"', 0x3F: '"',  # Opening/closing quotes
+		0x3e: '"', 0x3f: '"',  # Opening/closing quotes
 		0x40: "'",  # Apostrophe (right single quote)
 		0x41: '*',
 		0x44: ':',
 		0x45: '..', 0x46: '.', 0x47: '.',
 		0x48: ',',
 		0x49: '-',
-		0x4B: '?',
-		0x4C: '!',
-		0x4D: ';',
-		0x4E: ')',
-		0x4F: '(',
+		0x4b: '?',
+		0x4c: '!',
+		0x4d: ';',
+		0x4e: ')',
+		0x4f: '(',
 		0x50: '`',  # Opening single quote (backtick)
 		0x51: '`',
 		0x52: ".'",  # Period + apostrophe
 		0x53: "'",  # Apostrophe
 		0x54: "'",
-		0x5F: ' ',  # Space
+		0x5f: ' ',  # Space
 		# Special start-of-line marker
 		0x60: ' ',  # Indent/start marker (treated as space)
 	}
@@ -107,17 +107,17 @@ def load_tbl_encoding(tbl_path: Optional[str] = None) -> Dict[int, str]:
 # Control code definitions
 CONTROL_CODES = {
 	0x57: '{INDT}',      # Indent following text
-	0xF0: '{PLRL}',      # Plural s or space / Points
-	0xF1: '{ENM2}',      # Enemy with a/an
-	0xF3: '{AMTP}',      # Amount + Point/Points
-	0xF4: '{ENMY}',      # Enemy name
-	0xF5: '{AMNT}',      # Numeric amount
-	0xF6: '{SPEL}',      # Spell name
-	0xF7: '{ITEM}',      # Item name
-	0xF8: '{NAME}',      # Player name
-	0xFB: '{WAIT}',      # Wait for button
-	0xFC: '{END}',       # End of text
-	0xFD: '\n',          # Newline
+	0xf0: '{PLRL}',      # Plural s or space / Points
+	0xf1: '{ENM2}',      # Enemy with a/an
+	0xf3: '{AMTP}',      # Amount + Point/Points
+	0xf4: '{ENMY}',      # Enemy name
+	0xf5: '{AMNT}',      # Numeric amount
+	0xf6: '{SPEL}',      # Spell name
+	0xf7: '{ITEM}',      # Item name
+	0xf8: '{NAME}',      # Player name
+	0xfb: '{WAIT}',      # Wait for button
+	0xfc: '{END}',       # End of text
+	0xfd: '\n',          # Newline
 }
 
 
@@ -256,8 +256,8 @@ def extract_dialogs_from_asm(
 				current_entry = label
 			entry_bytes.extend(bytes_data)
 
-			# Check if this line ends the entry (contains $FC)
-			if 0xFC in bytes_data:
+			# Check if this line ends the entry (contains $fc)
+			if 0xfc in bytes_data:
 				decoded = decode_bytes(entry_bytes, encoding)
 				comment_full = ' '.join(comment_text) if comment_text else ''
 				dialogs.append({

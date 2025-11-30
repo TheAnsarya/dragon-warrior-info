@@ -24,7 +24,7 @@ Examples:
 	python tools/rom_comparison_tool.py roms/original.nes roms/modified.nes
 
 	# Compare specific regions
-	python tools/rom_comparison_tool.py rom1.nes rom2.nes --region 0x8000 0xA000
+	python tools/rom_comparison_tool.py rom1.nes rom2.nes --region 0x8000 0xa000
 
 	# Run regression tests
 	python tools/rom_comparison_tool.py --test
@@ -66,15 +66,15 @@ class MemoryRegion:
 DW_REGIONS = [
 	MemoryRegion("PRG-ROM Bank 0", 0x00010, 0x04010, "First PRG bank"),
 	MemoryRegion("PRG-ROM Bank 1", 0x04010, 0x08010, "Second PRG bank"),
-	MemoryRegion("PRG-ROM Bank 2", 0x08010, 0x0C010, "Third PRG bank"),
-	MemoryRegion("PRG-ROM Bank 3", 0x0C010, 0x10010, "Fourth PRG bank"),
+	MemoryRegion("PRG-ROM Bank 2", 0x08010, 0x0c010, "Third PRG bank"),
+	MemoryRegion("PRG-ROM Bank 3", 0x0c010, 0x10010, "Fourth PRG bank"),
 	MemoryRegion("CHR-ROM Bank 0", 0x10010, 0x12010, "First CHR bank"),
 	MemoryRegion("CHR-ROM Bank 1", 0x12010, 0x14010, "Second CHR bank"),
-	MemoryRegion("Monster Stats", 0x05E5B, 0x05F3B, "39 monsters * 16 bytes"),
-	MemoryRegion("Spell Data", 0x05F3B, 0x05F83, "10 spells * 8 bytes"),
-	MemoryRegion("Item Data", 0x05F83, 0x06083, "32 items * 8 bytes"),
-	MemoryRegion("Dialog Text", 0x08000, 0x0A000, "Compressed dialog strings"),
-	MemoryRegion("Map Data", 0x0B000, 0x0C000, "World and dungeon maps"),
+	MemoryRegion("Monster Stats", 0x05e5b, 0x05f3b, "39 monsters * 16 bytes"),
+	MemoryRegion("Spell Data", 0x05f3b, 0x05f83, "10 spells * 8 bytes"),
+	MemoryRegion("Item Data", 0x05f83, 0x06083, "32 items * 8 bytes"),
+	MemoryRegion("Dialog Text", 0x08000, 0x0a000, "Compressed dialog strings"),
+	MemoryRegion("Map Data", 0x0b000, 0x0c000, "World and dungeon maps"),
 ]
 
 

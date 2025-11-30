@@ -39,13 +39,13 @@ TYPE_TEXT = 0x05
 TYPE_GRAPHICS = 0x06
 
 # ROM offsets (Dragon Warrior U PRG1)
-MONSTER_OFFSET = 0x5E5B
+MONSTER_OFFSET = 0x5e5b
 MONSTER_SIZE = 39 * 16  # 39 monsters, 16 bytes each
 
-SPELL_OFFSET = 0x5F3B
+SPELL_OFFSET = 0x5f3b
 SPELL_SIZE = 10 * 8  # 10 spells, 8 bytes each
 
-ITEM_OFFSET = 0x5F83
+ITEM_OFFSET = 0x5f83
 ITEM_SIZE = 32 * 8  # 32 items, 8 bytes each
 
 CHR_OFFSET = 0x10010
@@ -100,10 +100,10 @@ class DWDataBuilder:
 		struct.pack_into('<I', header, 0x08, data_size)
 
 		# ROM offset (little-endian)
-		struct.pack_into('<I', header, 0x0C, rom_offset)
+		struct.pack_into('<I', header, 0x0c, rom_offset)
 
 		# CRC32 checksum
-		crc = zlib.crc32(data) & 0xFFFFFFFF
+		crc = zlib.crc32(data) & 0xffffffff
 		struct.pack_into('<I', header, 0x10, crc)
 
 		# Timestamp
@@ -388,7 +388,7 @@ def verify_dwdata_file(path: str) -> bool:
 
 		# Verify checksum
 		actual_data = data[32:32 + data_size]
-		calc_crc = zlib.crc32(actual_data) & 0xFFFFFFFF
+		calc_crc = zlib.crc32(actual_data) & 0xffffffff
 
 		if calc_crc != stored_crc:
 			print(f"  ❌ CRC mismatch: {calc_crc:08X} != {stored_crc:08X}")

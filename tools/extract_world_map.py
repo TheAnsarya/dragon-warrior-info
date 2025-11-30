@@ -26,12 +26,12 @@ TILE_TYPES = {
 	0x7: 'Poison',
 	0x8: 'Town',
 	0x9: 'Tunnel',
-	0xA: 'Castle',
-	0xB: 'Bridge',
-	0xC: 'Stairs',
-	0xD: 'Unknown_D',
-	0xE: 'Unknown_E',
-	0xF: 'Unknown_F'
+	0xa: 'Castle',
+	0xb: 'Bridge',
+	0xc: 'Stairs',
+	0xd: 'Unknown_D',
+	0xe: 'Unknown_E',
+	0xf: 'Unknown_F'
 }
 
 # NES palette colors for visualization
@@ -46,12 +46,12 @@ TILE_COLORS = {
 	0x7: (128, 0, 128),      # Poison - Purple
 	0x8: (192, 192, 192),    # Town - Light Gray
 	0x9: (139, 69, 19),      # Tunnel - Dark Brown
-	0xA: (255, 215, 0),      # Castle - Gold
-	0xB: (210, 180, 140),    # Bridge - Tan
-	0xC: (255, 165, 0),      # Stairs - Orange
-	0xD: (255, 0, 255),      # Unknown - Magenta
-	0xE: (255, 0, 255),      # Unknown - Magenta
-	0xF: (255, 0, 255)       # Unknown - Magenta
+	0xa: (255, 215, 0),      # Castle - Gold
+	0xb: (210, 180, 140),    # Bridge - Tan
+	0xc: (255, 165, 0),      # Stairs - Orange
+	0xd: (255, 0, 255),      # Unknown - Magenta
+	0xe: (255, 0, 255),      # Unknown - Magenta
+	0xf: (255, 0, 255)       # Unknown - Magenta
 }
 
 class WorldMapExtractor:
@@ -66,9 +66,9 @@ class WorldMapExtractor:
 		self.map_data = []  # 2D list of tile types
 
 		# World map data location in ROM (Bank00)
-		# WrldMapPtrTbl at $A653 (CPU) = 0x6663 (file offset)
+		# WrldMapPtrTbl at $a653 (CPU) = 0x6663 (file offset)
 		# Row data starts after pointer table
-		self.world_map_start = 0x5D6D  # File offset for Row000 ($9D5D CPU - $8000 + $4010 Bank00)
+		self.world_map_start = 0x5d6d  # File offset for Row000 ($9d5d CPU - $8000 + $4010 Bank00)
 
 	def load_rom(self):
 		"""Load ROM file into memory"""
@@ -102,8 +102,8 @@ class WorldMapExtractor:
 			byte = self.rom_data[current_offset]
 			current_offset += 1
 
-			tile_type = (byte >> 4) & 0x0F  # Upper nibble
-			repeat_count = (byte & 0x0F) + 1  # Lower nibble + 1
+			tile_type = (byte >> 4) & 0x0f  # Upper nibble
+			repeat_count = (byte & 0x0f) + 1  # Lower nibble + 1
 
 			# Add tiles
 			for _ in range(repeat_count):
@@ -273,7 +273,7 @@ class WorldMapExtractor:
 		row_height = 40
 
 		# Count non-unknown tile types
-		tile_types = [t for t in TILE_TYPES.keys() if t < 0xD]
+		tile_types = [t for t in TILE_TYPES.keys() if t < 0xd]
 		img_width = tile_size + label_width + 40
 		img_height = len(tile_types) * row_height + 40
 

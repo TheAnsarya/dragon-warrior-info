@@ -28,18 +28,18 @@ Features:
 
 Dragon Warrior Text Format:
 - Character encoding: Custom tile-based
-- Control codes: 0xF0-0xFF
-- Line break: 0xFA
-- Text end: 0xFC
-- Player name: 0xF1
-- DTE pairs: 0x80-0xEF (compressed common pairs)
+- Control codes: 0xf0-0xff
+- Line break: 0xfa
+- Text end: 0xfc
+- Player name: 0xf1
+- DTE pairs: 0x80-0xef (compressed common pairs)
 
 Text Data Locations:
-- Dialogue: 0x36A0-0x5FFF
-- Menu text: 0x2800-0x36A0
-- Item names: 0x1AF0-0x1C3F
-- Spell names: 0x1C40-0x1CFF
-- Monster names: 0x1D00-0x1E7F
+- Dialogue: 0x36a0-0x5fff
+- Menu text: 0x2800-0x36a0
+- Item names: 0x1af0-0x1c3f
+- Spell names: 0x1c40-0x1cff
+- Monster names: 0x1d00-0x1e7f
 
 Usage:
 	python tools/dialogue_editor.py <rom_file>
@@ -98,17 +98,17 @@ except ImportError:
 
 class ControlCode(Enum):
 	"""Text control codes."""
-	PLAYER_NAME = 0xF1
-	DELAY = 0xF2
-	PAUSE = 0xF3
-	SCROLL = 0xF4
-	CHOICE = 0xF5
-	ITEM = 0xF6
-	NUMBER = 0xF7
-	ENEMY_NAME = 0xF8
-	LINE_BREAK = 0xFA
-	PAGE_BREAK = 0xFB
-	TEXT_END = 0xFC
+	PLAYER_NAME = 0xf1
+	DELAY = 0xf2
+	PAUSE = 0xf3
+	SCROLL = 0xf4
+	CHOICE = 0xf5
+	ITEM = 0xf6
+	NUMBER = 0xf7
+	ENEMY_NAME = 0xf8
+	LINE_BREAK = 0xfa
+	PAGE_BREAK = 0xfb
+	TEXT_END = 0xfc
 
 
 @dataclass
@@ -127,7 +127,7 @@ class TextString:
 @dataclass
 class DTEPair:
 	"""DTE (Dual Tile Encoding) pair."""
-	code: int  # 0x80-0xEF
+	code: int  # 0x80-0xef
 	char1: int
 	char2: int
 	frequency: int = 0
@@ -166,28 +166,28 @@ else:
 		# Numbers (0x00-0x09)
 		0x00: '0', 0x01: '1', 0x02: '2', 0x03: '3', 0x04: '4',
 		0x05: '5', 0x06: '6', 0x07: '7', 0x08: '8', 0x09: '9',
-		# Lowercase letters (0x0A-0x23)
-		0x0A: 'a', 0x0B: 'b', 0x0C: 'c', 0x0D: 'd', 0x0E: 'e',
-		0x0F: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
+		# Lowercase letters (0x0a-0x23)
+		0x0a: 'a', 0x0b: 'b', 0x0c: 'c', 0x0d: 'd', 0x0e: 'e',
+		0x0f: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
 		0x14: 'k', 0x15: 'l', 0x16: 'm', 0x17: 'n', 0x18: 'o',
-		0x19: 'p', 0x1A: 'q', 0x1B: 'r', 0x1C: 's', 0x1D: 't',
-		0x1E: 'u', 0x1F: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
+		0x19: 'p', 0x1a: 'q', 0x1b: 'r', 0x1c: 's', 0x1d: 't',
+		0x1e: 'u', 0x1f: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
 		0x23: 'z',
-		# Uppercase letters (0x24-0x3D)
+		# Uppercase letters (0x24-0x3d)
 		0x24: 'A', 0x25: 'B', 0x26: 'C', 0x27: 'D', 0x28: 'E',
-		0x29: 'F', 0x2A: 'G', 0x2B: 'H', 0x2C: 'I', 0x2D: 'J',
-		0x2E: 'K', 0x2F: 'L', 0x30: 'M', 0x31: 'N', 0x32: 'O',
+		0x29: 'F', 0x2a: 'G', 0x2b: 'H', 0x2c: 'I', 0x2d: 'J',
+		0x2e: 'K', 0x2f: 'L', 0x30: 'M', 0x31: 'N', 0x32: 'O',
 		0x33: 'P', 0x34: 'Q', 0x35: 'R', 0x36: 'S', 0x37: 'T',
-		0x38: 'U', 0x39: 'V', 0x3A: 'W', 0x3B: 'X', 0x3C: 'Y',
-		0x3D: 'Z',
+		0x38: 'U', 0x39: 'V', 0x3a: 'W', 0x3b: 'X', 0x3c: 'Y',
+		0x3d: 'Z',
 		# Punctuation
-		0x3E: '"', 0x3F: '"', 0x40: "'", 0x44: ':',
-		0x47: '.', 0x48: ',', 0x49: '-', 0x4B: '?',
-		0x4C: '!', 0x4D: ';', 0x4E: ')', 0x4F: '(',
-		0x50: '`', 0x53: "'", 0x5F: ' ', 0x60: ' ',
+		0x3e: '"', 0x3f: '"', 0x40: "'", 0x44: ':',
+		0x47: '.', 0x48: ',', 0x49: '-', 0x4b: '?',
+		0x4c: '!', 0x4d: ';', 0x4e: ')', 0x4f: '(',
+		0x50: '`', 0x53: "'", 0x5f: ' ', 0x60: ' ',
 	}
 
-# DTE pairs (common two-letter combinations encoded as single bytes 0x80-0xEF)
+# DTE pairs (common two-letter combinations encoded as single bytes 0x80-0xef)
 DEFAULT_DTE_PAIRS = {
 	0x80: ('t', 'h'),  # "th"
 	0x81: ('e', 'r'),  # "er"
@@ -199,12 +199,12 @@ DEFAULT_DTE_PAIRS = {
 	0x87: ('e', 'd'),  # "ed"
 	0x88: ('n', 'd'),  # "nd"
 	0x89: ('h', 'a'),  # "ha"
-	0x8A: ('a', 't'),  # "at"
-	0x8B: ('e', 'n'),  # "en"
-	0x8C: ('e', 's'),  # "es"
-	0x8D: ('o', 'r'),  # "or"
-	0x8E: ('t', 'e'),  # "te"
-	0x8F: ('o', 'f'),  # "of"
+	0x8a: ('a', 't'),  # "at"
+	0x8b: ('e', 'n'),  # "en"
+	0x8c: ('e', 's'),  # "es"
+	0x8d: ('o', 'r'),  # "or"
+	0x8e: ('t', 'e'),  # "te"
+	0x8f: ('o', 'f'),  # "of"
 }
 
 
@@ -245,11 +245,11 @@ class TextCodec:
 				result.append('[NAME]')
 
 			# Check for other control codes
-			elif byte >= 0xF0:
+			elif byte >= 0xf0:
 				result.append(f'[{byte:02X}]')
 
 			# Check for DTE pair
-			elif 0x80 <= byte <= 0xEF and byte in self.dte_pairs:
+			elif 0x80 <= byte <= 0xef and byte in self.dte_pairs:
 				char1, char2 = self.dte_pairs[byte]
 				result.append(char1)
 				result.append(char2)
@@ -341,11 +341,11 @@ class DialogueEditor:
 
 		# Text regions
 		self.text_regions = {
-			"dialogue": (0x36A0, 0x5FFF),
-			"menu": (0x2800, 0x36A0),
-			"items": (0x1AF0, 0x1C3F),
-			"spells": (0x1C40, 0x1CFF),
-			"monsters": (0x1D00, 0x1E7F),
+			"dialogue": (0x36a0, 0x5fff),
+			"menu": (0x2800, 0x36a0),
+			"items": (0x1af0, 0x1c3f),
+			"spells": (0x1c40, 0x1cff),
+			"monsters": (0x1d00, 0x1e7f),
 		}
 
 	def load_rom(self) -> bool:
@@ -394,7 +394,7 @@ class DialogueEditor:
 						decoded_text=decoded,
 						length=len(raw_bytes),
 						category=region_name,
-						compressed=any(0x80 <= b <= 0xEF for b in raw_bytes)
+						compressed=any(0x80 <= b <= 0xef for b in raw_bytes)
 					)
 
 					strings.append(text_str)
@@ -506,7 +506,7 @@ class DTEAnalyzer:
 		# Sort by savings (descending)
 		dte_candidates.sort(key=lambda x: x.savings, reverse=True)
 
-		# Assign codes (0x80-0xEF = 112 slots)
+		# Assign codes (0x80-0xef = 112 slots)
 		optimal_pairs = dte_candidates[:num_pairs]
 		for i, pair in enumerate(optimal_pairs):
 			pair.code = 0x80 + i

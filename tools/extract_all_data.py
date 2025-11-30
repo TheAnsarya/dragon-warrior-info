@@ -38,12 +38,12 @@ class DragonWarriorDataExtractor:
 
 		# Data offsets (file offsets = iNES header + PRG-ROM offset + bank offset)
 		# Bank01 starts at file offset 0x4010
-		self.monster_stats_offset = 0x5E5B  # Bank01:0x1E4B
-		self.spell_data_offset = 0x7CFD     # Bank01:0x3CED
-		self.item_data_offset = 0x7D17      # Bank01:0x3D07
-		self.weapon_data_offset = 0x7CF5    # Bank01:0x3CE5
-		self.armor_data_offset = 0x7D05     # Bank01:0x3CF5
-		self.shield_data_offset = 0x7D0D    # Bank01:0x3CFD
+		self.monster_stats_offset = 0x5e5b  # Bank01:0x1e4b
+		self.spell_data_offset = 0x7cfd     # Bank01:0x3ced
+		self.item_data_offset = 0x7d17      # Bank01:0x3d07
+		self.weapon_data_offset = 0x7cf5    # Bank01:0x3ce5
+		self.armor_data_offset = 0x7d05     # Bank01:0x3cf5
+		self.shield_data_offset = 0x7d0d    # Bank01:0x3cfd
 
 	def extract_monster_stats(self) -> Dict:
 		"""Extract all 39 monster stats with validation"""
@@ -110,7 +110,7 @@ class DragonWarriorDataExtractor:
 			"Outside", "Return", "Repel", "Healmore", "Hurtmore"
 		]
 
-		# Spell MP costs (from Bank01.asm SpellMPReq table at 0x3CED)
+		# Spell MP costs (from Bank01.asm SpellMPReq table at 0x3ced)
 		mp_costs_offset = self.spell_data_offset
 		mp_costs = list(self.rom_data[mp_costs_offset:mp_costs_offset+10])
 
@@ -177,7 +177,7 @@ class DragonWarriorDataExtractor:
 			{"name": "Herb", "type": "consumable", "price": 24, "effect": "Restores ~25 HP"},
 		]
 
-		# Weapons (from Bank01.asm WeaponPwrTbl at 0x3CE5)
+		# Weapons (from Bank01.asm WeaponPwrTbl at 0x3ce5)
 		weapons_offset = self.weapon_data_offset
 		weapon_powers = list(self.rom_data[weapons_offset:weapons_offset+8])
 
@@ -191,7 +191,7 @@ class DragonWarriorDataExtractor:
 			{"name": "Erdrick's Sword", "attack": weapon_powers[6], "price": 0},
 		]
 
-		# Armor (from Bank01.asm ArmorPwrTbl at 0x3CF5)
+		# Armor (from Bank01.asm ArmorPwrTbl at 0x3cf5)
 		armor_offset = self.armor_data_offset
 		armor_defenses = list(self.rom_data[armor_offset:armor_offset+8])
 
@@ -205,7 +205,7 @@ class DragonWarriorDataExtractor:
 			{"name": "Erdrick's Armor", "defense": armor_defenses[6], "price": 0},
 		]
 
-		# Shields (from Bank01.asm ShieldPwrTbl at 0x3CFD)
+		# Shields (from Bank01.asm ShieldPwrTbl at 0x3cfd)
 		shield_offset = self.shield_data_offset
 		shield_defenses = list(self.rom_data[shield_offset:shield_offset+8])
 

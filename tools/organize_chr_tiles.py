@@ -41,14 +41,14 @@ NES_PALETTE = [
 
 # Dragon Warrior Palette Definitions (based on wiki documentation)
 PALETTES = {
-	'overworld': [0x0F, 0x30, 0x10, 0x00],      # Black, White, Light Gray, Dark Gray
-	'dungeon': [0x0F, 0x00, 0x10, 0x30],        # Black, Dark Gray, Light Gray, White
-	'town': [0x0F, 0x16, 0x27, 0x30],           # Black, Brown, Orange, White
-	'battle': [0x0F, 0x00, 0x10, 0x30],         # Black, Dark Gray, Light Gray, White
-	'menu': [0x0F, 0x00, 0x10, 0x30],           # Black, Dark Gray, Light Gray, White
-	'character': [0x0F, 0x16, 0x27, 0x30],      # Black, Brown, Orange, White
-	'monster': [0x0F, 0x05, 0x15, 0x30],        # Black, Purple, Pink, White
-	'dialog': [0x0F, 0x00, 0x10, 0x30],         # Black, Dark Gray, Light Gray, White
+	'overworld': [0x0f, 0x30, 0x10, 0x00],      # Black, White, Light Gray, Dark Gray
+	'dungeon': [0x0f, 0x00, 0x10, 0x30],        # Black, Dark Gray, Light Gray, White
+	'town': [0x0f, 0x16, 0x27, 0x30],           # Black, Brown, Orange, White
+	'battle': [0x0f, 0x00, 0x10, 0x30],         # Black, Dark Gray, Light Gray, White
+	'menu': [0x0f, 0x00, 0x10, 0x30],           # Black, Dark Gray, Light Gray, White
+	'character': [0x0f, 0x16, 0x27, 0x30],      # Black, Brown, Orange, White
+	'monster': [0x0f, 0x05, 0x15, 0x30],        # Black, Purple, Pink, White
+	'dialog': [0x0f, 0x00, 0x10, 0x30],         # Black, Dark Gray, Light Gray, White
 }
 
 class CHRTileOrganizer:
@@ -182,9 +182,9 @@ class CHRTileOrganizer:
 
 		print("\n=== CHR Bank 0 (Sprites) ===\n")
 
-		# Hero sprites (tiles 0x00-0x0F, 16 tiles)
+		# Hero sprites (tiles 0x00-0x0f, 16 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x00, 0x0F)],
+			[(0x00, 0x0f)],
 			'character',
 			'hero_sprites',
 			tiles_per_row=8,
@@ -193,12 +193,12 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Monster Sprites (tiles 0x00-0x3F, 64 tiles)
+		# Monster Sprites (tiles 0x00-0x3f, 64 tiles)
 		# NOTE: These 64 tile slots contain 252 unique tiles across 19 sprite definitions
 		# used by 39 monsters. Extensive sprite sharing occurs (e.g., SlimeSprts shared
 		# by Slime, Red Slime, Metal Slime). See extracted_assets/reports/monster_sprite_allocation.md
 		sheet_info = self.create_sprite_sheet(
-			[(0x00, 0x3F)],
+			[(0x00, 0x3f)],
 			'monster',
 			'monster_sprites',
 			tiles_per_row=16,
@@ -207,9 +207,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# NPC sprites (tiles 0x50-0x6F, 32 tiles)
+		# NPC sprites (tiles 0x50-0x6f, 32 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x50, 0x6F)],
+			[(0x50, 0x6f)],
 			'character',
 			'npc_sprites',
 			tiles_per_row=8,
@@ -218,9 +218,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Items & Equipment (tiles 0x70-0x7F, 16 tiles)
+		# Items & Equipment (tiles 0x70-0x7f, 16 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x70, 0x7F)],
+			[(0x70, 0x7f)],
 			'menu',
 			'items_equipment',
 			tiles_per_row=8,
@@ -229,9 +229,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# UI Elements (tiles 0x80-0x8F, 16 tiles)
+		# UI Elements (tiles 0x80-0x8f, 16 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x80, 0x8F)],
+			[(0x80, 0x8f)],
 			'menu',
 			'ui_elements',
 			tiles_per_row=8,
@@ -240,9 +240,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Font & Text (tiles 0x90-0xFF, 112 tiles)
+		# Font & Text (tiles 0x90-0xff, 112 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x90, 0xFF)],
+			[(0x90, 0xff)],
 			'dialog',
 			'font_text',
 			tiles_per_row=16,
@@ -253,9 +253,9 @@ class CHRTileOrganizer:
 
 		print("\n=== CHR Bank 1 (Background Tiles) ===\n")
 
-		# Overworld Terrain (tiles 0x100-0x13F, 64 tiles)
+		# Overworld Terrain (tiles 0x100-0x13f, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x100, 0x13F)],
+			[(0x100, 0x13f)],
 			'overworld',
 			'overworld_terrain',
 			tiles_per_row=16,
@@ -264,9 +264,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Town Buildings (tiles 0x140-0x17F, 64 tiles)
+		# Town Buildings (tiles 0x140-0x17f, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x140, 0x17F)],
+			[(0x140, 0x17f)],
 			'town',
 			'town_buildings',
 			tiles_per_row=16,
@@ -275,9 +275,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Dungeon Tiles (tiles 0x180-0x1BF, 64 tiles)
+		# Dungeon Tiles (tiles 0x180-0x1bf, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x180, 0x1BF)],
+			[(0x180, 0x1bf)],
 			'dungeon',
 			'dungeon_tiles',
 			tiles_per_row=16,
@@ -286,9 +286,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Castle Interior (tiles 0x1C0-0x1FF, 64 tiles)
+		# Castle Interior (tiles 0x1c0-0x1ff, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x1C0, 0x1FF)],
+			[(0x1c0, 0x1ff)],
 			'battle',
 			'castle_interior',
 			tiles_per_row=16,
@@ -299,9 +299,9 @@ class CHRTileOrganizer:
 
 		print("\n=== CHR Bank 2 (Battle Backgrounds) ===\n")
 
-		# Battle Background Set 1 (tiles 0x200-0x23F, 64 tiles)
+		# Battle Background Set 1 (tiles 0x200-0x23f, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x200, 0x23F)],
+			[(0x200, 0x23f)],
 			'battle',
 			'battle_background_1',
 			tiles_per_row=16,
@@ -310,9 +310,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Battle Background Set 2 (tiles 0x240-0x27F, 64 tiles)
+		# Battle Background Set 2 (tiles 0x240-0x27f, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x240, 0x27F)],
+			[(0x240, 0x27f)],
 			'battle',
 			'battle_background_2',
 			tiles_per_row=16,
@@ -321,9 +321,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Battle Background Set 3 (tiles 0x280-0x2BF, 64 tiles)
+		# Battle Background Set 3 (tiles 0x280-0x2bf, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x280, 0x2BF)],
+			[(0x280, 0x2bf)],
 			'battle',
 			'battle_background_3',
 			tiles_per_row=16,
@@ -332,9 +332,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Battle Background Set 4 (tiles 0x2C0-0x2FF, 64 tiles)
+		# Battle Background Set 4 (tiles 0x2c0-0x2ff, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x2C0, 0x2FF)],
+			[(0x2c0, 0x2ff)],
 			'battle',
 			'battle_background_4',
 			tiles_per_row=16,
@@ -345,9 +345,9 @@ class CHRTileOrganizer:
 
 		print("\n=== CHR Bank 3 (Extended Graphics) ===\n")
 
-		# Extended Graphics Set 1 (tiles 0x300-0x33F, 64 tiles)
+		# Extended Graphics Set 1 (tiles 0x300-0x33f, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x300, 0x33F)],
+			[(0x300, 0x33f)],
 			'menu',
 			'extended_graphics_1',
 			tiles_per_row=16,
@@ -356,9 +356,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Extended Graphics Set 2 (tiles 0x340-0x37F, 64 tiles)
+		# Extended Graphics Set 2 (tiles 0x340-0x37f, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x340, 0x37F)],
+			[(0x340, 0x37f)],
 			'menu',
 			'extended_graphics_2',
 			tiles_per_row=16,
@@ -367,9 +367,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Extended Graphics Set 3 (tiles 0x380-0x3BF, 64 tiles)
+		# Extended Graphics Set 3 (tiles 0x380-0x3bf, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x380, 0x3BF)],
+			[(0x380, 0x3bf)],
 			'menu',
 			'extended_graphics_3',
 			tiles_per_row=16,
@@ -378,9 +378,9 @@ class CHRTileOrganizer:
 		)
 		metadata['sprite_sheets'].append(sheet_info)
 
-		# Extended Graphics Set 4 (tiles 0x3C0-0x3FF, 64 tiles)
+		# Extended Graphics Set 4 (tiles 0x3c0-0x3ff, 64 tiles)
 		sheet_info = self.create_sprite_sheet(
-			[(0x3C0, 0x3FF)],
+			[(0x3c0, 0x3ff)],
 			'menu',
 			'extended_graphics_4',
 			tiles_per_row=16,

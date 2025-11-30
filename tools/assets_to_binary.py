@@ -45,9 +45,9 @@ TYPE_TEXT = 0x05
 TYPE_GRAPHICS = 0x06
 
 # ROM offsets (from original extraction)
-MONSTER_OFFSET = 0x5E5B
-SPELL_OFFSET = 0x5F3B
-ITEM_OFFSET = 0x5F83
+MONSTER_OFFSET = 0x5e5b
+SPELL_OFFSET = 0x5f3b
+ITEM_OFFSET = 0x5f83
 CHR_OFFSET = 0x10010
 
 # Default paths
@@ -232,9 +232,9 @@ class BinaryPackager:
 		header[7] = 0x00
 
 		struct.pack_into('<I', header, 0x08, data_size)
-		struct.pack_into('<I', header, 0x0C, rom_offset)
+		struct.pack_into('<I', header, 0x0c, rom_offset)
 
-		crc = zlib.crc32(data) & 0xFFFFFFFF
+		crc = zlib.crc32(data) & 0xffffffff
 		struct.pack_into('<I', header, 0x10, crc)
 
 		timestamp = int(time.time())

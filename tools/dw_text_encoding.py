@@ -17,7 +17,7 @@ Usage:
 	byte_data = encode_text("Hello {NAME}!")
 
 	# Decode bytes to text
-	text = decode_bytes([0x2B, 0x0E, 0x15, 0x15, 0x18])  # "Hello"
+	text = decode_bytes([0x2b, 0x0e, 0x15, 0x15, 0x18])  # "Hello"
 """
 
 from typing import Dict, List, Tuple, Optional
@@ -33,25 +33,25 @@ BYTE_TO_CHAR: Dict[int, str] = {
 	0x00: '0', 0x01: '1', 0x02: '2', 0x03: '3', 0x04: '4',
 	0x05: '5', 0x06: '6', 0x07: '7', 0x08: '8', 0x09: '9',
 
-	# Lowercase letters (0x0A-0x23)
-	0x0A: 'a', 0x0B: 'b', 0x0C: 'c', 0x0D: 'd', 0x0E: 'e',
-	0x0F: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
+	# Lowercase letters (0x0a-0x23)
+	0x0a: 'a', 0x0b: 'b', 0x0c: 'c', 0x0d: 'd', 0x0e: 'e',
+	0x0f: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
 	0x14: 'k', 0x15: 'l', 0x16: 'm', 0x17: 'n', 0x18: 'o',
-	0x19: 'p', 0x1A: 'q', 0x1B: 'r', 0x1C: 's', 0x1D: 't',
-	0x1E: 'u', 0x1F: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
+	0x19: 'p', 0x1a: 'q', 0x1b: 'r', 0x1c: 's', 0x1d: 't',
+	0x1e: 'u', 0x1f: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
 	0x23: 'z',
 
-	# Uppercase letters (0x24-0x3D)
+	# Uppercase letters (0x24-0x3d)
 	0x24: 'A', 0x25: 'B', 0x26: 'C', 0x27: 'D', 0x28: 'E',
-	0x29: 'F', 0x2A: 'G', 0x2B: 'H', 0x2C: 'I', 0x2D: 'J',
-	0x2E: 'K', 0x2F: 'L', 0x30: 'M', 0x31: 'N', 0x32: 'O',
+	0x29: 'F', 0x2a: 'G', 0x2b: 'H', 0x2c: 'I', 0x2d: 'J',
+	0x2e: 'K', 0x2f: 'L', 0x30: 'M', 0x31: 'N', 0x32: 'O',
 	0x33: 'P', 0x34: 'Q', 0x35: 'R', 0x36: 'S', 0x37: 'T',
-	0x38: 'U', 0x39: 'V', 0x3A: 'W', 0x3B: 'X', 0x3C: 'Y',
-	0x3D: 'Z',
+	0x38: 'U', 0x39: 'V', 0x3a: 'W', 0x3b: 'X', 0x3c: 'Y',
+	0x3d: 'Z',
 
-	# Punctuation and special characters (0x3E-0x5F)
-	0x3E: '"',   # Opening double quote
-	0x3F: '"',   # Closing double quote
+	# Punctuation and special characters (0x3e-0x5f)
+	0x3e: '"',   # Opening double quote
+	0x3f: '"',   # Closing double quote
 	0x40: "'",   # Right single quote (apostrophe in dialog)
 	0x41: '*',   # Asterisk
 	0x44: ':',   # Colon
@@ -60,17 +60,17 @@ BYTE_TO_CHAR: Dict[int, str] = {
 	0x47: '.',   # Period (standard)
 	0x48: ',',   # Comma
 	0x49: '-',   # Hyphen/dash
-	0x4B: '?',   # Question mark
-	0x4C: '!',   # Exclamation mark
-	0x4D: ';',   # Semicolon
-	0x4E: ')',   # Right parenthesis
-	0x4F: '(',   # Left parenthesis
+	0x4b: '?',   # Question mark
+	0x4c: '!',   # Exclamation mark
+	0x4d: ';',   # Semicolon
+	0x4e: ')',   # Right parenthesis
+	0x4f: '(',   # Left parenthesis
 	0x50: '`',   # Opening single quote (backtick style)
 	0x51: '`',   # Opening single quote (alternate)
 	0x52: ".'",  # Period + apostrophe combination
 	0x53: "'",   # Apostrophe (standard)
 	0x54: "'",   # Apostrophe (alternate)
-	0x5F: ' ',   # Space
+	0x5f: ' ',   # Space
 
 	# Special markers
 	0x60: ' ',   # Indent/line start marker (rendered as space)
@@ -79,10 +79,10 @@ BYTE_TO_CHAR: Dict[int, str] = {
 # Character -> Byte value mapping (reverse of above)
 CHAR_TO_BYTE: Dict[str, int] = {v: k for k, v in BYTE_TO_CHAR.items()}
 # Override some characters to use preferred byte values
-CHAR_TO_BYTE[' '] = 0x5F    # Space
+CHAR_TO_BYTE[' '] = 0x5f    # Space
 CHAR_TO_BYTE['.'] = 0x47    # Period (use standard)
 CHAR_TO_BYTE["'"] = 0x53    # Apostrophe (use standard)
-CHAR_TO_BYTE['"'] = 0x3E    # Double quote (use opening)
+CHAR_TO_BYTE['"'] = 0x3e    # Double quote (use opening)
 
 # ============================================================================
 # Control Codes
@@ -92,52 +92,52 @@ CHAR_TO_BYTE['"'] = 0x3E    # Double quote (use opening)
 CONTROL_CODES: Dict[int, str] = {
 	# General text control
 	0x57: 'INDT',   # Indent following text lines by 1 space
-	0xFD: 'NEWL',   # Newline (line break)
-	0xFB: 'WAIT',   # Wait for player button press
-	0xFC: 'END',    # End of text block
+	0xfd: 'NEWL',   # Newline (line break)
+	0xfb: 'WAIT',   # Wait for player button press
+	0xfc: 'END',    # End of text block
 
 	# Variable substitution
-	0xF0: 'PLRL',   # Plural marker ("s " or " " based on quantity)
-	0xF1: 'ENM2',   # Enemy name with "a" or "an" prefix
-	0xF3: 'AMTP',   # Amount followed by "Point" or "Points"
-	0xF4: 'ENMY',   # Enemy name
-	0xF5: 'AMNT',   # Numeric amount value
-	0xF6: 'SPEL',   # Spell name
-	0xF7: 'ITEM',   # Item name
-	0xF8: 'NAME',   # Player name
+	0xf0: 'PLRL',   # Plural marker ("s " or " " based on quantity)
+	0xf1: 'ENM2',   # Enemy name with "a" or "an" prefix
+	0xf3: 'AMTP',   # Amount followed by "Point" or "Points"
+	0xf4: 'ENMY',   # Enemy name
+	0xf5: 'AMNT',   # Numeric amount value
+	0xf6: 'SPEL',   # Spell name
+	0xf7: 'ITEM',   # Item name
+	0xf8: 'NAME',   # Player name
 }
 
 # Control code tags used in text strings
 CONTROL_TAGS: Dict[str, int] = {
 	'{INDT}': 0x57,
-	'{NEWL}': 0xFD,
-	'{\\n}': 0xFD,    # Alternate newline syntax
-	'{WAIT}': 0xFB,
-	'{END}': 0xFC,
-	'{PLRL}': 0xF0,
-	'{ENM2}': 0xF1,
-	'{AMTP}': 0xF3,
-	'{ENMY}': 0xF4,
-	'{AMNT}': 0xF5,
-	'{SPEL}': 0xF6,
-	'{ITEM}': 0xF7,
-	'{NAME}': 0xF8,
+	'{NEWL}': 0xfd,
+	'{\\n}': 0xfd,    # Alternate newline syntax
+	'{WAIT}': 0xfb,
+	'{END}': 0xfc,
+	'{PLRL}': 0xf0,
+	'{ENM2}': 0xf1,
+	'{AMTP}': 0xf3,
+	'{ENMY}': 0xf4,
+	'{AMNT}': 0xf5,
+	'{SPEL}': 0xf6,
+	'{ITEM}': 0xf7,
+	'{NAME}': 0xf8,
 }
 
 # Reverse mapping: byte -> tag
 BYTE_TO_TAG: Dict[int, str] = {
 	0x57: '{INDT}',
-	0xFD: '\n',      # Render newlines naturally
-	0xFB: '{WAIT}',
-	0xFC: '{END}',
-	0xF0: '{PLRL}',
-	0xF1: '{ENM2}',
-	0xF3: '{AMTP}',
-	0xF4: '{ENMY}',
-	0xF5: '{AMNT}',
-	0xF6: '{SPEL}',
-	0xF7: '{ITEM}',
-	0xF8: '{NAME}',
+	0xfd: '\n',      # Render newlines naturally
+	0xfb: '{WAIT}',
+	0xfc: '{END}',
+	0xf0: '{PLRL}',
+	0xf1: '{ENM2}',
+	0xf3: '{AMTP}',
+	0xf4: '{ENMY}',
+	0xf5: '{AMNT}',
+	0xf6: '{SPEL}',
+	0xf7: '{ITEM}',
+	0xf8: '{NAME}',
 }
 
 
@@ -157,7 +157,7 @@ def encode_text(text: str) -> List[int]:
 
 	Example:
 		>>> encode_text("Hello {NAME}!")
-		[0x2B, 0x0E, 0x15, 0x15, 0x18, 0x5F, 0xF8, 0x4C]
+		[0x2b, 0x0e, 0x15, 0x15, 0x18, 0x5f, 0xf8, 0x4c]
 	"""
 	result = []
 	i = 0
@@ -175,7 +175,7 @@ def encode_text(text: str) -> List[int]:
 
 		# Check for natural newline
 		if text[i] == '\n':
-			result.append(0xFD)
+			result.append(0xfd)
 			i += 1
 			continue
 
@@ -197,7 +197,7 @@ def encode_text(text: str) -> List[int]:
 			result.append(CHAR_TO_BYTE[char])
 		else:
 			# Unknown character - use space as fallback
-			result.append(0x5F)
+			result.append(0x5f)
 
 		i += 1
 
@@ -216,7 +216,7 @@ def decode_bytes(data: List[int], use_tags: bool = True) -> str:
 		Decoded text string
 
 	Example:
-		>>> decode_bytes([0x2B, 0x0E, 0x15, 0x15, 0x18])
+		>>> decode_bytes([0x2b, 0x0e, 0x15, 0x15, 0x18])
 		'Hello'
 	"""
 	result = []
@@ -225,7 +225,7 @@ def decode_bytes(data: List[int], use_tags: bool = True) -> str:
 		if byte_val in BYTE_TO_TAG:
 			if use_tags:
 				result.append(BYTE_TO_TAG[byte_val])
-			elif byte_val == 0xFD:
+			elif byte_val == 0xfd:
 				result.append('\n')
 			# Skip other control codes if not using tags
 		elif byte_val in BYTE_TO_CHAR:

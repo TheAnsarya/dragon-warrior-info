@@ -33,11 +33,11 @@ Dragon Warrior Items:
 - Tools: 15 (Torch, Herbs, Keys, Wings, etc.)
 
 Item Data Locations:
-- Item Names: 0x1AF0-0x1C3F
-- Item Prices: 0x1C40-0x1CFF
-- Weapon Stats: 0x1D00-0x1D3F
-- Armor Stats: 0x1D40-0x1D7F
-- Shop Data: 0x1D80-0x1E7F
+- Item Names: 0x1af0-0x1c3f
+- Item Prices: 0x1c40-0x1cff
+- Weapon Stats: 0x1d00-0x1d3f
+- Armor Stats: 0x1d40-0x1d7f
+- Shop Data: 0x1d80-0x1e7f
 
 Usage:
 	python tools/item_shop_editor.py <rom_file>
@@ -190,11 +190,11 @@ class ItemDataLoader:
 	"""Load item data from ROM."""
 
 	# ROM offsets (simplified - actual format may vary)
-	ITEM_NAMES_OFFSET = 0x1AF0
-	ITEM_PRICES_OFFSET = 0x1C40
-	WEAPON_STATS_OFFSET = 0x1D00
-	ARMOR_STATS_OFFSET = 0x1D40
-	SHOP_DATA_OFFSET = 0x1D80
+	ITEM_NAMES_OFFSET = 0x1af0
+	ITEM_PRICES_OFFSET = 0x1c40
+	WEAPON_STATS_OFFSET = 0x1d00
+	ARMOR_STATS_OFFSET = 0x1d40
+	SHOP_DATA_OFFSET = 0x1d80
 
 	@staticmethod
 	def load_item(rom_data: bytes, item_id: int) -> Optional[Item]:

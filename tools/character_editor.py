@@ -41,11 +41,11 @@ Experience Curve:
 - Level 30: 65000 XP
 
 Data Locations:
-- Level XP Table: 0x6023-0x607F (30 levels × 3 bytes)
-- HP Growth Table: 0x6080-0x60DC
-- MP Growth Table: 0x60DD-0x6139
-- Strength Table: 0x613A-0x6196
-- Agility Table: 0x6197-0x61F3
+- Level XP Table: 0x6023-0x607f (30 levels × 3 bytes)
+- HP Growth Table: 0x6080-0x60dc
+- MP Growth Table: 0x60dd-0x6139
+- Strength Table: 0x613a-0x6196
+- Agility Table: 0x6197-0x61f3
 
 Usage:
 	python tools/character_editor.py <rom_file>
@@ -210,8 +210,8 @@ class StatDataLoader:
 	# ROM offsets (simplified)
 	XP_TABLE_OFFSET = 0x6023
 	HP_TABLE_OFFSET = 0x6080
-	MP_TABLE_OFFSET = 0x60DD
-	STRENGTH_TABLE_OFFSET = 0x613A
+	MP_TABLE_OFFSET = 0x60dd
+	STRENGTH_TABLE_OFFSET = 0x613a
 	AGILITY_TABLE_OFFSET = 0x6197
 
 	@staticmethod

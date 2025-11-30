@@ -189,18 +189,18 @@ SPELL_LEVELS = {
 
 # Item IDs
 ITEM_WEAPON = list(range(0x01, 0x08))  # Bamboo Pole to Erdrick's Sword
-ITEM_ARMOR = list(range(0x08, 0x0F))   # Clothes to Erdrick's Armor
-ITEM_SHIELD = [0x0F, 0x10, 0x11]       # Small/Large/Silver Shield
+ITEM_ARMOR = list(range(0x08, 0x0f))   # Clothes to Erdrick's Armor
+ITEM_SHIELD = [0x0f, 0x10, 0x11]       # Small/Large/Silver Shield
 
 # Key items for progression
 KEY_ITEMS = {
 	0x18: "Erdrick's Token",
 	0x19: "Gwaelin's Love",
-	0x1D: "Stones of Sunlight",
-	0x1E: "Staff of Rain",
-	0x1F: "Rainbow Drop",
+	0x1d: "Stones of Sunlight",
+	0x1e: "Staff of Rain",
+	0x1f: "Rainbow Drop",
 	0x07: "Erdrick's Sword",
-	0x0E: "Erdrick's Armor",
+	0x0e: "Erdrick's Armor",
 }
 
 
@@ -438,7 +438,7 @@ class ProgressionValidator:
 					"Verify this is legitimate"
 				))
 
-			if state.armor_id == 0x0E:  # Erdrick's Armor
+			if state.armor_id == 0x0e:  # Erdrick's Armor
 				issues.append(ValidationIssue(
 					"warning",
 					"progression",
@@ -618,10 +618,10 @@ def main():
 		strength=35,
 		agility=31,
 		weapon_id=0x05,  # Broad Sword
-		armor_id=0x0B,   # Half Plate
+		armor_id=0x0b,   # Half Plate
 		shield_id=0x10,  # Large Shield
 		inventory=[0x20, 0x13, 0x21],  # Herb, Fairy Water, Magic Key
-		spells=0x0F,  # Heal, Hurt, Sleep, Radiant
+		spells=0x0f,  # Heal, Hurt, Sleep, Radiant
 		has_token=True,
 	)
 

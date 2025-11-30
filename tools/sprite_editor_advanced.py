@@ -85,7 +85,7 @@ class Tile:
 class Palette:
 	"""NES palette (4 colors)."""
 	id: int
-	colors: List[int] = field(default_factory=lambda: [0x0F, 0x00, 0x10, 0x30])
+	colors: List[int] = field(default_factory=lambda: [0x0f, 0x00, 0x10, 0x30])
 
 	def get_rgb(self, index: int) -> Tuple[int, int, int]:
 		"""Get RGB color for palette index."""
@@ -478,7 +478,7 @@ class ImageImporter:
 				best_index = 0
 
 				for i in range(4):
-					nes_rgb = NES_PALETTE[0x0F + i]  # Simplified
+					nes_rgb = NES_PALETTE[0x0f + i]  # Simplified
 					dist = sum((a - b) ** 2 for a, b in zip(rgb, nes_rgb))
 
 					if dist < min_dist:
@@ -594,10 +594,10 @@ def main():
 
 	# Create palettes (simplified - would normally extract from ROM)
 	palettes = [
-		Palette(0, [0x0F, 0x00, 0x10, 0x30]),  # Black, white, light gray, dark gray
-		Palette(1, [0x0F, 0x16, 0x27, 0x38]),  # Orange theme
-		Palette(2, [0x0F, 0x1A, 0x2A, 0x3A]),  # Green theme
-		Palette(3, [0x0F, 0x12, 0x22, 0x32]),  # Blue theme
+		Palette(0, [0x0f, 0x00, 0x10, 0x30]),  # Black, white, light gray, dark gray
+		Palette(1, [0x0f, 0x16, 0x27, 0x38]),  # Orange theme
+		Palette(2, [0x0f, 0x1a, 0x2a, 0x3a]),  # Green theme
+		Palette(3, [0x0f, 0x12, 0x22, 0x32]),  # Blue theme
 	]
 
 	# Create renderer

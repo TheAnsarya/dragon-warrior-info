@@ -83,21 +83,21 @@ def generate_monster_asm(monsters: List[Dict], output_path: Path, verbose: bool 
 		lines.append(f'Monster{monster_id:02d}_Stats:')
 
 		# HP (2 bytes, little endian)
-		lines.append(f'\t.byte ${hp & 0xFF:02X}, ${(hp >> 8) & 0xFF:02X}\t\t; HP: {hp}')
+		lines.append(f'\t.byte ${hp & 0xff:02X}, ${(hp >> 8) & 0xff:02X}\t\t; HP: {hp}')
 
 		# Stats (single bytes)
-		lines.append(f'\t.byte ${strength & 0xFF:02X}\t\t\t; Strength: {strength}')
-		lines.append(f'\t.byte ${agility & 0xFF:02X}\t\t\t; Agility: {agility}')
-		lines.append(f'\t.byte ${max_damage & 0xFF:02X}\t\t\t; Max Damage: {max_damage}')
-		lines.append(f'\t.byte ${dodge & 0xFF:02X}\t\t\t; Dodge Rate: {dodge}')
-		lines.append(f'\t.byte ${sleep_res & 0xFF:02X}\t\t\t; Sleep Resistance: {sleep_res}')
-		lines.append(f'\t.byte ${hurt_res & 0xFF:02X}\t\t\t; Hurt Resistance: {hurt_res}')
+		lines.append(f'\t.byte ${strength & 0xff:02X}\t\t\t; Strength: {strength}')
+		lines.append(f'\t.byte ${agility & 0xff:02X}\t\t\t; Agility: {agility}')
+		lines.append(f'\t.byte ${max_damage & 0xff:02X}\t\t\t; Max Damage: {max_damage}')
+		lines.append(f'\t.byte ${dodge & 0xff:02X}\t\t\t; Dodge Rate: {dodge}')
+		lines.append(f'\t.byte ${sleep_res & 0xff:02X}\t\t\t; Sleep Resistance: {sleep_res}')
+		lines.append(f'\t.byte ${hurt_res & 0xff:02X}\t\t\t; Hurt Resistance: {hurt_res}')
 
 		# XP (2 bytes)
-		lines.append(f'\t.byte ${xp & 0xFF:02X}, ${(xp >> 8) & 0xFF:02X}\t\t; Experience: {xp}')
+		lines.append(f'\t.byte ${xp & 0xff:02X}, ${(xp >> 8) & 0xff:02X}\t\t; Experience: {xp}')
 
 		# Gold (2 bytes)
-		lines.append(f'\t.byte ${gold & 0xFF:02X}, ${(gold >> 8) & 0xFF:02X}\t\t; Gold: {gold}')
+		lines.append(f'\t.byte ${gold & 0xff:02X}, ${(gold >> 8) & 0xff:02X}\t\t; Gold: {gold}')
 
 		total_bytes += 11  # 2+1+1+1+1+1+1+2+2 = 11 bytes per monster
 
@@ -129,7 +129,7 @@ def generate_monster_asm(monsters: List[Dict], output_path: Path, verbose: bool 
 		# Encode name using DW encoding
 		encoded_bytes = encode_name(name)
 		byte_str = ', '.join(f'${b:02X}' for b in encoded_bytes)
-		lines.append(f'\t.byte {byte_str}, $FC\t; "{name}"')
+		lines.append(f'\t.byte {byte_str}, $fc\t; "{name}"')
 
 	lines.append('')
 	lines.append(';' + '=' * 100)
@@ -148,21 +148,21 @@ def encode_name(name: str) -> List[int]:
 	"""Encode name string to Dragon Warrior byte format."""
 	# DW character encoding
 	CHAR_TO_BYTE = {
-		' ': 0x5F,
+		' ': 0x5f,
 		'0': 0x00, '1': 0x01, '2': 0x02, '3': 0x03, '4': 0x04,
 		'5': 0x05, '6': 0x06, '7': 0x07, '8': 0x08, '9': 0x09,
-		'a': 0x0A, 'b': 0x0B, 'c': 0x0C, 'd': 0x0D, 'e': 0x0E,
-		'f': 0x0F, 'g': 0x10, 'h': 0x11, 'i': 0x12, 'j': 0x13,
+		'a': 0x0a, 'b': 0x0b, 'c': 0x0c, 'd': 0x0d, 'e': 0x0e,
+		'f': 0x0f, 'g': 0x10, 'h': 0x11, 'i': 0x12, 'j': 0x13,
 		'k': 0x14, 'l': 0x15, 'm': 0x16, 'n': 0x17, 'o': 0x18,
-		'p': 0x19, 'q': 0x1A, 'r': 0x1B, 's': 0x1C, 't': 0x1D,
-		'u': 0x1E, 'v': 0x1F, 'w': 0x20, 'x': 0x21, 'y': 0x22,
+		'p': 0x19, 'q': 0x1a, 'r': 0x1b, 's': 0x1c, 't': 0x1d,
+		'u': 0x1e, 'v': 0x1f, 'w': 0x20, 'x': 0x21, 'y': 0x22,
 		'z': 0x23,
 		'A': 0x24, 'B': 0x25, 'C': 0x26, 'D': 0x27, 'E': 0x28,
-		'F': 0x29, 'G': 0x2A, 'H': 0x2B, 'I': 0x2C, 'J': 0x2D,
-		'K': 0x2E, 'L': 0x2F, 'M': 0x30, 'N': 0x31, 'O': 0x32,
+		'F': 0x29, 'G': 0x2a, 'H': 0x2b, 'I': 0x2c, 'J': 0x2d,
+		'K': 0x2e, 'L': 0x2f, 'M': 0x30, 'N': 0x31, 'O': 0x32,
 		'P': 0x33, 'Q': 0x34, 'R': 0x35, 'S': 0x36, 'T': 0x37,
-		'U': 0x38, 'V': 0x39, 'W': 0x3A, 'X': 0x3B, 'Y': 0x3C,
-		'Z': 0x3D,
+		'U': 0x38, 'V': 0x39, 'W': 0x3a, 'X': 0x3b, 'Y': 0x3c,
+		'Z': 0x3d,
 	}
 
 	result = []
@@ -170,7 +170,7 @@ def encode_name(name: str) -> List[int]:
 		if char in CHAR_TO_BYTE:
 			result.append(CHAR_TO_BYTE[char])
 		else:
-			result.append(0x5F)  # Space for unknown
+			result.append(0x5f)  # Space for unknown
 
 	return result
 

@@ -44,12 +44,12 @@ class Item(IntEnum):
 	ERDRICKS_SWORD = 0x07
 	CLOTHES = 0x08
 	LEATHER_ARMOR = 0x09
-	CHAIN_MAIL = 0x0A
-	HALF_PLATE = 0x0B
-	FULL_PLATE = 0x0C
-	MAGIC_ARMOR = 0x0D
-	ERDRICKS_ARMOR = 0x0E
-	SMALL_SHIELD = 0x0F
+	CHAIN_MAIL = 0x0a
+	HALF_PLATE = 0x0b
+	FULL_PLATE = 0x0c
+	MAGIC_ARMOR = 0x0d
+	ERDRICKS_ARMOR = 0x0e
+	SMALL_SHIELD = 0x0f
 	LARGE_SHIELD = 0x10
 	SILVER_SHIELD = 0x11
 	HERB = 0x12
@@ -60,12 +60,12 @@ class Item(IntEnum):
 	FAIRY_FLUTE = 0x17
 	FIGHTERS_RING = 0x18
 	ERDRICKS_TOKEN = 0x19
-	GWAELINS_LOVE = 0x1A
-	CURSED_BELT = 0x1B
-	SILVER_HARP = 0x1C
-	DEATH_NECKLACE = 0x1D
-	STONES_SUNLIGHT = 0x1E
-	STAFF_RAIN = 0x1F
+	GWAELINS_LOVE = 0x1a
+	CURSED_BELT = 0x1b
+	SILVER_HARP = 0x1c
+	DEATH_NECKLACE = 0x1d
+	STONES_SUNLIGHT = 0x1e
+	STAFF_RAIN = 0x1f
 	RAINBOW_DROP = 0x20
 	MAGIC_KEY = 0x21
 
@@ -81,7 +81,7 @@ class Spell(IntEnum):
 	RETURN = 0x07
 	REPEL = 0x08
 	HEALMORE = 0x09
-	HURTMORE = 0x0A
+	HURTMORE = 0x0a
 
 
 # Item names lookup
@@ -309,8 +309,8 @@ class SaveFileEditor:
 
 	def _parse_save_data(self, data: bytes) -> SaveData:
 		"""Parse save data from bytes."""
-		# Check if slot is empty (all zeros or 0xFF)
-		if all(b == 0 or b == 0xFF for b in data[:16]):
+		# Check if slot is empty (all zeros or 0xff)
+		if all(b == 0 or b == 0xff for b in data[:16]):
 			return None
 
 		save = SaveData()
@@ -381,22 +381,22 @@ class SaveFileEditor:
 		data[12] = min(save.stats.defense_power, 255)
 
 		# Position
-		data[13] = save.position.x & 0xFF
-		data[14] = save.position.y & 0xFF
-		data[15] = save.position.map_id & 0xFF
+		data[13] = save.position.x & 0xff
+		data[14] = save.position.y & 0xff
+		data[15] = save.position.map_id & 0xff
 
 		# Equipment
-		data[16] = save.equipment['weapon'] & 0xFF
-		data[17] = save.equipment['armor'] & 0xFF
-		data[18] = save.equipment['shield'] & 0xFF
+		data[16] = save.equipment['weapon'] & 0xff
+		data[17] = save.equipment['armor'] & 0xff
+		data[18] = save.equipment['shield'] & 0xff
 
 		# Inventory
 		for i in range(8):
-			data[20 + i] = save.inventory[i] & 0xFF
+			data[20 + i] = save.inventory[i] & 0xff
 
 		# Item counts
-		data[28] = save.herbs_count & 0xFF
-		data[29] = save.magic_keys & 0xFF
+		data[28] = save.herbs_count & 0xff
+		data[29] = save.magic_keys & 0xff
 
 		# Spells
 		spell_flags = 0
@@ -422,7 +422,7 @@ class SaveFileEditor:
 		data[31] = flag_byte
 
 		# Calculate and store checksum (simple sum)
-		checksum = sum(data[:126]) & 0xFF
+		checksum = sum(data[:126]) & 0xff
 		data[126] = checksum
 
 		return bytes(data)

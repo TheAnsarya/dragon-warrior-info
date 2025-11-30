@@ -207,7 +207,7 @@ class APUEmulator:
 		period = int(self.NTSC_CPU_CLOCK / (16 * frequency)) - 1
 
 		# Clamp to valid range
-		return max(0, min(0x7FF, period))
+		return max(0, min(0x7ff, period))
 
 	def set_pulse_duty(self, duty: int) -> int:
 		"""Set pulse wave duty cycle (0-3)."""
@@ -216,7 +216,7 @@ class APUEmulator:
 
 	def set_volume(self, volume: int) -> int:
 		"""Set channel volume (0-15)."""
-		return volume & 0x0F
+		return volume & 0x0f
 
 
 # ============================================================================
@@ -227,7 +227,7 @@ class MusicExtractor:
 	"""Extract music data from ROM."""
 
 	# Dragon Warrior music locations (approximate)
-	MUSIC_DATA_START = 0x1E000
+	MUSIC_DATA_START = 0x1e000
 	NUM_TRACKS = 10
 
 	def __init__(self, rom_data: bytes):
@@ -372,11 +372,11 @@ class MIDIExporter:
 	def _encode_variable_length(self, value: int) -> bytes:
 		"""Encode variable-length quantity for MIDI."""
 		result = []
-		result.append(value & 0x7F)
+		result.append(value & 0x7f)
 
 		value >>= 7
 		while value > 0:
-			result.append((value & 0x7F) | 0x80)
+			result.append((value & 0x7f) | 0x80)
 			value >>= 7
 
 		return bytes(reversed(result))

@@ -107,8 +107,8 @@ class MusicEditorTab(ttk.Frame):
 		self.current_sfx: Optional[SoundEffect] = None
 
 		# ROM offsets
-		self.MUSIC_TABLE = 0x1E000  # Music data start
-		self.SFX_TABLE = 0x1F000    # Sound effects start
+		self.MUSIC_TABLE = 0x1e000  # Music data start
+		self.SFX_TABLE = 0x1f000    # Sound effects start
 
 		self.create_widgets()
 		self.load_music_data()
@@ -447,8 +447,8 @@ Square/Triangle frequency:
 
 Example: For middle C (261.63 Hz):
   timer_value = (CPU / (16 * f)) - 1
-              = (1789773 / (16 * 261.63)) - 1
-              = 426
+			  = (1789773 / (16 * 261.63)) - 1
+			  = 426
 
 
 ═══════════════════════════════════════════════════════════════════════════
@@ -457,8 +457,8 @@ REGISTER MAP
 
 Square 1:     $4000-$4003
 Square 2:     $4004-$4007
-Triangle:     $4008-$400B
-Noise:        $400C-$400F
+Triangle:     $4008-$400b
+Noise:        $400c-$400f
 DMC:          $4010-$4013
 Status:       $4015
 Frame Counter:$4017

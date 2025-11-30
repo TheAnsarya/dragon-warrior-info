@@ -29,11 +29,11 @@ DW_TEXT_ENCODING = {
 	0x04: '<CLEAR>',
 
 	# Letters (A-Z, a-z)
-	**{i: chr(ord('A') + i - 0x41) for i in range(0x41, 0x5B)},
-	**{i: chr(ord('a') + i - 0x61) for i in range(0x61, 0x7B)},
+	**{i: chr(ord('A') + i - 0x41) for i in range(0x41, 0x5b)},
+	**{i: chr(ord('a') + i - 0x61) for i in range(0x61, 0x7b)},
 
 	# Numbers (0-9)
-	**{i: chr(ord('0') + i - 0x30) for i in range(0x30, 0x3A)},
+	**{i: chr(ord('0') + i - 0x30) for i in range(0x30, 0x3a)},
 
 	# Punctuation
 	0x20: ' ',
@@ -43,21 +43,21 @@ DW_TEXT_ENCODING = {
 	0x27: "'",
 	0x28: '(',
 	0x29: ')',
-	0x2C: ',',
-	0x2D: '-',
-	0x2E: '.',
-	0x2F: '/',
-	0x3A: ':',
-	0x3B: ';',
-	0x3F: '?',
+	0x2c: ',',
+	0x2d: '-',
+	0x2e: '.',
+	0x2f: '/',
+	0x3a: ':',
+	0x3b: ';',
+	0x3f: '?',
 
 	# Special characters
-	0xFA: '<YEN>',
-	0xFB: '<HEART>',
-	0xFC: '<CROWN>',
-	0xFD: '<SWORD>',
-	0xFE: '<SHIELD>',
-	0xFF: '<ITEM>',
+	0xfa: '<YEN>',
+	0xfb: '<HEART>',
+	0xfc: '<CROWN>',
+	0xfd: '<SWORD>',
+	0xfe: '<SHIELD>',
+	0xff: '<ITEM>',
 }
 
 # Reverse mapping for encoding
@@ -96,8 +96,8 @@ class DialogueEditorTab(ttk.Frame):
 		self.current_dialogue: Optional[DialogueEntry] = None
 
 		# ROM offsets for dialogue data
-		self.TEXT_POINTERS = 0xB0A0  # Pointer table
-		self.TEXT_DATA = 0xB100      # Compressed text data
+		self.TEXT_POINTERS = 0xb0a0  # Pointer table
+		self.TEXT_DATA = 0xb100      # Compressed text data
 		self.NUM_DIALOGUES = 200     # Approximate number of dialogue entries
 
 		self.create_widgets()
@@ -264,7 +264,7 @@ class DialogueEditorTab(ttk.Frame):
 			ptr_offset = self.TEXT_POINTERS + (i * 2)
 			if ptr_offset + 1 < len(self.rom_manager.rom):
 				ptr = self.rom_manager.read_word(ptr_offset)
-				if ptr != 0xFFFF and ptr != 0x0000:  # Valid pointer
+				if ptr != 0xffff and ptr != 0x0000:  # Valid pointer
 					pointers.append((i, ptr))
 
 		# Extract dialogue for each pointer

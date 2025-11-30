@@ -23,11 +23,11 @@ class DragonWarriorMapExtractor:
 			self.rom_data = f.read()
 
 		# Map data locations from Bank00
-		# MapDatTbl at Bank00:0x000A = ROM offset 0x801A
+		# MapDatTbl at Bank00:0x000a = ROM offset 0x801a
 		# 5 bytes per map: .word pointer, .byte width, .byte height, .byte boundary
-		self.MAP_TABLE_OFFSET = 0x801A  # Bank00:0x000A - Map data table (5 bytes per map)
-		self.NPC_TABLE_OFFSET = 0xA3D0  # Bank00:0x23C0 - NPC mob pointer table
-		self.NPC_STAT_OFFSET = 0xA400   # Bank00:0x23F0 - NPC stat pointer table
+		self.MAP_TABLE_OFFSET = 0x801a  # Bank00:0x000a - Map data table (5 bytes per map)
+		self.NPC_TABLE_OFFSET = 0xa3d0  # Bank00:0x23c0 - NPC mob pointer table
+		self.NPC_STAT_OFFSET = 0xa400   # Bank00:0x23f0 - NPC stat pointer table
 
 		# Map IDs from Bank00.asm
 		# Map 0 = Unused, Map 1 = Overworld (special), Maps 2-23 = Interior locations
@@ -85,7 +85,7 @@ class DragonWarriorMapExtractor:
 		"""
 		Extract a single interior map.
 
-		Map data format (5 bytes per map in MapDatTbl at ROM 0x801A):
+		Map data format (5 bytes per map in MapDatTbl at ROM 0x801a):
 		- 2 bytes: Pointer to map data (little-endian, CPU address)
 		- 1 byte: Map width (columns)
 		- 1 byte: Map height (rows)
@@ -111,7 +111,7 @@ class DragonWarriorMapExtractor:
 		height = self.rom_data[table_offset + 3]
 		boundary = self.rom_data[table_offset + 4]
 
-		# Convert CPU pointer ($8000-$BFFF) to ROM offset
+		# Convert CPU pointer ($8000-$bfff) to ROM offset
 		map_data_ptr = (ptr_high << 8) | ptr_low
 
 		if map_data_ptr == 0:
@@ -123,8 +123,8 @@ class DragonWarriorMapExtractor:
 				"tiles": []
 			}
 
-		# Bank00 CPU range $8000-$BFFF maps to ROM 0x0010-0x4010
-		if 0x8000 <= map_data_ptr <= 0xBFFF:
+		# Bank00 CPU range $8000-$bfff maps to ROM 0x0010-0x4010
+		if 0x8000 <= map_data_ptr <= 0xbfff:
 			rom_offset = map_data_ptr - 0x8000 + 0x10
 		else:
 			return {
@@ -207,8 +207,8 @@ class DragonWarriorMapExtractor:
 		# Format varies - need to analyze Bank00 more carefully
 
 		# For now, extract raw NPC table data
-		npc_table_start = 0xA3D0
-		npc_table_end = 0xA400
+		npc_table_start = 0xa3d0
+		npc_table_end = 0xa400
 
 		offset = npc_table_start
 		npc_id = 0
@@ -226,8 +226,8 @@ class DragonWarriorMapExtractor:
 				offset += 3
 				continue
 
-			x = position & 0x0F
-			y = (position >> 4) & 0x0F
+			x = position & 0x0f
+			y = (position >> 4) & 0x0f
 
 			npcs.append({
 				"id": npc_id,
@@ -258,7 +258,7 @@ class DragonWarriorMapExtractor:
 
 		# Treasure chest data from Bank00
 		# Format needs verification from disassembly
-		chest_data_offset = 0xA100  # Approximate location
+		chest_data_offset = 0xa100  # Approximate location
 
 		# Known chest locations (from game knowledge):
 		known_chests = [

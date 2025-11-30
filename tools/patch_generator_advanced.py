@@ -232,8 +232,8 @@ class UPSPatchGenerator:
 	def generate(self, original: bytes, modified: bytes) -> bytes:
 		"""Generate UPS patch with CRC validation."""
 		# Calculate CRCs
-		input_crc = zlib.crc32(original) & 0xFFFFFFFF
-		output_crc = zlib.crc32(modified) & 0xFFFFFFFF
+		input_crc = zlib.crc32(original) & 0xffffffff
+		output_crc = zlib.crc32(modified) & 0xffffffff
 
 		# Build patch data
 		patch_data = bytearray()
@@ -265,7 +265,7 @@ class UPSPatchGenerator:
 		patch_data.extend(struct.pack('<I', output_crc))
 
 		# Patch CRC (excluding last 4 bytes)
-		patch_crc = zlib.crc32(patch_data) & 0xFFFFFFFF
+		patch_crc = zlib.crc32(patch_data) & 0xffffffff
 		patch_data.extend(struct.pack('<I', patch_crc))
 
 		return bytes(patch_data)
@@ -286,7 +286,7 @@ class UPSPatchGenerator:
 
 		# Validate input CRC (read from end of patch)
 		input_crc_stored = struct.unpack('<I', patch_data[-12:-8])[0]
-		input_crc_actual = zlib.crc32(original) & 0xFFFFFFFF
+		input_crc_actual = zlib.crc32(original) & 0xffffffff
 
 		if input_crc_actual != input_crc_stored:
 			raise ValueError(f"Input ROM CRC mismatch: {input_crc_actual:08X} != {input_crc_stored:08X}")
@@ -315,7 +315,7 @@ class UPSPatchGenerator:
 
 		# Validate output
 		output_crc_stored = struct.unpack('<I', patch_data[-8:-4])[0]
-		output_crc_actual = zlib.crc32(result) & 0xFFFFFFFF
+		output_crc_actual = zlib.crc32(result) & 0xffffffff
 
 		if output_crc_actual != output_crc_stored:
 			raise ValueError(f"Output ROM CRC mismatch: {output_crc_actual:08X} != {output_crc_stored:08X}")
@@ -328,7 +328,7 @@ class UPSPatchGenerator:
 		done = False
 
 		while not done:
-			byte = value & 0x7F
+			byte = value & 0x7f
 			value >>= 7
 
 			if value == 0:
@@ -349,7 +349,7 @@ class UPSPatchGenerator:
 			byte = data[offset + bytes_read]
 			bytes_read += 1
 
-			value |= (byte & 0x7F) << shift
+			value |= (byte & 0x7f) << shift
 			shift += 7
 
 			if byte & 0x80:  # High bit set = last byte
@@ -392,9 +392,9 @@ class BPSPatchGenerator:
 		patch.extend(delta)
 
 		# CRCs
-		patch.extend(struct.pack('<I', zlib.crc32(original) & 0xFFFFFFFF))
-		patch.extend(struct.pack('<I', zlib.crc32(modified) & 0xFFFFFFFF))
-		patch.extend(struct.pack('<I', zlib.crc32(patch) & 0xFFFFFFFF))
+		patch.extend(struct.pack('<I', zlib.crc32(original) & 0xffffffff))
+		patch.extend(struct.pack('<I', zlib.crc32(modified) & 0xffffffff))
+		patch.extend(struct.pack('<I', zlib.crc32(patch) & 0xffffffff))
 
 		return bytes(patch)
 
@@ -468,7 +468,7 @@ class BPSPatchGenerator:
 		"""Encode number in BPS variable-length format."""
 		result = bytearray()
 		while True:
-			byte = value & 0x7F
+			byte = value & 0x7f
 			value >>= 7
 			if value == 0:
 				result.append(byte | 0x80)
@@ -507,8 +507,8 @@ class PatchPackager:
 			version=version,
 			description=description,
 			date_created=datetime.now().strftime("%Y-%m-%d"),
-			original_rom_crc32=zlib.crc32(original) & 0xFFFFFFFF,
-			modified_rom_crc32=zlib.crc32(modified) & 0xFFFFFFFF,
+			original_rom_crc32=zlib.crc32(original) & 0xffffffff,
+			modified_rom_crc32=zlib.crc32(modified) & 0xffffffff,
 			patch_size=patch_size,
 			changes_count=changes_count,
 			tags=tags or []
@@ -679,7 +679,7 @@ class AdvancedPatchGenerator:
 
 			print(f"✓ Patch validation successful!")
 			print(f"  Output size: {len(result):,} bytes")
-			print(f"  Output CRC32: {zlib.crc32(result) & 0xFFFFFFFF:08X}")
+			print(f"  Output CRC32: {zlib.crc32(result) & 0xffffffff:08X}")
 
 			return True
 

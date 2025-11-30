@@ -184,7 +184,7 @@ class TestSaveEditor(unittest.TestCase):
 
 		# Should have best equipment
 		self.assertEqual(save.equipment['weapon'], 0x07)  # Erdrick's Sword
-		self.assertEqual(save.equipment['armor'], 0x0E)   # Erdrick's Armor
+		self.assertEqual(save.equipment['armor'], 0x0e)   # Erdrick's Armor
 
 		# Should have all spells
 		self.assertEqual(len(save.spells_learned), 10)

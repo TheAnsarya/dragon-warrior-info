@@ -27,10 +27,10 @@ Features:
 
 Dragon Warrior Enemy Data:
 - Enemy Count: 39 enemies
-- Base Stats: 0x5E9D-0x604C
-- Spell Usage: 0x604D-0x611C
-- Enemy Groups: 0x611D-0x61CC
-- Encounter Rates: 0x61CD-0x625C
+- Base Stats: 0x5e9d-0x604c
+- Spell Usage: 0x604d-0x611c
+- Enemy Groups: 0x611d-0x61cc
+- Encounter Rates: 0x61cd-0x625c
 
 Battle Formulas:
 - Damage: Random(0-255) * Strength / Enemy Defense / 2
@@ -183,10 +183,10 @@ class EnemyDataLoader:
 	"""Load enemy data from ROM."""
 
 	# ROM offsets
-	ENEMY_STATS_OFFSET = 0x5E9D
-	ENEMY_SPELL_OFFSET = 0x604D
-	ENEMY_GROUP_OFFSET = 0x611D
-	ENCOUNTER_RATE_OFFSET = 0x61CD
+	ENEMY_STATS_OFFSET = 0x5e9d
+	ENEMY_SPELL_OFFSET = 0x604d
+	ENEMY_GROUP_OFFSET = 0x611d
+	ENCOUNTER_RATE_OFFSET = 0x61cd
 
 	@staticmethod
 	def load_enemy_stats(rom_data: bytes, enemy_id: int) -> EnemyStats:
@@ -242,7 +242,7 @@ class EnemyDataLoader:
 		# P = Probability (5 bits, 0-31 = 0%-100%)
 
 		spell_id = (spell_byte >> 5) & 0x07
-		probability = (spell_byte & 0x1F) / 31.0
+		probability = (spell_byte & 0x1f) / 31.0
 
 		spell = EnemySpell(spell_id) if spell_id < 6 else EnemySpell.NONE
 

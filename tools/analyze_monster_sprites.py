@@ -33,45 +33,45 @@ MONSTER_NAMES = [
 # Sprite pointer table from Bank01.asm (L99E4-L9A30)
 # Format: (monster_id, sprite_name, rom_address, shared_with_bank)
 SPRITE_POINTER_TABLE = [
-	(0, "SlimeSprts", 0x1B0E, False),     # Slime
-	(1, "SlimeSprts", 0x1B0E, False),     # Red Slime (shares with Slime)
-	(2, "DrakeeSprts", 0x1AC4, False),    # Drakee
-	(3, "GhstSprts", 0x1BAA, False),      # Ghost
-	(4, "MagSprts", 0x1B30, False),       # Magician
-	(5, "DrakeeSprts", 0x1AC4, False),    # Magidrakee (shares with Drakee)
-	(6, "ScorpSprts", 0x1CD1, False),     # Scorpion
-	(7, "DruinSprts", 0x1AE0, False),     # Druin
-	(8, "GhstSprts", 0x1BAA, False),      # Poltergeist (shares with Ghost)
-	(9, "DrollSprts", 0x1A87, False),     # Droll
-	(10, "DrakeeSprts", 0x1AC4, False),   # Drakeema (shares with Drakee)
-	(11, "SkelSprts", 0x9A3E, True),      # Skeleton (bank 0)
-	(12, "WizSprts", 0x1B24, False),      # Warlock
-	(13, "ScorpSprts", 0x9CD1, True),     # Metal Scorpion (bank 0, shares sprite with Scorpion)
-	(14, "WolfSprts", 0x1C15, False),     # Wolf
-	(15, "SkelSprts", 0x1A3E, False),     # Wraith (shares with Skeleton)
-	(16, "SlimeSprts", 0x1B0E, False),    # Metal Slime (shares with Slime)
-	(17, "GhstSprts", 0x9BAA, True),      # Specter (bank 0, shares sprite with Ghost)
-	(18, "WolfSprts", 0x9C15, True),      # Wolflord (bank 0, shares sprite with Wolf)
-	(19, "DruinSprts", 0x9AE0, True),     # Druinlord (bank 0, shares sprite with Druin)
-	(20, "DrollSprts", 0x1A87, False),    # Drollmagi (shares with Droll)
-	(21, "WyvrnSprts", 0x1BD5, False),    # Wyvern
-	(22, "ScorpSprts", 0x1CD1, False),    # Rouge Scorpion (shares with Scorpion)
-	(23, "DKnightSprts", 0x9A32, True),   # Wraith Knight (bank 0)
-	(24, "GolemSprts", 0x9C70, True),     # Golem (bank 0)
-	(25, "GolemSprts", 0x1C70, False),    # Goldman (shares with Golem)
-	(26, "KntSprts", 0x1D20, False),      # Knight
-	(27, "WyvrnSprts", 0x9BD5, True),     # Magiwyvern (bank 0, shares sprite with Wyvern)
-	(28, "DKnightSprts", 0x9A32, True),   # Demon Knight (bank 0, shares with Wraith Knight)
-	(29, "WolfSprts", 0x1C15, False),     # Werewolf (shares with Wolf)
-	(30, "DgnSprts", 0x1D81, False),      # Green Dragon
-	(31, "WyvrnSprts", 0x1BD5, False),    # Starwyvern (shares with Wyvern)
-	(32, "WizSprts", 0x9B24, True),       # Wizard (bank 0, shares sprite with Warlock)
-	(33, "AxKntSprts", 0x9D0E, True),     # Axe Knight (bank 0)
-	(34, "RBDgnSprts", 0x1D7B, False),    # Blue Dragon
-	(35, "GolemSprts", 0x1C70, False),    # Stoneman (shares with Golem)
-	(36, "ArKntSprts", 0x1D02, False),    # Armored Knight
-	(37, "RBDgnSprts", 0x1D7B, False),    # Red Dragon (shares with Blue Dragon)
-	(38, "DgLdSprts", 0x1B67, False),     # Dragonlord Form 1
+	(0, "SlimeSprts", 0x1b0e, False),     # Slime
+	(1, "SlimeSprts", 0x1b0e, False),     # Red Slime (shares with Slime)
+	(2, "DrakeeSprts", 0x1ac4, False),    # Drakee
+	(3, "GhstSprts", 0x1baa, False),      # Ghost
+	(4, "MagSprts", 0x1b30, False),       # Magician
+	(5, "DrakeeSprts", 0x1ac4, False),    # Magidrakee (shares with Drakee)
+	(6, "ScorpSprts", 0x1cd1, False),     # Scorpion
+	(7, "DruinSprts", 0x1ae0, False),     # Druin
+	(8, "GhstSprts", 0x1baa, False),      # Poltergeist (shares with Ghost)
+	(9, "DrollSprts", 0x1a87, False),     # Droll
+	(10, "DrakeeSprts", 0x1ac4, False),   # Drakeema (shares with Drakee)
+	(11, "SkelSprts", 0x9a3e, True),      # Skeleton (bank 0)
+	(12, "WizSprts", 0x1b24, False),      # Warlock
+	(13, "ScorpSprts", 0x9cd1, True),     # Metal Scorpion (bank 0, shares sprite with Scorpion)
+	(14, "WolfSprts", 0x1c15, False),     # Wolf
+	(15, "SkelSprts", 0x1a3e, False),     # Wraith (shares with Skeleton)
+	(16, "SlimeSprts", 0x1b0e, False),    # Metal Slime (shares with Slime)
+	(17, "GhstSprts", 0x9baa, True),      # Specter (bank 0, shares sprite with Ghost)
+	(18, "WolfSprts", 0x9c15, True),      # Wolflord (bank 0, shares sprite with Wolf)
+	(19, "DruinSprts", 0x9ae0, True),     # Druinlord (bank 0, shares sprite with Druin)
+	(20, "DrollSprts", 0x1a87, False),    # Drollmagi (shares with Droll)
+	(21, "WyvrnSprts", 0x1bd5, False),    # Wyvern
+	(22, "ScorpSprts", 0x1cd1, False),    # Rouge Scorpion (shares with Scorpion)
+	(23, "DKnightSprts", 0x9a32, True),   # Wraith Knight (bank 0)
+	(24, "GolemSprts", 0x9c70, True),     # Golem (bank 0)
+	(25, "GolemSprts", 0x1c70, False),    # Goldman (shares with Golem)
+	(26, "KntSprts", 0x1d20, False),      # Knight
+	(27, "WyvrnSprts", 0x9bd5, True),     # Magiwyvern (bank 0, shares sprite with Wyvern)
+	(28, "DKnightSprts", 0x9a32, True),   # Demon Knight (bank 0, shares with Wraith Knight)
+	(29, "WolfSprts", 0x1c15, False),     # Werewolf (shares with Wolf)
+	(30, "DgnSprts", 0x1d81, False),      # Green Dragon
+	(31, "WyvrnSprts", 0x1bd5, False),    # Starwyvern (shares with Wyvern)
+	(32, "WizSprts", 0x9b24, True),       # Wizard (bank 0, shares sprite with Warlock)
+	(33, "AxKntSprts", 0x9d0e, True),     # Axe Knight (bank 0)
+	(34, "RBDgnSprts", 0x1d7b, False),    # Blue Dragon
+	(35, "GolemSprts", 0x1c70, False),    # Stoneman (shares with Golem)
+	(36, "ArKntSprts", 0x1d02, False),    # Armored Knight
+	(37, "RBDgnSprts", 0x1d7b, False),    # Red Dragon (shares with Blue Dragon)
+	(38, "DgLdSprts", 0x1b67, False),     # Dragonlord Form 1
 ]
 
 # Actual tile counts per sprite definition (counted from Bank01.asm)

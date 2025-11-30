@@ -27,16 +27,16 @@ class ExtractionVerifier:
 		self.verified = 0
 
 	def verify_monster_stats(self, extracted_json: str) -> bool:
-		"""Verify monster stats match ROM data at Bank01:0x9E4B"""
+		"""Verify monster stats match ROM data at Bank01:0x9e4b"""
 		print("\n=== Verifying Monster Stats ===")
 
 		with open(extracted_json, 'r') as f:
 			monsters = json.load(f)
 
-		# Monster stats start at Bank01:0x9E4B (CPU address)
-		# File offset = 0x10 (header) + 0x4000 (Bank00) + (0x9E4B - 0x8000)
-		# = 0x10 + 0x4000 + 0x1E4B = 0x5E5B
-		stats_offset = 0x5E5B  # Corrected file offset for monster stats table
+		# Monster stats start at Bank01:0x9e4b (CPU address)
+		# File offset = 0x10 (header) + 0x4000 (Bank00) + (0x9e4b - 0x8000)
+		# = 0x10 + 0x4000 + 0x1e4b = 0x5e5b
+		stats_offset = 0x5e5b  # Corrected file offset for monster stats table
 
 		monster_count = 39  # Total monsters including both Dragonlord forms
 		errors_found = 0
@@ -95,15 +95,15 @@ class ExtractionVerifier:
 		with open(sprite_db_json, 'r') as f:
 			sprites = json.load(f)
 
-		# Sprite pointer table at Bank01:0x99E4 (file offset 0x59F4)
-		sprite_ptr_offset = 0x59F4
+		# Sprite pointer table at Bank01:0x99e4 (file offset 0x59f4)
+		sprite_ptr_offset = 0x59f4
 
 		# Known sprite data locations from disassembly
 		sprite_locations = {
-			0: ("SlimeSprts", 0x5B0E),     # Slime at Bank01:0x1B0E
-			1: ("SlimeSprts", 0x5B0E),     # Red Slime (same as Slime)
-			2: ("DrakeeSprts", 0x5AC4),    # Drakee at Bank01:0x1AC4
-			3: ("GhstSprts", 0x5BAA),      # Ghost at Bank01:0x1BAA
+			0: ("SlimeSprts", 0x5b0e),     # Slime at Bank01:0x1b0e
+			1: ("SlimeSprts", 0x5b0e),     # Red Slime (same as Slime)
+			2: ("DrakeeSprts", 0x5ac4),    # Drakee at Bank01:0x1ac4
+			3: ("GhstSprts", 0x5baa),      # Ghost at Bank01:0x1baa
 			# Add more as needed
 		}
 
@@ -120,7 +120,7 @@ class ExtractionVerifier:
 			ptr_high = self.rom_data[ptr_offset + 1]
 			ptr_value = ptr_low | (ptr_high << 8)
 
-			# Adjust for bank (Bank01 = 0x4000-0x7FFF in CPU space, starts at 0x4010 in file)
+			# Adjust for bank (Bank01 = 0x4000-0x7fff in CPU space, starts at 0x4010 in file)
 			# Sprite pointers have 0x8000 subtracted and MSB indicates mirroring
 
 			sprite_tiles = sprite.get('sprite_tiles', 0)

@@ -28,7 +28,7 @@ Examples:
 	python tools/debug_toolkit.py roms/dragon_warrior.nes --disasm 0x8000 0x8100
 
 	# Track value changes
-	python tools/debug_toolkit.py roms/dragon_warrior.nes --track 0x5E5B --bytes 16
+	python tools/debug_toolkit.py roms/dragon_warrior.nes --track 0x5e5b --bytes 16
 
 	# Generate cheat codes
 	python tools/debug_toolkit.py roms/dragon_warrior.nes --cheats
@@ -94,9 +94,9 @@ class Disassembler6502:
 		0x06: ("ASL", AddressingMode.ZERO_PAGE, 2, 5),
 		0x08: ("PHP", AddressingMode.IMPLICIT, 1, 3),
 		0x09: ("ORA", AddressingMode.IMMEDIATE, 2, 2),
-		0x0A: ("ASL", AddressingMode.ACCUMULATOR, 1, 2),
-		0x0D: ("ORA", AddressingMode.ABSOLUTE, 3, 4),
-		0x0E: ("ASL", AddressingMode.ABSOLUTE, 3, 6),
+		0x0a: ("ASL", AddressingMode.ACCUMULATOR, 1, 2),
+		0x0d: ("ORA", AddressingMode.ABSOLUTE, 3, 4),
+		0x0e: ("ASL", AddressingMode.ABSOLUTE, 3, 6),
 
 		0x10: ("BPL", AddressingMode.RELATIVE, 2, 2),
 		0x11: ("ORA", AddressingMode.INDIRECT_INDEXED, 2, 5),
@@ -104,8 +104,8 @@ class Disassembler6502:
 		0x16: ("ASL", AddressingMode.ZERO_PAGE_X, 2, 6),
 		0x18: ("CLC", AddressingMode.IMPLICIT, 1, 2),
 		0x19: ("ORA", AddressingMode.ABSOLUTE_Y, 3, 4),
-		0x1D: ("ORA", AddressingMode.ABSOLUTE_X, 3, 4),
-		0x1E: ("ASL", AddressingMode.ABSOLUTE_X, 3, 7),
+		0x1d: ("ORA", AddressingMode.ABSOLUTE_X, 3, 4),
+		0x1e: ("ASL", AddressingMode.ABSOLUTE_X, 3, 7),
 
 		0x20: ("JSR", AddressingMode.ABSOLUTE, 3, 6),
 		0x21: ("AND", AddressingMode.INDEXED_INDIRECT, 2, 6),
@@ -114,10 +114,10 @@ class Disassembler6502:
 		0x26: ("ROL", AddressingMode.ZERO_PAGE, 2, 5),
 		0x28: ("PLP", AddressingMode.IMPLICIT, 1, 4),
 		0x29: ("AND", AddressingMode.IMMEDIATE, 2, 2),
-		0x2A: ("ROL", AddressingMode.ACCUMULATOR, 1, 2),
-		0x2C: ("BIT", AddressingMode.ABSOLUTE, 3, 4),
-		0x2D: ("AND", AddressingMode.ABSOLUTE, 3, 4),
-		0x2E: ("ROL", AddressingMode.ABSOLUTE, 3, 6),
+		0x2a: ("ROL", AddressingMode.ACCUMULATOR, 1, 2),
+		0x2c: ("BIT", AddressingMode.ABSOLUTE, 3, 4),
+		0x2d: ("AND", AddressingMode.ABSOLUTE, 3, 4),
+		0x2e: ("ROL", AddressingMode.ABSOLUTE, 3, 6),
 
 		0x30: ("BMI", AddressingMode.RELATIVE, 2, 2),
 		0x31: ("AND", AddressingMode.INDIRECT_INDEXED, 2, 5),
@@ -125,8 +125,8 @@ class Disassembler6502:
 		0x36: ("ROL", AddressingMode.ZERO_PAGE_X, 2, 6),
 		0x38: ("SEC", AddressingMode.IMPLICIT, 1, 2),
 		0x39: ("AND", AddressingMode.ABSOLUTE_Y, 3, 4),
-		0x3D: ("AND", AddressingMode.ABSOLUTE_X, 3, 4),
-		0x3E: ("ROL", AddressingMode.ABSOLUTE_X, 3, 7),
+		0x3d: ("AND", AddressingMode.ABSOLUTE_X, 3, 4),
+		0x3e: ("ROL", AddressingMode.ABSOLUTE_X, 3, 7),
 
 		0x40: ("RTI", AddressingMode.IMPLICIT, 1, 6),
 		0x41: ("EOR", AddressingMode.INDEXED_INDIRECT, 2, 6),
@@ -134,10 +134,10 @@ class Disassembler6502:
 		0x46: ("LSR", AddressingMode.ZERO_PAGE, 2, 5),
 		0x48: ("PHA", AddressingMode.IMPLICIT, 1, 3),
 		0x49: ("EOR", AddressingMode.IMMEDIATE, 2, 2),
-		0x4A: ("LSR", AddressingMode.ACCUMULATOR, 1, 2),
-		0x4C: ("JMP", AddressingMode.ABSOLUTE, 3, 3),
-		0x4D: ("EOR", AddressingMode.ABSOLUTE, 3, 4),
-		0x4E: ("LSR", AddressingMode.ABSOLUTE, 3, 6),
+		0x4a: ("LSR", AddressingMode.ACCUMULATOR, 1, 2),
+		0x4c: ("JMP", AddressingMode.ABSOLUTE, 3, 3),
+		0x4d: ("EOR", AddressingMode.ABSOLUTE, 3, 4),
+		0x4e: ("LSR", AddressingMode.ABSOLUTE, 3, 6),
 
 		0x50: ("BVC", AddressingMode.RELATIVE, 2, 2),
 		0x51: ("EOR", AddressingMode.INDIRECT_INDEXED, 2, 5),
@@ -145,8 +145,8 @@ class Disassembler6502:
 		0x56: ("LSR", AddressingMode.ZERO_PAGE_X, 2, 6),
 		0x58: ("CLI", AddressingMode.IMPLICIT, 1, 2),
 		0x59: ("EOR", AddressingMode.ABSOLUTE_Y, 3, 4),
-		0x5D: ("EOR", AddressingMode.ABSOLUTE_X, 3, 4),
-		0x5E: ("LSR", AddressingMode.ABSOLUTE_X, 3, 7),
+		0x5d: ("EOR", AddressingMode.ABSOLUTE_X, 3, 4),
+		0x5e: ("LSR", AddressingMode.ABSOLUTE_X, 3, 7),
 
 		0x60: ("RTS", AddressingMode.IMPLICIT, 1, 6),
 		0x61: ("ADC", AddressingMode.INDEXED_INDIRECT, 2, 6),
@@ -154,10 +154,10 @@ class Disassembler6502:
 		0x66: ("ROR", AddressingMode.ZERO_PAGE, 2, 5),
 		0x68: ("PLA", AddressingMode.IMPLICIT, 1, 4),
 		0x69: ("ADC", AddressingMode.IMMEDIATE, 2, 2),
-		0x6A: ("ROR", AddressingMode.ACCUMULATOR, 1, 2),
-		0x6C: ("JMP", AddressingMode.INDIRECT, 3, 5),
-		0x6D: ("ADC", AddressingMode.ABSOLUTE, 3, 4),
-		0x6E: ("ROR", AddressingMode.ABSOLUTE, 3, 6),
+		0x6a: ("ROR", AddressingMode.ACCUMULATOR, 1, 2),
+		0x6c: ("JMP", AddressingMode.INDIRECT, 3, 5),
+		0x6d: ("ADC", AddressingMode.ABSOLUTE, 3, 4),
+		0x6e: ("ROR", AddressingMode.ABSOLUTE, 3, 6),
 
 		0x70: ("BVS", AddressingMode.RELATIVE, 2, 2),
 		0x71: ("ADC", AddressingMode.INDIRECT_INDEXED, 2, 5),
@@ -165,18 +165,18 @@ class Disassembler6502:
 		0x76: ("ROR", AddressingMode.ZERO_PAGE_X, 2, 6),
 		0x78: ("SEI", AddressingMode.IMPLICIT, 1, 2),
 		0x79: ("ADC", AddressingMode.ABSOLUTE_Y, 3, 4),
-		0x7D: ("ADC", AddressingMode.ABSOLUTE_X, 3, 4),
-		0x7E: ("ROR", AddressingMode.ABSOLUTE_X, 3, 7),
+		0x7d: ("ADC", AddressingMode.ABSOLUTE_X, 3, 4),
+		0x7e: ("ROR", AddressingMode.ABSOLUTE_X, 3, 7),
 
 		0x81: ("STA", AddressingMode.INDEXED_INDIRECT, 2, 6),
 		0x84: ("STY", AddressingMode.ZERO_PAGE, 2, 3),
 		0x85: ("STA", AddressingMode.ZERO_PAGE, 2, 3),
 		0x86: ("STX", AddressingMode.ZERO_PAGE, 2, 3),
 		0x88: ("DEY", AddressingMode.IMPLICIT, 1, 2),
-		0x8A: ("TXA", AddressingMode.IMPLICIT, 1, 2),
-		0x8C: ("STY", AddressingMode.ABSOLUTE, 3, 4),
-		0x8D: ("STA", AddressingMode.ABSOLUTE, 3, 4),
-		0x8E: ("STX", AddressingMode.ABSOLUTE, 3, 4),
+		0x8a: ("TXA", AddressingMode.IMPLICIT, 1, 2),
+		0x8c: ("STY", AddressingMode.ABSOLUTE, 3, 4),
+		0x8d: ("STA", AddressingMode.ABSOLUTE, 3, 4),
+		0x8e: ("STX", AddressingMode.ABSOLUTE, 3, 4),
 
 		0x90: ("BCC", AddressingMode.RELATIVE, 2, 2),
 		0x91: ("STA", AddressingMode.INDIRECT_INDEXED, 2, 6),
@@ -185,75 +185,75 @@ class Disassembler6502:
 		0x96: ("STX", AddressingMode.ZERO_PAGE_Y, 2, 4),
 		0x98: ("TYA", AddressingMode.IMPLICIT, 1, 2),
 		0x99: ("STA", AddressingMode.ABSOLUTE_Y, 3, 5),
-		0x9A: ("TXS", AddressingMode.IMPLICIT, 1, 2),
-		0x9D: ("STA", AddressingMode.ABSOLUTE_X, 3, 5),
+		0x9a: ("TXS", AddressingMode.IMPLICIT, 1, 2),
+		0x9d: ("STA", AddressingMode.ABSOLUTE_X, 3, 5),
 
-		0xA0: ("LDY", AddressingMode.IMMEDIATE, 2, 2),
-		0xA1: ("LDA", AddressingMode.INDEXED_INDIRECT, 2, 6),
-		0xA2: ("LDX", AddressingMode.IMMEDIATE, 2, 2),
-		0xA4: ("LDY", AddressingMode.ZERO_PAGE, 2, 3),
-		0xA5: ("LDA", AddressingMode.ZERO_PAGE, 2, 3),
-		0xA6: ("LDX", AddressingMode.ZERO_PAGE, 2, 3),
-		0xA8: ("TAY", AddressingMode.IMPLICIT, 1, 2),
-		0xA9: ("LDA", AddressingMode.IMMEDIATE, 2, 2),
-		0xAA: ("TAX", AddressingMode.IMPLICIT, 1, 2),
-		0xAC: ("LDY", AddressingMode.ABSOLUTE, 3, 4),
-		0xAD: ("LDA", AddressingMode.ABSOLUTE, 3, 4),
-		0xAE: ("LDX", AddressingMode.ABSOLUTE, 3, 4),
+		0xa0: ("LDY", AddressingMode.IMMEDIATE, 2, 2),
+		0xa1: ("LDA", AddressingMode.INDEXED_INDIRECT, 2, 6),
+		0xa2: ("LDX", AddressingMode.IMMEDIATE, 2, 2),
+		0xa4: ("LDY", AddressingMode.ZERO_PAGE, 2, 3),
+		0xa5: ("LDA", AddressingMode.ZERO_PAGE, 2, 3),
+		0xa6: ("LDX", AddressingMode.ZERO_PAGE, 2, 3),
+		0xa8: ("TAY", AddressingMode.IMPLICIT, 1, 2),
+		0xa9: ("LDA", AddressingMode.IMMEDIATE, 2, 2),
+		0xaa: ("TAX", AddressingMode.IMPLICIT, 1, 2),
+		0xac: ("LDY", AddressingMode.ABSOLUTE, 3, 4),
+		0xad: ("LDA", AddressingMode.ABSOLUTE, 3, 4),
+		0xae: ("LDX", AddressingMode.ABSOLUTE, 3, 4),
 
-		0xB0: ("BCS", AddressingMode.RELATIVE, 2, 2),
-		0xB1: ("LDA", AddressingMode.INDIRECT_INDEXED, 2, 5),
-		0xB4: ("LDY", AddressingMode.ZERO_PAGE_X, 2, 4),
-		0xB5: ("LDA", AddressingMode.ZERO_PAGE_X, 2, 4),
-		0xB6: ("LDX", AddressingMode.ZERO_PAGE_Y, 2, 4),
-		0xB8: ("CLV", AddressingMode.IMPLICIT, 1, 2),
-		0xB9: ("LDA", AddressingMode.ABSOLUTE_Y, 3, 4),
-		0xBA: ("TSX", AddressingMode.IMPLICIT, 1, 2),
-		0xBC: ("LDY", AddressingMode.ABSOLUTE_X, 3, 4),
-		0xBD: ("LDA", AddressingMode.ABSOLUTE_X, 3, 4),
-		0xBE: ("LDX", AddressingMode.ABSOLUTE_Y, 3, 4),
+		0xb0: ("BCS", AddressingMode.RELATIVE, 2, 2),
+		0xb1: ("LDA", AddressingMode.INDIRECT_INDEXED, 2, 5),
+		0xb4: ("LDY", AddressingMode.ZERO_PAGE_X, 2, 4),
+		0xb5: ("LDA", AddressingMode.ZERO_PAGE_X, 2, 4),
+		0xb6: ("LDX", AddressingMode.ZERO_PAGE_Y, 2, 4),
+		0xb8: ("CLV", AddressingMode.IMPLICIT, 1, 2),
+		0xb9: ("LDA", AddressingMode.ABSOLUTE_Y, 3, 4),
+		0xba: ("TSX", AddressingMode.IMPLICIT, 1, 2),
+		0xbc: ("LDY", AddressingMode.ABSOLUTE_X, 3, 4),
+		0xbd: ("LDA", AddressingMode.ABSOLUTE_X, 3, 4),
+		0xbe: ("LDX", AddressingMode.ABSOLUTE_Y, 3, 4),
 
-		0xC0: ("CPY", AddressingMode.IMMEDIATE, 2, 2),
-		0xC1: ("CMP", AddressingMode.INDEXED_INDIRECT, 2, 6),
-		0xC4: ("CPY", AddressingMode.ZERO_PAGE, 2, 3),
-		0xC5: ("CMP", AddressingMode.ZERO_PAGE, 2, 3),
-		0xC6: ("DEC", AddressingMode.ZERO_PAGE, 2, 5),
-		0xC8: ("INY", AddressingMode.IMPLICIT, 1, 2),
-		0xC9: ("CMP", AddressingMode.IMMEDIATE, 2, 2),
-		0xCA: ("DEX", AddressingMode.IMPLICIT, 1, 2),
-		0xCC: ("CPY", AddressingMode.ABSOLUTE, 3, 4),
-		0xCD: ("CMP", AddressingMode.ABSOLUTE, 3, 4),
-		0xCE: ("DEC", AddressingMode.ABSOLUTE, 3, 6),
+		0xc0: ("CPY", AddressingMode.IMMEDIATE, 2, 2),
+		0xc1: ("CMP", AddressingMode.INDEXED_INDIRECT, 2, 6),
+		0xc4: ("CPY", AddressingMode.ZERO_PAGE, 2, 3),
+		0xc5: ("CMP", AddressingMode.ZERO_PAGE, 2, 3),
+		0xc6: ("DEC", AddressingMode.ZERO_PAGE, 2, 5),
+		0xc8: ("INY", AddressingMode.IMPLICIT, 1, 2),
+		0xc9: ("CMP", AddressingMode.IMMEDIATE, 2, 2),
+		0xca: ("DEX", AddressingMode.IMPLICIT, 1, 2),
+		0xcc: ("CPY", AddressingMode.ABSOLUTE, 3, 4),
+		0xcd: ("CMP", AddressingMode.ABSOLUTE, 3, 4),
+		0xce: ("DEC", AddressingMode.ABSOLUTE, 3, 6),
 
-		0xD0: ("BNE", AddressingMode.RELATIVE, 2, 2),
-		0xD1: ("CMP", AddressingMode.INDIRECT_INDEXED, 2, 5),
-		0xD5: ("CMP", AddressingMode.ZERO_PAGE_X, 2, 4),
-		0xD6: ("DEC", AddressingMode.ZERO_PAGE_X, 2, 6),
-		0xD8: ("CLD", AddressingMode.IMPLICIT, 1, 2),
-		0xD9: ("CMP", AddressingMode.ABSOLUTE_Y, 3, 4),
-		0xDD: ("CMP", AddressingMode.ABSOLUTE_X, 3, 4),
-		0xDE: ("DEC", AddressingMode.ABSOLUTE_X, 3, 7),
+		0xd0: ("BNE", AddressingMode.RELATIVE, 2, 2),
+		0xd1: ("CMP", AddressingMode.INDIRECT_INDEXED, 2, 5),
+		0xd5: ("CMP", AddressingMode.ZERO_PAGE_X, 2, 4),
+		0xd6: ("DEC", AddressingMode.ZERO_PAGE_X, 2, 6),
+		0xd8: ("CLD", AddressingMode.IMPLICIT, 1, 2),
+		0xd9: ("CMP", AddressingMode.ABSOLUTE_Y, 3, 4),
+		0xdd: ("CMP", AddressingMode.ABSOLUTE_X, 3, 4),
+		0xde: ("DEC", AddressingMode.ABSOLUTE_X, 3, 7),
 
-		0xE0: ("CPX", AddressingMode.IMMEDIATE, 2, 2),
-		0xE1: ("SBC", AddressingMode.INDEXED_INDIRECT, 2, 6),
-		0xE4: ("CPX", AddressingMode.ZERO_PAGE, 2, 3),
-		0xE5: ("SBC", AddressingMode.ZERO_PAGE, 2, 3),
-		0xE6: ("INC", AddressingMode.ZERO_PAGE, 2, 5),
-		0xE8: ("INX", AddressingMode.IMPLICIT, 1, 2),
-		0xE9: ("SBC", AddressingMode.IMMEDIATE, 2, 2),
-		0xEA: ("NOP", AddressingMode.IMPLICIT, 1, 2),
-		0xEC: ("CPX", AddressingMode.ABSOLUTE, 3, 4),
-		0xED: ("SBC", AddressingMode.ABSOLUTE, 3, 4),
-		0xEE: ("INC", AddressingMode.ABSOLUTE, 3, 6),
+		0xe0: ("CPX", AddressingMode.IMMEDIATE, 2, 2),
+		0xe1: ("SBC", AddressingMode.INDEXED_INDIRECT, 2, 6),
+		0xe4: ("CPX", AddressingMode.ZERO_PAGE, 2, 3),
+		0xe5: ("SBC", AddressingMode.ZERO_PAGE, 2, 3),
+		0xe6: ("INC", AddressingMode.ZERO_PAGE, 2, 5),
+		0xe8: ("INX", AddressingMode.IMPLICIT, 1, 2),
+		0xe9: ("SBC", AddressingMode.IMMEDIATE, 2, 2),
+		0xea: ("NOP", AddressingMode.IMPLICIT, 1, 2),
+		0xec: ("CPX", AddressingMode.ABSOLUTE, 3, 4),
+		0xed: ("SBC", AddressingMode.ABSOLUTE, 3, 4),
+		0xee: ("INC", AddressingMode.ABSOLUTE, 3, 6),
 
-		0xF0: ("BEQ", AddressingMode.RELATIVE, 2, 2),
-		0xF1: ("SBC", AddressingMode.INDIRECT_INDEXED, 2, 5),
-		0xF5: ("SBC", AddressingMode.ZERO_PAGE_X, 2, 4),
-		0xF6: ("INC", AddressingMode.ZERO_PAGE_X, 2, 6),
-		0xF8: ("SED", AddressingMode.IMPLICIT, 1, 2),
-		0xF9: ("SBC", AddressingMode.ABSOLUTE_Y, 3, 4),
-		0xFD: ("SBC", AddressingMode.ABSOLUTE_X, 3, 4),
-		0xFE: ("INC", AddressingMode.ABSOLUTE_X, 3, 7),
+		0xf0: ("BEQ", AddressingMode.RELATIVE, 2, 2),
+		0xf1: ("SBC", AddressingMode.INDIRECT_INDEXED, 2, 5),
+		0xf5: ("SBC", AddressingMode.ZERO_PAGE_X, 2, 4),
+		0xf6: ("INC", AddressingMode.ZERO_PAGE_X, 2, 6),
+		0xf8: ("SED", AddressingMode.IMPLICIT, 1, 2),
+		0xf9: ("SBC", AddressingMode.ABSOLUTE_Y, 3, 4),
+		0xfd: ("SBC", AddressingMode.ABSOLUTE_X, 3, 4),
+		0xfe: ("INC", AddressingMode.ABSOLUTE_X, 3, 7),
 	}
 
 	def __init__(self):
@@ -444,17 +444,17 @@ class CheatCodeGenerator:
 
 	# Dragon Warrior known addresses (RAM)
 	KNOWN_ADDRESSES = {
-		'hero_hp': 0x00C5,
-		'hero_mp': 0x00C6,
-		'hero_level': 0x00BA,
-		'hero_xp_low': 0x00BB,
-		'hero_xp_high': 0x00BC,
-		'hero_gold_low': 0x00BD,
-		'hero_gold_high': 0x00BE,
-		'hero_str': 0x00C7,
-		'hero_agi': 0x00C8,
-		'hero_atk': 0x00C9,
-		'hero_def': 0x00CA,
+		'hero_hp': 0x00c5,
+		'hero_mp': 0x00c6,
+		'hero_level': 0x00ba,
+		'hero_xp_low': 0x00bb,
+		'hero_xp_high': 0x00bc,
+		'hero_gold_low': 0x00bd,
+		'hero_gold_high': 0x00be,
+		'hero_str': 0x00c7,
+		'hero_agi': 0x00c8,
+		'hero_atk': 0x00c9,
+		'hero_def': 0x00ca,
 	}
 
 	@staticmethod
@@ -465,15 +465,15 @@ class CheatCodeGenerator:
 		code_chars = "APZLGITYEOXUKSVN"
 
 		# This is a simplified version - real encoding is more complex
-		addr_code = address & 0x7FFF
-		val_code = value & 0xFF
+		addr_code = address & 0x7fff
+		val_code = value & 0xff
 
 		# Create 6-letter code (simplified)
 		code = ""
 		temp = (addr_code << 8) | val_code
 
 		for i in range(6):
-			code += code_chars[temp & 0x0F]
+			code += code_chars[temp & 0x0f]
 			temp >>= 4
 
 		return code
@@ -509,12 +509,12 @@ class CheatCodeGenerator:
 		# Max Gold
 		cheats.append(self.generate_raw_cheat(
 			self.KNOWN_ADDRESSES['hero_gold_high'],
-			0xFF,
+			0xff,
 			"Max Gold (65535) - High Byte"
 		))
 		cheats.append(self.generate_raw_cheat(
 			self.KNOWN_ADDRESSES['hero_gold_low'],
-			0xFF,
+			0xff,
 			"Max Gold (65535) - Low Byte"
 		))
 

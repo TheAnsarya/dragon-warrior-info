@@ -65,20 +65,20 @@ class PaletteAnalyzer:
 	# Dragon Warrior palette definitions (from ROM)
 	DW_PALETTES = {
 		"background": {
-			0: [0x0F, 0x30, 0x27, 0x17],  # Default background
-			1: [0x0F, 0x30, 0x11, 0x21],  # Caves/dungeons
-			2: [0x0F, 0x30, 0x16, 0x26],  # Castle
-			3: [0x0F, 0x30, 0x12, 0x22],  # Town
+			0: [0x0f, 0x30, 0x27, 0x17],  # Default background
+			1: [0x0f, 0x30, 0x11, 0x21],  # Caves/dungeons
+			2: [0x0f, 0x30, 0x16, 0x26],  # Castle
+			3: [0x0f, 0x30, 0x12, 0x22],  # Town
 		},
 		"sprite": {
-			0: [0x0F, 0x30, 0x27, 0x17],  # Hero
-			1: [0x0F, 0x16, 0x27, 0x30],  # Monsters (green)
-			2: [0x0F, 0x12, 0x22, 0x30],  # Monsters (blue)
-			3: [0x0F, 0x06, 0x16, 0x26],  # Monsters (red)
-			4: [0x0F, 0x00, 0x10, 0x30],  # Monsters (gray)
-			5: [0x0F, 0x28, 0x18, 0x38],  # Monsters (yellow)
-			6: [0x0F, 0x02, 0x12, 0x22],  # Monsters (purple)
-			7: [0x0F, 0x14, 0x24, 0x34],  # Monsters (pink)
+			0: [0x0f, 0x30, 0x27, 0x17],  # Hero
+			1: [0x0f, 0x16, 0x27, 0x30],  # Monsters (green)
+			2: [0x0f, 0x12, 0x22, 0x30],  # Monsters (blue)
+			3: [0x0f, 0x06, 0x16, 0x26],  # Monsters (red)
+			4: [0x0f, 0x00, 0x10, 0x30],  # Monsters (gray)
+			5: [0x0f, 0x28, 0x18, 0x38],  # Monsters (yellow)
+			6: [0x0f, 0x02, 0x12, 0x22],  # Monsters (purple)
+			7: [0x0f, 0x14, 0x24, 0x34],  # Monsters (pink)
 		}
 	}
 
@@ -117,8 +117,8 @@ class PaletteAnalyzer:
 			return {}
 
 		# For Dragon Warrior, palettes are at specific addresses
-		# Background palettes: 0x1CDD0 - 0x1CDDF
-		# Sprite palettes: 0x1CDE0 - 0x1CDFF
+		# Background palettes: 0x1cdd0 - 0x1cddf
+		# Sprite palettes: 0x1cde0 - 0x1cdff
 
 		palettes = {
 			'background': [],
@@ -126,7 +126,7 @@ class PaletteAnalyzer:
 		}
 
 		# Extract background palettes (4 palettes × 4 bytes)
-		bg_offset = 0x1CDD0
+		bg_offset = 0x1cdd0
 		for i in range(4):
 			palette = []
 			for j in range(4):
@@ -134,7 +134,7 @@ class PaletteAnalyzer:
 			palettes['background'].append(palette)
 
 		# Extract sprite palettes (8 palettes × 4 bytes)
-		spr_offset = 0x1CDE0
+		spr_offset = 0x1cde0
 		for i in range(8):
 			palette = []
 			for j in range(4):
@@ -154,7 +154,7 @@ class PaletteAnalyzer:
 			Color name string
 		"""
 		color_names = {
-			0x0F: "Black",
+			0x0f: "Black",
 			0x00: "Dark Gray",
 			0x10: "Light Gray",
 			0x20: "Light Gray 2",

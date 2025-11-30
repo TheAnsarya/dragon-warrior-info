@@ -44,12 +44,12 @@ NES_PALETTE = [
 	(60, 24, 0),       # 0x07 - Dark orange
 	(32, 42, 0),       # 0x08 - Dark green
 	(8, 58, 0),        # 0x09 - Green
-	(0, 64, 0),        # 0x0A - Dark green
-	(0, 60, 0),        # 0x0B - Sea green
-	(0, 50, 60),       # 0x0C - Teal
-	(0, 0, 0),         # 0x0D - Black
-	(0, 0, 0),         # 0x0E - Black
-	(0, 0, 0),         # 0x0F - Black
+	(0, 64, 0),        # 0x0a - Dark green
+	(0, 60, 0),        # 0x0b - Sea green
+	(0, 50, 60),       # 0x0c - Teal
+	(0, 0, 0),         # 0x0d - Black
+	(0, 0, 0),         # 0x0e - Black
+	(0, 0, 0),         # 0x0f - Black
 	(152, 150, 152),   # 0x10 - Light gray
 	(8, 76, 196),      # 0x11 - Blue
 	(48, 50, 236),     # 0x12 - Light blue
@@ -60,12 +60,12 @@ NES_PALETTE = [
 	(120, 60, 0),      # 0x17 - Orange
 	(84, 90, 0),       # 0x18 - Yellow-green
 	(40, 114, 0),      # 0x19 - Green
-	(8, 124, 0),       # 0x1A - Light green
-	(0, 118, 40),      # 0x1B - Sea green
-	(0, 102, 120),     # 0x1C - Cyan
-	(0, 0, 0),         # 0x1D - Black
-	(0, 0, 0),         # 0x1E - Black
-	(0, 0, 0),         # 0x1F - Black
+	(8, 124, 0),       # 0x1a - Light green
+	(0, 118, 40),      # 0x1b - Sea green
+	(0, 102, 120),     # 0x1c - Cyan
+	(0, 0, 0),         # 0x1d - Black
+	(0, 0, 0),         # 0x1e - Black
+	(0, 0, 0),         # 0x1f - Black
 	(236, 238, 236),   # 0x20 - White
 	(76, 154, 236),    # 0x21 - Light blue
 	(120, 124, 236),   # 0x22 - Light purple
@@ -76,12 +76,12 @@ NES_PALETTE = [
 	(212, 136, 32),    # 0x27 - Orange
 	(160, 170, 0),     # 0x28 - Yellow
 	(116, 196, 0),     # 0x29 - Yellow-green
-	(76, 208, 32),     # 0x2A - Light green
-	(56, 204, 108),    # 0x2B - Green-cyan
-	(56, 180, 204),    # 0x2C - Cyan
-	(60, 60, 60),      # 0x2D - Dark gray
-	(0, 0, 0),         # 0x2E - Black
-	(0, 0, 0),         # 0x2F - Black
+	(76, 208, 32),     # 0x2a - Light green
+	(56, 204, 108),    # 0x2b - Green-cyan
+	(56, 180, 204),    # 0x2c - Cyan
+	(60, 60, 60),      # 0x2d - Dark gray
+	(0, 0, 0),         # 0x2e - Black
+	(0, 0, 0),         # 0x2f - Black
 	(236, 238, 236),   # 0x30 - White
 	(168, 204, 236),   # 0x31 - Pale blue
 	(188, 188, 236),   # 0x32 - Pale purple
@@ -92,12 +92,12 @@ NES_PALETTE = [
 	(228, 196, 144),   # 0x37 - Pale brown
 	(204, 210, 120),   # 0x38 - Pale yellow
 	(180, 222, 120),   # 0x39 - Pale green
-	(168, 226, 144),   # 0x3A - Pale sea green
-	(152, 226, 180),   # 0x3B - Pale cyan
-	(160, 214, 228),   # 0x3C - Pale blue-cyan
-	(160, 162, 160),   # 0x3D - Light gray
-	(0, 0, 0),         # 0x3E - Black
-	(0, 0, 0),         # 0x3F - Black
+	(168, 226, 144),   # 0x3a - Pale sea green
+	(152, 226, 180),   # 0x3b - Pale cyan
+	(160, 214, 228),   # 0x3c - Pale blue-cyan
+	(160, 162, 160),   # 0x3d - Light gray
+	(0, 0, 0),         # 0x3e - Black
+	(0, 0, 0),         # 0x3f - Black
 ]
 
 # Monster sprite families (from analyze_monster_sprites.py)

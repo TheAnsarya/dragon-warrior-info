@@ -5,7 +5,7 @@ Dragon Warrior ROM Space Analyzer
 Analyzes ROM for unused regions, compressible patterns, and optimization opportunities.
 
 Features:
-- Identify unused byte sequences (0x00 or 0xFF padding)
+- Identify unused byte sequences (0x00 or 0xff padding)
 - Find sparse data regions
 - Detect compressible patterns (RLE candidates)
 - Calculate potential space savings
@@ -36,13 +36,13 @@ DEFAULT_ROM = "roms/Dragon Warrior (U) (PRG1) [!].nes"
 # Known data regions in Dragon Warrior ROM
 ROM_REGIONS = {
 	'header': (0x0000, 0x0010, 'iNES Header'),
-	'prg_rom': (0x0010, 0xA010, 'PRG-ROM (40KB)'),
-	'chr_rom': (0xA010, 0x14010, 'CHR-ROM (16KB)'),
-	'monster_stats': (0x5E5B, 0x606A, 'Monster Statistics'),
-	'spell_data': (0x5F3B, 0x5F82, 'Spell Data'),
-	'item_data': (0x5F83, 0x6082, 'Item/Equipment Data'),
-	'map_data': (0x9000, 0x9FFF, 'Map Tile Data (estimated)'),
-	'text_data': (0x6400, 0x8FFF, 'Text/Dialog Data (estimated)'),
+	'prg_rom': (0x0010, 0xa010, 'PRG-ROM (40KB)'),
+	'chr_rom': (0xa010, 0x14010, 'CHR-ROM (16KB)'),
+	'monster_stats': (0x5e5b, 0x606a, 'Monster Statistics'),
+	'spell_data': (0x5f3b, 0x5f82, 'Spell Data'),
+	'item_data': (0x5f83, 0x6082, 'Item/Equipment Data'),
+	'map_data': (0x9000, 0x9fff, 'Map Tile Data (estimated)'),
+	'text_data': (0x6400, 0x8fff, 'Text/Dialog Data (estimated)'),
 }
 
 
@@ -85,7 +85,7 @@ class ROMSpaceAnalyzer:
 
 	def find_unused_regions(self, min_size: int = 16) -> List[Tuple[int, int, int]]:
 		"""
-		Find unused byte sequences (0x00 or 0xFF padding)
+		Find unused byte sequences (0x00 or 0xff padding)
 
 		Args:
 			min_size: Minimum size in bytes to report
@@ -100,7 +100,7 @@ class ROMSpaceAnalyzer:
 			byte_val = self.rom_data[i]
 
 			# Check if this is a padding byte
-			if byte_val in [0x00, 0xFF]:
+			if byte_val in [0x00, 0xff]:
 				start = i
 
 				# Count consecutive identical bytes

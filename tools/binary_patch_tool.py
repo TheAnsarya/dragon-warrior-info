@@ -129,7 +129,7 @@ class IPSPatcher:
 
 	MAGIC_HEADER = b'PATCH'
 	MAGIC_EOF = b'EOF'
-	MAX_RLE_SIZE = 0xFFFF
+	MAX_RLE_SIZE = 0xffff
 
 	@staticmethod
 	def create_patch(source: bytes, target: bytes) -> bytes:
@@ -157,7 +157,7 @@ class IPSPatcher:
 			start = i
 			diff_data = bytearray()
 
-			while i < max_size and len(diff_data) < 0xFFFF:
+			while i < max_size and len(diff_data) < 0xffff:
 				source_byte = source[i] if i < len(source) else 0x00
 				target_byte = target[i] if i < len(target) else 0x00
 
@@ -188,7 +188,7 @@ class IPSPatcher:
 		if len(target) < len(source):
 			# IPS truncation: offset EOF at file size
 			truncate_offset = len(target)
-			if truncate_offset <= 0xFFFFFF:
+			if truncate_offset <= 0xffffff:
 				patch.extend(IPSPatcher.MAGIC_EOF)
 				patch.extend(struct.pack('>I', truncate_offset)[1:])  # 3-byte size
 				return bytes(patch)
@@ -427,9 +427,9 @@ class BPSPatcher:
 				source_offset += diff_length
 
 		# Add checksums
-		source_crc = binascii.crc32(source) & 0xFFFFFFFF
-		target_crc = binascii.crc32(target) & 0xFFFFFFFF
-		patch_crc = binascii.crc32(bytes(patch)) & 0xFFFFFFFF
+		source_crc = binascii.crc32(source) & 0xffffffff
+		target_crc = binascii.crc32(target) & 0xffffffff
+		patch_crc = binascii.crc32(bytes(patch)) & 0xffffffff
 
 		patch.extend(struct.pack('<I', source_crc))
 		patch.extend(struct.pack('<I', target_crc))
@@ -443,7 +443,7 @@ class BPSPatcher:
 		result = bytearray()
 
 		while True:
-			byte = value & 0x7F
+			byte = value & 0x7f
 			value >>= 7
 
 			if value == 0:
@@ -464,7 +464,7 @@ class BPSPatcher:
 			byte = data[offset]
 			offset += 1
 
-			value |= (byte & 0x7F) << shift
+			value |= (byte & 0x7f) << shift
 
 			if byte & 0x80:
 				break
@@ -485,7 +485,7 @@ class BPSPatcher:
 
 		# Verify patch CRC
 		patch_crc_stored = struct.unpack('<I', patch[-12:-8])[0]
-		patch_crc_calc = binascii.crc32(patch[:-12]) & 0xFFFFFFFF
+		patch_crc_calc = binascii.crc32(patch[:-12]) & 0xffffffff
 
 		if patch_crc_stored != patch_crc_calc:
 			result.errors.append(f"Patch CRC mismatch: {patch_crc_calc:08X} != {patch_crc_stored:08X}")
@@ -502,7 +502,7 @@ class BPSPatcher:
 
 		# Verify source CRC
 		source_crc_stored = struct.unpack('<I', patch[-12:-8])[0]
-		source_crc_calc = binascii.crc32(source) & 0xFFFFFFFF
+		source_crc_calc = binascii.crc32(source) & 0xffffffff
 
 		if source_crc_stored != source_crc_calc:
 			result.errors.append(f"Source CRC mismatch: {source_crc_calc:08X} != {source_crc_stored:08X}")
@@ -536,7 +536,7 @@ class BPSPatcher:
 
 		# Verify target CRC
 		target_crc_stored = struct.unpack('<I', patch[-8:-4])[0]
-		target_crc_calc = binascii.crc32(bytes(output)) & 0xFFFFFFFF
+		target_crc_calc = binascii.crc32(bytes(output)) & 0xffffffff
 
 		if target_crc_stored != target_crc_calc:
 			result.errors.append(f"Target CRC mismatch: {target_crc_calc:08X} != {target_crc_stored:08X}")

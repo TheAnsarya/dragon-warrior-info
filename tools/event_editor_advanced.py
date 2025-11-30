@@ -276,8 +276,8 @@ class DialogueExtractor:
 	"""Extract dialogues from ROM."""
 
 	# Dragon Warrior dialogue locations (approximate)
-	DIALOGUE_POINTERS = 0x1D000
-	DIALOGUE_DATA = 0x1D100
+	DIALOGUE_POINTERS = 0x1d000
+	DIALOGUE_DATA = 0x1d100
 	NUM_DIALOGUES = 100
 
 	def __init__(self, rom_data: bytes):
@@ -295,9 +295,9 @@ class DialogueExtractor:
 
 			if byte == 0x00:  # String terminator
 				break
-			elif byte == 0xFF:  # Line break
+			elif byte == 0xff:  # Line break
 				result.append('\n')
-			elif byte >= 0x20 and byte < 0x7F:
+			elif byte >= 0x20 and byte < 0x7f:
 				result.append(chr(byte))
 			elif byte >= 0x80:  # Compressed token
 				# Decompress

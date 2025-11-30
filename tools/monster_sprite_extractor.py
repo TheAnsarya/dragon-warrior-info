@@ -6,8 +6,8 @@ Correctly extracts monster sprites using actual ROM OAM data and Pattern Table 2
 Handles sprite composition, palettes, and animations.
 
 Features:
-- Reads monster sprite structures from ROM (offset 0x59F4)
-- Uses Pattern Table 2 (CHR-ROM 0x2000-0x2FFF for monster tiles)
+- Reads monster sprite structures from ROM (offset 0x59f4)
+- Uses Pattern Table 2 (CHR-ROM 0x2000-0x2fff for monster tiles)
 - Proper OAM rendering with X/Y positioning
 - Palette support (4 colors per palette)
 - Animation frame extraction
@@ -148,10 +148,10 @@ class CHRDecoder:
 		Args:
 			chr_data: Complete CHR-ROM data (16KB)
 			table_id: Pattern table ID (0-3)
-				0 = Font/UI (0x0000-0x0FFF)
-				1 = Hero sprites (0x1000-0x1FFF)
-				2 = Monster sprites (0x2000-0x2FFF) ← WE WANT THIS!
-				3 = Map tiles (0x3000-0x3FFF)
+				0 = Font/UI (0x0000-0x0fff)
+				1 = Hero sprites (0x1000-0x1fff)
+				2 = Monster sprites (0x2000-0x2fff) ← WE WANT THIS!
+				3 = Map tiles (0x3000-0x3fff)
 
 		Returns:
 			List of 256 decoded 8x8 tiles
@@ -369,7 +369,7 @@ class MonsterDataExtractor:
 				last_x = entry.x
 
 		# Parse palette
-		palette = data.get('palette_nes', [0x0F, 0x00, 0x10, 0x30])
+		palette = data.get('palette_nes', [0x0f, 0x00, 0x10, 0x30])
 
 		return MonsterSprite(
 			id=monster_id,

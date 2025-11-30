@@ -56,7 +56,7 @@ class RandomizerMode(IntEnum):
 	WORLD = 0x08
 	GROWTH = 0x10
 	SHOPS = 0x20
-	ALL = 0xFF
+	ALL = 0xff
 
 
 @dataclass
@@ -313,12 +313,12 @@ DW_ENEMIES = [
 # Key items required for progression
 KEY_ITEMS = [
 	0x19,  # Erdrick's Token
-	0x0E,  # Erdrick's Armor
+	0x0e,  # Erdrick's Armor
 	0x07,  # Erdrick's Sword
-	0x1A,  # Gwaelin's Love
-	0x1C,  # Silver Harp
-	0x1E,  # Stones of Sunlight
-	0x1F,  # Staff of Rain
+	0x1a,  # Gwaelin's Love
+	0x1c,  # Silver Harp
+	0x1e,  # Stones of Sunlight
+	0x1f,  # Staff of Rain
 	0x20,  # Rainbow Drop
 	0x21,  # Magic Key
 ]
@@ -402,11 +402,11 @@ class RandomizerEngine:
 		self.item_locations = [
 			ItemLocation(0, "Tantegel Throne Room", 1, 0, 0x21, True),  # Magic Key
 			ItemLocation(1, "Mountain Cave", 10, 0, 0x19, True),        # Erdrick's Token
-			ItemLocation(2, "Garin's Grave", 11, 0, 0x1C, True),        # Silver Harp
-			ItemLocation(3, "Swamp Cave", 12, 0, 0x0E, True),           # Erdrick's Armor
+			ItemLocation(2, "Garin's Grave", 11, 0, 0x1c, True),        # Silver Harp
+			ItemLocation(3, "Swamp Cave", 12, 0, 0x0e, True),           # Erdrick's Armor
 			ItemLocation(4, "Charlock Castle", 20, 0, 0x07, True),      # Erdrick's Sword
-			ItemLocation(5, "Hauksness", 8, 0, 0x1E, True),             # Stones of Sunlight
-			ItemLocation(6, "Kol", 7, 0, 0x1F, True),                   # Staff of Rain
+			ItemLocation(5, "Hauksness", 8, 0, 0x1e, True),             # Stones of Sunlight
+			ItemLocation(6, "Kol", 7, 0, 0x1f, True),                   # Staff of Rain
 			ItemLocation(7, "Rimuldar", 9, 0, 0x17),                    # Fairy Flute
 			ItemLocation(8, "Garinham", 6, 1, 0x18),                    # Fighter's Ring
 		]
@@ -438,7 +438,7 @@ class RandomizerEngine:
 
 		# Create mock shops (would be loaded from ROM)
 		weapon_pool = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06]  # Weapons
-		armor_pool = [0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D]   # Armor
+		armor_pool = [0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d]   # Armor
 
 		self.shops = [
 			ShopData(0, "Brecconary", "weapon", [0x01, 0x02], {0x01: 10, 0x02: 100}),

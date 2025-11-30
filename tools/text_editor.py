@@ -69,7 +69,7 @@ class TextEncoder:
 
 	Supports:
 		- Character mapping (A-Z, 0-9, punctuation)
-		- Word substitutions (0x80-0x9F)
+		- Word substitutions (0x80-0x9f)
 		- Control codes (newline, delay, etc.)
 	"""
 
@@ -78,14 +78,14 @@ class TextEncoder:
 		# Letters (uppercase only in DW)
 		0x00: 'A', 0x01: 'B', 0x02: 'C', 0x03: 'D', 0x04: 'E',
 		0x05: 'F', 0x06: 'G', 0x07: 'H', 0x08: 'I', 0x09: 'J',
-		0x0A: 'K', 0x0B: 'L', 0x0C: 'M', 0x0D: 'N', 0x0E: 'O',
-		0x0F: 'P', 0x10: 'Q', 0x11: 'R', 0x12: 'S', 0x13: 'T',
+		0x0a: 'K', 0x0b: 'L', 0x0c: 'M', 0x0d: 'N', 0x0e: 'O',
+		0x0f: 'P', 0x10: 'Q', 0x11: 'R', 0x12: 'S', 0x13: 'T',
 		0x14: 'U', 0x15: 'V', 0x16: 'W', 0x17: 'X', 0x18: 'Y',
 		0x19: 'Z',
 
 		# Numbers
-		0x1A: '0', 0x1B: '1', 0x1C: '2', 0x1D: '3', 0x1E: '4',
-		0x1F: '5', 0x20: '6', 0x21: '7', 0x22: '8', 0x23: '9',
+		0x1a: '0', 0x1b: '1', 0x1c: '2', 0x1d: '3', 0x1e: '4',
+		0x1f: '5', 0x20: '6', 0x21: '7', 0x22: '8', 0x23: '9',
 
 		# Punctuation
 		0x24: ' ',   # Space
@@ -94,12 +94,12 @@ class TextEncoder:
 		0x27: '\'',  # Apostrophe
 		0x28: '!',   # Exclamation
 		0x29: '?',   # Question
-		0x2A: '-',   # Hyphen
-		0x2B: '/',   # Slash
-		0x2C: ':',   # Colon
-		0x2D: ';',   # Semicolon
-		0x2E: '(',   # Open paren
-		0x2F: ')',   # Close paren
+		0x2a: '-',   # Hyphen
+		0x2b: '/',   # Slash
+		0x2c: ':',   # Colon
+		0x2d: ';',   # Semicolon
+		0x2e: '(',   # Open paren
+		0x2f: ')',   # Close paren
 
 		# Special characters
 		0x30: '\n',  # Newline
@@ -109,7 +109,7 @@ class TextEncoder:
 		0x34: '<PLAYER>',  # Player name
 		0x35: '<CHOICE>',  # Yes/No choice
 
-		# Word substitutions (0x80-0x9F)
+		# Word substitutions (0x80-0x9f)
 		0x80: "SWORD",
 		0x81: "STAFF",
 		0x82: "SHIELD",
@@ -120,12 +120,12 @@ class TextEncoder:
 		0x87: "SILVER",
 		0x88: "GOLD",
 		0x89: "HERB",
-		0x8A: "KEY",
-		0x8B: "TORCH",
-		0x8C: "DRAGON",
-		0x8D: "STONES",
-		0x8E: "FAIRY",
-		0x8F: "WATER",
+		0x8a: "KEY",
+		0x8b: "TORCH",
+		0x8c: "DRAGON",
+		0x8d: "STONES",
+		0x8e: "FAIRY",
+		0x8f: "WATER",
 		0x90: "TANTEGEL",
 		0x91: "PRINCESS",
 		0x92: "ERDRICK",
@@ -136,15 +136,15 @@ class TextEncoder:
 		0x97: "CURSED",
 		0x98: "TOKEN",
 		0x99: "FLUTE",
-		0x9A: "HARP",
-		0x9B: "LYRE",
-		0x9C: "RING",
-		0x9D: "AMULET",
-		0x9E: "PENDANT",
-		0x9F: "RAINBOW",
+		0x9a: "HARP",
+		0x9b: "LYRE",
+		0x9c: "RING",
+		0x9d: "AMULET",
+		0x9e: "PENDANT",
+		0x9f: "RAINBOW",
 
 		# End marker
-		0xFF: '<END>',
+		0xff: '<END>',
 	}
 
 	# Reverse mapping
@@ -154,7 +154,7 @@ class TextEncoder:
 		"""Initialize encoder"""
 		# Build substitution regex
 		subs = sorted(
-			[(v, k) for k, v in self.CHAR_TABLE.items() if 0x80 <= k <= 0x9F],
+			[(v, k) for k, v in self.CHAR_TABLE.items() if 0x80 <= k <= 0x9f],
 			key=lambda x: len(x[0]),
 			reverse=True  # Longest first
 		)
@@ -177,7 +177,7 @@ class TextEncoder:
 		while i < len(data):
 			byte = data[i]
 
-			if byte == 0xFF:
+			if byte == 0xff:
 				break  # End marker
 
 			char = self.CHAR_TABLE.get(byte)
@@ -224,7 +224,7 @@ class TextEncoder:
 				print(f"Warning: Unknown character '{char}' - skipping")
 
 		# Add end marker
-		encoded.append(0xFF)
+		encoded.append(0xff)
 
 		return bytes(encoded)
 
@@ -265,10 +265,10 @@ class DialogExtractor:
 
 	# Known dialog offsets in Dragon Warrior (approximate)
 	DIALOG_REGIONS = [
-		(0x08000, 0x0A000),  # Main dialog
-		(0x0A000, 0x0C000),  # NPC dialog
-		(0x0C000, 0x0D000),  # Item descriptions
-		(0x0D000, 0x0E000),  # Menu text
+		(0x08000, 0x0a000),  # Main dialog
+		(0x0a000, 0x0c000),  # NPC dialog
+		(0x0c000, 0x0d000),  # Item descriptions
+		(0x0d000, 0x0e000),  # Menu text
 	]
 
 	def __init__(self, rom_data: bytes):
@@ -317,9 +317,9 @@ class DialogExtractor:
 
 		while i < end:
 			# Look for text start (heuristic: uppercase letter)
-			byte = self.rom[i] if i < len(self.rom) else 0xFF
+			byte = self.rom[i] if i < len(self.rom) else 0xff
 
-			if byte in range(0x00, 0x1A):  # A-Z
+			if byte in range(0x00, 0x1a):  # A-Z
 				# Potential text start
 				entry = self._extract_entry(i, entry_id)
 				if entry and len(entry.text) > 3:  # Minimum length
@@ -347,7 +347,7 @@ class DialogExtractor:
 		# Find end marker
 		i = offset
 		while i < len(self.rom) and i < offset + 1000:  # Max length
-			if self.rom[i] == 0xFF:
+			if self.rom[i] == 0xff:
 				break
 			i += 1
 

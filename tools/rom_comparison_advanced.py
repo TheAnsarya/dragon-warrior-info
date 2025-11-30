@@ -135,19 +135,19 @@ class DragonWarriorROMLayout:
 		ROMSection("Main Code Bank 1", 0x4010, 0x4000, SectionType.PRG_ROM, ChangeType.CODE),
 
 		# Data sections
-		ROMSection("Monster Data", 0x5E5B, 0x0270, SectionType.PRG_ROM, ChangeType.DATA),
-		ROMSection("Spell Data", 0x5F3B, 0x0050, SectionType.PRG_ROM, ChangeType.DATA),
-		ROMSection("Item Data", 0x5F83, 0x0100, SectionType.PRG_ROM, ChangeType.DATA),
+		ROMSection("Monster Data", 0x5e5b, 0x0270, SectionType.PRG_ROM, ChangeType.DATA),
+		ROMSection("Spell Data", 0x5f3b, 0x0050, SectionType.PRG_ROM, ChangeType.DATA),
+		ROMSection("Item Data", 0x5f83, 0x0100, SectionType.PRG_ROM, ChangeType.DATA),
 
 		# Text sections
 		ROMSection("Dialog Text", 0x8000, 0x4000, SectionType.PRG_ROM, ChangeType.TEXT),
-		ROMSection("Menu Text", 0xC000, 0x1000, SectionType.PRG_ROM, ChangeType.TEXT),
+		ROMSection("Menu Text", 0xc000, 0x1000, SectionType.PRG_ROM, ChangeType.TEXT),
 
 		# Graphics
 		ROMSection("CHR-ROM Graphics", 0x20010, 0x2000, SectionType.CHR_ROM, ChangeType.GRAPHICS),
 
 		# Audio
-		ROMSection("Music Data", 0x1C000, 0x2000, SectionType.PRG_ROM, ChangeType.AUDIO),
+		ROMSection("Music Data", 0x1c000, 0x2000, SectionType.PRG_ROM, ChangeType.AUDIO),
 	]
 
 	@classmethod

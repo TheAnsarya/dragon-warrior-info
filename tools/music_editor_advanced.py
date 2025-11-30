@@ -178,15 +178,15 @@ class MusicExtractor:
 
 	# Known music data locations (Dragon Warrior USA)
 	MUSIC_DATA_OFFSETS = {
-		"overworld": 0x1E010,
-		"town": 0x1E200,
-		"castle": 0x1E400,
-		"dungeon": 0x1E600,
-		"battle": 0x1E800,
-		"final_battle": 0x1EA00,
-		"victory": 0x1EC00,
-		"death": 0x1EC80,
-		"ending": 0x1ED00,
+		"overworld": 0x1e010,
+		"town": 0x1e200,
+		"castle": 0x1e400,
+		"dungeon": 0x1e600,
+		"battle": 0x1e800,
+		"final_battle": 0x1ea00,
+		"victory": 0x1ec00,
+		"death": 0x1ec80,
+		"ending": 0x1ed00,
 	}
 
 	def __init__(self, rom_path: str):

@@ -227,7 +227,7 @@ class EncounterExtractor:
 	"""Extract encounter tables from Dragon Warrior ROM."""
 
 	# Encounter table locations in ROM
-	ENCOUNTER_TABLE_OFFSET = 0x0F300
+	ENCOUNTER_TABLE_OFFSET = 0x0f300
 	NUM_ZONES = 16
 
 	def __init__(self, rom_path: Path):
@@ -287,7 +287,7 @@ class EncounterExtractor:
 			probability = self.rom_data[offset + i * 2 + 1]
 
 			# Skip empty slots
-			if monster_id == 0xFF or probability == 0:
+			if monster_id == 0xff or probability == 0:
 				continue
 
 			slot = EncounterSlot(

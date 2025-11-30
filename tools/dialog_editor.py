@@ -191,11 +191,11 @@ class DragonWarriorTextEncoder:
 
 	Uses the correct TBL-based encoding from dw_text_encoding module:
 	- 0x00-0x09: 0-9
-	- 0x0A-0x23: a-z (lowercase)
-	- 0x24-0x3D: A-Z (uppercase)
-	- 0x3E-0x5F: Punctuation and special characters
-	- 0x5F: Space
-	- 0xF0-0xFC: Control codes (PLRL, ENMY, NAME, WAIT, END, etc.)
+	- 0x0a-0x23: a-z (lowercase)
+	- 0x24-0x3d: A-Z (uppercase)
+	- 0x3e-0x5f: Punctuation and special characters
+	- 0x5f: Space
+	- 0xf0-0xfc: Control codes (PLRL, ENMY, NAME, WAIT, END, etc.)
 	"""
 
 	@classmethod
@@ -238,18 +238,18 @@ class DragonWarriorTextEncoder:
 		encoded = bytearray()
 		for char in text:
 			if char == '\n':
-				encoded.append(0xFD)
+				encoded.append(0xfd)
 			elif char == ' ':
-				encoded.append(0x5F)
+				encoded.append(0x5f)
 			elif 'a' <= char <= 'z':
-				encoded.append(ord(char) - ord('a') + 0x0A)
+				encoded.append(ord(char) - ord('a') + 0x0a)
 			elif 'A' <= char <= 'Z':
 				encoded.append(ord(char) - ord('A') + 0x24)
 			elif '0' <= char <= '9':
 				encoded.append(ord(char) - ord('0'))
 			else:
-				encoded.append(0x5F)  # Default to space
-		encoded.append(0xFC)  # END marker
+				encoded.append(0x5f)  # Default to space
+		encoded.append(0xfc)  # END marker
 		return bytes(encoded)
 
 	@classmethod
@@ -257,19 +257,19 @@ class DragonWarriorTextEncoder:
 		"""Legacy decoding fallback."""
 		result = []
 		for byte in data:
-			if byte == 0xFC:
+			if byte == 0xfc:
 				result.append('{END}')
-			elif byte == 0xFB:
+			elif byte == 0xfb:
 				result.append('{WAIT}')
-			elif byte == 0xFD:
+			elif byte == 0xfd:
 				result.append('\n')
-			elif byte == 0xF8:
+			elif byte == 0xf8:
 				result.append('{NAME}')
-			elif byte == 0x5F:
+			elif byte == 0x5f:
 				result.append(' ')
-			elif 0x0A <= byte <= 0x23:
-				result.append(chr(byte - 0x0A + ord('a')))
-			elif 0x24 <= byte <= 0x3D:
+			elif 0x0a <= byte <= 0x23:
+				result.append(chr(byte - 0x0a + ord('a')))
+			elif 0x24 <= byte <= 0x3d:
 				result.append(chr(byte - 0x24 + ord('A')))
 			elif 0x00 <= byte <= 0x09:
 				result.append(chr(byte + ord('0')))
@@ -283,9 +283,9 @@ class DialogExtractor:
 
 	# Dialog regions in ROM
 	DIALOG_REGIONS = [
-		(0x08000, 0x0A000),	# Main dialog region
-		(0x0A000, 0x0C000),	# NPC dialogs
-		(0x0C000, 0x0E000),	# Special dialogs
+		(0x08000, 0x0a000),	# Main dialog region
+		(0x0a000, 0x0c000),	# NPC dialogs
+		(0x0c000, 0x0e000),	# Special dialogs
 	]
 
 	def __init__(self, rom_path: Path):
@@ -303,9 +303,9 @@ class DialogExtractor:
 		if offset >= len(self.rom_data):
 			return None
 
-		# Read until terminator (0xFF)
+		# Read until terminator (0xff)
 		end_offset = offset
-		while end_offset < len(self.rom_data) and self.rom_data[end_offset] != 0xFF:
+		while end_offset < len(self.rom_data) and self.rom_data[end_offset] != 0xff:
 			end_offset += 1
 
 		if end_offset >= len(self.rom_data):

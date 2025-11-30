@@ -1921,12 +1921,12 @@ class GraphicsEditorTab(ttk.Frame):
 		(60, 24, 0),     # 0x07 - Brown
 		(32, 42, 0),     # 0x08 - Dark olive
 		(8, 58, 0),      # 0x09 - Dark green
-		(0, 64, 0),      # 0x0A - Green
-		(0, 60, 0),      # 0x0B - Green variant
-		(0, 50, 60),     # 0x0C - Teal
-		(0, 0, 0),       # 0x0D - Black
-		(0, 0, 0),       # 0x0E - Black
-		(0, 0, 0),       # 0x0F - Black
+		(0, 64, 0),      # 0x0a - Green
+		(0, 60, 0),      # 0x0b - Green variant
+		(0, 50, 60),     # 0x0c - Teal
+		(0, 0, 0),       # 0x0d - Black
+		(0, 0, 0),       # 0x0e - Black
+		(0, 0, 0),       # 0x0f - Black
 		(152, 150, 152), # 0x10 - Gray
 		(8, 76, 196),    # 0x11 - Medium blue
 		(48, 50, 236),   # 0x12 - Bright blue
@@ -1937,12 +1937,12 @@ class GraphicsEditorTab(ttk.Frame):
 		(120, 60, 0),    # 0x17 - Orange
 		(84, 90, 0),     # 0x18 - Olive
 		(40, 114, 0),    # 0x19 - Green
-		(8, 124, 0),     # 0x1A - Bright green
-		(0, 118, 40),    # 0x1B - Green-cyan
-		(0, 102, 120),   # 0x1C - Cyan
-		(0, 0, 0),       # 0x1D - Black
-		(0, 0, 0),       # 0x1E - Black
-		(0, 0, 0),       # 0x1F - Black
+		(8, 124, 0),     # 0x1a - Bright green
+		(0, 118, 40),    # 0x1b - Green-cyan
+		(0, 102, 120),   # 0x1c - Cyan
+		(0, 0, 0),       # 0x1d - Black
+		(0, 0, 0),       # 0x1e - Black
+		(0, 0, 0),       # 0x1f - Black
 		(236, 238, 236), # 0x20 - White
 		(76, 154, 236),  # 0x21 - Light blue
 		(120, 124, 236), # 0x22 - Periwinkle
@@ -1953,12 +1953,12 @@ class GraphicsEditorTab(ttk.Frame):
 		(212, 136, 32),  # 0x27 - Light orange
 		(160, 170, 0),   # 0x28 - Yellow-green
 		(116, 196, 0),   # 0x29 - Lime
-		(76, 208, 32),   # 0x2A - Light green
-		(56, 204, 108),  # 0x2B - Mint
-		(56, 180, 204),  # 0x2C - Light cyan
-		(60, 60, 60),    # 0x2D - Dark gray
-		(0, 0, 0),       # 0x2E - Black
-		(0, 0, 0),       # 0x2F - Black
+		(76, 208, 32),   # 0x2a - Light green
+		(56, 204, 108),  # 0x2b - Mint
+		(56, 180, 204),  # 0x2c - Light cyan
+		(60, 60, 60),    # 0x2d - Dark gray
+		(0, 0, 0),       # 0x2e - Black
+		(0, 0, 0),       # 0x2f - Black
 		(236, 238, 236), # 0x30 - White
 		(168, 204, 236), # 0x31 - Pale blue
 		(188, 188, 236), # 0x32 - Pale violet
@@ -1969,16 +1969,16 @@ class GraphicsEditorTab(ttk.Frame):
 		(228, 196, 144), # 0x37 - Pale orange
 		(204, 210, 120), # 0x38 - Pale yellow
 		(180, 222, 120), # 0x39 - Pale lime
-		(168, 226, 144), # 0x3A - Pale green
-		(152, 226, 180), # 0x3B - Pale mint
-		(160, 214, 228), # 0x3C - Pale cyan
-		(160, 162, 160), # 0x3D - Light gray
-		(0, 0, 0),       # 0x3E - Black
-		(0, 0, 0),       # 0x3F - Black
+		(168, 226, 144), # 0x3a - Pale green
+		(152, 226, 180), # 0x3b - Pale mint
+		(160, 214, 228), # 0x3c - Pale cyan
+		(160, 162, 160), # 0x3d - Light gray
+		(0, 0, 0),       # 0x3e - Black
+		(0, 0, 0),       # 0x3f - Black
 	]
 
 	# Default Dragon Warrior palette indices
-	DW_PALETTE = [0x0F, 0x27, 0x30, 0x16]  # Black, Orange, White, Red
+	DW_PALETTE = [0x0f, 0x27, 0x30, 0x16]  # Black, Orange, White, Red
 
 	def __init__(self, parent, asset_manager: AssetManager):
 		super().__init__(parent)
@@ -2071,10 +2071,10 @@ class GraphicsEditorTab(ttk.Frame):
 		preset_frame.pack(fill=tk.X, pady=5)
 
 		palettes = [
-			("Hero", [0x0F, 0x27, 0x30, 0x16]),
-			("Monster", [0x0F, 0x16, 0x30, 0x12]),
-			("Grass", [0x0F, 0x29, 0x30, 0x19]),
-			("Water", [0x0F, 0x12, 0x30, 0x21]),
+			("Hero", [0x0f, 0x27, 0x30, 0x16]),
+			("Monster", [0x0f, 0x16, 0x30, 0x12]),
+			("Grass", [0x0f, 0x29, 0x30, 0x19]),
+			("Water", [0x0f, 0x12, 0x30, 0x21]),
 		]
 		for name, pal in palettes:
 			btn = ttk.Button(preset_frame, text=name, width=8,
@@ -3322,14 +3322,14 @@ class PaletteEditorTab(ttk.Frame):
 
 	# Default Dragon Warrior palettes
 	DW_PALETTES = {
-		'Background 0': [0x0F, 0x30, 0x10, 0x00],  # Main background
-		'Background 1': [0x0F, 0x30, 0x27, 0x07],  # Desert/sand
-		'Background 2': [0x0F, 0x30, 0x19, 0x09],  # Grass/forest
-		'Background 3': [0x0F, 0x30, 0x12, 0x02],  # Water
-		'Sprite 0': [0x0F, 0x27, 0x30, 0x16],      # Hero
-		'Sprite 1': [0x0F, 0x16, 0x30, 0x12],      # Monster 1
-		'Sprite 2': [0x0F, 0x29, 0x30, 0x19],      # NPC
-		'Sprite 3': [0x0F, 0x30, 0x27, 0x17],      # Items
+		'Background 0': [0x0f, 0x30, 0x10, 0x00],  # Main background
+		'Background 1': [0x0f, 0x30, 0x27, 0x07],  # Desert/sand
+		'Background 2': [0x0f, 0x30, 0x19, 0x09],  # Grass/forest
+		'Background 3': [0x0f, 0x30, 0x12, 0x02],  # Water
+		'Sprite 0': [0x0f, 0x27, 0x30, 0x16],      # Hero
+		'Sprite 1': [0x0f, 0x16, 0x30, 0x12],      # Monster 1
+		'Sprite 2': [0x0f, 0x29, 0x30, 0x19],      # NPC
+		'Sprite 3': [0x0f, 0x30, 0x27, 0x17],      # Items
 	}
 
 	def __init__(self, parent, asset_manager: AssetManager):
@@ -3547,14 +3547,14 @@ class PaletteEditorTab(ttk.Frame):
 	def reset_palettes(self):
 		"""Reset to default palettes."""
 		self.DW_PALETTES = {
-			'Background 0': [0x0F, 0x30, 0x10, 0x00],
-			'Background 1': [0x0F, 0x30, 0x27, 0x07],
-			'Background 2': [0x0F, 0x30, 0x19, 0x09],
-			'Background 3': [0x0F, 0x30, 0x12, 0x02],
-			'Sprite 0': [0x0F, 0x27, 0x30, 0x16],
-			'Sprite 1': [0x0F, 0x16, 0x30, 0x12],
-			'Sprite 2': [0x0F, 0x29, 0x30, 0x19],
-			'Sprite 3': [0x0F, 0x30, 0x27, 0x17],
+			'Background 0': [0x0f, 0x30, 0x10, 0x00],
+			'Background 1': [0x0f, 0x30, 0x27, 0x07],
+			'Background 2': [0x0f, 0x30, 0x19, 0x09],
+			'Background 3': [0x0f, 0x30, 0x12, 0x02],
+			'Sprite 0': [0x0f, 0x27, 0x30, 0x16],
+			'Sprite 1': [0x0f, 0x16, 0x30, 0x12],
+			'Sprite 2': [0x0f, 0x29, 0x30, 0x19],
+			'Sprite 3': [0x0f, 0x30, 0x27, 0x17],
 		}
 		self.current_palette = list(self.DW_PALETTES[self.current_palette_name])
 		self.update_slot_display()
@@ -3584,12 +3584,12 @@ class HexViewerTab(BaseTab):
 			'Header': (0x0000, 0x0010),
 			'PRG-ROM Bank 0': (0x0010, 0x4010),
 			'PRG-ROM Bank 1': (0x4010, 0x8010),
-			'PRG-ROM Bank 2': (0x8010, 0xC010),
-			'PRG-ROM Bank 3': (0xC010, 0x10010),
+			'PRG-ROM Bank 2': (0x8010, 0xc010),
+			'PRG-ROM Bank 3': (0xc010, 0x10010),
 			'CHR-ROM': (0x10010, 0x14010),
 			'Text Table': (0x8010, 0x8810),
-			'Monster Data': (0x5E5B + 0x10, 0x5E5B + 0x10 + 0x280),
-			'Item Data': (0x1A5E + 0x10, 0x1A5E + 0x10 + 0x100),
+			'Monster Data': (0x5e5b + 0x10, 0x5e5b + 0x10 + 0x280),
+			'Item Data': (0x1a5e + 0x10, 0x1a5e + 0x10 + 0x100),
 		}
 
 		self.setup_ui()
@@ -4905,7 +4905,7 @@ class CheatCodeTab(BaseTab):
 
 	def generate_infinite_hp(self):
 		"""Generate infinite HP code."""
-		# HP is typically at RAM $00C5
+		# HP is typically at RAM $00c5
 		self.code_output.delete('1.0', 'end')
 		self.code_output.insert('1.0', "SXSZLGVG\n; Infinite HP - Prevents HP from decreasing in battle")
 
@@ -5036,15 +5036,15 @@ class MusicEditorTab(BaseTab):
 
 	# Dragon Warrior music track info (approximate offsets - would need verification)
 	MUSIC_TRACKS = {
-		'Title Screen': {'offset': 0xF000 + 0x10, 'description': 'Main title music'},
-		'Overworld': {'offset': 0xE800 + 0x10, 'description': 'World map theme'},
-		'Castle': {'offset': 0xE900 + 0x10, 'description': 'Castle/town theme'},
-		'Cave': {'offset': 0xEA00 + 0x10, 'description': 'Dungeon theme'},
-		'Battle': {'offset': 0xEB00 + 0x10, 'description': 'Battle music'},
-		'Victory': {'offset': 0xEC00 + 0x10, 'description': 'Victory fanfare'},
-		'Death': {'offset': 0xED00 + 0x10, 'description': 'Game over theme'},
-		'Inn': {'offset': 0xEE00 + 0x10, 'description': 'Inn rest jingle'},
-		'Level Up': {'offset': 0xEF00 + 0x10, 'description': 'Level up fanfare'},
+		'Title Screen': {'offset': 0xf000 + 0x10, 'description': 'Main title music'},
+		'Overworld': {'offset': 0xe800 + 0x10, 'description': 'World map theme'},
+		'Castle': {'offset': 0xe900 + 0x10, 'description': 'Castle/town theme'},
+		'Cave': {'offset': 0xea00 + 0x10, 'description': 'Dungeon theme'},
+		'Battle': {'offset': 0xeb00 + 0x10, 'description': 'Battle music'},
+		'Victory': {'offset': 0xec00 + 0x10, 'description': 'Victory fanfare'},
+		'Death': {'offset': 0xed00 + 0x10, 'description': 'Game over theme'},
+		'Inn': {'offset': 0xee00 + 0x10, 'description': 'Inn rest jingle'},
+		'Level Up': {'offset': 0xef00 + 0x10, 'description': 'Level up fanfare'},
 	}
 
 	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
@@ -5317,25 +5317,25 @@ class TextTableEditorTab(BaseTab):
 	DEFAULT_TABLE = {
 		0x00: '0', 0x01: '1', 0x02: '2', 0x03: '3', 0x04: '4',
 		0x05: '5', 0x06: '6', 0x07: '7', 0x08: '8', 0x09: '9',
-		0x0A: 'a', 0x0B: 'b', 0x0C: 'c', 0x0D: 'd', 0x0E: 'e',
-		0x0F: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
+		0x0a: 'a', 0x0b: 'b', 0x0c: 'c', 0x0d: 'd', 0x0e: 'e',
+		0x0f: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
 		0x14: 'k', 0x15: 'l', 0x16: 'm', 0x17: 'n', 0x18: 'o',
-		0x19: 'p', 0x1A: 'q', 0x1B: 'r', 0x1C: 's', 0x1D: 't',
-		0x1E: 'u', 0x1F: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
+		0x19: 'p', 0x1a: 'q', 0x1b: 'r', 0x1c: 's', 0x1d: 't',
+		0x1e: 'u', 0x1f: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
 		0x23: 'z', 0x24: 'A', 0x25: 'B', 0x26: 'C', 0x27: 'D',
-		0x28: 'E', 0x29: 'F', 0x2A: 'G', 0x2B: 'H', 0x2C: 'I',
-		0x2D: 'J', 0x2E: 'K', 0x2F: 'L', 0x30: 'M', 0x31: 'N',
+		0x28: 'E', 0x29: 'F', 0x2a: 'G', 0x2b: 'H', 0x2c: 'I',
+		0x2d: 'J', 0x2e: 'K', 0x2f: 'L', 0x30: 'M', 0x31: 'N',
 		0x32: 'O', 0x33: 'P', 0x34: 'Q', 0x35: 'R', 0x36: 'S',
-		0x37: 'T', 0x38: 'U', 0x39: 'V', 0x3A: 'W', 0x3B: 'X',
-		0x3C: 'Y', 0x3D: 'Z', 0x3E: '-', 0x3F: "'", 0x40: '!',
+		0x37: 'T', 0x38: 'U', 0x39: 'V', 0x3a: 'W', 0x3b: 'X',
+		0x3c: 'Y', 0x3d: 'Z', 0x3e: '-', 0x3f: "'", 0x40: '!',
 		0x41: '?', 0x42: '.', 0x43: ',', 0x44: ' ', 0x45: '(',
 		0x46: ')', 0x47: '<heart>', 0x48: '*', 0x49: '>',
-		0x4A: '<sl>', 0x4B: '<up>', 0x4C: '<down>',
-		0x5F: '\n',  # New line
-		0xFC: '<name>',  # Hero name
-		0xFD: '<item>',  # Item name
-		0xFE: '<enemy>',  # Enemy name
-		0xFF: '<end>',  # End of string
+		0x4a: '<sl>', 0x4b: '<up>', 0x4c: '<down>',
+		0x5f: '\n',  # New line
+		0xfc: '<name>',  # Hero name
+		0xfd: '<item>',  # Item name
+		0xfe: '<enemy>',  # Enemy name
+		0xff: '<end>',  # End of string
 	}
 
 	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
@@ -5418,13 +5418,13 @@ class TextTableEditorTab(BaseTab):
 		codes_text = tk.Text(codes_frame, height=8, font=('Consolas', 9), bg='#252526', fg='#d4d4d4')
 		codes_text.pack(fill='x', padx=5, pady=5)
 		codes_text.insert('1.0', """Special codes used in Dragon Warrior:
-$5F = New line
-$FC = Hero's name
-$FD = Item name (context)
-$FE = Enemy name (context)
-$FF = End of string
+$5f = New line
+$fc = Hero's name
+$fd = Item name (context)
+$fe = Enemy name (context)
+$ff = End of string
 
-$F0-$FB = Wait, pause, clear commands""")
+$f0-$fb = Wait, pause, clear commands""")
 		codes_text.config(state='disabled')
 
 		# Buttons
@@ -5477,19 +5477,19 @@ $F0-$FB = Wait, pause, clear commands""")
 		"""Get description for a byte value."""
 		if byte_val <= 0x09:
 			return "Digit"
-		elif 0x0A <= byte_val <= 0x23:
+		elif 0x0a <= byte_val <= 0x23:
 			return "Lowercase letter"
-		elif 0x24 <= byte_val <= 0x3D:
+		elif 0x24 <= byte_val <= 0x3d:
 			return "Uppercase letter"
-		elif 0x3E <= byte_val <= 0x4C:
+		elif 0x3e <= byte_val <= 0x4c:
 			return "Punctuation/Symbol"
 		elif byte_val == 0x44:
 			return "Space"
-		elif byte_val == 0x5F:
+		elif byte_val == 0x5f:
 			return "New line"
-		elif 0xF0 <= byte_val <= 0xFB:
+		elif 0xf0 <= byte_val <= 0xfb:
 			return "Control code"
-		elif byte_val >= 0xFC:
+		elif byte_val >= 0xfc:
 			return "Special code"
 		else:
 			return ""
@@ -6113,7 +6113,7 @@ different parts of the PRG-ROM."""
 		flags6 = header[6]
 		flags7 = header[7]
 
-		mapper = (flags6 >> 4) | (flags7 & 0xF0)
+		mapper = (flags6 >> 4) | (flags7 & 0xf0)
 		self.header_vars['mapper'].set(str(mapper))
 		self.mapper_name_var.set(self.MAPPER_NAMES.get(mapper, "Unknown"))
 
@@ -6152,11 +6152,11 @@ different parts of the PRG-ROM."""
 		lines.append("")
 
 		# Count non-FF bytes (rough estimate of used space)
-		data_bytes = sum(1 for b in self.rom_data[16:] if b != 0xFF)
+		data_bytes = sum(1 for b in self.rom_data[16:] if b != 0xff)
 		total_data = len(self.rom_data) - 16
 		pct = (data_bytes / total_data * 100) if total_data > 0 else 0
 		lines.append(f"Non-empty bytes: {data_bytes:,} ({pct:.1f}%)")
-		lines.append(f"Free space (0xFF): {total_data - data_bytes:,} bytes")
+		lines.append(f"Free space (0xff): {total_data - data_bytes:,} bytes")
 
 		self.stats_text.insert('1.0', '\n'.join(lines))
 
@@ -6166,7 +6166,7 @@ different parts of the PRG-ROM."""
 			return
 
 		import zlib
-		crc = zlib.crc32(bytes(self.rom_data)) & 0xFFFFFFFF
+		crc = zlib.crc32(bytes(self.rom_data)) & 0xffffffff
 		self.crc_var.set(f"{crc:08X}")
 
 	def save_header(self):
@@ -6185,14 +6185,14 @@ different parts of the PRG-ROM."""
 			self.rom_data[5] = chr_val
 
 			# Update mapper in flags
-			flags6 = (mapper & 0x0F) << 4
+			flags6 = (mapper & 0x0f) << 4
 			if self.header_vars['mirroring'].get() == "Vertical":
 				flags6 |= 0x01
 			if self.header_vars['battery'].get() == "Yes":
 				flags6 |= 0x02
 
 			self.rom_data[6] = flags6
-			self.rom_data[7] = (mapper & 0xF0)
+			self.rom_data[7] = (mapper & 0xf0)
 
 			# Save to file
 			with open(self.rom_path, 'wb') as f:

@@ -168,13 +168,13 @@ class ToolkitBenchmark:
 				data = bytearray(f.read())
 
 			# Simulate monster extraction (624 bytes)
-			monsters_data = data[0x5C10:0x5C10+624]
+			monsters_data = data[0x5c10:0x5c10+624]
 
 			# Simulate spell extraction (40 bytes)
-			spells_data = data[0x1D410:0x1D410+40]
+			spells_data = data[0x1d410:0x1d410+40]
 
 			# Simulate item extraction (256 bytes)
-			items_data = data[0x1CF70:0x1CF70+256]
+			items_data = data[0x1cf70:0x1cf70+256]
 
 			return len(monsters_data) + len(spells_data) + len(items_data)
 
@@ -187,7 +187,7 @@ class ToolkitBenchmark:
 
 		def create_binary():
 			# Simulate monster binary creation
-			data = bytes([0xFF] * 624)
+			data = bytes([0xff] * 624)
 			crc = zlib.crc32(data)
 
 			header = struct.pack(
@@ -197,7 +197,7 @@ class ToolkitBenchmark:
 				0,        # Reserved
 				0x01,     # Data type
 				crc,      # CRC32
-				0x5C10,   # ROM offset
+				0x5c10,   # ROM offset
 				624,      # Data size
 				0,        # Reserved
 				int(time.time())  # Timestamp
@@ -289,7 +289,7 @@ class ToolkitBenchmark:
 
 			crcs = []
 			for size in data_sizes:
-				data = bytes([0xFF] * size)
+				data = bytes([0xff] * size)
 				crc = zlib.crc32(data)
 				crcs.append(crc)
 

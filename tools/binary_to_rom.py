@@ -96,14 +96,14 @@ class BinaryReader:
 			'data_type': self.data[6],
 			'flags': self.data[7],
 			'data_size': struct.unpack_from('<I', self.data, 0x08)[0],
-			'rom_offset': struct.unpack_from('<I', self.data, 0x0C)[0],
+			'rom_offset': struct.unpack_from('<I', self.data, 0x0c)[0],
 			'crc32': struct.unpack_from('<I', self.data, 0x10)[0],
 			'timestamp': struct.unpack_from('<I', self.data, 0x14)[0]
 		}
 
 		# Verify checksum
 		data_section = self.data[32:32 + self.header['data_size']]
-		calc_crc = zlib.crc32(data_section) & 0xFFFFFFFF
+		calc_crc = zlib.crc32(data_section) & 0xffffffff
 
 		if calc_crc != self.header['crc32']:
 			print(f"  ❌ CRC mismatch: {calc_crc:08X} != {self.header['crc32']:08X}")

@@ -78,17 +78,17 @@ class SoundEffect(IntEnum):
 # NES note frequency table (NTSC, A-4 = 440 Hz)
 # These are APU timer values for equal temperament tuning
 NES_NOTE_TABLE = {
-	'C-2': 0x07F1, 'C#2': 0x0780, 'D-2': 0x0713, 'D#2': 0x06AD, 'E-2': 0x064D, 'F-2': 0x05F3,
-	'F#2': 0x059D, 'G-2': 0x054D, 'G#2': 0x0501, 'A-2': 0x04B9, 'A#2': 0x0475, 'B-2': 0x0435,
-	'C-3': 0x03F8, 'C#3': 0x03BF, 'D-3': 0x0389, 'D#3': 0x0356, 'E-3': 0x0326, 'F-3': 0x02F9,
-	'F#3': 0x02CE, 'G-3': 0x02A6, 'G#3': 0x0280, 'A-3': 0x025C, 'A#3': 0x023A, 'B-3': 0x021A,
-	'C-4': 0x01FB, 'C#4': 0x01DF, 'D-4': 0x01C4, 'D#4': 0x01AB, 'E-4': 0x0193, 'F-4': 0x017C,
-	'F#4': 0x0167, 'G-4': 0x0152, 'G#4': 0x013F, 'A-4': 0x012D, 'A#4': 0x011C, 'B-4': 0x010C,
-	'C-5': 0x00FD, 'C#5': 0x00EF, 'D-5': 0x00E1, 'D#5': 0x00D5, 'E-5': 0x00C9, 'F-5': 0x00BD,
-	'F#5': 0x00B3, 'G-5': 0x00A9, 'G#5': 0x009F, 'A-5': 0x0096, 'A#5': 0x008D, 'B-5': 0x0085,
-	'C-6': 0x007E, 'C#6': 0x0077, 'D-6': 0x0070, 'D#6': 0x006A, 'E-6': 0x0064, 'F-6': 0x005E,
-	'F#6': 0x0059, 'G-6': 0x0054, 'G#6': 0x004F, 'A-6': 0x004B, 'A#6': 0x0046, 'B-6': 0x0042,
-	'C-7': 0x003F, 'C#7': 0x003B, 'D-7': 0x0038, 'D#7': 0x0034, 'E-7': 0x0031, 'F-7': 0x002F,
+	'C-2': 0x07f1, 'C#2': 0x0780, 'D-2': 0x0713, 'D#2': 0x06ad, 'E-2': 0x064d, 'F-2': 0x05f3,
+	'F#2': 0x059d, 'G-2': 0x054d, 'G#2': 0x0501, 'A-2': 0x04b9, 'A#2': 0x0475, 'B-2': 0x0435,
+	'C-3': 0x03f8, 'C#3': 0x03bf, 'D-3': 0x0389, 'D#3': 0x0356, 'E-3': 0x0326, 'F-3': 0x02f9,
+	'F#3': 0x02ce, 'G-3': 0x02a6, 'G#3': 0x0280, 'A-3': 0x025c, 'A#3': 0x023a, 'B-3': 0x021a,
+	'C-4': 0x01fb, 'C#4': 0x01df, 'D-4': 0x01c4, 'D#4': 0x01ab, 'E-4': 0x0193, 'F-4': 0x017c,
+	'F#4': 0x0167, 'G-4': 0x0152, 'G#4': 0x013f, 'A-4': 0x012d, 'A#4': 0x011c, 'B-4': 0x010c,
+	'C-5': 0x00fd, 'C#5': 0x00ef, 'D-5': 0x00e1, 'D#5': 0x00d5, 'E-5': 0x00c9, 'F-5': 0x00bd,
+	'F#5': 0x00b3, 'G-5': 0x00a9, 'G#5': 0x009f, 'A-5': 0x0096, 'A#5': 0x008d, 'B-5': 0x0085,
+	'C-6': 0x007e, 'C#6': 0x0077, 'D-6': 0x0070, 'D#6': 0x006a, 'E-6': 0x0064, 'F-6': 0x005e,
+	'F#6': 0x0059, 'G-6': 0x0054, 'G#6': 0x004f, 'A-6': 0x004b, 'A#6': 0x0046, 'B-6': 0x0042,
+	'C-7': 0x003f, 'C#7': 0x003b, 'D-7': 0x0038, 'D#7': 0x0034, 'E-7': 0x0031, 'F-7': 0x002f,
 	'---': 0x0000  # Rest
 }
 
@@ -295,9 +295,9 @@ class MusicExtractor:
 	"""Extract music and sound data from Dragon Warrior ROM."""
 
 	# ROM offsets for music data (these are approximations - need to be verified)
-	MUSIC_DATA_START = 0x1C010
-	MUSIC_POINTERS = 0x1C000
-	SOUND_EFFECT_DATA = 0x1D000
+	MUSIC_DATA_START = 0x1c010
+	MUSIC_POINTERS = 0x1c000
+	SOUND_EFFECT_DATA = 0x1d000
 
 	def __init__(self, rom_path: Path, verbose: bool = False):
 		self.rom_path = rom_path
@@ -384,26 +384,26 @@ class MusicExtractor:
 		# Example: Menu cursor sound
 		if sfx_id == SoundEffect.MENU_CURSOR:
 			sfx.registers = [
-				APURegisterWrite(0x4000, 0x8F, 0),  # Pulse 1: duty 2, volume 15
-				APURegisterWrite(0x4002, 0x7C, 0),  # Pulse 1: low freq
+				APURegisterWrite(0x4000, 0x8f, 0),  # Pulse 1: duty 2, volume 15
+				APURegisterWrite(0x4002, 0x7c, 0),  # Pulse 1: low freq
 				APURegisterWrite(0x4003, 0x00, 3),  # Pulse 1: high freq, delay 3 frames
 			]
 
 		# Example: Attack sound
 		elif sfx_id == SoundEffect.ATTACK:
 			sfx.registers = [
-				APURegisterWrite(0x400C, 0x30, 0),  # Noise: volume 0, length counter
-				APURegisterWrite(0x400E, 0x01, 0),  # Noise: short period
-				APURegisterWrite(0x400F, 0x00, 5),  # Noise: length, delay 5 frames
+				APURegisterWrite(0x400c, 0x30, 0),  # Noise: volume 0, length counter
+				APURegisterWrite(0x400e, 0x01, 0),  # Noise: short period
+				APURegisterWrite(0x400f, 0x00, 5),  # Noise: length, delay 5 frames
 			]
 
 		# Example: Treasure chest sound
 		elif sfx_id == SoundEffect.TREASURE:
 			sfx.registers = [
-				APURegisterWrite(0x4000, 0x8F, 0),  # Pulse: volume 15
+				APURegisterWrite(0x4000, 0x8f, 0),  # Pulse: volume 15
 				APURegisterWrite(0x4002, 0x93, 0),  # Low note
 				APURegisterWrite(0x4003, 0x00, 5),
-				APURegisterWrite(0x4002, 0x7C, 0),  # Higher note
+				APURegisterWrite(0x4002, 0x7c, 0),  # Higher note
 				APURegisterWrite(0x4003, 0x00, 10), # Hold for 10 frames
 			]
 

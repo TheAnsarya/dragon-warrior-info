@@ -108,7 +108,7 @@ class ShopEditorTab(ttk.Frame):
 		self.current_shop: Optional[ShopInventory] = None
 
 		# ROM offset for shop data
-		self.SHOP_DATA = 0xD200
+		self.SHOP_DATA = 0xd200
 
 		self.create_widgets()
 		self.load_shops()

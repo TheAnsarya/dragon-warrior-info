@@ -181,9 +181,9 @@ class PatchGenerator:
 		"""Encode variable-length integer for BPS format"""
 		result = bytearray()
 		while value >= 0x80:
-			result.append((value & 0x7F) | 0x80)
+			result.append((value & 0x7f) | 0x80)
 			value >>= 7
-		result.append(value & 0x7F)
+		result.append(value & 0x7f)
 		return bytes(result)
 
 	def generate_patches(self) -> Tuple[Optional[Path], Optional[Path]]:

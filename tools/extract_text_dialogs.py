@@ -22,7 +22,7 @@ class DragonWarriorTextExtractor:
 			self.rom_data = f.read()
 
 		# Text data locations
-		self.CHAR_TABLE_OFFSET = 0x14F10  # Character mapping table (Bank02)
+		self.CHAR_TABLE_OFFSET = 0x14f10  # Character mapping table (Bank02)
 		self.DIALOG_PTR_TABLE = 0x12010   # Dialog pointer table (Bank02)
 
 		# Dragon Warrior character encoding
@@ -30,37 +30,37 @@ class DragonWarriorTextExtractor:
 		self.CHARACTER_MAP = {
 			0x00: ' ',  # Space
 			0x01: 'A', 0x02: 'B', 0x03: 'C', 0x04: 'D', 0x05: 'E',
-			0x06: 'F', 0x07: 'G', 0x08: 'H', 0x09: 'I', 0x0A: 'J',
-			0x0B: 'K', 0x0C: 'L', 0x0D: 'M', 0x0E: 'N', 0x0F: 'O',
+			0x06: 'F', 0x07: 'G', 0x08: 'H', 0x09: 'I', 0x0a: 'J',
+			0x0b: 'K', 0x0c: 'L', 0x0d: 'M', 0x0e: 'N', 0x0f: 'O',
 			0x10: 'P', 0x11: 'Q', 0x12: 'R', 0x13: 'S', 0x14: 'T',
 			0x15: 'U', 0x16: 'V', 0x17: 'W', 0x18: 'X', 0x19: 'Y',
-			0x1A: 'Z',
-			0x1B: 'a', 0x1C: 'b', 0x1D: 'c', 0x1E: 'd', 0x1F: 'e',
+			0x1a: 'Z',
+			0x1b: 'a', 0x1c: 'b', 0x1d: 'c', 0x1e: 'd', 0x1f: 'e',
 			0x20: 'f', 0x21: 'g', 0x22: 'h', 0x23: 'i', 0x24: 'j',
 			0x25: 'k', 0x26: 'l', 0x27: 'm', 0x28: 'n', 0x29: 'o',
-			0x2A: 'p', 0x2B: 'q', 0x2C: 'r', 0x2D: 's', 0x2E: 't',
-			0x2F: 'u', 0x30: 'v', 0x31: 'w', 0x32: 'x', 0x33: 'y',
+			0x2a: 'p', 0x2b: 'q', 0x2c: 'r', 0x2d: 's', 0x2e: 't',
+			0x2f: 'u', 0x30: 'v', 0x31: 'w', 0x32: 'x', 0x33: 'y',
 			0x34: 'z',
 			0x35: '\'',  # Apostrophe
 			0x36: ',',   # Comma
 			0x37: '.',   # Period
 			0x38: '!',   # Exclamation
 			0x39: '?',   # Question
-			0x3A: '-',   # Hyphen
-			0x3B: ':',   # Colon
-			0x3C: '0', 0x3D: '1', 0x3E: '2', 0x3F: '3', 0x40: '4',
+			0x3a: '-',   # Hyphen
+			0x3b: ':',   # Colon
+			0x3c: '0', 0x3d: '1', 0x3e: '2', 0x3f: '3', 0x40: '4',
 			0x41: '5', 0x42: '6', 0x43: '7', 0x44: '8', 0x45: '9',
 			# Special control codes
-			0xF0: '<HERO>',      # Player name
-			0xF1: '<WAIT>',      # Wait for button press
-			0xF2: '<LINE>',      # New line
-			0xF3: '<PAGE>',      # New page/clear dialog
-			0xF4: '<CHOICE>',    # Yes/No choice
-			0xF5: '<ITEM>',      # Item name
-			0xF6: '<SPELL>',     # Spell name
-			0xF7: '<MONSTER>',   # Monster name
-			0xFE: '<END>',       # End of string
-			0xFF: '<TERM>',      # String terminator
+			0xf0: '<HERO>',      # Player name
+			0xf1: '<WAIT>',      # Wait for button press
+			0xf2: '<LINE>',      # New line
+			0xf3: '<PAGE>',      # New page/clear dialog
+			0xf4: '<CHOICE>',    # Yes/No choice
+			0xf5: '<ITEM>',      # Item name
+			0xf6: '<SPELL>',     # Spell name
+			0xf7: '<MONSTER>',   # Monster name
+			0xfe: '<END>',       # End of string
+			0xff: '<TERM>',      # String terminator
 		}
 
 		# Common word substitutions (text compression)
@@ -75,12 +75,12 @@ class DragonWarriorTextExtractor:
 			0x87: 'have ',
 			0x88: 'with ',
 			0x89: 'from ',
-			0x8A: 'that ',
-			0x8B: 'thee ',
-			0x8C: 'this ',
-			0x8D: 'will ',
-			0x8E: 'what ',
-			0x8F: 'know ',
+			0x8a: 'that ',
+			0x8b: 'thee ',
+			0x8c: 'this ',
+			0x8d: 'will ',
+			0x8e: 'what ',
+			0x8f: 'know ',
 		}
 
 	def decode_text(self, data: bytes, max_len: int = 500) -> str:
@@ -101,11 +101,11 @@ class DragonWarriorTextExtractor:
 			byte = data[i]
 
 			# Check for terminator
-			if byte in (0xFE, 0xFF):
+			if byte in (0xfe, 0xff):
 				text.append(self.CHARACTER_MAP.get(byte, f'<${byte:02X}>'))
 				break
 
-			# Check for word substitution (0x80-0x8F)
+			# Check for word substitution (0x80-0x8f)
 			if byte in self.WORD_SUBS:
 				text.append(self.WORD_SUBS[byte])
 			# Check for character mapping
@@ -184,9 +184,9 @@ class DragonWarriorTextExtractor:
 			"description": "Dragon Warrior NES character encoding table",
 			"encoding_type": "Custom 8-bit encoding with text compression",
 			"special_features": [
-				"Word substitution for common words (0x80-0x8F)",
-				"Control codes for formatting (0xF0-0xFF)",
-				"Standard ASCII-like mapping (0x00-0x7F)",
+				"Word substitution for common words (0x80-0x8f)",
+				"Control codes for formatting (0xf0-0xff)",
+				"Standard ASCII-like mapping (0x00-0x7f)",
 				"Player name substitution with <HERO> marker",
 				"Dialog pagination with <PAGE> and <WAIT> codes"
 			],
@@ -199,7 +199,7 @@ class DragonWarriorTextExtractor:
 		for code, char in self.CHARACTER_MAP.items():
 			if code < 0x80:
 				table_doc["character_map"][f"${code:02X}"] = char
-			elif code < 0xF0:
+			elif code < 0xf0:
 				# Reserved for future use
 				pass
 			else:
@@ -307,10 +307,10 @@ class DragonWarriorTextExtractor:
 				"strings": str(names_file)
 			},
 			"notes": [
-				"Character encoding uses 0x00-0x7F for basic characters",
-				"Word substitution codes at 0x80-0x8F for common words",
-				"Control codes at 0xF0-0xFF for formatting",
-				"Text terminator at 0xFE/0xFF",
+				"Character encoding uses 0x00-0x7f for basic characters",
+				"Word substitution codes at 0x80-0x8f for common words",
+				"Control codes at 0xf0-0xff for formatting",
+				"Text terminator at 0xfe/0xff",
 				"Dialog offsets approximate - need verification from disassembly"
 			]
 		}
@@ -324,18 +324,18 @@ class DragonWarriorTextExtractor:
 		print("\n" + "="*60)
 		print("DRAGON WARRIOR CHARACTER ENCODING")
 		print("="*60)
-		print("\nBasic Characters (0x00-0x7F):")
+		print("\nBasic Characters (0x00-0x7f):")
 		for code in sorted([k for k in self.CHARACTER_MAP.keys() if k < 0x80]):
 			char = self.CHARACTER_MAP[code]
 			print(f"  ${code:02X} = '{char}'")
 
-		print("\nWord Substitutions (0x80-0x8F):")
+		print("\nWord Substitutions (0x80-0x8f):")
 		for code in sorted(self.WORD_SUBS.keys()):
 			word = self.WORD_SUBS[code]
 			print(f"  ${code:02X} = '{word}'")
 
-		print("\nControl Codes (0xF0-0xFF):")
-		for code in sorted([k for k in self.CHARACTER_MAP.keys() if k >= 0xF0]):
+		print("\nControl Codes (0xf0-0xff):")
+		for code in sorted([k for k in self.CHARACTER_MAP.keys() if k >= 0xf0]):
 			ctrl = self.CHARACTER_MAP[code]
 			print(f"  ${code:02X} = {ctrl}")
 

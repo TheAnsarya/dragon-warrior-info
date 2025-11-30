@@ -31,11 +31,11 @@ import json
 # Known data regions
 ROM_REGIONS = {
 	'header': (0x0000, 0x0010, 'iNES Header'),
-	'monster_stats': (0x5E5B, 0x606A, 'Monster Statistics'),
-	'spell_data': (0x5F3B, 0x5F82, 'Spell Data'),
-	'item_data': (0x5F83, 0x6082, 'Item/Equipment Data'),
+	'monster_stats': (0x5e5b, 0x606a, 'Monster Statistics'),
+	'spell_data': (0x5f3b, 0x5f82, 'Spell Data'),
+	'item_data': (0x5f83, 0x6082, 'Item/Equipment Data'),
 	'chr_rom': (0x10010, 0x14010, 'CHR-ROM Graphics'),
-	'prg_rom': (0x0010, 0xA010, 'PRG-ROM Code/Data'),
+	'prg_rom': (0x0010, 0xa010, 'PRG-ROM Code/Data'),
 }
 
 

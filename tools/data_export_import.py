@@ -70,17 +70,17 @@ except ImportError:
 
 # ROM Offsets
 ROM_OFFSETS = {
-	'MONSTER_STATS': 0xC6E0,
-	'ITEM_DATA': 0xCF50,
-	'SPELL_DATA': 0xD000,
-	'SHOP_DATA': 0xD200,
-	'LEVEL_XP_TABLE': 0xC050,
-	'WORLD_MAP': 0x1D5D,
-	'ENCOUNTER_ZONES': 0x0CF3,
-	'MONSTER_SPRITES': 0x59F4,
+	'MONSTER_STATS': 0xc6e0,
+	'ITEM_DATA': 0xcf50,
+	'SPELL_DATA': 0xd000,
+	'SHOP_DATA': 0xd200,
+	'LEVEL_XP_TABLE': 0xc050,
+	'WORLD_MAP': 0x1d5d,
+	'ENCOUNTER_ZONES': 0x0cf3,
+	'MONSTER_SPRITES': 0x59f4,
 	'CHR_ROM': 0x10010,
-	'BG_PALETTE': 0x19E92,
-	'SPRITE_PALETTE': 0x19EA2,
+	'BG_PALETTE': 0x19e92,
+	'SPRITE_PALETTE': 0x19ea2,
 }
 
 # Data definitions
@@ -340,16 +340,16 @@ class DataImporter:
 
 		for monster in monsters:
 			data = bytes([
-				monster['hp'] & 0xFF,
-				(monster['hp'] >> 8) & 0xFF,
+				monster['hp'] & 0xff,
+				(monster['hp'] >> 8) & 0xff,
 				monster['strength'],
 				monster['agility'],
 				monster['attack_power'],
 				monster['defense_power'],
-				monster['xp_reward'] & 0xFF,
-				(monster['xp_reward'] >> 8) & 0xFF,
-				monster['gold_reward'] & 0xFF,
-				(monster['gold_reward'] >> 8) & 0xFF,
+				monster['xp_reward'] & 0xff,
+				(monster['xp_reward'] >> 8) & 0xff,
+				monster['gold_reward'] & 0xff,
+				(monster['gold_reward'] >> 8) & 0xff,
 				monster['sleep_resistance'],
 				monster['stopspell_resistance'],
 				monster['hurt_resistance'],
@@ -377,16 +377,16 @@ class DataImporter:
 
 		for monster in monsters:
 			data = bytes([
-				monster['hp'] & 0xFF,
-				(monster['hp'] >> 8) & 0xFF,
+				monster['hp'] & 0xff,
+				(monster['hp'] >> 8) & 0xff,
 				monster['strength'],
 				monster['agility'],
 				monster['attack_power'],
 				monster['defense_power'],
-				monster['xp_reward'] & 0xFF,
-				(monster['xp_reward'] >> 8) & 0xFF,
-				monster['gold_reward'] & 0xFF,
-				(monster['gold_reward'] >> 8) & 0xFF,
+				monster['xp_reward'] & 0xff,
+				(monster['xp_reward'] >> 8) & 0xff,
+				monster['gold_reward'] & 0xff,
+				(monster['gold_reward'] >> 8) & 0xff,
 				monster['sleep_resistance'],
 				monster['stopspell_resistance'],
 				monster['hurt_resistance'],

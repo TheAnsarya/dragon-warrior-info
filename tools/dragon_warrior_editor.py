@@ -155,15 +155,15 @@ class ROMDataManager:
 	"""Manages all ROM data loading, parsing, and saving."""
 
 	# ROM Offsets (Dragon Warrior U PRG1)
-	MONSTER_OFFSET = 0x5E5B
+	MONSTER_OFFSET = 0x5e5b
 	MONSTER_COUNT = 39
 	MONSTER_SIZE = 16
 
-	SPELL_OFFSET = 0x5F3B
+	SPELL_OFFSET = 0x5f3b
 	SPELL_COUNT = 10
 	SPELL_SIZE = 8
 
-	ITEM_OFFSET = 0x5F83
+	ITEM_OFFSET = 0x5f83
 	ITEM_COUNT = 32
 	ITEM_SIZE = 8
 
@@ -222,7 +222,7 @@ class ROMDataManager:
 			self.metadata = ROMMetadata(
 				filepath=path,
 				size=len(self.rom_data),
-				checksum=sum(self.rom_data) & 0xFFFFFFFF,
+				checksum=sum(self.rom_data) & 0xffffffff,
 				version=self._detect_version()
 			)
 
@@ -359,21 +359,21 @@ class ROMDataManager:
 			data = bytearray(self.MONSTER_SIZE)
 
 			# Pack data
-			data[0] = monster.hp & 0xFF
-			data[1] = (monster.hp >> 8) & 0xFF
-			data[2] = monster.strength & 0xFF
-			data[3] = monster.agility & 0xFF
-			data[4] = monster.attack_power & 0xFF
-			data[5] = monster.defense_power & 0xFF
-			data[6] = monster.xp_reward & 0xFF
-			data[7] = (monster.xp_reward >> 8) & 0xFF
-			data[8] = monster.gold_reward & 0xFF
-			data[9] = (monster.gold_reward >> 8) & 0xFF
+			data[0] = monster.hp & 0xff
+			data[1] = (monster.hp >> 8) & 0xff
+			data[2] = monster.strength & 0xff
+			data[3] = monster.agility & 0xff
+			data[4] = monster.attack_power & 0xff
+			data[5] = monster.defense_power & 0xff
+			data[6] = monster.xp_reward & 0xff
+			data[7] = (monster.xp_reward >> 8) & 0xff
+			data[8] = monster.gold_reward & 0xff
+			data[9] = (monster.gold_reward >> 8) & 0xff
 			data[10] = self._encode_spell(monster.spell)
-			data[11] = monster.sleep_resist & 0xFF
-			data[12] = monster.stopspell_resist & 0xFF
-			data[13] = monster.hurt_resist & 0xFF
-			data[14] = monster.dodge_rate & 0xFF
+			data[11] = monster.sleep_resist & 0xff
+			data[12] = monster.stopspell_resist & 0xff
+			data[13] = monster.hurt_resist & 0xff
+			data[14] = monster.dodge_rate & 0xff
 
 			# Write to ROM
 			self.rom_data[offset:offset + self.MONSTER_SIZE] = data
@@ -387,10 +387,10 @@ class ROMDataManager:
 			data = bytearray(self.ITEM_SIZE)
 
 			data[0] = self._encode_item_type(item.type)
-			data[1] = item.attack & 0xFF
-			data[2] = item.defense & 0xFF
-			data[3] = item.price & 0xFF
-			data[4] = (item.price >> 8) & 0xFF
+			data[1] = item.attack & 0xff
+			data[2] = item.defense & 0xff
+			data[3] = item.price & 0xff
+			data[4] = (item.price >> 8) & 0xff
 			data[5] = (int(item.sellable) | (int(item.cursed) << 1) |
 					   (int(item.equippable) << 2))
 
@@ -404,8 +404,8 @@ class ROMDataManager:
 		for spell in self.spells:
 			data = bytearray(self.SPELL_SIZE)
 
-			data[0] = spell.mp_cost & 0xFF
-			data[1] = spell.power & 0xFF
+			data[0] = spell.mp_cost & 0xff
+			data[1] = spell.power & 0xff
 			data[2] = self._encode_spell_type(spell.type)
 			data[3] = int(spell.field_usable) | (int(spell.battle_usable) << 1)
 
@@ -414,7 +414,7 @@ class ROMDataManager:
 
 	def _decode_spell(self, value: int) -> str:
 		"""Decode spell ID to name."""
-		if value == 0xFF:
+		if value == 0xff:
 			return "None"
 		elif value < len(self.SPELL_NAMES):
 			return self.SPELL_NAMES[value]
@@ -423,11 +423,11 @@ class ROMDataManager:
 	def _encode_spell(self, name: str) -> int:
 		"""Encode spell name to ID."""
 		if name == "None":
-			return 0xFF
+			return 0xff
 		try:
 			return self.SPELL_NAMES.index(name)
 		except ValueError:
-			return 0xFF
+			return 0xff
 
 	def _decode_item_type(self, value: int) -> str:
 		"""Decode item type byte."""

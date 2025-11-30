@@ -156,14 +156,14 @@ class AssetReinserter:
 				exp = min(255, monster.get('experience', 1))
 				gld = min(255, monster.get('gold', 2))
 
-				# Calculate label address (0x9E4B is start of EnStatTbl)
-				label_addr = 0x9E4B + (monster_id * 16)
+				# Calculate label address (0x9e4b is start of EnStatTbl)
+				label_addr = 0x9e4b + (monster_id * 16)
 
 				asm_lines.extend([
 					f";",
 					f";Enemy ${monster_id:02X}-{monster['name']}.",
 					f";             Att  Def   HP  Spel Agi  Mdef Exp  Gld   |--------------Unused--------------|",
-					f"L{label_addr:04X}:  .byte ${att:02X}, ${def_val:02X}, ${hp:02X}, ${spel:02X}, ${agi:02X}, ${mdef:02X}, ${exp:02X}, ${gld:02X}, $69, $40, $4A, $4D, $FA, $FA, $FA, $FA"
+					f"L{label_addr:04X}:  .byte ${att:02X}, ${def_val:02X}, ${hp:02X}, ${spel:02X}, ${agi:02X}, ${mdef:02X}, ${exp:02X}, ${gld:02X}, $69, $40, $4a, $4d, $fa, $fa, $fa, $fa"
 				])
 
 			asm_content = "\n".join(asm_lines)
@@ -354,13 +354,13 @@ class AssetReinserter:
 	def _rgb_to_nes_index(self, r: int, g: int, b: int) -> int:
 		"""Convert RGB color to nearest NES palette index (simplified)"""
 		# This is a simplified conversion - real implementation would use proper color distance calculation
-		# NES palette has 64 colors (0x00-0x3F)
+		# NES palette has 64 colors (0x00-0x3f)
 
 		# Simple grayscale-based mapping for demonstration
 		gray = int(0.299 * r + 0.587 * g + 0.114 * b)
 
 		if gray < 64:
-			return 0x0F	# Black
+			return 0x0f	# Black
 		elif gray < 128:
 			return 0x00	# Dark gray
 		elif gray < 192:

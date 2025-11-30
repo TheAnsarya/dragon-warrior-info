@@ -40,11 +40,11 @@ Enemy Spells (5):
 - Hurt, Sleep, Stopspell, Hurtmore, Healmore
 
 Spell Data Locations:
-- Spell Names: 0x1C40-0x1CFF
-- MP Costs: 0x1D00-0x1D3F
-- Spell Effects: 0x1D40-0x1D7F
-- Learning Levels: 0x1D80-0x1DBF
-- Damage Tables: 0x1DC0-0x1DFF
+- Spell Names: 0x1c40-0x1cff
+- MP Costs: 0x1d00-0x1d3f
+- Spell Effects: 0x1d40-0x1d7f
+- Learning Levels: 0x1d80-0x1dbf
+- Damage Tables: 0x1dc0-0x1dff
 
 Usage:
 	python tools/spell_editor.py <rom_file>
@@ -224,11 +224,11 @@ class SpellDataLoader:
 	"""Load spell data from ROM."""
 
 	# ROM offsets (simplified)
-	SPELL_NAMES_OFFSET = 0x1C40
-	MP_COSTS_OFFSET = 0x1D00
-	SPELL_EFFECTS_OFFSET = 0x1D40
-	LEARNING_LEVELS_OFFSET = 0x1D80
-	DAMAGE_TABLES_OFFSET = 0x1DC0
+	SPELL_NAMES_OFFSET = 0x1c40
+	MP_COSTS_OFFSET = 0x1d00
+	SPELL_EFFECTS_OFFSET = 0x1d40
+	LEARNING_LEVELS_OFFSET = 0x1d80
+	DAMAGE_TABLES_OFFSET = 0x1dc0
 
 	@staticmethod
 	def load_spell(rom_data: bytes, spell_id: int) -> Optional[Spell]:

@@ -209,11 +209,11 @@ class MapExtractor:
 	"""Extract map data from ROM."""
 
 	# Dragon Warrior map locations (approximate)
-	OVERWORLD_TILES = 0x1B000
+	OVERWORLD_TILES = 0x1b000
 	OVERWORLD_WIDTH = 120
 	OVERWORLD_HEIGHT = 120
 
-	CASTLE_TILES = 0x1C000
+	CASTLE_TILES = 0x1c000
 	CASTLE_WIDTH = 32
 	CASTLE_HEIGHT = 32
 

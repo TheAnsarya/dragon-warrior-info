@@ -57,9 +57,9 @@ except ImportError:
 # ============================================================================
 
 # ROM Offsets
-WORLD_MAP_OFFSET = 0x1D5D  # 120×120 overworld map
-ENCOUNTER_ZONES_OFFSET = 0x0CF3  # 9 encounter zones
-ENCOUNTER_TABLE_OFFSET = 0xF5F0  # Encounter table pointers
+WORLD_MAP_OFFSET = 0x1d5d  # 120×120 overworld map
+ENCOUNTER_ZONES_OFFSET = 0x0cf3  # 9 encounter zones
+ENCOUNTER_TABLE_OFFSET = 0xf5f0  # Encounter table pointers
 
 # Map dimensions
 WORLD_MAP_WIDTH = 120
@@ -77,12 +77,12 @@ TILE_TYPES = {
 	0x07: ("Cave", True, "#444444"),
 	0x08: ("Castle", True, "#CC8844"),
 	0x09: ("Bridge", True, "#AA7744"),
-	0x0A: ("Stairs Down", True, "#666666"),
-	0x0B: ("Stairs Up", True, "#888888"),
-	0x0C: ("Barrier", False, "#FF0000"),
-	0x0D: ("Treasure", True, "#FFDD00"),
-	0x0E: ("Door", True, "#AA5522"),
-	0x0F: ("Wall", False, "#222222"),
+	0x0a: ("Stairs Down", True, "#666666"),
+	0x0b: ("Stairs Up", True, "#888888"),
+	0x0c: ("Barrier", False, "#FF0000"),
+	0x0d: ("Treasure", True, "#FFDD00"),
+	0x0e: ("Door", True, "#AA5522"),
+	0x0f: ("Wall", False, "#222222"),
 }
 
 

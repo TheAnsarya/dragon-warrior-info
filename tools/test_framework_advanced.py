@@ -131,8 +131,8 @@ class MockROM:
 			if offset + 32 < self.size:
 				# HP (2 bytes little-endian)
 				hp = 10 + (i * 5)
-				self.data[offset] = hp & 0xFF
-				self.data[offset + 1] = (hp >> 8) & 0xFF
+				self.data[offset] = hp & 0xff
+				self.data[offset + 1] = (hp >> 8) & 0xff
 
 				# Strength
 				self.data[offset + 2] = 5 + i
@@ -142,8 +142,8 @@ class MockROM:
 
 				# Gold (2 bytes)
 				gold = 10 + (i * 3)
-				self.data[offset + 4] = gold & 0xFF
-				self.data[offset + 5] = (gold >> 8) & 0xFF
+				self.data[offset + 4] = gold & 0xff
+				self.data[offset + 5] = (gold >> 8) & 0xff
 
 		# Item data at 0x7000 (38 items)
 		for i in range(38):
@@ -151,8 +151,8 @@ class MockROM:
 			if offset + 16 < self.size:
 				# Price (2 bytes)
 				price = 50 + (i * 25)
-				self.data[offset] = price & 0xFF
-				self.data[offset + 1] = (price >> 8) & 0xFF
+				self.data[offset] = price & 0xff
+				self.data[offset + 1] = (price >> 8) & 0xff
 
 				# Type
 				self.data[offset + 2] = i % 4
@@ -175,12 +175,12 @@ class MockROM:
 	def write_byte(self, address: int, value: int):
 		"""Write byte to mock ROM."""
 		if 0 <= address < self.size:
-			self.data[address] = value & 0xFF
+			self.data[address] = value & 0xff
 
 	def write_word(self, address: int, value: int):
 		"""Write 16-bit word (little-endian)."""
-		self.write_byte(address, value & 0xFF)
-		self.write_byte(address + 1, (value >> 8) & 0xFF)
+		self.write_byte(address, value & 0xff)
+		self.write_byte(address + 1, (value >> 8) & 0xff)
 
 	def to_bytes(self) -> bytes:
 		"""Get ROM as bytes."""
@@ -397,7 +397,7 @@ class RegressionTests(unittest.TestCase):
 		rom = MockROM()
 
 		# Gold is unsigned 16-bit
-		rom.write_word(0x6004, 0xFFFF)
+		rom.write_word(0x6004, 0xffff)
 		gold = rom.read_word(0x6004)
 		self.assertEqual(gold, 65535)
 
@@ -496,7 +496,7 @@ class BenchmarkTests(unittest.TestCase):
 
 		start = time.time()
 		for i in range(10000):
-			rom.write_byte(0x6000 + (i % 1000), i & 0xFF)
+			rom.write_byte(0x6000 + (i % 1000), i & 0xff)
 		duration = time.time() - start
 
 		self.assertLess(duration, 1.0)
