@@ -205,6 +205,36 @@ if ($UseAssets) {
             Write-Host "   ⚠️  Could not generate shop items table: $_" -ForegroundColor Yellow
         }
     }
+
+    # Generate equipment bonus tables
+    $equipmentBonusGenerator = Join-Path $ToolsDir "generate_equipment_bonus_tables.py"
+    $generatedEquipmentBonusASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "equipment_bonus_tables.asm"
+    if (Test-Path $equipmentBonusGenerator) {
+        Write-Host "⚔️  Generating equipment bonus tables..." -ForegroundColor Cyan
+        try {
+            & $Python $equipmentBonusGenerator 2>&1 | Out-Null
+            if (Test-Path $generatedEquipmentBonusASM) {
+                Write-Host "   ✓ Equipment bonus tables generated" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "   ⚠️  Could not generate equipment bonus tables: $_" -ForegroundColor Yellow
+        }
+    }
+
+    # Generate NPC tables
+    $npcTableGenerator = Join-Path $ToolsDir "generate_npc_tables.py"
+    $generatedNpcTablesASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "npc_tables.asm"
+    if (Test-Path $npcTableGenerator) {
+        Write-Host "👤 Generating NPC tables..." -ForegroundColor Cyan
+        try {
+            & $Python $npcTableGenerator 2>&1 | Out-Null
+            if (Test-Path $generatedNpcTablesASM) {
+                Write-Host "   ✓ NPC tables generated" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "   ⚠️  Could not generate NPC tables: $_" -ForegroundColor Yellow
+        }
+    }
 }
 
 # Item cost table is now included via .include directive in Bank00.asm
@@ -365,6 +395,11 @@ if ($UseAssets) {
         Write-Host "   ✅ Shop Data: Integrated from assets/json/shops.json" -ForegroundColor Green
     } else {
         Write-Host "   ⚠️  Shop Data: Not integrated" -ForegroundColor Yellow
+    }
+    if (Test-Path (Join-Path $SourceDir "generated" | Join-Path -ChildPath "equipment_bonus_tables.asm")) {
+        Write-Host "   ✅ Equipment Bonuses: Integrated from assets/json/equipment_bonuses.json" -ForegroundColor Green
+    } else {
+        Write-Host "   ⚠️  Equipment Bonuses: Not integrated" -ForegroundColor Yellow
     }
     Write-Host "   ⚠️  PNG → CHR: Not yet implemented" -ForegroundColor Yellow
 }
