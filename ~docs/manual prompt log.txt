@@ -157,6 +157,7 @@ you said: "Build Pipeline: NPC Tables (generated but not yet integrated into sou
 
 yes, continue! in the extracted data some of the entries use `bytes_hex` as as a string[] but some use `bytes` as a int[] (and not using hex format, whicfhit should) and both of those should have it's entire value on the same line (put all the array and values on one line)
 
+continue working! ; make sure all editors are in one universal editor (with tabs, and a meta-quick-start-tab with links to all of the different editors); make sure all assets are extracted, then transformed to an editable state, then that editable state is transformed back into data, and reinserted into the rom; most of that should be done already; ***continue!***; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
 
 
@@ -183,46 +184,6 @@ yes, continue! in the extracted data some of the entries use `bytes_hex` as as a
 is there any way to abstract what spells do even though they're implemented as code, not data? this would be so we can edit them in a json file and in an editor;
 
 git comment and push everything that is uncommited; **continue!**; 
-
-git comment and push everything that is uncommited in logical effort groups; make sure you are creating and updating github issues for all work, especially new work; create/update todolists in documentation as well (`\~docs\` folder); make sure the chat-logs/session-logs are always being updated as you go; continue with `Dialog Data Integration` (reference `C:\Users\me\source\repos\GameInfo\Dragon Warrior (NES)\Wiki\Files\Dragon Warrior (NES).tbl`); update the dialog editor with the new changes;
-
-in the extracted data some of the entries use `bytes_hex` as as a string[] but some use `bytes` as a int[]... both of those should have it's entire value on the same line;
-
-**COMPLETED:**
-- Fixed JSON format inconsistency in dialogs_extracted.json
-- Changed all entries to use bytes_hex (hex strings) consistently
-- Arrays now formatted on single lines for readability
-- Updated generate_dialog_tables.py to parse bytes_hex format
-- Committed and pushed changes
-
-**SESSION PROGRESS (continued):**
-- Dialog Data Integration (Issue #11) - IN PROGRESS
-  - Created extract_dialogs_from_asm.py - extracts 298 dialogs
-  - Created generate_dialog_tables.py - generates assembly from JSON  
-  - Created dw_text_encoding.py - reusable TBL encoding module
-  - Fixed JSON format to use bytes_hex consistently
-  - Next: Update dialog editor, integrate dialog_data.asm into build
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
