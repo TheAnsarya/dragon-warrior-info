@@ -4446,6 +4446,626 @@ class CheatCodeTab(BaseTab):
 
 
 # ============================================================================
+# MUSIC/SOUND EDITOR TAB
+# ============================================================================
+
+class MusicEditorTab(BaseTab):
+	"""View and edit music/sound data from the ROM."""
+
+	# NES APU note frequencies (NTSC, based on CPU clock 1.789773 MHz)
+	# These are period values for the square wave channels
+	NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+
+	# Dragon Warrior music track info (approximate offsets - would need verification)
+	MUSIC_TRACKS = {
+		'Title Screen': {'offset': 0xF000 + 0x10, 'description': 'Main title music'},
+		'Overworld': {'offset': 0xE800 + 0x10, 'description': 'World map theme'},
+		'Castle': {'offset': 0xE900 + 0x10, 'description': 'Castle/town theme'},
+		'Cave': {'offset': 0xEA00 + 0x10, 'description': 'Dungeon theme'},
+		'Battle': {'offset': 0xEB00 + 0x10, 'description': 'Battle music'},
+		'Victory': {'offset': 0xEC00 + 0x10, 'description': 'Victory fanfare'},
+		'Death': {'offset': 0xED00 + 0x10, 'description': 'Game over theme'},
+		'Inn': {'offset': 0xEE00 + 0x10, 'description': 'Inn rest jingle'},
+		'Level Up': {'offset': 0xEF00 + 0x10, 'description': 'Level up fanfare'},
+	}
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.rom_data: Optional[bytes] = None
+		self.current_track: Optional[str] = None
+
+		self.setup_ui()
+		self.load_rom()
+
+	def setup_ui(self):
+		"""Set up music editor UI."""
+		# Main paned window
+		paned = ttk.PanedWindow(self.frame, orient='horizontal')
+		paned.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Left side: Track list
+		left_frame = ttk.LabelFrame(paned, text="Music Tracks")
+		paned.add(left_frame, weight=1)
+
+		# Track listbox
+		self.track_listbox = tk.Listbox(left_frame, font=('Segoe UI', 10))
+		self.track_listbox.pack(fill='both', expand=True, padx=5, pady=5)
+		self.track_listbox.bind('<<ListboxSelect>>', self.on_track_select)
+
+		for track_name in self.MUSIC_TRACKS.keys():
+			self.track_listbox.insert('end', track_name)
+
+		# Track info
+		info_frame = ttk.LabelFrame(left_frame, text="Track Info")
+		info_frame.pack(fill='x', padx=5, pady=5)
+
+		self.track_info_var = tk.StringVar(value="Select a track")
+		ttk.Label(info_frame, textvariable=self.track_info_var, wraplength=200).pack(padx=5, pady=5)
+
+		# Right side: Data view
+		right_frame = ttk.LabelFrame(paned, text="Music Data")
+		paned.add(right_frame, weight=2)
+
+		# Hex view of music data
+		self.data_text = tk.Text(
+			right_frame,
+			font=('Consolas', 10),
+			wrap='none',
+			bg='#1e1e1e',
+			fg='#d4d4d4',
+			height=20
+		)
+		self.data_text.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Configure tags
+		self.data_text.tag_configure('note', foreground='#4ec9b0')
+		self.data_text.tag_configure('duration', foreground='#ce9178')
+		self.data_text.tag_configure('control', foreground='#c586c0')
+		self.data_text.tag_configure('offset', foreground='#569cd6')
+
+		# Note visualization canvas
+		viz_frame = ttk.LabelFrame(right_frame, text="Note Visualization")
+		viz_frame.pack(fill='x', padx=5, pady=5)
+
+		self.viz_canvas = tk.Canvas(
+			viz_frame,
+			bg='#1e1e1e',
+			height=100,
+			highlightthickness=0
+		)
+		self.viz_canvas.pack(fill='x', padx=5, pady=5)
+
+		# Controls
+		control_frame = ttk.Frame(right_frame)
+		control_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(control_frame, text="Bytes to show:").pack(side='left', padx=5)
+		self.bytes_var = tk.StringVar(value="256")
+		bytes_spin = ttk.Spinbox(control_frame, textvariable=self.bytes_var, from_=64, to=1024, width=8)
+		bytes_spin.pack(side='left', padx=5)
+
+		ttk.Button(control_frame, text="Refresh", command=self.refresh_data).pack(side='left', padx=5)
+		ttk.Button(control_frame, text="Export Notes", command=self.export_notes).pack(side='left', padx=5)
+
+		# Bottom: NES APU info
+		apu_frame = ttk.LabelFrame(self.frame, text="NES APU Information")
+		apu_frame.pack(fill='x', padx=5, pady=5)
+
+		apu_text = """NES Audio Processing Unit (APU):
+• 2 Square Wave Channels (Pulse 1 & 2) - Main melody instruments
+• 1 Triangle Wave Channel - Bass and smooth tones
+• 1 Noise Channel - Drums and percussion
+• 1 DPCM Channel - Sample playback (rarely used in Dragon Warrior)
+
+Dragon Warrior uses a custom music engine with bytecode for note sequences."""
+
+		ttk.Label(apu_frame, text=apu_text, justify='left').pack(padx=5, pady=5)
+
+	def load_rom(self):
+		"""Load ROM data."""
+		rom_path = PROJECT_ROOT / "build" / "dragon_warrior_rebuilt.nes"
+		if not rom_path.exists():
+			rom_path = PROJECT_ROOT / "roms" / "Dragon Warrior (USA).nes"
+
+		if rom_path.exists():
+			try:
+				with open(rom_path, 'rb') as f:
+					self.rom_data = f.read()
+				self.status_callback(f"Loaded ROM: {rom_path.name}")
+			except Exception as e:
+				self.status_callback(f"Failed to load ROM: {e}")
+
+	def on_track_select(self, event):
+		"""Handle track selection."""
+		selection = self.track_listbox.curselection()
+		if not selection:
+			return
+
+		track_name = self.track_listbox.get(selection[0])
+		self.current_track = track_name
+		track_info = self.MUSIC_TRACKS[track_name]
+
+		self.track_info_var.set(f"{track_name}\n\nOffset: 0x{track_info['offset']:08X}\n\n{track_info['description']}")
+
+		self.refresh_data()
+
+	def refresh_data(self):
+		"""Refresh the data view for current track."""
+		if not self.rom_data or not self.current_track:
+			return
+
+		track_info = self.MUSIC_TRACKS[self.current_track]
+		offset = track_info['offset']
+		num_bytes = int(self.bytes_var.get())
+
+		# Clear views
+		self.data_text.delete('1.0', 'end')
+		self.viz_canvas.delete('all')
+
+		# Show hex data with interpretation
+		self.data_text.insert('end', f"Track: {self.current_track}\n")
+		self.data_text.insert('end', f"Offset: 0x{offset:08X}\n\n")
+
+		# Display bytes in rows of 16
+		for row in range(0, num_bytes, 16):
+			addr = offset + row
+			if addr >= len(self.rom_data):
+				break
+
+			# Offset column
+			self.data_text.insert('end', f"{addr:06X}  ", 'offset')
+
+			# Hex bytes
+			for col in range(16):
+				byte_addr = addr + col
+				if byte_addr >= len(self.rom_data) or byte_addr >= offset + num_bytes:
+					self.data_text.insert('end', '   ')
+				else:
+					byte = self.rom_data[byte_addr]
+					# Color code based on potential meaning
+					if byte < 0x48:  # Likely note
+						tag = 'note'
+					elif byte < 0x80:  # Likely duration/length
+						tag = 'duration'
+					else:  # Control byte
+						tag = 'control'
+					self.data_text.insert('end', f"{byte:02X} ", tag)
+
+				if col == 7:
+					self.data_text.insert('end', ' ')
+
+			self.data_text.insert('end', '\n')
+
+		# Simple visualization
+		self.draw_note_visualization(offset, min(num_bytes, 128))
+
+	def draw_note_visualization(self, offset: int, num_bytes: int):
+		"""Draw a simple note visualization."""
+		if not self.rom_data:
+			return
+
+		canvas_width = self.viz_canvas.winfo_width() or 600
+		canvas_height = 100
+
+		# Draw note bars based on byte values (simplified interpretation)
+		bar_width = max(2, canvas_width // num_bytes)
+
+		for i in range(num_bytes):
+			addr = offset + i
+			if addr >= len(self.rom_data):
+				break
+
+			byte = self.rom_data[addr]
+			x = i * bar_width
+
+			# Height based on byte value
+			height = int((byte / 255) * (canvas_height - 10))
+			y = canvas_height - height - 5
+
+			# Color based on value range
+			if byte < 0x48:
+				color = '#4ec9b0'  # Note (green)
+			elif byte < 0x80:
+				color = '#ce9178'  # Duration (orange)
+			else:
+				color = '#c586c0'  # Control (purple)
+
+			self.viz_canvas.create_rectangle(x, y, x + bar_width - 1, canvas_height - 5, fill=color, outline='')
+
+		# Legend
+		self.viz_canvas.create_text(10, 10, anchor='nw', text="■ Note", fill='#4ec9b0', font=('Segoe UI', 8))
+		self.viz_canvas.create_text(80, 10, anchor='nw', text="■ Duration", fill='#ce9178', font=('Segoe UI', 8))
+		self.viz_canvas.create_text(160, 10, anchor='nw', text="■ Control", fill='#c586c0', font=('Segoe UI', 8))
+
+	def export_notes(self):
+		"""Export track data to a text file."""
+		if not self.current_track or not self.rom_data:
+			messagebox.showinfo("Info", "Select a track first")
+			return
+
+		from tkinter import filedialog
+		path = filedialog.asksaveasfilename(
+			defaultextension=".txt",
+			filetypes=[("Text files", "*.txt")],
+			initialfile=f"dw_music_{self.current_track.lower().replace(' ', '_')}.txt"
+		)
+
+		if path:
+			track_info = self.MUSIC_TRACKS[self.current_track]
+			offset = track_info['offset']
+			num_bytes = int(self.bytes_var.get())
+
+			try:
+				with open(path, 'w') as f:
+					f.write(f"Dragon Warrior Music Data Export\n")
+					f.write(f"Track: {self.current_track}\n")
+					f.write(f"Offset: 0x{offset:08X}\n")
+					f.write(f"Description: {track_info['description']}\n")
+					f.write("=" * 50 + "\n\n")
+
+					f.write("Raw Bytes:\n")
+					for i in range(0, num_bytes, 16):
+						addr = offset + i
+						if addr >= len(self.rom_data):
+							break
+
+						bytes_row = []
+						for j in range(16):
+							byte_addr = addr + j
+							if byte_addr < len(self.rom_data) and byte_addr < offset + num_bytes:
+								bytes_row.append(f"{self.rom_data[byte_addr]:02X}")
+
+						f.write(f"{addr:06X}: {' '.join(bytes_row)}\n")
+
+				messagebox.showinfo("Success", f"Exported to {Path(path).name}")
+			except Exception as e:
+				messagebox.showerror("Error", f"Export failed: {e}")
+
+	def refresh(self):
+		"""Refresh tab."""
+		self.load_rom()
+		if self.current_track:
+			self.refresh_data()
+
+
+# ============================================================================
+# TEXT TABLE EDITOR TAB
+# ============================================================================
+
+class TextTableEditorTab(BaseTab):
+	"""Edit the text encoding table (TBL) used by the game."""
+
+	# Dragon Warrior's default text encoding
+	DEFAULT_TABLE = {
+		0x00: '0', 0x01: '1', 0x02: '2', 0x03: '3', 0x04: '4',
+		0x05: '5', 0x06: '6', 0x07: '7', 0x08: '8', 0x09: '9',
+		0x0A: 'a', 0x0B: 'b', 0x0C: 'c', 0x0D: 'd', 0x0E: 'e',
+		0x0F: 'f', 0x10: 'g', 0x11: 'h', 0x12: 'i', 0x13: 'j',
+		0x14: 'k', 0x15: 'l', 0x16: 'm', 0x17: 'n', 0x18: 'o',
+		0x19: 'p', 0x1A: 'q', 0x1B: 'r', 0x1C: 's', 0x1D: 't',
+		0x1E: 'u', 0x1F: 'v', 0x20: 'w', 0x21: 'x', 0x22: 'y',
+		0x23: 'z', 0x24: 'A', 0x25: 'B', 0x26: 'C', 0x27: 'D',
+		0x28: 'E', 0x29: 'F', 0x2A: 'G', 0x2B: 'H', 0x2C: 'I',
+		0x2D: 'J', 0x2E: 'K', 0x2F: 'L', 0x30: 'M', 0x31: 'N',
+		0x32: 'O', 0x33: 'P', 0x34: 'Q', 0x35: 'R', 0x36: 'S',
+		0x37: 'T', 0x38: 'U', 0x39: 'V', 0x3A: 'W', 0x3B: 'X',
+		0x3C: 'Y', 0x3D: 'Z', 0x3E: '-', 0x3F: "'", 0x40: '!',
+		0x41: '?', 0x42: '.', 0x43: ',', 0x44: ' ', 0x45: '(',
+		0x46: ')', 0x47: '<heart>', 0x48: '*', 0x49: '>',
+		0x4A: '<sl>', 0x4B: '<up>', 0x4C: '<down>',
+		0x5F: '\n',  # New line
+		0xFC: '<name>',  # Hero name
+		0xFD: '<item>',  # Item name
+		0xFE: '<enemy>',  # Enemy name
+		0xFF: '<end>',  # End of string
+	}
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.table = dict(self.DEFAULT_TABLE)
+		self.modified = False
+
+		self.setup_ui()
+		self.load_table()
+
+	def setup_ui(self):
+		"""Set up text table editor UI."""
+		# Main paned window
+		paned = ttk.PanedWindow(self.frame, orient='horizontal')
+		paned.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Left side: Table view
+		left_frame = ttk.LabelFrame(paned, text="Character Table")
+		paned.add(left_frame, weight=2)
+
+		# Treeview for table entries
+		columns = ('hex', 'dec', 'char', 'description')
+		self.table_tree = ttk.Treeview(left_frame, columns=columns, show='headings', height=20)
+		self.table_tree.heading('hex', text='Hex')
+		self.table_tree.heading('dec', text='Dec')
+		self.table_tree.heading('char', text='Character')
+		self.table_tree.heading('description', text='Description')
+		self.table_tree.column('hex', width=60)
+		self.table_tree.column('dec', width=50)
+		self.table_tree.column('char', width=100)
+		self.table_tree.column('description', width=150)
+
+		scrollbar = ttk.Scrollbar(left_frame, orient='vertical', command=self.table_tree.yview)
+		self.table_tree.configure(yscrollcommand=scrollbar.set)
+
+		self.table_tree.pack(side='left', fill='both', expand=True)
+		scrollbar.pack(side='right', fill='y')
+
+		self.table_tree.bind('<Double-Button-1>', self.edit_entry)
+
+		# Right side: Visual grid + editing
+		right_frame = ttk.Frame(paned)
+		paned.add(right_frame, weight=1)
+
+		# Visual grid
+		grid_frame = ttk.LabelFrame(right_frame, text="Character Grid (16x16)")
+		grid_frame.pack(fill='x', padx=5, pady=5)
+
+		self.grid_canvas = tk.Canvas(
+			grid_frame,
+			width=320,
+			height=320,
+			bg='#1e1e1e',
+			highlightthickness=0
+		)
+		self.grid_canvas.pack(padx=5, pady=5)
+		self.grid_canvas.bind('<Button-1>', self.on_grid_click)
+
+		# Edit panel
+		edit_frame = ttk.LabelFrame(right_frame, text="Edit Entry")
+		edit_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(edit_frame, text="Byte Value:").grid(row=0, column=0, sticky='e', padx=5, pady=2)
+		self.byte_var = tk.StringVar()
+		ttk.Entry(edit_frame, textvariable=self.byte_var, width=10, state='readonly').grid(
+			row=0, column=1, sticky='w', padx=5, pady=2)
+
+		ttk.Label(edit_frame, text="Character:").grid(row=1, column=0, sticky='e', padx=5, pady=2)
+		self.char_var = tk.StringVar()
+		ttk.Entry(edit_frame, textvariable=self.char_var, width=20).grid(
+			row=1, column=1, sticky='w', padx=5, pady=2)
+
+		ttk.Button(edit_frame, text="Update", command=self.update_entry).grid(
+			row=2, column=0, columnspan=2, pady=5)
+
+		# Control codes reference
+		codes_frame = ttk.LabelFrame(right_frame, text="Control Codes")
+		codes_frame.pack(fill='x', padx=5, pady=5)
+
+		codes_text = tk.Text(codes_frame, height=8, font=('Consolas', 9), bg='#252526', fg='#d4d4d4')
+		codes_text.pack(fill='x', padx=5, pady=5)
+		codes_text.insert('1.0', """Special codes used in Dragon Warrior:
+$5F = New line
+$FC = Hero's name
+$FD = Item name (context)
+$FE = Enemy name (context)
+$FF = End of string
+
+$F0-$FB = Wait, pause, clear commands""")
+		codes_text.config(state='disabled')
+
+		# Buttons
+		btn_frame = ttk.Frame(right_frame)
+		btn_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Button(btn_frame, text="Save Table", command=self.save_table).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Reset to Default", command=self.reset_table).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Export TBL", command=self.export_tbl).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Import TBL", command=self.import_tbl).pack(side='left', padx=5)
+
+	def load_table(self):
+		"""Load the text table."""
+		# Try to load from JSON file
+		table_file = PROJECT_ROOT / "assets" / "data" / "text_table.json"
+		if table_file.exists():
+			try:
+				with open(table_file, 'r') as f:
+					data = json.load(f)
+					# Convert string keys back to int
+					self.table = {int(k): v for k, v in data.items()}
+			except:
+				self.table = dict(self.DEFAULT_TABLE)
+		else:
+			self.table = dict(self.DEFAULT_TABLE)
+
+		self.refresh_display()
+
+	def refresh_display(self):
+		"""Refresh the table display."""
+		# Clear treeview
+		for item in self.table_tree.get_children():
+			self.table_tree.delete(item)
+
+		# Add entries
+		for byte_val in range(256):
+			char = self.table.get(byte_val, '')
+			desc = self.get_description(byte_val)
+			self.table_tree.insert('', 'end', values=(
+				f"0x{byte_val:02X}",
+				str(byte_val),
+				char if char else '(undefined)',
+				desc
+			))
+
+		# Update grid
+		self.draw_grid()
+
+	def get_description(self, byte_val: int) -> str:
+		"""Get description for a byte value."""
+		if byte_val <= 0x09:
+			return "Digit"
+		elif 0x0A <= byte_val <= 0x23:
+			return "Lowercase letter"
+		elif 0x24 <= byte_val <= 0x3D:
+			return "Uppercase letter"
+		elif 0x3E <= byte_val <= 0x4C:
+			return "Punctuation/Symbol"
+		elif byte_val == 0x44:
+			return "Space"
+		elif byte_val == 0x5F:
+			return "New line"
+		elif 0xF0 <= byte_val <= 0xFB:
+			return "Control code"
+		elif byte_val >= 0xFC:
+			return "Special code"
+		else:
+			return ""
+
+	def draw_grid(self):
+		"""Draw the character grid."""
+		self.grid_canvas.delete('all')
+		cell_size = 20
+
+		for row in range(16):
+			for col in range(16):
+				byte_val = row * 16 + col
+				x = col * cell_size
+				y = row * cell_size
+
+				# Background color
+				if byte_val in self.table:
+					bg = '#2d4a2d'  # Green for defined
+				else:
+					bg = '#1e1e1e'  # Dark for undefined
+
+				self.grid_canvas.create_rectangle(
+					x, y, x + cell_size, y + cell_size,
+					fill=bg, outline='#3c3c3c'
+				)
+
+				# Character preview
+				char = self.table.get(byte_val, '')
+				if char and len(char) == 1 and char.isprintable():
+					self.grid_canvas.create_text(
+						x + cell_size // 2, y + cell_size // 2,
+						text=char, fill='#d4d4d4', font=('Consolas', 8)
+					)
+
+	def on_grid_click(self, event):
+		"""Handle grid click."""
+		cell_size = 20
+		col = event.x // cell_size
+		row = event.y // cell_size
+		byte_val = row * 16 + col
+
+		if 0 <= byte_val <= 255:
+			self.byte_var.set(f"0x{byte_val:02X}")
+			self.char_var.set(self.table.get(byte_val, ''))
+
+			# Also select in treeview
+			for item in self.table_tree.get_children():
+				if self.table_tree.item(item)['values'][1] == str(byte_val):
+					self.table_tree.selection_set(item)
+					self.table_tree.see(item)
+					break
+
+	def edit_entry(self, event):
+		"""Edit selected entry."""
+		selection = self.table_tree.selection()
+		if selection:
+			values = self.table_tree.item(selection[0])['values']
+			byte_val = int(values[1])
+			self.byte_var.set(f"0x{byte_val:02X}")
+			self.char_var.set(self.table.get(byte_val, ''))
+
+	def update_entry(self):
+		"""Update the selected entry."""
+		byte_str = self.byte_var.get()
+		char = self.char_var.get()
+
+		if not byte_str:
+			return
+
+		try:
+			byte_val = int(byte_str.replace('0x', ''), 16)
+			if char:
+				self.table[byte_val] = char
+			elif byte_val in self.table:
+				del self.table[byte_val]
+
+			self.modified = True
+			self.refresh_display()
+			self.status_callback(f"Updated 0x{byte_val:02X} = '{char}'")
+		except ValueError:
+			messagebox.showerror("Error", "Invalid byte value")
+
+	def save_table(self):
+		"""Save the table to JSON."""
+		table_file = PROJECT_ROOT / "assets" / "data" / "text_table.json"
+		table_file.parent.mkdir(parents=True, exist_ok=True)
+
+		try:
+			# Convert int keys to string for JSON
+			data = {str(k): v for k, v in self.table.items()}
+			with open(table_file, 'w') as f:
+				json.dump(data, f, indent=2)
+			self.modified = False
+			messagebox.showinfo("Saved", "Text table saved!")
+		except Exception as e:
+			messagebox.showerror("Error", f"Save failed: {e}")
+
+	def reset_table(self):
+		"""Reset to default table."""
+		if messagebox.askyesno("Reset", "Reset to default table? This will lose all changes."):
+			self.table = dict(self.DEFAULT_TABLE)
+			self.modified = True
+			self.refresh_display()
+
+	def export_tbl(self):
+		"""Export as .tbl file format."""
+		from tkinter import filedialog
+		path = filedialog.asksaveasfilename(
+			defaultextension=".tbl",
+			filetypes=[("Table files", "*.tbl"), ("All files", "*.*")],
+			initialfile="dragon_warrior.tbl"
+		)
+
+		if path:
+			try:
+				with open(path, 'w', encoding='utf-8') as f:
+					for byte_val in sorted(self.table.keys()):
+						char = self.table[byte_val]
+						f.write(f"{byte_val:02X}={char}\n")
+				messagebox.showinfo("Success", f"Exported to {Path(path).name}")
+			except Exception as e:
+				messagebox.showerror("Error", f"Export failed: {e}")
+
+	def import_tbl(self):
+		"""Import a .tbl file."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			filetypes=[("Table files", "*.tbl"), ("All files", "*.*")]
+		)
+
+		if path:
+			try:
+				new_table = {}
+				with open(path, 'r', encoding='utf-8') as f:
+					for line in f:
+						line = line.strip()
+						if '=' in line:
+							hex_part, char = line.split('=', 1)
+							byte_val = int(hex_part, 16)
+							new_table[byte_val] = char
+
+				self.table = new_table
+				self.modified = True
+				self.refresh_display()
+				messagebox.showinfo("Success", f"Imported {len(new_table)} entries")
+			except Exception as e:
+				messagebox.showerror("Error", f"Import failed: {e}")
+
+	def refresh(self):
+		"""Refresh the display."""
+		self.load_table()
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -4626,7 +5246,15 @@ class UniversalEditor:
 		self.cheat_tab = CheatCodeTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
 		self.notebook.add(self.cheat_tab, text="🎮 Cheat Codes")
 
-		# Tab 15: Statistics
+		# Tab 15: Music/Sound
+		self.music_tab = MusicEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.music_tab, text="🎵 Music")
+
+		# Tab 16: Text Table
+		self.tbl_tab = TextTableEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.tbl_tab, text="📋 Text Table")
+
+		# Tab 17: Statistics
 		stats_tab = ttk.Frame(self.notebook)
 		self.notebook.add(stats_tab, text="📊 Statistics")
 
