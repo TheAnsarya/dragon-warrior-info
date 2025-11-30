@@ -915,7 +915,11 @@ class MonsterEditorTab(ttk.Frame):
 # ============================================================================
 
 class DialogEditorTab(ttk.Frame):
-	"""Dialog text editor."""
+	"""Dialog text editor with live preview."""
+
+	# Dragon Warrior dialog window dimensions (approximate)
+	DIALOG_WIDTH = 18  # Characters per line
+	DIALOG_HEIGHT = 4   # Lines visible at once
 
 	def __init__(self, parent, asset_manager: AssetManager):
 		super().__init__(parent)
@@ -958,20 +962,36 @@ class DialogEditorTab(ttk.Frame):
 		self.dialog_list.pack(fill=tk.BOTH, expand=True)
 		self.dialog_list.bind('<<ListboxSelect>>', self.on_select)
 
-		# Editor
-		edit_frame = ttk.Frame(content)
-		content.add(edit_frame, weight=2)
+		# Right panel: Editor and Preview
+		right_panel = ttk.Frame(content)
+		content.add(right_panel, weight=2)
 
-		ttk.Label(edit_frame, text="Dialog Text:").pack(anchor=tk.W)
-		self.text_editor = scrolledtext.ScrolledText(edit_frame, width=60, height=10, font=('Courier', 11))
+		# Editor
+		edit_frame = ttk.LabelFrame(right_panel, text="Dialog Text", padding=5)
+		edit_frame.pack(fill=tk.BOTH, expand=True)
+
+		self.text_editor = scrolledtext.ScrolledText(edit_frame, width=60, height=8, font=('Courier', 11))
 		self.text_editor.pack(fill=tk.BOTH, expand=True)
+		self.text_editor.bind('<KeyRelease>', self.update_preview)
 
 		# Control codes reference
-		ref_frame = ttk.LabelFrame(edit_frame, text="Control Codes", padding=5)
-		ref_frame.pack(fill=tk.X, pady=10)
+		ref_frame = ttk.LabelFrame(right_panel, text="Control Codes", padding=5)
+		ref_frame.pack(fill=tk.X, pady=5)
 
 		codes = "{NAME}=Hero  {ENMY}=Enemy  {ITEM}=Item  {SPEL}=Spell  {AMNT}=Number  {WAIT}=Pause  {END}=End"
 		ttk.Label(ref_frame, text=codes, font=('Courier', 9)).pack()
+
+		# Live Preview
+		preview_frame = ttk.LabelFrame(right_panel, text="NES Dialog Preview", padding=10)
+		preview_frame.pack(fill=tk.X, pady=5)
+
+		# Create NES-style dialog box preview using canvas
+		self.preview_canvas = tk.Canvas(preview_frame, width=320, height=120, bg='#000000')
+		self.preview_canvas.pack(pady=5)
+
+		# Character count info
+		self.char_count_var = tk.StringVar(value="Characters: 0 | Lines: 0")
+		ttk.Label(preview_frame, textvariable=self.char_count_var).pack()
 
 	def load_data(self):
 		"""Load dialog data."""
@@ -998,6 +1018,63 @@ class DialogEditorTab(ttk.Frame):
 			dialog = dialogs[idx]
 			self.text_editor.delete('1.0', tk.END)
 			self.text_editor.insert('1.0', dialog.get('text', ''))
+			self.update_preview()
+
+	def update_preview(self, event=None):
+		"""Update the NES-style preview."""
+		self.preview_canvas.delete('all')
+
+		text = self.text_editor.get('1.0', tk.END).strip()
+
+		# Draw dialog box border (NES style)
+		# Outer border
+		self.preview_canvas.create_rectangle(10, 10, 310, 110, outline='#ffffff', width=2)
+		# Inner border
+		self.preview_canvas.create_rectangle(14, 14, 306, 106, outline='#ffffff', width=1)
+
+		# Process text for preview
+		processed = self.process_dialog_text(text)
+
+		# Draw text
+		y_offset = 25
+		line_height = 20
+		x_offset = 25
+
+		for i, line in enumerate(processed[:4]):  # Max 4 lines visible
+			# Truncate to fit
+			display_line = line[:self.DIALOG_WIDTH]
+			self.preview_canvas.create_text(
+				x_offset, y_offset + (i * line_height),
+				text=display_line,
+				fill='#ffffff',
+				font=('Courier', 12, 'bold'),
+				anchor=tk.NW
+			)
+
+		# Update character count
+		total_chars = len(text)
+		total_lines = text.count('\n') + 1
+		self.char_count_var.set(f"Characters: {total_chars} | Lines: {total_lines}")
+
+	def process_dialog_text(self, text: str) -> list:
+		"""Process dialog text for preview, replacing control codes."""
+		# Replace control codes with placeholder text
+		replacements = {
+			'{NAME}': 'ERDRICK',
+			'{ENMY}': 'SLIME',
+			'{ITEM}': 'SWORD',
+			'{SPEL}': 'HEAL',
+			'{AMNT}': '100',
+			'{WAIT}': '',
+			'{END}': '',
+		}
+
+		for code, replacement in replacements.items():
+			text = text.replace(code, replacement)
+
+		# Split into lines
+		lines = text.split('\n')
+		return lines
 
 	def search_dialogs(self):
 		"""Search dialogs for text."""
@@ -2670,6 +2747,7 @@ class UniversalEditor:
 		self.root.bind('<Control-z>', lambda e: self.do_undo())
 		self.root.bind('<Control-y>', lambda e: self.do_redo())
 		self.root.bind('<Control-Shift-z>', lambda e: self.do_redo())  # Alt redo
+		self.root.bind('<Control-f>', lambda e: self.show_global_search())
 		self.root.bind('<F5>', lambda e: self.build_rom())
 
 	def create_menu(self):
@@ -2692,6 +2770,8 @@ class UniversalEditor:
 		menubar.add_cascade(label="Edit", menu=edit_menu)
 		edit_menu.add_command(label="Undo", command=self.do_undo, accelerator="Ctrl+Z")
 		edit_menu.add_command(label="Redo", command=self.do_redo, accelerator="Ctrl+Y")
+		edit_menu.add_separator()
+		edit_menu.add_command(label="Find...", command=self.show_global_search, accelerator="Ctrl+F")
 		edit_menu.add_separator()
 		edit_menu.add_command(label="Undo History...", command=self.show_undo_history)
 
@@ -3196,6 +3276,158 @@ class UniversalEditor:
 
 		ttk.Button(history_window, text="Clear History",
 				   command=lambda: [undo_manager.clear(), history_window.destroy()]).pack(pady=10)
+
+	def show_global_search(self):
+		"""Show global search dialog to find text across all assets."""
+		search_window = tk.Toplevel(self.root)
+		search_window.title("Global Search")
+		search_window.geometry("600x500")
+		search_window.transient(self.root)
+
+		# Search input
+		input_frame = ttk.Frame(search_window)
+		input_frame.pack(fill=tk.X, padx=10, pady=10)
+
+		ttk.Label(input_frame, text="Search:").pack(side=tk.LEFT)
+		search_var = tk.StringVar()
+		search_entry = ttk.Entry(input_frame, textvariable=search_var, width=40)
+		search_entry.pack(side=tk.LEFT, padx=5)
+		search_entry.focus()
+
+		# Asset type filter
+		ttk.Label(input_frame, text="In:").pack(side=tk.LEFT, padx=(10, 5))
+		asset_var = tk.StringVar(value="All")
+		asset_combo = ttk.Combobox(input_frame, textvariable=asset_var,
+								   values=["All", "Monsters", "Items", "Spells", "Dialogs", "NPCs", "Shops"],
+								   state='readonly', width=12)
+		asset_combo.pack(side=tk.LEFT)
+
+		# Results
+		results_frame = ttk.LabelFrame(search_window, text="Results", padding=5)
+		results_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		results_tree = ttk.Treeview(results_frame, columns=('Type', 'Name', 'Field', 'Match'), show='headings')
+		results_tree.heading('Type', text='Asset Type')
+		results_tree.heading('Name', text='Name')
+		results_tree.heading('Field', text='Field')
+		results_tree.heading('Match', text='Match Text')
+
+		results_tree.column('Type', width=80)
+		results_tree.column('Name', width=120)
+		results_tree.column('Field', width=80)
+		results_tree.column('Match', width=280)
+
+		scrollbar = ttk.Scrollbar(results_frame, orient=tk.VERTICAL, command=results_tree.yview)
+		results_tree.configure(yscrollcommand=scrollbar.set)
+
+		results_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+		scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+		status_var = tk.StringVar(value="Enter search text and press Search")
+		ttk.Label(search_window, textvariable=status_var).pack(pady=5)
+
+		def do_search():
+			query = search_var.get().lower().strip()
+			if not query:
+				return
+
+			# Clear previous results
+			for item in results_tree.get_children():
+				results_tree.delete(item)
+
+			results_count = 0
+			asset_filter = asset_var.get()
+
+			# Search through asset types
+			search_types = {
+				'monsters': 'Monsters',
+				'items': 'Items',
+				'spells': 'Spells',
+				'dialogs': 'Dialogs',
+				'npcs': 'NPCs',
+				'shops': 'Shops'
+			}
+
+			for asset_type, display_name in search_types.items():
+				if asset_filter != "All" and asset_filter != display_name:
+					continue
+
+				data = self.asset_manager.load_json(asset_type)
+				if not data:
+					continue
+
+				# Get records
+				records = None
+				if isinstance(data, list):
+					records = data
+				elif isinstance(data, dict):
+					for key in ['monsters', 'items', 'spells', 'dialogs', 'npcs', 'shops']:
+						if key in data:
+							records = data[key]
+							break
+					if records is None:
+						records = list(data.values())
+
+				if not records:
+					continue
+
+				# Search each record
+				for i, record in enumerate(records):
+					if not isinstance(record, dict):
+						continue
+
+					record_name = record.get('name', record.get('label', f'#{i}'))
+
+					for field, value in record.items():
+						if isinstance(value, str) and query in value.lower():
+							# Truncate match for display
+							match_text = value[:60].replace('\n', ' ')
+							if len(value) > 60:
+								match_text += '...'
+
+							results_tree.insert('', tk.END, values=(
+								display_name, record_name, field, match_text
+							))
+							results_count += 1
+
+							if results_count >= 200:  # Limit results
+								break
+
+					if results_count >= 200:
+						break
+
+				if results_count >= 200:
+					break
+
+			status_var.set(f"Found {results_count} results" + (" (limited to 200)" if results_count >= 200 else ""))
+
+		# Search button
+		ttk.Button(input_frame, text="Search", command=do_search).pack(side=tk.LEFT, padx=10)
+
+		# Bind Enter key
+		search_entry.bind('<Return>', lambda e: do_search())
+
+		# Double-click to jump to result
+		def on_result_double_click(event):
+			selection = results_tree.selection()
+			if selection:
+				item = results_tree.item(selection[0])
+				values = item['values']
+				asset_type = values[0]
+
+				# Switch to appropriate tab
+				tab_map = {
+					'Monsters': 1,
+					'Items': 2,
+					'Spells': 3,
+					'Shops': 4,
+					'Dialogs': 5,
+					'NPCs': 6,
+				}
+				if asset_type in tab_map:
+					self.notebook.select(tab_map[asset_type])
+
+		results_tree.bind('<Double-1>', on_result_double_click)
 
 	def show_docs(self):
 		"""Show documentation."""
