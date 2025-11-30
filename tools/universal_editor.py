@@ -5667,6 +5667,413 @@ different parts of the PRG-ROM."""
 
 
 # ============================================================================
+# PATCH MANAGER TAB
+# ============================================================================
+
+class PatchManagerTab(BaseTab):
+	"""Create and apply IPS patches for ROM distribution."""
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.original_rom: Optional[bytes] = None
+		self.modified_rom: Optional[bytes] = None
+		self.patches: List[Dict] = []  # List of saved patches
+
+		self.setup_ui()
+		self.load_patches()
+
+	def setup_ui(self):
+		"""Set up patch manager UI."""
+		# Main paned window
+		paned = ttk.PanedWindow(self.frame, orient='horizontal')
+		paned.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Left: Patch creation
+		left_frame = ttk.LabelFrame(paned, text="Create IPS Patch")
+		paned.add(left_frame, weight=1)
+
+		# File selection
+		file_frame = ttk.Frame(left_frame)
+		file_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(file_frame, text="Original ROM:").grid(row=0, column=0, sticky='e', padx=5)
+		self.original_var = tk.StringVar()
+		ttk.Entry(file_frame, textvariable=self.original_var, width=40).grid(row=0, column=1, padx=5)
+		ttk.Button(file_frame, text="...", width=3, command=self.browse_original).grid(row=0, column=2, padx=2)
+
+		ttk.Label(file_frame, text="Modified ROM:").grid(row=1, column=0, sticky='e', padx=5)
+		self.modified_var = tk.StringVar()
+		ttk.Entry(file_frame, textvariable=self.modified_var, width=40).grid(row=1, column=1, padx=5)
+		ttk.Button(file_frame, text="...", width=3, command=self.browse_modified).grid(row=1, column=2, padx=2)
+
+		# Set defaults
+		original = PROJECT_ROOT / "roms" / "Dragon Warrior (USA).nes"
+		modified = PROJECT_ROOT / "build" / "dragon_warrior_rebuilt.nes"
+		if original.exists():
+			self.original_var.set(str(original))
+		if modified.exists():
+			self.modified_var.set(str(modified))
+
+		# Create patch button
+		ttk.Button(left_frame, text="Create IPS Patch", command=self.create_patch).pack(pady=10)
+
+		# Patch info
+		info_frame = ttk.LabelFrame(left_frame, text="Patch Preview")
+		info_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		self.patch_info = tk.Text(info_frame, height=15, font=('Consolas', 9), bg='#1e1e1e', fg='#d4d4d4')
+		self.patch_info.pack(fill='both', expand=True, padx=5, pady=5)
+
+		ttk.Button(left_frame, text="Preview Differences", command=self.preview_diff).pack(pady=5)
+
+		# Right: Apply patch / Patch library
+		right_frame = ttk.Frame(paned)
+		paned.add(right_frame, weight=1)
+
+		# Apply patch section
+		apply_frame = ttk.LabelFrame(right_frame, text="Apply IPS Patch")
+		apply_frame.pack(fill='x', padx=5, pady=5)
+
+		apply_grid = ttk.Frame(apply_frame)
+		apply_grid.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(apply_grid, text="Target ROM:").grid(row=0, column=0, sticky='e', padx=5)
+		self.target_var = tk.StringVar()
+		ttk.Entry(apply_grid, textvariable=self.target_var, width=40).grid(row=0, column=1, padx=5)
+		ttk.Button(apply_grid, text="...", width=3, command=self.browse_target).grid(row=0, column=2, padx=2)
+
+		ttk.Label(apply_grid, text="IPS Patch:").grid(row=1, column=0, sticky='e', padx=5)
+		self.ips_var = tk.StringVar()
+		ttk.Entry(apply_grid, textvariable=self.ips_var, width=40).grid(row=1, column=1, padx=5)
+		ttk.Button(apply_grid, text="...", width=3, command=self.browse_ips).grid(row=1, column=2, padx=2)
+
+		ttk.Button(apply_frame, text="Apply Patch", command=self.apply_patch).pack(pady=10)
+
+		# Patch library
+		lib_frame = ttk.LabelFrame(right_frame, text="Patch Library")
+		lib_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		columns = ('name', 'size', 'records', 'created')
+		self.patch_tree = ttk.Treeview(lib_frame, columns=columns, show='headings', height=10)
+		self.patch_tree.heading('name', text='Patch Name')
+		self.patch_tree.heading('size', text='Size')
+		self.patch_tree.heading('records', text='Records')
+		self.patch_tree.heading('created', text='Created')
+		self.patch_tree.column('name', width=150)
+		self.patch_tree.column('size', width=80)
+		self.patch_tree.column('records', width=70)
+		self.patch_tree.column('created', width=120)
+		self.patch_tree.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Library buttons
+		lib_btn = ttk.Frame(lib_frame)
+		lib_btn.pack(fill='x', padx=5, pady=5)
+
+		ttk.Button(lib_btn, text="Open Patches Folder", command=self.open_patches_folder).pack(side='left', padx=5)
+		ttk.Button(lib_btn, text="Refresh", command=self.load_patches).pack(side='left', padx=5)
+
+		# IPS format reference
+		ref_frame = ttk.LabelFrame(right_frame, text="IPS Format Reference")
+		ref_frame.pack(fill='x', padx=5, pady=5)
+
+		ref_text = """IPS (International Patching System):
+• Header: "PATCH" (5 bytes)
+• Records: [offset:3][size:2][data:size]
+• EOF: "EOF" (3 bytes)
+
+Standard format for NES ROM patches.
+Max file size: 16MB (24-bit offsets)"""
+
+		ttk.Label(ref_frame, text=ref_text, justify='left').pack(padx=5, pady=5)
+
+	def browse_original(self):
+		"""Browse for original ROM."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			initialdir=PROJECT_ROOT / "roms",
+			filetypes=[("NES ROMs", "*.nes"), ("All files", "*.*")]
+		)
+		if path:
+			self.original_var.set(path)
+
+	def browse_modified(self):
+		"""Browse for modified ROM."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			initialdir=PROJECT_ROOT / "build",
+			filetypes=[("NES ROMs", "*.nes"), ("All files", "*.*")]
+		)
+		if path:
+			self.modified_var.set(path)
+
+	def browse_target(self):
+		"""Browse for target ROM."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			filetypes=[("NES ROMs", "*.nes"), ("All files", "*.*")]
+		)
+		if path:
+			self.target_var.set(path)
+
+	def browse_ips(self):
+		"""Browse for IPS patch."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			initialdir=PROJECT_ROOT / "patches",
+			filetypes=[("IPS patches", "*.ips"), ("All files", "*.*")]
+		)
+		if path:
+			self.ips_var.set(path)
+
+	def preview_diff(self):
+		"""Preview differences between ROMs."""
+		orig_path = self.original_var.get()
+		mod_path = self.modified_var.get()
+
+		if not orig_path or not mod_path:
+			messagebox.showinfo("Info", "Select both ROMs first")
+			return
+
+		try:
+			with open(orig_path, 'rb') as f:
+				original = f.read()
+			with open(mod_path, 'rb') as f:
+				modified = f.read()
+
+			self.original_rom = original
+			self.modified_rom = modified
+
+			# Find differences
+			diff_count = 0
+			diff_ranges = []
+			in_diff = False
+			diff_start = 0
+
+			min_len = min(len(original), len(modified))
+			for i in range(min_len):
+				if original[i] != modified[i]:
+					if not in_diff:
+						in_diff = True
+						diff_start = i
+					diff_count += 1
+				else:
+					if in_diff:
+						diff_ranges.append((diff_start, i - diff_start))
+						in_diff = False
+
+			if in_diff:
+				diff_ranges.append((diff_start, min_len - diff_start))
+
+			# Size difference
+			size_diff = len(modified) - len(original)
+
+			# Display preview
+			self.patch_info.delete('1.0', 'end')
+			self.patch_info.insert('end', f"Original: {len(original):,} bytes\n")
+			self.patch_info.insert('end', f"Modified: {len(modified):,} bytes\n")
+			self.patch_info.insert('end', f"Size Diff: {size_diff:+,} bytes\n")
+			self.patch_info.insert('end', f"Changed Bytes: {diff_count:,}\n")
+			self.patch_info.insert('end', f"IPS Records: {len(diff_ranges)}\n\n")
+
+			self.patch_info.insert('end', "Change Ranges (first 20):\n")
+			for offset, length in diff_ranges[:20]:
+				self.patch_info.insert('end', f"  0x{offset:06X}: {length} bytes\n")
+
+			if len(diff_ranges) > 20:
+				self.patch_info.insert('end', f"  ... and {len(diff_ranges) - 20} more\n")
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to compare: {e}")
+
+	def create_patch(self):
+		"""Create IPS patch from differences."""
+		if not self.original_rom or not self.modified_rom:
+			self.preview_diff()
+			if not self.original_rom:
+				return
+
+		from tkinter import filedialog
+		path = filedialog.asksaveasfilename(
+			initialdir=PROJECT_ROOT / "patches",
+			defaultextension=".ips",
+			filetypes=[("IPS patches", "*.ips")],
+			initialfile="dragon_warrior_mod.ips"
+		)
+
+		if not path:
+			return
+
+		try:
+			# Generate IPS data
+			ips_data = self.generate_ips(self.original_rom, self.modified_rom)
+
+			with open(path, 'wb') as f:
+				f.write(ips_data)
+
+			messagebox.showinfo("Success", f"Patch created: {Path(path).name}\nSize: {len(ips_data):,} bytes")
+			self.load_patches()
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to create patch: {e}")
+
+	def generate_ips(self, original: bytes, modified: bytes) -> bytes:
+		"""Generate IPS patch data."""
+		ips = bytearray(b'PATCH')
+
+		min_len = min(len(original), len(modified))
+		i = 0
+
+		while i < min_len:
+			if original[i] != modified[i]:
+				# Found start of difference
+				start = i
+				# Find end of difference (or max 65535 bytes)
+				while i < min_len and original[i] != modified[i] and (i - start) < 65535:
+					i += 1
+
+				# Write record
+				length = i - start
+				ips.extend(start.to_bytes(3, 'big'))  # Offset (3 bytes)
+				ips.extend(length.to_bytes(2, 'big'))  # Length (2 bytes)
+				ips.extend(modified[start:i])  # Data
+			else:
+				i += 1
+
+		# Handle modified ROM being longer
+		if len(modified) > len(original):
+			start = len(original)
+			extra = modified[start:]
+			# Write as multiple records if needed
+			while extra:
+				chunk = extra[:65535]
+				ips.extend(start.to_bytes(3, 'big'))
+				ips.extend(len(chunk).to_bytes(2, 'big'))
+				ips.extend(chunk)
+				start += len(chunk)
+				extra = extra[65535:]
+
+		ips.extend(b'EOF')
+		return bytes(ips)
+
+	def apply_patch(self):
+		"""Apply IPS patch to ROM."""
+		target_path = self.target_var.get()
+		ips_path = self.ips_var.get()
+
+		if not target_path or not ips_path:
+			messagebox.showinfo("Info", "Select target ROM and IPS patch")
+			return
+
+		try:
+			with open(target_path, 'rb') as f:
+				rom_data = bytearray(f.read())
+
+			with open(ips_path, 'rb') as f:
+				ips_data = f.read()
+
+			# Validate IPS header
+			if not ips_data.startswith(b'PATCH'):
+				raise ValueError("Invalid IPS file - missing PATCH header")
+
+			# Apply patches
+			pos = 5  # Skip "PATCH"
+			records = 0
+
+			while pos < len(ips_data) - 3:
+				# Check for EOF
+				if ips_data[pos:pos+3] == b'EOF':
+					break
+
+				# Read record
+				offset = int.from_bytes(ips_data[pos:pos+3], 'big')
+				pos += 3
+				length = int.from_bytes(ips_data[pos:pos+2], 'big')
+				pos += 2
+
+				if length == 0:
+					# RLE record
+					rle_length = int.from_bytes(ips_data[pos:pos+2], 'big')
+					pos += 2
+					rle_byte = ips_data[pos]
+					pos += 1
+					# Expand ROM if needed
+					while len(rom_data) < offset + rle_length:
+						rom_data.append(0)
+					for i in range(rle_length):
+						rom_data[offset + i] = rle_byte
+				else:
+					# Normal record
+					data = ips_data[pos:pos+length]
+					pos += length
+					# Expand ROM if needed
+					while len(rom_data) < offset + length:
+						rom_data.append(0)
+					rom_data[offset:offset+length] = data
+
+				records += 1
+
+			# Save patched ROM
+			from tkinter import filedialog
+			out_path = filedialog.asksaveasfilename(
+				defaultextension=".nes",
+				filetypes=[("NES ROMs", "*.nes")],
+				initialfile="patched_rom.nes"
+			)
+
+			if out_path:
+				with open(out_path, 'wb') as f:
+					f.write(rom_data)
+				messagebox.showinfo("Success", f"Patch applied!\n{records} records\nSaved to: {Path(out_path).name}")
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to apply patch: {e}")
+
+	def load_patches(self):
+		"""Load patches from patches directory."""
+		# Clear tree
+		for item in self.patch_tree.get_children():
+			self.patch_tree.delete(item)
+
+		patches_dir = PROJECT_ROOT / "patches"
+		if not patches_dir.exists():
+			patches_dir.mkdir(parents=True)
+			return
+
+		for ips_file in sorted(patches_dir.glob("*.ips")):
+			try:
+				size = ips_file.stat().st_size
+				mtime = ips_file.stat().st_mtime
+
+				# Count records (approximate)
+				with open(ips_file, 'rb') as f:
+					data = f.read()
+				records = data.count(b'\x00') // 3 if len(data) > 5 else 0  # Very rough estimate
+
+				import time
+				created = time.strftime('%Y-%m-%d %H:%M', time.localtime(mtime))
+
+				self.patch_tree.insert('', 'end', values=(
+					ips_file.name,
+					f"{size:,} B",
+					str(records),
+					created
+				))
+			except:
+				pass
+
+	def open_patches_folder(self):
+		"""Open patches folder in explorer."""
+		patches_dir = PROJECT_ROOT / "patches"
+		patches_dir.mkdir(parents=True, exist_ok=True)
+		import os
+		os.startfile(str(patches_dir))
+
+	def refresh(self):
+		"""Refresh patches list."""
+		self.load_patches()
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 

@@ -159,6 +159,10 @@ yes, continue! in the extracted data some of the entries use `bytes_hex` as as a
 
 continue working! ; make sure all editors are in one universal editor (with tabs, and a meta-quick-start-tab with links to all of the different editors); make sure all assets are extracted, then transformed to an editable state, then that editable state is transformed back into data, and reinserted into the rom; most of that should be done already; ***continue!***; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+format everything using our `.editorconfig` especially utf-8, tabs not spaces, and crlf;; implement the changes to make it awesome for as long as you can; make sure the chat-logs/session-logs are always being updated as you go; ***continue!***; go through all associated github issues and todo-lists; continue working on editors! (monster/enemy graphics and animation layout -- map layout (towns/dungeons/overworld) and npc placement on the town editor, and enemy groups per worldmap section, and shop locations, etc) ; also add background tile attribute editing, like if it does damage or you can't walk on it; and an editor for roof tiles or the blackout tiles; always use lowercase hexadecimal values in all of the code and scripts and documentation; <3 you
+
+***continue!***; go through all associated github issues and todo-lists;
+
 
 
 
