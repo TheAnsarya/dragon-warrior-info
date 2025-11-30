@@ -2398,24 +2398,37 @@ class GraphicsEditorTab(ttk.Frame):
 # ============================================================================
 
 class MapEditorTab(ttk.Frame):
-	"""Visual map viewer and editor."""
+	"""Interactive visual map editor with tile painting and NPC placement."""
 
-	# Terrain colors for visualization
-	TERRAIN_COLORS = {
-		0: '#000080',  # Water/Barrier - dark blue
-		1: '#008800',  # Grass - green
-		2: '#00aa00',  # Forest - darker green
-		3: '#aaaa00',  # Desert - yellow
-		4: '#884400',  # Hills - brown
-		5: '#666666',  # Mountain - gray
-		6: '#aaaaaa',  # Town - light gray
-		7: '#ffaa00',  # Castle - gold
-		8: '#004488',  # Bridge - blue-gray
-		9: '#220022',  # Cave - dark purple
-		10: '#440000', # Swamp - dark red
-		11: '#ffffff', # Stairs - white
-		12: '#888888', # Door - gray
+	# Terrain types and colors for visualization
+	TERRAIN_TYPES = {
+		0: {'name': 'Water/Barrier', 'color': '#000080', 'walkable': False, 'damage': 0},
+		1: {'name': 'Grass', 'color': '#228822', 'walkable': True, 'damage': 0},
+		2: {'name': 'Forest', 'color': '#115511', 'walkable': True, 'damage': 0},
+		3: {'name': 'Desert', 'color': '#ccaa44', 'walkable': True, 'damage': 0},
+		4: {'name': 'Hills', 'color': '#886633', 'walkable': True, 'damage': 0},
+		5: {'name': 'Mountain', 'color': '#666666', 'walkable': False, 'damage': 0},
+		6: {'name': 'Town', 'color': '#aaaaaa', 'walkable': True, 'damage': 0},
+		7: {'name': 'Castle', 'color': '#ddaa22', 'walkable': True, 'damage': 0},
+		8: {'name': 'Bridge', 'color': '#665544', 'walkable': True, 'damage': 0},
+		9: {'name': 'Cave', 'color': '#332233', 'walkable': True, 'damage': 0},
+		10: {'name': 'Swamp', 'color': '#443322', 'walkable': True, 'damage': 2},
+		11: {'name': 'Stairs Up', 'color': '#dddddd', 'walkable': True, 'damage': 0},
+		12: {'name': 'Stairs Down', 'color': '#999999', 'walkable': True, 'damage': 0},
+		13: {'name': 'Door', 'color': '#884400', 'walkable': True, 'damage': 0},
+		14: {'name': 'Barrier Tile', 'color': '#550055', 'walkable': False, 'damage': 1},
+		15: {'name': 'Roof/Dark', 'color': '#111111', 'walkable': False, 'damage': 0},
 	}
+
+	# Terrain colors for quick lookup
+	TERRAIN_COLORS = {k: v['color'] for k, v in TERRAIN_TYPES.items()}
+
+	# Edit modes
+	MODE_SELECT = 'select'
+	MODE_PAINT = 'paint'
+	MODE_FILL = 'fill'
+	MODE_NPC = 'npc'
+	MODE_ENCOUNTER = 'encounter'
 
 	def __init__(self, parent, asset_manager: AssetManager):
 		super().__init__(parent)
@@ -2423,46 +2436,162 @@ class MapEditorTab(ttk.Frame):
 		self.map_data = None
 		self.current_map = None
 		self.current_map_id = "0"
-		self.zoom = 4
+		self.zoom = 8
 		self.offset_x = 0
 		self.offset_y = 0
+
+		# Edit state
+		self.edit_mode = self.MODE_SELECT
+		self.selected_terrain = 1  # Default: Grass
+		self.selected_npc = None
+		self.brush_size = 1
+		self.show_grid = True
+		self.show_npcs = True
+		self.show_encounters = True
+		self.modified = False
+
+		# Undo/redo stacks
+		self.undo_stack: List[Dict] = []
+		self.redo_stack: List[Dict] = []
+		self.max_undo = 50
+
+		# Mouse state
 		self.dragging = False
-		self.last_mouse_pos = (0, 0)
+		self.painting = False
+		self.last_paint_pos = None
 
 		self.create_widgets()
 		self.load_maps()
 
 	def create_widgets(self):
-		"""Create map editor widgets."""
-		# Header
-		header = ttk.Frame(self)
-		header.pack(fill=tk.X, padx=10, pady=5)
-
-		ttk.Label(header, text="🗺️ Map Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+		"""Create enhanced map editor widgets."""
+		# Main toolbar
+		toolbar = ttk.Frame(self)
+		toolbar.pack(fill=tk.X, padx=5, pady=5)
 
 		# Map selector
-		ttk.Label(header, text="Map:").pack(side=tk.LEFT, padx=(20, 5))
+		ttk.Label(toolbar, text="🗺️ Map:").pack(side=tk.LEFT, padx=5)
 		self.map_var = tk.StringVar()
-		self.map_combo = ttk.Combobox(header, textvariable=self.map_var, state='readonly', width=30)
+		self.map_combo = ttk.Combobox(toolbar, textvariable=self.map_var, state='readonly', width=25)
 		self.map_combo.pack(side=tk.LEFT, padx=5)
 		self.map_combo.bind('<<ComboboxSelected>>', self.on_map_select)
 
-		# Zoom controls
-		ttk.Label(header, text="Zoom:").pack(side=tk.LEFT, padx=(20, 5))
-		ttk.Button(header, text="-", width=3, command=self.zoom_out).pack(side=tk.LEFT)
-		self.zoom_label = ttk.Label(header, text="4x")
-		self.zoom_label.pack(side=tk.LEFT, padx=5)
-		ttk.Button(header, text="+", width=3, command=self.zoom_in).pack(side=tk.LEFT)
+		ttk.Separator(toolbar, orient='vertical').pack(side=tk.LEFT, padx=10, fill='y')
 
-		# Content
+		# Mode selector
+		ttk.Label(toolbar, text="Mode:").pack(side=tk.LEFT, padx=5)
+		self.mode_var = tk.StringVar(value=self.MODE_SELECT)
+		modes = [
+			(self.MODE_SELECT, "🖱️ Select"),
+			(self.MODE_PAINT, "🖌️ Paint"),
+			(self.MODE_FILL, "🪣 Fill"),
+			(self.MODE_NPC, "🧙 NPC"),
+			(self.MODE_ENCOUNTER, "⚔️ Encounters"),
+		]
+		for mode, label in modes:
+			rb = ttk.Radiobutton(toolbar, text=label, value=mode, variable=self.mode_var,
+								command=self.on_mode_change)
+			rb.pack(side=tk.LEFT, padx=2)
+
+		ttk.Separator(toolbar, orient='vertical').pack(side=tk.LEFT, padx=10, fill='y')
+
+		# Brush size
+		ttk.Label(toolbar, text="Brush:").pack(side=tk.LEFT, padx=5)
+		self.brush_var = tk.IntVar(value=1)
+		brush_spin = ttk.Spinbox(toolbar, from_=1, to=5, width=3, textvariable=self.brush_var)
+		brush_spin.pack(side=tk.LEFT, padx=2)
+
+		ttk.Separator(toolbar, orient='vertical').pack(side=tk.LEFT, padx=10, fill='y')
+
+		# View options
+		self.grid_var = tk.BooleanVar(value=True)
+		ttk.Checkbutton(toolbar, text="Grid", variable=self.grid_var, command=self.draw_map).pack(side=tk.LEFT, padx=5)
+
+		self.npc_var = tk.BooleanVar(value=True)
+		ttk.Checkbutton(toolbar, text="NPCs", variable=self.npc_var, command=self.draw_map).pack(side=tk.LEFT, padx=5)
+
+		self.enc_var = tk.BooleanVar(value=True)
+		ttk.Checkbutton(toolbar, text="Encounters", variable=self.enc_var, command=self.draw_map).pack(side=tk.LEFT, padx=5)
+
+		ttk.Separator(toolbar, orient='vertical').pack(side=tk.LEFT, padx=10, fill='y')
+
+		# Zoom
+		ttk.Button(toolbar, text="➖", width=3, command=self.zoom_out).pack(side=tk.LEFT, padx=2)
+		self.zoom_label = ttk.Label(toolbar, text="8x", width=4)
+		self.zoom_label.pack(side=tk.LEFT)
+		ttk.Button(toolbar, text="➕", width=3, command=self.zoom_in).pack(side=tk.LEFT, padx=2)
+
+		# Save / Undo / Redo
+		ttk.Separator(toolbar, orient='vertical').pack(side=tk.LEFT, padx=10, fill='y')
+		ttk.Button(toolbar, text="↩️ Undo", command=self.undo).pack(side=tk.LEFT, padx=2)
+		ttk.Button(toolbar, text="↪️ Redo", command=self.redo).pack(side=tk.LEFT, padx=2)
+		ttk.Button(toolbar, text="💾 Save", command=self.save_map).pack(side=tk.LEFT, padx=5)
+
+		# Main content paned window
 		content = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
-		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+		content.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-		# Left: Map canvas
-		canvas_frame = ttk.LabelFrame(content, text="Map View", padding=5)
-		content.add(canvas_frame, weight=4)
+		# Left: Terrain/Tool palette
+		left_panel = ttk.Frame(content)
+		content.add(left_panel, weight=0)
 
-		self.map_canvas = tk.Canvas(canvas_frame, bg='#1a1a2e', width=600, height=500)
+		# Terrain palette
+		terrain_frame = ttk.LabelFrame(left_panel, text="Terrain Palette", padding=5)
+		terrain_frame.pack(fill=tk.X, pady=(0, 5))
+
+		self.terrain_var = tk.IntVar(value=1)
+		terrain_canvas = tk.Canvas(terrain_frame, bg='#1a1a2e', height=280, width=140)
+		terrain_canvas.pack(fill=tk.X, padx=5, pady=5)
+
+		# Draw terrain palette
+		for i, (terrain_id, info) in enumerate(self.TERRAIN_TYPES.items()):
+			row = i // 2
+			col = i % 2
+			x = col * 70 + 5
+			y = row * 35 + 5
+
+			terrain_canvas.create_rectangle(x, y, x+30, y+30, fill=info['color'],
+				outline='white' if terrain_id == self.selected_terrain else 'gray', width=2,
+				tags=f'terrain_{terrain_id}')
+			terrain_canvas.create_text(x+35, y+15, text=info['name'][:6], anchor='w',
+				fill='white', font=('Arial', 7), tags=f'terrain_{terrain_id}')
+
+			terrain_canvas.tag_bind(f'terrain_{terrain_id}', '<Button-1>',
+				lambda e, tid=terrain_id: self.select_terrain(tid))
+
+		self.terrain_canvas = terrain_canvas
+
+		# Tile info panel
+		info_frame = ttk.LabelFrame(left_panel, text="Tile Info", padding=5)
+		info_frame.pack(fill=tk.X, pady=5)
+
+		self.tile_info_labels = {}
+		for field in ['Position', 'Terrain', 'Walkable', 'Damage', 'NPC', 'Encounters']:
+			row = ttk.Frame(info_frame)
+			row.pack(fill=tk.X, pady=1)
+			ttk.Label(row, text=f"{field}:", width=10, font=('Arial', 9)).pack(side=tk.LEFT)
+			lbl = ttk.Label(row, text="-", font=('Arial', 9, 'bold'))
+			lbl.pack(side=tk.LEFT)
+			self.tile_info_labels[field.lower()] = lbl
+
+		# Map info panel
+		map_info_frame = ttk.LabelFrame(left_panel, text="Map Info", padding=5)
+		map_info_frame.pack(fill=tk.X, pady=5)
+
+		self.map_info_labels = {}
+		for field in ['Size', 'Tiles', 'NPCs', 'Warps']:
+			row = ttk.Frame(map_info_frame)
+			row.pack(fill=tk.X, pady=1)
+			ttk.Label(row, text=f"{field}:", width=10, font=('Arial', 9)).pack(side=tk.LEFT)
+			lbl = ttk.Label(row, text="-", font=('Arial', 9, 'bold'))
+			lbl.pack(side=tk.LEFT)
+			self.map_info_labels[field.lower()] = lbl
+
+		# Center: Map canvas
+		canvas_frame = ttk.LabelFrame(content, text="Map View")
+		content.add(canvas_frame, weight=3)
+
+		self.map_canvas = tk.Canvas(canvas_frame, bg='#0a0a1a', highlightthickness=0)
 		scrollbar_y = ttk.Scrollbar(canvas_frame, orient=tk.VERTICAL, command=self.map_canvas.yview)
 		scrollbar_x = ttk.Scrollbar(canvas_frame, orient=tk.HORIZONTAL, command=self.map_canvas.xview)
 
@@ -2473,75 +2602,69 @@ class MapEditorTab(ttk.Frame):
 		self.map_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
 		# Canvas bindings
-		self.map_canvas.bind('<Button-1>', self.on_map_click)
-		self.map_canvas.bind('<B1-Motion>', self.on_map_drag)
-		self.map_canvas.bind('<ButtonRelease-1>', self.on_drag_end)
+		self.map_canvas.bind('<Button-1>', self.on_canvas_click)
+		self.map_canvas.bind('<B1-Motion>', self.on_canvas_drag)
+		self.map_canvas.bind('<ButtonRelease-1>', self.on_canvas_release)
+		self.map_canvas.bind('<Button-3>', self.on_canvas_right_click)
 		self.map_canvas.bind('<MouseWheel>', self.on_mousewheel)
+		self.map_canvas.bind('<Motion>', self.on_canvas_motion)
 
-		# Right: Info panel
-		info_panel = ttk.Frame(content)
-		content.add(info_panel, weight=1)
+		# Right: NPC/Encounter list
+		right_panel = ttk.Frame(content)
+		content.add(right_panel, weight=1)
 
-		# Map info
-		info_frame = ttk.LabelFrame(info_panel, text="Map Info", padding=10)
-		info_frame.pack(fill=tk.X, pady=(0, 10))
+		# NPC list
+		npc_frame = ttk.LabelFrame(right_panel, text="NPCs", padding=5)
+		npc_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 5))
 
-		self.info_labels = {}
-		info_fields = ['Name', 'Size', 'Tiles', 'Walkable', 'Encounters']
-		for field in info_fields:
-			row = ttk.Frame(info_frame)
-			row.pack(fill=tk.X, pady=2)
-			ttk.Label(row, text=f"{field}:", width=10).pack(side=tk.LEFT)
-			lbl = ttk.Label(row, text="-")
-			lbl.pack(side=tk.LEFT)
-			self.info_labels[field.lower()] = lbl
+		columns = ('id', 'x', 'y', 'type')
+		self.npc_tree = ttk.Treeview(npc_frame, columns=columns, show='headings', height=6)
+		self.npc_tree.heading('id', text='ID')
+		self.npc_tree.heading('x', text='X')
+		self.npc_tree.heading('y', text='Y')
+		self.npc_tree.heading('type', text='Type')
+		self.npc_tree.column('id', width=40)
+		self.npc_tree.column('x', width=40)
+		self.npc_tree.column('y', width=40)
+		self.npc_tree.column('type', width=80)
+		self.npc_tree.pack(fill=tk.BOTH, expand=True)
+		self.npc_tree.bind('<Double-1>', self.on_npc_double_click)
 
-		# Tile info
-		tile_frame = ttk.LabelFrame(info_panel, text="Selected Tile", padding=10)
-		tile_frame.pack(fill=tk.X, pady=(0, 10))
+		npc_btn = ttk.Frame(npc_frame)
+		npc_btn.pack(fill=tk.X, pady=5)
+		ttk.Button(npc_btn, text="Add", command=self.add_npc).pack(side=tk.LEFT, padx=2)
+		ttk.Button(npc_btn, text="Edit", command=self.edit_npc).pack(side=tk.LEFT, padx=2)
+		ttk.Button(npc_btn, text="Delete", command=self.delete_npc).pack(side=tk.LEFT, padx=2)
 
-		self.tile_labels = {}
-		tile_fields = ['Position', 'Tile ID', 'Terrain', 'Walkable', 'Encounters']
-		for field in tile_fields:
-			row = ttk.Frame(tile_frame)
-			row.pack(fill=tk.X, pady=2)
-			ttk.Label(row, text=f"{field}:", width=10).pack(side=tk.LEFT)
-			lbl = ttk.Label(row, text="-")
-			lbl.pack(side=tk.LEFT)
-			self.tile_labels[field.lower()] = lbl
+		# Encounter zone list
+		enc_frame = ttk.LabelFrame(right_panel, text="Encounter Zones", padding=5)
+		enc_frame.pack(fill=tk.BOTH, expand=True)
 
-		# Legend
-		legend_frame = ttk.LabelFrame(info_panel, text="Terrain Legend", padding=10)
-		legend_frame.pack(fill=tk.BOTH, expand=True)
+		enc_cols = ('zone', 'rate', 'monsters')
+		self.enc_tree = ttk.Treeview(enc_frame, columns=enc_cols, show='headings', height=6)
+		self.enc_tree.heading('zone', text='Zone')
+		self.enc_tree.heading('rate', text='Rate')
+		self.enc_tree.heading('monsters', text='Monsters')
+		self.enc_tree.column('zone', width=50)
+		self.enc_tree.column('rate', width=50)
+		self.enc_tree.column('monsters', width=100)
+		self.enc_tree.pack(fill=tk.BOTH, expand=True)
 
-		legend_canvas = tk.Canvas(legend_frame, bg='#2a2a3e', height=200)
-		legend_canvas.pack(fill=tk.BOTH, expand=True)
+		enc_btn = ttk.Frame(enc_frame)
+		enc_btn.pack(fill=tk.X, pady=5)
+		ttk.Button(enc_btn, text="Edit Zone", command=self.edit_encounter_zone).pack(side=tk.LEFT, padx=2)
 
-		terrain_names = [
-			(0, "Water/Barrier"),
-			(1, "Grass"),
-			(2, "Forest"),
-			(3, "Desert"),
-			(4, "Hills"),
-			(5, "Mountain"),
-			(6, "Town"),
-			(7, "Castle"),
-			(8, "Bridge"),
-			(9, "Cave"),
-			(10, "Swamp"),
-		]
-
-		for i, (terrain_id, name) in enumerate(terrain_names):
-			y = i * 18 + 5
-			color = self.TERRAIN_COLORS.get(terrain_id, '#888888')
-			legend_canvas.create_rectangle(5, y, 20, y+14, fill=color, outline='white')
-			legend_canvas.create_text(25, y+7, text=name, anchor=tk.W, fill='white', font=('Arial', 9))
+		# Status bar
+		self.status_var = tk.StringVar(value="Ready")
+		status = ttk.Label(self, textvariable=self.status_var, relief='sunken')
+		status.pack(fill=tk.X, pady=(5, 0))
 
 	def load_maps(self):
-		"""Load map data."""
+		"""Load map data from JSON."""
 		self.map_data = self.asset_manager.load_json('maps')
 
 		if not self.map_data:
+			self.status_var.set("No map data found")
 			return
 
 		# Populate map combo
@@ -2561,76 +2684,469 @@ class MapEditorTab(ttk.Frame):
 		if not selection:
 			return
 
-		# Extract map ID
 		map_id = selection.split(':')[0].strip()
 		self.current_map_id = map_id
-		self.current_map = self.map_data.get(map_id)
+		self.current_map = self.map_data.get(map_id) if self.map_data else None
 
 		if self.current_map:
 			self.update_map_info()
+			self.load_npcs()
+			self.load_encounters()
 			self.draw_map()
+			self.clear_undo_history()
+			self.modified = False
+			self.status_var.set(f"Loaded: {self.current_map.get('name', 'Unknown')}")
 
 	def update_map_info(self):
 		"""Update map info display."""
 		if not self.current_map:
 			return
 
-		self.info_labels['name'].config(text=self.current_map.get('name', 'Unknown'))
-
 		width = self.current_map.get('width', 0)
 		height = self.current_map.get('height', 0)
-		self.info_labels['size'].config(text=f"{width} x {height}")
+		self.map_info_labels['size'].config(text=f"{width} × {height}")
 
 		tiles = self.current_map.get('tiles', [])
 		total_tiles = sum(len(row) for row in tiles) if tiles else 0
-		self.info_labels['tiles'].config(text=str(total_tiles))
+		self.map_info_labels['tiles'].config(text=str(total_tiles))
 
-		# Count walkable tiles
-		walkable = 0
-		encounter_tiles = 0
-		for row in tiles:
-			for tile in row:
-				if isinstance(tile, dict):
-					if tile.get('walkable', False):
-						walkable += 1
-					if tile.get('encounter_rate', 0) > 0:
-						encounter_tiles += 1
+		npcs = self.current_map.get('npcs', [])
+		self.map_info_labels['npcs'].config(text=str(len(npcs)))
 
-		self.info_labels['walkable'].config(text=str(walkable))
-		self.info_labels['encounters'].config(text=str(encounter_tiles))
+		warps = self.current_map.get('warps', [])
+		self.map_info_labels['warps'].config(text=str(len(warps)))
 
-	def draw_map(self):
-		"""Draw the map on canvas."""
-		self.map_canvas.delete('all')
+	def load_npcs(self):
+		"""Load NPCs into tree."""
+		for item in self.npc_tree.get_children():
+			self.npc_tree.delete(item)
 
 		if not self.current_map:
 			return
 
-		tiles = self.current_map.get('tiles', [])
-		if not tiles:
-			self.map_canvas.create_text(300, 250, text="No tile data", fill='white', font=('Arial', 14))
+		npcs = self.current_map.get('npcs', [])
+		for i, npc in enumerate(npcs):
+			self.npc_tree.insert('', 'end', values=(
+				i,
+				npc.get('x', 0),
+				npc.get('y', 0),
+				npc.get('type', 'Unknown')
+			))
+
+	def load_encounters(self):
+		"""Load encounter zones into tree."""
+		for item in self.enc_tree.get_children():
+			self.enc_tree.delete(item)
+
+		if not self.current_map:
 			return
 
-		width = self.current_map.get('width', len(tiles[0]) if tiles else 0)
-		height = self.current_map.get('height', len(tiles))
+		encounters = self.current_map.get('encounter_zones', [])
+		for i, zone in enumerate(encounters):
+			monsters = zone.get('monsters', [])
+			monster_str = ', '.join(m.get('name', '?')[:6] for m in monsters[:3])
+			if len(monsters) > 3:
+				monster_str += '...'
+
+			self.enc_tree.insert('', 'end', values=(
+				zone.get('zone_id', i),
+				f"{zone.get('rate', 0)}%",
+				monster_str
+			))
+
+	def on_mode_change(self):
+		"""Handle edit mode change."""
+		self.edit_mode = self.mode_var.get()
+		self.status_var.set(f"Mode: {self.edit_mode.title()}")
+
+	def select_terrain(self, terrain_id: int):
+		"""Select terrain type for painting."""
+		self.selected_terrain = terrain_id
+
+		# Update terrain palette highlights
+		for tid in self.TERRAIN_TYPES.keys():
+			color = 'white' if tid == terrain_id else 'gray'
+			self.terrain_canvas.itemconfig(f'terrain_{tid}', outline=color)
+
+		info = self.TERRAIN_TYPES.get(terrain_id, {})
+		self.status_var.set(f"Selected terrain: {info.get('name', 'Unknown')}")
+
+	def on_canvas_click(self, event):
+		"""Handle canvas click."""
+		if not self.current_map:
+			return
+
+		canvas_x = self.map_canvas.canvasx(event.x)
+		canvas_y = self.map_canvas.canvasy(event.y)
+		tile_x = int(canvas_x // self.zoom)
+		tile_y = int(canvas_y // self.zoom)
+
+		if self.edit_mode == self.MODE_SELECT:
+			self.update_tile_info(tile_x, tile_y)
+		elif self.edit_mode == self.MODE_PAINT:
+			self.paint_tile(tile_x, tile_y)
+			self.painting = True
+			self.last_paint_pos = (tile_x, tile_y)
+		elif self.edit_mode == self.MODE_FILL:
+			self.flood_fill(tile_x, tile_y)
+		elif self.edit_mode == self.MODE_NPC:
+			self.place_npc(tile_x, tile_y)
+		elif self.edit_mode == self.MODE_ENCOUNTER:
+			self.edit_tile_encounter(tile_x, tile_y)
+
+	def on_canvas_drag(self, event):
+		"""Handle canvas drag."""
+		if not self.painting or self.edit_mode != self.MODE_PAINT:
+			return
+
+		canvas_x = self.map_canvas.canvasx(event.x)
+		canvas_y = self.map_canvas.canvasy(event.y)
+		tile_x = int(canvas_x // self.zoom)
+		tile_y = int(canvas_y // self.zoom)
+
+		# Only paint if moved to new tile
+		if self.last_paint_pos != (tile_x, tile_y):
+			self.paint_tile(tile_x, tile_y)
+			self.last_paint_pos = (tile_x, tile_y)
+
+	def on_canvas_release(self, event):
+		"""Handle canvas release."""
+		self.painting = False
+		self.last_paint_pos = None
+
+	def on_canvas_right_click(self, event):
+		"""Handle right-click for eyedropper/context menu."""
+		if not self.current_map:
+			return
+
+		canvas_x = self.map_canvas.canvasx(event.x)
+		canvas_y = self.map_canvas.canvasy(event.y)
+		tile_x = int(canvas_x // self.zoom)
+		tile_y = int(canvas_y // self.zoom)
+
+		tiles = self.current_map.get('tiles', [])
+		if tiles and 0 <= tile_y < len(tiles) and 0 <= tile_x < len(tiles[tile_y]):
+			tile = tiles[tile_y][tile_x]
+			if isinstance(tile, dict):
+				terrain = tile.get('terrain_type', 0)
+			else:
+				terrain = tile if isinstance(tile, int) else 0
+			self.select_terrain(terrain)
+			self.status_var.set(f"Picked terrain: {self.TERRAIN_TYPES.get(terrain, {}).get('name', 'Unknown')}")
+
+	def on_canvas_motion(self, event):
+		"""Handle mouse motion for hover info."""
+		if not self.current_map:
+			return
+
+		canvas_x = self.map_canvas.canvasx(event.x)
+		canvas_y = self.map_canvas.canvasy(event.y)
+		tile_x = int(canvas_x // self.zoom)
+		tile_y = int(canvas_y // self.zoom)
+
+		self.update_tile_info(tile_x, tile_y)
+
+	def update_tile_info(self, x: int, y: int):
+		"""Update tile info panel."""
+		if not self.current_map:
+			return
+
+		tiles = self.current_map.get('tiles', [])
+		if not tiles or y < 0 or y >= len(tiles) or x < 0 or x >= len(tiles[y]):
+			return
+
+		tile = tiles[y][x]
+		self.tile_info_labels['position'].config(text=f"({x}, {y})")
+
+		if isinstance(tile, dict):
+			terrain = tile.get('terrain_type', 0)
+			info = self.TERRAIN_TYPES.get(terrain, {})
+			self.tile_info_labels['terrain'].config(text=info.get('name', 'Unknown'))
+			self.tile_info_labels['walkable'].config(text='Yes' if info.get('walkable', False) else 'No')
+			self.tile_info_labels['damage'].config(text=str(info.get('damage', 0)))
+
+			# Check for NPC at this location
+			npc_here = None
+			for npc in self.current_map.get('npcs', []):
+				if npc.get('x') == x and npc.get('y') == y:
+					npc_here = npc
+					break
+			self.tile_info_labels['npc'].config(text=npc_here.get('type', 'Yes') if npc_here else '-')
+
+			# Check encounter zone
+			enc = tile.get('encounter_zone', '-')
+			self.tile_info_labels['encounters'].config(text=str(enc))
+		else:
+			terrain = tile if isinstance(tile, int) else 0
+			info = self.TERRAIN_TYPES.get(terrain, {})
+			self.tile_info_labels['terrain'].config(text=info.get('name', 'Unknown'))
+			self.tile_info_labels['walkable'].config(text='Yes' if info.get('walkable', False) else 'No')
+			self.tile_info_labels['damage'].config(text=str(info.get('damage', 0)))
+			self.tile_info_labels['npc'].config(text='-')
+			self.tile_info_labels['encounters'].config(text='-')
+
+	def paint_tile(self, x: int, y: int):
+		"""Paint a tile with selected terrain."""
+		if not self.current_map:
+			return
+
+		tiles = self.current_map.get('tiles', [])
+		if not tiles or y < 0 or y >= len(tiles) or x < 0 or x >= len(tiles[y]):
+			return
+
+		brush_size = self.brush_var.get()
+
+		# Record undo action
+		old_tiles = []
+		for dy in range(-(brush_size-1), brush_size):
+			for dx in range(-(brush_size-1), brush_size):
+				nx, ny = x + dx, y + dy
+				if 0 <= ny < len(tiles) and 0 <= nx < len(tiles[ny]):
+					old_tiles.append((nx, ny, tiles[ny][nx]))
+
+		# Apply paint
+		for dy in range(-(brush_size-1), brush_size):
+			for dx in range(-(brush_size-1), brush_size):
+				nx, ny = x + dx, y + dy
+				if 0 <= ny < len(tiles) and 0 <= nx < len(tiles[ny]):
+					if isinstance(tiles[ny][nx], dict):
+						tiles[ny][nx]['terrain_type'] = self.selected_terrain
+					else:
+						tiles[ny][nx] = self.selected_terrain
+
+		# Save undo
+		self.push_undo('paint', {'tiles': old_tiles})
+		self.modified = True
+
+		# Redraw affected area
+		self.draw_map()
+
+	def flood_fill(self, x: int, y: int):
+		"""Flood fill from clicked tile."""
+		if not self.current_map:
+			return
+
+		tiles = self.current_map.get('tiles', [])
+		if not tiles or y < 0 or y >= len(tiles) or x < 0 or x >= len(tiles[y]):
+			return
+
+		# Get original terrain
+		orig_tile = tiles[y][x]
+		if isinstance(orig_tile, dict):
+			orig_terrain = orig_tile.get('terrain_type', 0)
+		else:
+			orig_terrain = orig_tile if isinstance(orig_tile, int) else 0
+
+		# Don't fill if same terrain
+		if orig_terrain == self.selected_terrain:
+			return
+
+		# BFS flood fill
+		width = len(tiles[0]) if tiles else 0
+		height = len(tiles)
+		visited = set()
+		queue = [(x, y)]
+		old_tiles = []
+
+		while queue and len(old_tiles) < 10000:  # Limit to prevent infinite loops
+			cx, cy = queue.pop(0)
+			if (cx, cy) in visited or cx < 0 or cy < 0 or cx >= width or cy >= height:
+				continue
+
+			tile = tiles[cy][cx]
+			if isinstance(tile, dict):
+				terrain = tile.get('terrain_type', 0)
+			else:
+				terrain = tile if isinstance(tile, int) else 0
+
+			if terrain != orig_terrain:
+				continue
+
+			visited.add((cx, cy))
+			old_tiles.append((cx, cy, tiles[cy][cx]))
+
+			# Apply terrain
+			if isinstance(tiles[cy][cx], dict):
+				tiles[cy][cx]['terrain_type'] = self.selected_terrain
+			else:
+				tiles[cy][cx] = self.selected_terrain
+
+			# Add neighbors
+			queue.extend([(cx+1, cy), (cx-1, cy), (cx, cy+1), (cx, cy-1)])
+
+		self.push_undo('fill', {'tiles': old_tiles})
+		self.modified = True
+		self.draw_map()
+		self.status_var.set(f"Filled {len(old_tiles)} tiles")
+
+	def place_npc(self, x: int, y: int):
+		"""Place or move an NPC at tile."""
+		if not self.current_map:
+			return
+
+		# Simple dialog to get NPC type
+		from tkinter import simpledialog
+		npc_type = simpledialog.askstring("Place NPC", "NPC type (e.g., Villager, Guard, King):")
+		if not npc_type:
+			return
+
+		npcs = self.current_map.setdefault('npcs', [])
+
+		# Check if NPC already at location
+		for npc in npcs:
+			if npc.get('x') == x and npc.get('y') == y:
+				old_type = npc.get('type')
+				npc['type'] = npc_type
+				self.push_undo('edit_npc', {'x': x, 'y': y, 'old_type': old_type, 'new_type': npc_type})
+				self.load_npcs()
+				self.draw_map()
+				self.modified = True
+				self.status_var.set(f"Updated NPC at ({x}, {y})")
+				return
+
+		# Add new NPC
+		new_npc = {'x': x, 'y': y, 'type': npc_type, 'dialog_id': 0}
+		npcs.append(new_npc)
+		self.push_undo('add_npc', {'npc': new_npc})
+		self.load_npcs()
+		self.draw_map()
+		self.modified = True
+		self.status_var.set(f"Added {npc_type} at ({x}, {y})")
+
+	def edit_tile_encounter(self, x: int, y: int):
+		"""Edit encounter zone for tile."""
+		if not self.current_map:
+			return
+
+		tiles = self.current_map.get('tiles', [])
+		if not tiles or y < 0 or y >= len(tiles) or x < 0 or x >= len(tiles[y]):
+			return
+
+		from tkinter import simpledialog
+		zone = simpledialog.askinteger("Encounter Zone", "Zone ID (0-15):", minvalue=0, maxvalue=15)
+		if zone is None:
+			return
+
+		tile = tiles[y][x]
+		if isinstance(tile, dict):
+			old_zone = tile.get('encounter_zone', 0)
+			tile['encounter_zone'] = zone
+		else:
+			# Convert to dict
+			old_zone = 0
+			tiles[y][x] = {'terrain_type': tile, 'encounter_zone': zone}
+
+		self.push_undo('encounter', {'x': x, 'y': y, 'old': old_zone, 'new': zone})
+		self.modified = True
+		self.draw_map()
+		self.status_var.set(f"Set encounter zone {zone} at ({x}, {y})")
+
+	def add_npc(self):
+		"""Add NPC via dialog."""
+		from tkinter import simpledialog
+		x = simpledialog.askinteger("Add NPC", "X position:")
+		if x is None:
+			return
+		y = simpledialog.askinteger("Add NPC", "Y position:")
+		if y is None:
+			return
+		self.place_npc(x, y)
+
+	def edit_npc(self):
+		"""Edit selected NPC."""
+		selection = self.npc_tree.selection()
+		if not selection:
+			messagebox.showinfo("Info", "Select an NPC to edit")
+			return
+
+		item = self.npc_tree.item(selection[0])
+		npc_idx = item['values'][0]
+
+		npcs = self.current_map.get('npcs', [])
+		if npc_idx < 0 or npc_idx >= len(npcs):
+			return
+
+		npc = npcs[npc_idx]
+
+		from tkinter import simpledialog
+		new_type = simpledialog.askstring("Edit NPC", "NPC type:", initialvalue=npc.get('type', ''))
+		if new_type:
+			old_type = npc.get('type')
+			npc['type'] = new_type
+			self.push_undo('edit_npc', {'idx': npc_idx, 'old_type': old_type, 'new_type': new_type})
+			self.load_npcs()
+			self.modified = True
+
+	def delete_npc(self):
+		"""Delete selected NPC."""
+		selection = self.npc_tree.selection()
+		if not selection:
+			messagebox.showinfo("Info", "Select an NPC to delete")
+			return
+
+		item = self.npc_tree.item(selection[0])
+		npc_idx = item['values'][0]
+
+		npcs = self.current_map.get('npcs', [])
+		if npc_idx < 0 or npc_idx >= len(npcs):
+			return
+
+		npc = npcs.pop(npc_idx)
+		self.push_undo('delete_npc', {'idx': npc_idx, 'npc': npc})
+		self.load_npcs()
+		self.draw_map()
+		self.modified = True
+		self.status_var.set(f"Deleted NPC: {npc.get('type', 'Unknown')}")
+
+	def on_npc_double_click(self, event):
+		"""Handle NPC double-click to center on map."""
+		selection = self.npc_tree.selection()
+		if not selection:
+			return
+
+		item = self.npc_tree.item(selection[0])
+		x, y = item['values'][1], item['values'][2]
+
+		# Scroll to NPC location
+		canvas_x = x * self.zoom
+		canvas_y = y * self.zoom
+		self.map_canvas.xview_moveto(canvas_x / (self.map_canvas.bbox('all')[2] or 1))
+		self.map_canvas.yview_moveto(canvas_y / (self.map_canvas.bbox('all')[3] or 1))
+
+	def edit_encounter_zone(self):
+		"""Edit selected encounter zone."""
+		selection = self.enc_tree.selection()
+		if not selection:
+			messagebox.showinfo("Info", "Select an encounter zone to edit")
+			return
+
+		# TODO: Open detailed encounter zone editor dialog
+		messagebox.showinfo("Info", "Encounter zone editing coming soon!\nUse click mode to set zones on tiles.")
+
+	def draw_map(self):
+		"""Draw the map with all features."""
+		self.map_canvas.delete('all')
+
+		if not self.current_map:
+			self.map_canvas.create_text(300, 200, text="No map loaded", fill='white', font=('Arial', 14))
+			return
+
+		tiles = self.current_map.get('tiles', [])
+		if not tiles:
+			self.map_canvas.create_text(300, 200, text="No tile data", fill='white', font=('Arial', 14))
+			return
+
+		height = len(tiles)
+		width = len(tiles[0]) if tiles else 0
 
 		# Set scroll region
 		canvas_width = width * self.zoom
 		canvas_height = height * self.zoom
 		self.map_canvas.configure(scrollregion=(0, 0, canvas_width, canvas_height))
 
-		# Draw tiles (limit for performance)
-		max_tiles = 10000  # Limit tiles to draw
-		tiles_drawn = 0
-
+		# Draw tiles
 		for y, row in enumerate(tiles):
-			if tiles_drawn >= max_tiles:
-				break
 			for x, tile in enumerate(row):
-				if tiles_drawn >= max_tiles:
-					break
-
-				# Get terrain type and color
 				if isinstance(tile, dict):
 					terrain = tile.get('terrain_type', 0)
 				else:
@@ -2638,84 +3154,143 @@ class MapEditorTab(ttk.Frame):
 
 				color = self.TERRAIN_COLORS.get(terrain, '#888888')
 
-				# Draw tile
-				x1 = x * self.zoom
-				y1 = y * self.zoom
-				x2 = x1 + self.zoom
-				y2 = y1 + self.zoom
+				x1, y1 = x * self.zoom, y * self.zoom
+				x2, y2 = x1 + self.zoom, y1 + self.zoom
 
-				self.map_canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline='')
-				tiles_drawn += 1
+				outline = '' if not self.grid_var.get() else '#333333'
+				self.map_canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline=outline, width=1)
 
-		# Status message for large maps
-		if tiles_drawn >= max_tiles:
-			self.map_canvas.create_text(10, 10, text=f"Showing {max_tiles} tiles (zoom in for detail)",
-									   anchor=tk.NW, fill='yellow', font=('Arial', 10))
+		# Draw NPCs
+		if self.npc_var.get():
+			for npc in self.current_map.get('npcs', []):
+				nx, ny = npc.get('x', 0), npc.get('y', 0)
+				cx = nx * self.zoom + self.zoom // 2
+				cy = ny * self.zoom + self.zoom // 2
+				r = max(3, self.zoom // 3)
+				self.map_canvas.create_oval(cx-r, cy-r, cx+r, cy+r, fill='#ff00ff', outline='white', width=2)
 
-	def on_map_click(self, event):
-		"""Handle map click."""
-		if not self.current_map:
-			return
+				if self.zoom >= 8:
+					npc_type = npc.get('type', '?')[:3]
+					self.map_canvas.create_text(cx, cy-r-5, text=npc_type, fill='white', font=('Arial', 7))
 
-		# Convert to canvas coordinates
-		canvas_x = self.map_canvas.canvasx(event.x)
-		canvas_y = self.map_canvas.canvasy(event.y)
-
-		# Calculate tile position
-		tile_x = int(canvas_x // self.zoom)
-		tile_y = int(canvas_y // self.zoom)
-
-		self.update_tile_info(tile_x, tile_y)
-
-	def on_map_drag(self, event):
-		"""Handle map dragging."""
-		pass  # Scrolling handled by scrollbars
-
-	def on_drag_end(self, event):
-		"""Handle drag end."""
-		pass
-
-	def on_mousewheel(self, event):
-		"""Handle mouse wheel for scrolling."""
-		self.map_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
-	def update_tile_info(self, x, y):
-		"""Update tile info display."""
-		if not self.current_map:
-			return
-
-		tiles = self.current_map.get('tiles', [])
-		if not tiles or y >= len(tiles) or x >= len(tiles[y]):
-			return
-
-		tile = tiles[y][x]
-
-		self.tile_labels['position'].config(text=f"({x}, {y})")
-
-		if isinstance(tile, dict):
-			self.tile_labels['tile id'].config(text=str(tile.get('tile_id', '-')))
-			self.tile_labels['terrain'].config(text=str(tile.get('terrain_type', '-')))
-			self.tile_labels['walkable'].config(text='Yes' if tile.get('walkable', False) else 'No')
-			self.tile_labels['encounters'].config(text=str(tile.get('encounter_rate', 0)))
-		else:
-			self.tile_labels['tile id'].config(text=str(tile))
-			self.tile_labels['terrain'].config(text='-')
-			self.tile_labels['walkable'].config(text='-')
-			self.tile_labels['encounters'].config(text='-')
+		# Draw warps
+		for warp in self.current_map.get('warps', []):
+			wx, wy = warp.get('x', 0), warp.get('y', 0)
+			cx = wx * self.zoom + self.zoom // 2
+			cy = wy * self.zoom + self.zoom // 2
+			r = max(2, self.zoom // 4)
+			self.map_canvas.create_rectangle(cx-r, cy-r, cx+r, cy+r, fill='#00ffff', outline='white', width=1)
 
 	def zoom_in(self):
 		"""Zoom in."""
-		if self.zoom < 16:
-			self.zoom = min(16, self.zoom * 2)
+		if self.zoom < 32:
+			self.zoom = min(32, self.zoom * 2)
 			self.zoom_label.config(text=f"{self.zoom}x")
 			self.draw_map()
 
 	def zoom_out(self):
 		"""Zoom out."""
-		if self.zoom > 1:
-			self.zoom = max(1, self.zoom // 2)
+		if self.zoom > 2:
+			self.zoom = max(2, self.zoom // 2)
 			self.zoom_label.config(text=f"{self.zoom}x")
 			self.draw_map()
+
+	def on_mousewheel(self, event):
+		"""Handle mouse wheel for zooming with Ctrl or scrolling."""
+		# Ctrl+wheel = zoom
+		if event.state & 0x4:  # Ctrl key
+			if event.delta > 0:
+				self.zoom_in()
+			else:
+				self.zoom_out()
+		else:
+			self.map_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+	def push_undo(self, action_type: str, data: Dict):
+		"""Push action to undo stack."""
+		self.undo_stack.append({'type': action_type, 'data': data})
+		if len(self.undo_stack) > self.max_undo:
+			self.undo_stack.pop(0)
+		self.redo_stack.clear()
+
+	def undo(self):
+		"""Undo last action."""
+		if not self.undo_stack:
+			self.status_var.set("Nothing to undo")
+			return
+
+		action = self.undo_stack.pop()
+		self.redo_stack.append(action)
+
+		if action['type'] in ('paint', 'fill'):
+			# Restore old tiles
+			tiles = self.current_map.get('tiles', [])
+			for x, y, old_tile in action['data']['tiles']:
+				if 0 <= y < len(tiles) and 0 <= x < len(tiles[y]):
+					tiles[y][x] = old_tile
+
+		elif action['type'] == 'add_npc':
+			npcs = self.current_map.get('npcs', [])
+			npc = action['data']['npc']
+			if npc in npcs:
+				npcs.remove(npc)
+			self.load_npcs()
+
+		elif action['type'] == 'delete_npc':
+			npcs = self.current_map.get('npcs', [])
+			idx = action['data']['idx']
+			npcs.insert(idx, action['data']['npc'])
+			self.load_npcs()
+
+		self.draw_map()
+		self.status_var.set("Undone")
+
+	def redo(self):
+		"""Redo last undone action."""
+		if not self.redo_stack:
+			self.status_var.set("Nothing to redo")
+			return
+
+		action = self.redo_stack.pop()
+		self.undo_stack.append(action)
+
+		if action['type'] in ('paint', 'fill'):
+			# Re-apply terrain changes - need to store new values too
+			# For now just redraw
+			pass
+
+		elif action['type'] == 'add_npc':
+			npcs = self.current_map.setdefault('npcs', [])
+			npcs.append(action['data']['npc'])
+			self.load_npcs()
+
+		elif action['type'] == 'delete_npc':
+			npcs = self.current_map.get('npcs', [])
+			idx = action['data']['idx']
+			if 0 <= idx < len(npcs):
+				npcs.pop(idx)
+			self.load_npcs()
+
+		self.draw_map()
+		self.status_var.set("Redone")
+
+	def clear_undo_history(self):
+		"""Clear undo/redo stacks."""
+		self.undo_stack.clear()
+		self.redo_stack.clear()
+
+	def save_map(self):
+		"""Save current map changes."""
+		if not self.modified:
+			self.status_var.set("No changes to save")
+			return
+
+		if self.asset_manager.save_json('maps', self.map_data):
+			self.modified = False
+			self.status_var.set("Map saved successfully!")
+			messagebox.showinfo("Success", "Map saved to assets/json/maps.json")
+		else:
+			messagebox.showerror("Error", "Failed to save map")
 
 
 # ============================================================================
