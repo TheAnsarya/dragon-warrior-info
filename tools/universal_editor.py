@@ -446,19 +446,22 @@ class DashboardTab(ttk.Frame):
 
 		editor_buttons = [
 			("👾 Monsters", 1), ("📦 Items", 2), ("✨ Spells", 3),
-			("🏪 Shops", 4), ("💬 Dialogs", 5), ("🧙 NPCs", 6),
-			("🗺️ Maps", 7), ("🎨 Graphics", 8), ("📊 Stats", 9),
+			("🏪 Shops", 4), ("💬 Dialogs", 5), ("⚔️ Equipment", 6),
+			("🗺️ Maps", 7), ("🎨 Graphics", 8), ("🖌️ Palettes", 9),
+			("🔢 Hex Viewer", 10), ("📝 Script", 11), ("🔍 Compare", 12),
+			("🎮 Cheats", 13), ("🎵 Music", 14), ("📋 TBL", 15),
+			("⚔️ Encounters", 16), ("📊 Stats", 17),
 		]
 
 		for i, (text, tab_idx) in enumerate(editor_buttons):
-			row, col = divmod(i, 3)
+			row, col = divmod(i, 6)
 			btn = ttk.Button(
 				editors_frame,
 				text=text,
-				width=15,
+				width=12,
 				command=lambda idx=tab_idx: self.editor.notebook.select(idx)
 			)
-			btn.grid(row=row, column=col, padx=5, pady=5)
+			btn.grid(row=row, column=col, padx=2, pady=2)
 
 		# Tools Quick Launch
 		tools_frame = ttk.LabelFrame(right_col, text="🛠️ Tools & Utilities", padding=10)
@@ -5066,6 +5069,277 @@ $F0-$FB = Wait, pause, clear commands""")
 
 
 # ============================================================================
+# ENCOUNTER ZONE EDITOR TAB
+# ============================================================================
+
+class EncounterEditorTab(BaseTab):
+	"""Edit enemy encounter zones and rates."""
+
+	# Dragon Warrior encounter zone data (approximate)
+	# Each zone has a list of possible enemies and encounter rate
+	ZONE_DATA = {
+		'Tantegel Area': {
+			'zone_id': 0,
+			'monsters': ['Slime', 'Red Slime'],
+			'rate': 'Low',
+			'description': 'Starting area around Tantegel Castle'
+		},
+		'Brecconary Area': {
+			'zone_id': 1,
+			'monsters': ['Slime', 'Red Slime', 'Drakee'],
+			'rate': 'Low',
+			'description': 'Fields near Brecconary village'
+		},
+		'Garinham Area': {
+			'zone_id': 2,
+			'monsters': ['Red Slime', 'Drakee', 'Ghost'],
+			'rate': 'Medium',
+			'description': 'North of Brecconary'
+		},
+		'Kol Area': {
+			'zone_id': 3,
+			'monsters': ['Magician', 'Scorpion', 'Druin'],
+			'rate': 'Medium',
+			'description': 'Eastern continent'
+		},
+		'Rimuldar Area': {
+			'zone_id': 4,
+			'monsters': ['Wolf', 'Warlock', 'Metal Scorpion'],
+			'rate': 'High',
+			'description': 'Swamp region'
+		},
+		'Hauksness Ruins': {
+			'zone_id': 5,
+			'monsters': ['Knight', 'Demon Knight', 'Werewolf'],
+			'rate': 'Very High',
+			'description': 'Destroyed city'
+		},
+		'Charlock Castle': {
+			'zone_id': 6,
+			'monsters': ['Blue Dragon', 'Stoneman', 'Armored Knight'],
+			'rate': 'Very High',
+			'description': 'Dragon Lord\'s castle'
+		},
+		'Swamp Cave': {
+			'zone_id': 7,
+			'monsters': ['Ghost', 'Magidrakee', 'Skeleton'],
+			'rate': 'High',
+			'description': 'Underground cave'
+		},
+	}
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.current_zone: Optional[str] = None
+
+		self.setup_ui()
+
+	def setup_ui(self):
+		"""Set up encounter editor UI."""
+		# Main paned window
+		paned = ttk.PanedWindow(self.frame, orient='horizontal')
+		paned.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Left side: Zone list
+		left_frame = ttk.LabelFrame(paned, text="Encounter Zones")
+		paned.add(left_frame, weight=1)
+
+		self.zone_listbox = tk.Listbox(left_frame, font=('Segoe UI', 10))
+		self.zone_listbox.pack(fill='both', expand=True, padx=5, pady=5)
+		self.zone_listbox.bind('<<ListboxSelect>>', self.on_zone_select)
+
+		for zone_name in self.ZONE_DATA.keys():
+			self.zone_listbox.insert('end', zone_name)
+
+		# Right side: Zone details
+		right_frame = ttk.Frame(paned)
+		paned.add(right_frame, weight=2)
+
+		# Zone info
+		info_frame = ttk.LabelFrame(right_frame, text="Zone Information")
+		info_frame.pack(fill='x', padx=5, pady=5)
+
+		info_grid = ttk.Frame(info_frame)
+		info_grid.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(info_grid, text="Zone Name:").grid(row=0, column=0, sticky='e', padx=5, pady=2)
+		self.zone_name_var = tk.StringVar()
+		ttk.Entry(info_grid, textvariable=self.zone_name_var, width=30).grid(row=0, column=1, sticky='w', padx=5)
+
+		ttk.Label(info_grid, text="Zone ID:").grid(row=1, column=0, sticky='e', padx=5, pady=2)
+		self.zone_id_var = tk.StringVar()
+		ttk.Entry(info_grid, textvariable=self.zone_id_var, width=10).grid(row=1, column=1, sticky='w', padx=5)
+
+		ttk.Label(info_grid, text="Encounter Rate:").grid(row=2, column=0, sticky='e', padx=5, pady=2)
+		self.rate_var = tk.StringVar()
+		rate_combo = ttk.Combobox(info_grid, textvariable=self.rate_var, width=15, state='readonly')
+		rate_combo['values'] = ['Very Low', 'Low', 'Medium', 'High', 'Very High']
+		rate_combo.grid(row=2, column=1, sticky='w', padx=5)
+
+		ttk.Label(info_grid, text="Description:").grid(row=3, column=0, sticky='ne', padx=5, pady=2)
+		self.desc_var = tk.StringVar()
+		ttk.Entry(info_grid, textvariable=self.desc_var, width=40).grid(row=3, column=1, sticky='w', padx=5)
+
+		# Monster list for zone
+		monster_frame = ttk.LabelFrame(right_frame, text="Monsters in Zone")
+		monster_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Monster listbox with checkboxes (simplified)
+		columns = ('monster', 'level_range', 'chance')
+		self.monster_tree = ttk.Treeview(monster_frame, columns=columns, show='headings', height=8)
+		self.monster_tree.heading('monster', text='Monster')
+		self.monster_tree.heading('level_range', text='Level Range')
+		self.monster_tree.heading('chance', text='Encounter %')
+		self.monster_tree.column('monster', width=150)
+		self.monster_tree.column('level_range', width=100)
+		self.monster_tree.column('chance', width=100)
+		self.monster_tree.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Monster controls
+		monster_ctrl = ttk.Frame(monster_frame)
+		monster_ctrl.pack(fill='x', padx=5, pady=5)
+
+		ttk.Button(monster_ctrl, text="Add Monster", command=self.add_monster).pack(side='left', padx=5)
+		ttk.Button(monster_ctrl, text="Remove Monster", command=self.remove_monster).pack(side='left', padx=5)
+		ttk.Button(monster_ctrl, text="Edit Chance", command=self.edit_chance).pack(side='left', padx=5)
+
+		# Rate info
+		rate_frame = ttk.LabelFrame(right_frame, text="Encounter Rate Reference")
+		rate_frame.pack(fill='x', padx=5, pady=5)
+
+		rate_info = """Encounter Rate determines how often random battles occur:
+• Very Low: ~1/32 chance per step
+• Low: ~1/16 chance per step
+• Medium: ~1/8 chance per step
+• High: ~1/4 chance per step
+• Very High: ~1/2 chance per step
+
+Dragon Warrior uses a zone-based system where encounter rates
+increase as you move further from Tantegel Castle."""
+
+		ttk.Label(rate_frame, text=rate_info, justify='left').pack(padx=5, pady=5)
+
+		# Save button
+		btn_frame = ttk.Frame(right_frame)
+		btn_frame.pack(fill='x', padx=5, pady=5)
+
+		ttk.Button(btn_frame, text="Save Zone Changes", command=self.save_zone).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Export Zone Data", command=self.export_zones).pack(side='left', padx=5)
+
+	def on_zone_select(self, event):
+		"""Handle zone selection."""
+		selection = self.zone_listbox.curselection()
+		if not selection:
+			return
+
+		zone_name = self.zone_listbox.get(selection[0])
+		self.current_zone = zone_name
+		zone_data = self.ZONE_DATA[zone_name]
+
+		self.zone_name_var.set(zone_name)
+		self.zone_id_var.set(str(zone_data['zone_id']))
+		self.rate_var.set(zone_data['rate'])
+		self.desc_var.set(zone_data['description'])
+
+		# Update monster list
+		for item in self.monster_tree.get_children():
+			self.monster_tree.delete(item)
+
+		monsters = zone_data['monsters']
+		chance = 100 // len(monsters) if monsters else 0
+		for monster in monsters:
+			self.monster_tree.insert('', 'end', values=(monster, '1-5', f'{chance}%'))
+
+	def add_monster(self):
+		"""Add a monster to the zone."""
+		if not self.current_zone:
+			messagebox.showinfo("Info", "Select a zone first")
+			return
+
+		# Simple dialog to add monster
+		monster = simpledialog.askstring("Add Monster", "Monster name:")
+		if monster:
+			self.monster_tree.insert('', 'end', values=(monster, '1-5', '10%'))
+			self.status_callback(f"Added {monster} to {self.current_zone}")
+
+	def remove_monster(self):
+		"""Remove selected monster from zone."""
+		selection = self.monster_tree.selection()
+		if selection:
+			for item in selection:
+				self.monster_tree.delete(item)
+
+	def edit_chance(self):
+		"""Edit encounter chance for selected monster."""
+		selection = self.monster_tree.selection()
+		if not selection:
+			return
+
+		current = self.monster_tree.item(selection[0])['values']
+		new_chance = simpledialog.askinteger("Edit Chance", "Encounter chance (1-100):",
+			initialvalue=int(current[2].replace('%', '')))
+		if new_chance:
+			self.monster_tree.item(selection[0], values=(current[0], current[1], f'{new_chance}%'))
+
+	def save_zone(self):
+		"""Save zone changes."""
+		if not self.current_zone:
+			return
+
+		# Get updated data
+		monsters = [self.monster_tree.item(item)['values'][0]
+			for item in self.monster_tree.get_children()]
+
+		self.ZONE_DATA[self.current_zone] = {
+			'zone_id': int(self.zone_id_var.get()),
+			'monsters': monsters,
+			'rate': self.rate_var.get(),
+			'description': self.desc_var.get()
+		}
+
+		# Save to JSON
+		zone_file = PROJECT_ROOT / "assets" / "data" / "encounter_zones.json"
+		zone_file.parent.mkdir(parents=True, exist_ok=True)
+
+		try:
+			with open(zone_file, 'w') as f:
+				json.dump(self.ZONE_DATA, f, indent=2)
+			messagebox.showinfo("Saved", "Zone data saved!")
+		except Exception as e:
+			messagebox.showerror("Error", f"Save failed: {e}")
+
+	def export_zones(self):
+		"""Export zone data to text file."""
+		from tkinter import filedialog
+		path = filedialog.asksaveasfilename(
+			defaultextension=".txt",
+			filetypes=[("Text files", "*.txt")],
+			initialfile="dw_encounter_zones.txt"
+		)
+
+		if path:
+			try:
+				with open(path, 'w') as f:
+					f.write("Dragon Warrior - Encounter Zones\n")
+					f.write("=" * 50 + "\n\n")
+
+					for zone_name, data in self.ZONE_DATA.items():
+						f.write(f"{zone_name} (Zone {data['zone_id']})\n")
+						f.write(f"  Rate: {data['rate']}\n")
+						f.write(f"  Description: {data['description']}\n")
+						f.write(f"  Monsters: {', '.join(data['monsters'])}\n\n")
+
+				messagebox.showinfo("Success", f"Exported to {Path(path).name}")
+			except Exception as e:
+				messagebox.showerror("Error", f"Export failed: {e}")
+
+	def refresh(self):
+		"""Refresh zone data."""
+		# Could reload from JSON here
+		pass
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -5077,7 +5351,7 @@ class UniversalEditor:
 		self.asset_manager = AssetManager()
 
 		self.root = tk.Tk()
-		self.root.title("Dragon Warrior Universal Editor v3.0")
+		self.root.title("Dragon Warrior Universal Editor v4.0")
 		self.root.geometry("1400x900")
 
 		# Try to set icon
@@ -5254,7 +5528,11 @@ class UniversalEditor:
 		self.tbl_tab = TextTableEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
 		self.notebook.add(self.tbl_tab, text="📋 Text Table")
 
-		# Tab 17: Statistics
+		# Tab 17: Encounter Zones
+		self.encounter_tab = EncounterEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.encounter_tab, text="⚔️ Encounters")
+
+		# Tab 18: Statistics
 		stats_tab = ttk.Frame(self.notebook)
 		self.notebook.add(stats_tab, text="📊 Statistics")
 
