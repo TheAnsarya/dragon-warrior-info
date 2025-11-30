@@ -388,17 +388,19 @@ class AssetReinserter:
 			for shop_id in sorted([int(k) for k in shops.keys()]):
 				shop = shops[str(shop_id)]
 
+				# Handle both old format ('items' with raw bytes) and new format ('item_indices')
+				items = shop.get('item_indices', shop.get('items', []))
+
 				asm_lines.extend([
 					f"",
 					f"; {shop['name']} (ID: {shop_id})",
 					f"Shop_{shop_id:02d}:",
-					f"	.byte ${len(shop['items']):02X}				; Item count"
+					f"	.byte ${len(items):02X}				; Item count"
 				])
 
 				# Add item IDs
-				if shop['items']:
+				if items:
 					items_per_line = 8
-					items = shop['items']
 					for i in range(0, len(items), items_per_line):
 						line_items = items[i:i+items_per_line]
 						items_str = ", ".join(f"${item:02X}" for item in line_items)

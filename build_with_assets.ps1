@@ -190,6 +190,21 @@ if ($UseAssets) {
             $useGeneratedSpells = $false
         }
     }
+
+    # Generate shop items table
+    $shopItemsGenerator = Join-Path $ToolsDir "generate_shop_items_table.py"
+    $generatedShopItemsASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "shop_items_table.asm"
+    if (Test-Path $shopItemsGenerator) {
+        Write-Host "🏪 Generating shop items table..." -ForegroundColor Cyan
+        try {
+            & $Python $shopItemsGenerator 2>&1 | Out-Null
+            if (Test-Path $generatedShopItemsASM) {
+                Write-Host "   ✓ Shop items table generated" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "   ⚠️  Could not generate shop items table: $_" -ForegroundColor Yellow
+        }
+    }
 }
 
 # Item cost table is now included via .include directive in Bank00.asm
@@ -346,7 +361,11 @@ if ($UseAssets) {
     } else {
         Write-Host "   ⚠️  Spell Cost Data: Not integrated" -ForegroundColor Yellow
     }
-    Write-Host "   ⚠️  Shop Data: Not yet linked (generated but needs Bank integration)" -ForegroundColor Yellow
+    if (Test-Path (Join-Path $SourceDir "generated" | Join-Path -ChildPath "shop_items_table.asm")) {
+        Write-Host "   ✅ Shop Data: Integrated from assets/json/shops.json" -ForegroundColor Green
+    } else {
+        Write-Host "   ⚠️  Shop Data: Not integrated" -ForegroundColor Yellow
+    }
     Write-Host "   ⚠️  PNG → CHR: Not yet implemented" -ForegroundColor Yellow
 }
 

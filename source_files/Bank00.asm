@@ -2191,48 +2191,10 @@ InnCostTbl_Byte_998E:  .byte $19               ;Garinham           - 25    gold.
 InnCostTbl_Byte_9990:  .byte $37               ;Rimuldar           - 55    gold.
 
 ;----------------------------------------------------------------------------------------------------
-
-;The following table contains the item availablle in the shops.  The first 7 rows are the items
-;in the weapons and armor shops while the remaining rows are for the tool shops.  The values in
-;the table correspond to the item indexes in the ItemCostTbl above.
-
-ShopItemsTbl:
-
-;Koll weapons and armor shop.
-        .byte $02, $03, $0A, $0B, $0E, $FD;($9991)
-
-;Brecconary weapons and armor shop.
-ShopItemsTbl_Byte_9997:  .byte $00, $01, $02, $07, $08, $0E, $FD
-
-;Garinham weapons and armor shop.
-        .byte $01, $02, $03, $08, $09, $0A, $0F, $FD;($999E)
-
-;Cantlin weapons and armor shop 1.
-ShopItemsTbl_Byte_99A6:  .byte $00, $01, $02, $08, $09, $0F, $FD
-
-;Cantlin weapons and armor shop 2.
-ShopItemsTbl_Byte_99AD:  .byte $03, $04, $0B, $0C, $FD
-
-;Cantlin weapons and armor shop 3.
-ShopItemsTbl_Byte_99B2:  .byte $05, $10, $FD
-
-;Rimuldar weapons and armor shop.
-ShopItemsTbl_Byte_99B5:  .byte $02, $03, $04, $0A, $0B, $0C, $FD
-
-;Koll item shop.
-        .byte $11, $13, $16, $15, $FD;($99BC)
-
-;Brecconary item shop.
-        .byte $11, $13, $16, $FD;($99C1)
-
-;Garinham item shop.
-        .byte $11, $13, $16, $FD;($99C5)
-
-;Cantlin item shop 1.
-ShopItemsTbl_Byte_99C9:  .byte $11, $13, $FD
-
-;Cantlin item shop 2.
-ShopItemsTbl_Byte_99CC:  .byte $16, $15, $FD
+; Shop Items Table - Generated from assets/json/shops.json
+; To modify shop inventories, edit the JSON file and rebuild
+;----------------------------------------------------------------------------------------------------
+.include "generated/shop_items_table.asm"
 
 ;----------------------------------------------------------------------------------------------------
 ;This table contains weapon bonuses added to the

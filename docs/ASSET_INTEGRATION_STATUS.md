@@ -27,25 +27,19 @@ These assets are edited via JSON and automatically included in the ROM build.
 - **Editor**: `tools/editors/spell_editor.py`
 - **Status**: ✅ Complete (Added 2025-11-29)
 
+### Shop Inventories
+- **JSON File**: `assets/json/shops.json`
+- **Generator**: `tools/generate_shop_items_table.py` → `source_files/generated/shop_items_table.asm`
+- **Bank Integration**: Bank00.asm via `.include "generated/shop_items_table.asm"`
+- **Editor**: `tools/editors/shop_editor.py`, `tools/shop_editor.py`
+- **Extractor**: `tools/extract_shops_from_rom.py` (extracts correct shop data from ROM)
+- **Status**: ✅ Complete (Added 2025-11-29)
+
 ---
 
 ## ⚠️ Generated But Not Linked
 
 These assets have JSON data and generate ASM, but are not yet linked to Bank files.
-
-### Shop Inventories
-- **JSON File**: `assets/json/shops.json`
-- **Generator**: `tools/asset_reinserter.py` → `source_files/generated/shop_data.asm`
-- **Bank Location**: Bank00.asm at `ShopItemsTbl:` ($9991)
-- **Editor**: `tools/editors/shop_editor.py`
-- **Blocker**: Generated format doesn't match Bank00 structure
-- **Effort**: Medium - Need format conversion in generator
-- **Status**: 🔴 Needs work
-
-**Technical Details:**
-- Current Bank00 format: Item IDs terminated by $FD per shop
-- Generated format: Item count followed by item bytes
-- Need to update `asset_reinserter.py` or create dedicated generator
 
 ### Dialog Text
 - **JSON File**: `assets/json/dialogs.json`
