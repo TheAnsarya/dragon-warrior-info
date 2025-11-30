@@ -42,7 +42,7 @@ The Dragon Warrior ROM hacking toolkit uses a JSON-based asset pipeline that all
 | 🧙 NPCs | `npcs_extracted.json` | `generate_npc_tables.py` | `npc_tables.asm` | 24 |
 | ⚔️ Equipment | `equipment_bonuses.json` | `generate_equipment_bonus_tables.py` | `equipment_bonus_tables.asm` | 3 |
 | 🗺️ Maps | `maps.json` | `asset_reinserter.py` | `map_data.asm` | 1 |
-| 🎨 Graphics | `graphics_data.json` | `asset_reinserter.py` | `graphics_data.asm` | - |
+| 🎨 Graphics | `graphics_data.json` | `generate_chr_from_pngs.py` | `chr_rom.bin` | 144 tiles |
 | 🎨 Palettes | `palettes.json` | `asset_reinserter.py` | `palette_data.asm` | 8 |
 
 ## Pipeline Steps
@@ -93,15 +93,33 @@ python tools/generate_npc_tables.py
 python tools/generate_equipment_bonus_tables.py
 ```
 
-### Step 4: Build ROM
+### Step 4: Edit Graphics (Optional)
+
+Edit PNG tiles in `assets/graphics/`:
+
+```powershell
+# Extract CHR tiles to PNG (if not already done)
+python tools/extract_chr_tiles.py
+
+# Edit PNGs in assets/graphics/ using any image editor
+# Tiles must be 8x8 pixels with at most 4 colors
+
+# Generate CHR-ROM from edited PNGs
+python tools/generate_chr_from_pngs.py
+```
+
+### Step 5: Build ROM
 
 Build the ROM with generated assets:
 
 ```powershell
-# Build with assets (recommended)
+# Build with data assets (recommended)
 .\build_with_assets.ps1
 
-# Or basic build
+# Build with data AND graphics assets
+.\build_with_assets.ps1 -UseGraphics
+
+# Basic build (no asset integration)
 .\build_rom.ps1
 ```
 
