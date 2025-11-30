@@ -1282,6 +1282,436 @@ class SpellEditorTab(ttk.Frame):
 
 
 # ============================================================================
+# SHOP EDITOR TAB
+# ============================================================================
+
+class ShopEditorTab(ttk.Frame):
+	"""Specialized shop editor with inventory management."""
+
+	def __init__(self, parent, asset_manager: AssetManager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.data = None
+		self.items_data = None
+		self.current_idx = -1
+
+		self.create_widgets()
+		self.load_data()
+
+	def create_widgets(self):
+		"""Create shop editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="🏪 Shop Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		ttk.Button(header, text="💾 Save All", command=self.save_all).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="⚡ Generate ASM", command=self.generate_asm).pack(side=tk.RIGHT, padx=5)
+
+		# Content
+		content = ttk.Frame(self)
+		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Left: Shop list
+		list_frame = ttk.LabelFrame(content, text="Shops", padding=5)
+		list_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
+
+		self.shop_list = tk.Listbox(list_frame, width=25, height=15)
+		self.shop_list.pack(fill=tk.BOTH, expand=True)
+		self.shop_list.bind('<<ListboxSelect>>', self.on_select)
+
+		# Right: Shop editor
+		edit_frame = ttk.LabelFrame(content, text="Shop Properties", padding=10)
+		edit_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+		# Shop name
+		ttk.Label(edit_frame, text="Shop Name:").grid(row=0, column=0, sticky=tk.W, pady=3)
+		self.name_var = tk.StringVar()
+		ttk.Entry(edit_frame, textvariable=self.name_var, width=25).grid(row=0, column=1, padx=5, pady=3)
+
+		# Shop type
+		ttk.Label(edit_frame, text="Shop Type:").grid(row=1, column=0, sticky=tk.W, pady=3)
+		self.type_var = tk.StringVar()
+		self.type_combo = ttk.Combobox(edit_frame, textvariable=self.type_var,
+									   values=['Weapon', 'Armor', 'Tool', 'Inn', 'Key'], width=15)
+		self.type_combo.grid(row=1, column=1, padx=5, pady=3, sticky=tk.W)
+
+		# Inventory
+		ttk.Label(edit_frame, text="Inventory:").grid(row=2, column=0, sticky=tk.NW, pady=3)
+
+		inv_frame = ttk.Frame(edit_frame)
+		inv_frame.grid(row=2, column=1, padx=5, pady=3, sticky=tk.W)
+
+		self.inventory_list = tk.Listbox(inv_frame, width=30, height=8)
+		self.inventory_list.pack(side=tk.LEFT)
+
+		inv_buttons = ttk.Frame(inv_frame)
+		inv_buttons.pack(side=tk.LEFT, padx=5)
+
+		ttk.Button(inv_buttons, text="Add", command=self.add_item, width=8).pack(pady=2)
+		ttk.Button(inv_buttons, text="Remove", command=self.remove_item, width=8).pack(pady=2)
+		ttk.Button(inv_buttons, text="↑ Up", command=self.move_up, width=8).pack(pady=2)
+		ttk.Button(inv_buttons, text="↓ Down", command=self.move_down, width=8).pack(pady=2)
+
+		# Available items
+		ttk.Label(edit_frame, text="Available Items:").grid(row=3, column=0, sticky=tk.NW, pady=3)
+		self.available_list = tk.Listbox(edit_frame, width=30, height=6)
+		self.available_list.grid(row=3, column=1, padx=5, pady=3, sticky=tk.W)
+
+		# Save button
+		ttk.Button(edit_frame, text="💾 Save Shop", command=self.save_current).grid(
+			row=4, column=0, columnspan=2, pady=20
+		)
+
+	def load_data(self):
+		"""Load shop and item data."""
+		self.data = self.asset_manager.load_json('shops')
+		self.items_data = self.asset_manager.load_json('items')
+
+		self.shop_list.delete(0, tk.END)
+
+		if self.data:
+			# Handle both list and dict formats
+			if isinstance(self.data, dict) and 'shops' in self.data:
+				shops = self.data['shops']
+			elif isinstance(self.data, dict):
+				shops = list(self.data.values())
+			else:
+				shops = self.data
+
+			for i, shop in enumerate(shops):
+				name = shop.get('name', shop.get('location', f'Shop {i}'))
+				self.shop_list.insert(tk.END, f"{i}: {name}")
+
+		# Load available items
+		self.available_list.delete(0, tk.END)
+		if self.items_data:
+			if isinstance(self.items_data, dict) and 'items' in self.items_data:
+				items = self.items_data['items']
+			elif isinstance(self.items_data, dict):
+				items = list(self.items_data.values())
+			else:
+				items = self.items_data
+
+			for i, item in enumerate(items):
+				name = item.get('name', f'Item {i}')
+				self.available_list.insert(tk.END, f"{i}: {name}")
+
+	def on_select(self, event):
+		"""Handle shop selection."""
+		selection = self.shop_list.curselection()
+		if not selection:
+			return
+
+		self.current_idx = selection[0]
+
+		# Get shop data
+		if isinstance(self.data, dict) and 'shops' in self.data:
+			shops = self.data['shops']
+		elif isinstance(self.data, dict):
+			shops = list(self.data.values())
+		else:
+			shops = self.data
+
+		if self.current_idx < len(shops):
+			shop = shops[self.current_idx]
+
+			# Populate fields
+			self.name_var.set(shop.get('name', shop.get('location', '')))
+			self.type_var.set(shop.get('type', 'Weapon'))
+
+			# Populate inventory
+			self.inventory_list.delete(0, tk.END)
+			items = shop.get('items', shop.get('inventory', []))
+			for item_id in items:
+				item_name = self.get_item_name(item_id)
+				self.inventory_list.insert(tk.END, f"{item_id}: {item_name}")
+
+	def get_item_name(self, item_id):
+		"""Get item name by ID."""
+		if not self.items_data:
+			return f"Item {item_id}"
+
+		if isinstance(self.items_data, dict) and 'items' in self.items_data:
+			items = self.items_data['items']
+		elif isinstance(self.items_data, dict):
+			items = list(self.items_data.values())
+		else:
+			items = self.items_data
+
+		if 0 <= item_id < len(items):
+			return items[item_id].get('name', f'Item {item_id}')
+		return f"Item {item_id}"
+
+	def add_item(self):
+		"""Add selected item to inventory."""
+		selection = self.available_list.curselection()
+		if not selection:
+			return
+
+		item_text = self.available_list.get(selection[0])
+		self.inventory_list.insert(tk.END, item_text)
+
+	def remove_item(self):
+		"""Remove selected item from inventory."""
+		selection = self.inventory_list.curselection()
+		if selection:
+			self.inventory_list.delete(selection[0])
+
+	def move_up(self):
+		"""Move selected item up."""
+		selection = self.inventory_list.curselection()
+		if selection and selection[0] > 0:
+			idx = selection[0]
+			item = self.inventory_list.get(idx)
+			self.inventory_list.delete(idx)
+			self.inventory_list.insert(idx - 1, item)
+			self.inventory_list.selection_set(idx - 1)
+
+	def move_down(self):
+		"""Move selected item down."""
+		selection = self.inventory_list.curselection()
+		if selection and selection[0] < self.inventory_list.size() - 1:
+			idx = selection[0]
+			item = self.inventory_list.get(idx)
+			self.inventory_list.delete(idx)
+			self.inventory_list.insert(idx + 1, item)
+			self.inventory_list.selection_set(idx + 1)
+
+	def save_current(self):
+		"""Save current shop."""
+		if self.current_idx < 0:
+			return
+
+		# Get shops list
+		if isinstance(self.data, dict) and 'shops' in self.data:
+			shops = self.data['shops']
+		elif isinstance(self.data, dict):
+			shops = list(self.data.values())
+		else:
+			shops = self.data
+
+		if self.current_idx < len(shops):
+			shop = shops[self.current_idx]
+
+			# Update fields
+			shop['name'] = self.name_var.get()
+			shop['type'] = self.type_var.get()
+
+			# Update inventory
+			items = []
+			for i in range(self.inventory_list.size()):
+				item_text = self.inventory_list.get(i)
+				item_id = int(item_text.split(':')[0])
+				items.append(item_id)
+			shop['items'] = items
+
+			messagebox.showinfo("Saved", f"Shop '{shop['name']}' updated.\nUse 'Save All' to write to file.")
+
+	def save_all(self):
+		"""Save all shops to file."""
+		if self.asset_manager.save_json('shops', self.data):
+			messagebox.showinfo("Success", "All shops saved!")
+		else:
+			messagebox.showerror("Error", "Failed to save")
+
+	def generate_asm(self):
+		"""Generate shop assembly."""
+		success, message = self.asset_manager.run_generator('shops')
+		if success:
+			messagebox.showinfo("Success", "Generated shop assembly!")
+		else:
+			messagebox.showerror("Error", message[:500])
+
+
+# ============================================================================
+# NPC EDITOR TAB
+# ============================================================================
+
+class NpcEditorTab(ttk.Frame):
+	"""Specialized NPC editor with location and behavior settings."""
+
+	def __init__(self, parent, asset_manager: AssetManager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.data = None
+		self.current_idx = -1
+
+		self.create_widgets()
+		self.load_data()
+
+	def create_widgets(self):
+		"""Create NPC editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="🧙 NPC Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		ttk.Button(header, text="💾 Save All", command=self.save_all).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="⚡ Generate ASM", command=self.generate_asm).pack(side=tk.RIGHT, padx=5)
+
+		# Content
+		content = ttk.Frame(self)
+		content.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Left: NPC list
+		list_frame = ttk.LabelFrame(content, text="NPCs", padding=5)
+		list_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
+
+		self.npc_list = tk.Listbox(list_frame, width=28, height=18)
+		self.npc_list.pack(fill=tk.BOTH, expand=True)
+		self.npc_list.bind('<<ListboxSelect>>', self.on_select)
+
+		# Right: NPC editor
+		edit_frame = ttk.LabelFrame(content, text="NPC Properties", padding=10)
+		edit_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+		# NPC fields
+		self.field_vars = {}
+
+		fields = [
+			('name', 'Name/Label', 'entry', 0),
+			('map_id', 'Map ID', 'spinbox', 1),
+			('x', 'X Position', 'spinbox', 2),
+			('y', 'Y Position', 'spinbox', 3),
+			('direction', 'Direction', 'combo', 4),
+			('sprite', 'Sprite ID', 'spinbox', 5),
+			('dialog_id', 'Dialog ID', 'spinbox', 6),
+			('movement', 'Movement', 'combo', 7),
+		]
+
+		directions = ['Down', 'Left', 'Right', 'Up', 'None']
+		movements = ['Static', 'Wander', 'Patrol', 'Follow']
+
+		for field, label, widget_type, row in fields:
+			ttk.Label(edit_frame, text=f"{label}:").grid(row=row, column=0, sticky=tk.W, pady=3)
+
+			if widget_type == 'entry':
+				var = tk.StringVar()
+				widget = ttk.Entry(edit_frame, textvariable=var, width=20)
+			elif widget_type == 'spinbox':
+				var = tk.IntVar(value=0)
+				widget = ttk.Spinbox(edit_frame, textvariable=var, from_=0, to=255, width=10)
+			elif widget_type == 'combo':
+				var = tk.StringVar()
+				if field == 'direction':
+					widget = ttk.Combobox(edit_frame, textvariable=var, values=directions, width=12)
+				else:
+					widget = ttk.Combobox(edit_frame, textvariable=var, values=movements, width=12)
+
+			widget.grid(row=row, column=1, padx=5, pady=3, sticky=tk.W)
+			self.field_vars[field] = var
+
+		# Notes field
+		ttk.Label(edit_frame, text="Notes:").grid(row=8, column=0, sticky=tk.NW, pady=3)
+		self.notes_text = tk.Text(edit_frame, width=30, height=3)
+		self.notes_text.grid(row=8, column=1, padx=5, pady=3)
+
+		# Save button
+		ttk.Button(edit_frame, text="💾 Save NPC", command=self.save_current).grid(
+			row=9, column=0, columnspan=2, pady=15
+		)
+
+	def load_data(self):
+		"""Load NPC data."""
+		self.data = self.asset_manager.load_json('npcs')
+		self.npc_list.delete(0, tk.END)
+
+		if self.data:
+			# Handle both list and dict formats
+			if isinstance(self.data, dict) and 'npcs' in self.data:
+				npcs = self.data['npcs']
+			elif isinstance(self.data, dict):
+				npcs = list(self.data.values())
+			else:
+				npcs = self.data
+
+			for i, npc in enumerate(npcs):
+				name = npc.get('name', npc.get('label', f'NPC {i}'))
+				map_id = npc.get('map_id', npc.get('map', '?'))
+				self.npc_list.insert(tk.END, f"{i:02d}: {name} (Map {map_id})")
+
+	def on_select(self, event):
+		"""Handle NPC selection."""
+		selection = self.npc_list.curselection()
+		if not selection:
+			return
+
+		self.current_idx = selection[0]
+
+		# Get NPC data
+		if isinstance(self.data, dict) and 'npcs' in self.data:
+			npcs = self.data['npcs']
+		elif isinstance(self.data, dict):
+			npcs = list(self.data.values())
+		else:
+			npcs = self.data
+
+		if self.current_idx < len(npcs):
+			npc = npcs[self.current_idx]
+
+			# Populate fields
+			self.field_vars['name'].set(npc.get('name', npc.get('label', '')))
+			self.field_vars['map_id'].set(npc.get('map_id', npc.get('map', 0)))
+			self.field_vars['x'].set(npc.get('x', 0))
+			self.field_vars['y'].set(npc.get('y', 0))
+			self.field_vars['direction'].set(npc.get('direction', 'Down'))
+			self.field_vars['sprite'].set(npc.get('sprite', npc.get('sprite_id', 0)))
+			self.field_vars['dialog_id'].set(npc.get('dialog_id', npc.get('dialog', 0)))
+			self.field_vars['movement'].set(npc.get('movement', 'Static'))
+
+			# Notes
+			self.notes_text.delete('1.0', tk.END)
+			self.notes_text.insert('1.0', npc.get('notes', ''))
+
+	def save_current(self):
+		"""Save current NPC."""
+		if self.current_idx < 0:
+			return
+
+		# Get NPCs list
+		if isinstance(self.data, dict) and 'npcs' in self.data:
+			npcs = self.data['npcs']
+		elif isinstance(self.data, dict):
+			npcs = list(self.data.values())
+		else:
+			npcs = self.data
+
+		if self.current_idx < len(npcs):
+			npc = npcs[self.current_idx]
+
+			# Update fields
+			npc['name'] = self.field_vars['name'].get()
+			npc['map_id'] = int(self.field_vars['map_id'].get() or 0)
+			npc['x'] = int(self.field_vars['x'].get() or 0)
+			npc['y'] = int(self.field_vars['y'].get() or 0)
+			npc['direction'] = self.field_vars['direction'].get()
+			npc['sprite'] = int(self.field_vars['sprite'].get() or 0)
+			npc['dialog_id'] = int(self.field_vars['dialog_id'].get() or 0)
+			npc['movement'] = self.field_vars['movement'].get()
+			npc['notes'] = self.notes_text.get('1.0', tk.END).strip()
+
+			messagebox.showinfo("Saved", f"NPC '{npc['name']}' updated.\nUse 'Save All' to write to file.")
+
+	def save_all(self):
+		"""Save all NPCs to file."""
+		if self.asset_manager.save_json('npcs', self.data):
+			messagebox.showinfo("Success", "All NPCs saved!")
+		else:
+			messagebox.showerror("Error", "Failed to save")
+
+	def generate_asm(self):
+		"""Generate NPC assembly."""
+		success, message = self.asset_manager.run_generator('npcs')
+		if success:
+			messagebox.showinfo("Success", "Generated npc_tables.asm!")
+		else:
+			messagebox.showerror("Error", message[:500])
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -1382,7 +1812,7 @@ class UniversalEditor:
 		self.notebook.add(self.spell_tab, text="✨ Spells")
 
 		# Tab 4: Shops
-		self.shop_tab = JsonEditorTab(self.notebook, self.asset_manager, 'shops', '🏪 Shops')
+		self.shop_tab = ShopEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.shop_tab, text="🏪 Shops")
 
 		# Tab 5: Dialogs
@@ -1390,7 +1820,7 @@ class UniversalEditor:
 		self.notebook.add(self.dialog_tab, text="💬 Dialogs")
 
 		# Tab 6: NPCs
-		self.npc_tab = JsonEditorTab(self.notebook, self.asset_manager, 'npcs', '🧙 NPCs')
+		self.npc_tab = NpcEditorTab(self.notebook, self.asset_manager)
 		self.notebook.add(self.npc_tab, text="🧙 NPCs")
 
 		# Tab 7: Equipment
