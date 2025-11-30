@@ -2572,19 +2572,10 @@ CombatBckg_Byte_9D29:  .byte $D9, $CD, $C6, $C8, $CD, $CD, $CD, $CD, $C6, $C6, $
 
 ;----------------------------------------------------------------------------------------------------
 
-;This table contains the number of points it takes to cast each spell.
-
-SpellCostTbl:
-SpellCostTbl_Byte_9D53:  .byte $04               ;Heal      4MP.
-        .byte $02               ;($9D54)Hurt      2MP.
-        .byte $02               ;($9D55)Sleep     2MP.
-SpellCostTbl_Byte_9D56:  .byte $03               ;Radiant   3MP.
-        .byte $02               ;($9D57)Stopspell 2MP.
-        .byte $06               ;($9D58)Outside   6MP.
-SpellCostTbl_Byte_9D59:  .byte $08               ;Return    8MP.
-        .byte $02               ;($9D5A)Repel     2MP.
-        .byte $0A               ;($9D5B)Healmore  10MP.
-SpellCostTbl_Byte_9D5C:  .byte $05               ;Hurtmore  5MP.
+; Spell Cost Table - Generated from assets/json/spells.json
+; To modify spell MP costs, edit the JSON file and rebuild
+;----------------------------------------------------------------------------------------------------
+.include "generated/spell_cost_table.asm"
 
 ;----------------------------------------------------------------------------------------------------
 

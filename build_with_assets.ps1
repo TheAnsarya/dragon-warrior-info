@@ -153,8 +153,10 @@ $bankFiles = @()
 # Check if we have generated assets
 $generatedMonstersASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "monster_data.asm"
 $generatedItemCostASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "item_cost_table.asm"
+$generatedSpellCostASM = Join-Path $SourceDir "generated" | Join-Path -ChildPath "spell_cost_table.asm"
 $useGeneratedMonsters = $UseAssets -and (Test-Path $generatedMonstersASM)
 $useGeneratedItems = $UseAssets -and (Test-Path $generatedItemCostASM)
+$useGeneratedSpells = $false
 
 # Generate item cost table if using assets
 if ($UseAssets) {
@@ -170,6 +172,22 @@ if ($UseAssets) {
         } catch {
             Write-Host "   ⚠️  Could not generate item cost table: $_" -ForegroundColor Yellow
             $useGeneratedItems = $false
+        }
+    }
+
+    # Generate spell cost table
+    $spellCostGenerator = Join-Path $ToolsDir "generate_spell_cost_table.py"
+    if (Test-Path $spellCostGenerator) {
+        Write-Host "🔮 Generating spell cost table..." -ForegroundColor Cyan
+        try {
+            & $Python $spellCostGenerator 2>&1 | Out-Null
+            if (Test-Path $generatedSpellCostASM) {
+                Write-Host "   ✓ Spell cost table generated" -ForegroundColor Green
+                $useGeneratedSpells = $true
+            }
+        } catch {
+            Write-Host "   ⚠️  Could not generate spell cost table: $_" -ForegroundColor Yellow
+            $useGeneratedSpells = $false
         }
     }
 }
@@ -320,11 +338,15 @@ if ($UseAssets) {
     }
     if ($useGeneratedItems) {
         Write-Host "   ✅ Item Cost Data: Integrated from assets/json/items_corrected.json" -ForegroundColor Green
-        Write-Host "      Your JSON item price edits ARE in the ROM!" -ForegroundColor Green
     } else {
         Write-Host "   ⚠️  Item Cost Data: Not integrated" -ForegroundColor Yellow
     }
-    Write-Host "   ⚠️  Spell Data: Not yet integrated (MP costs ready, needs Bank integration)" -ForegroundColor Yellow
+    if ($useGeneratedSpells) {
+        Write-Host "   ✅ Spell Cost Data: Integrated from assets/json/spells.json" -ForegroundColor Green
+    } else {
+        Write-Host "   ⚠️  Spell Cost Data: Not integrated" -ForegroundColor Yellow
+    }
+    Write-Host "   ⚠️  Shop Data: Not yet linked (generated but needs Bank integration)" -ForegroundColor Yellow
     Write-Host "   ⚠️  PNG → CHR: Not yet implemented" -ForegroundColor Yellow
 }
 
