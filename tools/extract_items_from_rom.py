@@ -74,7 +74,7 @@ ITEMS = [
 # Weapon bonus values (from WeaponsBonusTbl)
 WEAPON_BONUSES = [0, 2, 4, 10, 15, 20, 28, 40]  # None through Erdrick's Sword
 
-# Armor bonus values (from ArmorBonusTbl)  
+# Armor bonus values (from ArmorBonusTbl)
 ARMOR_BONUSES = [0, 2, 4, 10, 16, 24, 24, 28]  # None through Erdrick's Armor
 
 # Shield bonus values (from ShieldBonusTbl)
@@ -84,31 +84,31 @@ SHIELD_BONUSES = [0, 4, 10, 20]  # None through Silver Shield
 def extract_items():
     """Extract item data from ROM."""
     print(f"Reading ROM: {ROM_PATH}")
-    
+
     with open(ROM_PATH, "rb") as f:
         rom_data = f.read()
-    
+
     print(f"ROM size: {len(rom_data)} bytes")
-    
+
     items = {}
-    
+
     for item in ITEMS:
         item_id = item["id"]
         item_data = item.copy()
-        
+
         # Read buy price (2 bytes, little-endian) from ItemCostTbl
         price_offset = ITEM_COST_OFFSET + (item_id * 2)
         if price_offset + 1 < len(rom_data):
             buy_price = rom_data[price_offset] | (rom_data[price_offset + 1] << 8)
         else:
             buy_price = 0
-        
+
         item_data["buy_price"] = buy_price
         item_data["sell_price"] = buy_price // 2  # Sell price is always half
-        
+
         # Set attack/defense bonuses based on type
         item_type = item["item_type"]
-        
+
         if item_type == "weapon":
             # Weapon index is 0-6, bonus index is 1-7 (0 is "None")
             bonus_idx = item_id + 1 if item_id < len(WEAPON_BONUSES) - 1 else 0
@@ -135,27 +135,27 @@ def extract_items():
             item_data["defense_power"] = 0
             item_data["equippable"] = False
             item_data["useable"] = item_type in ["consumable", "key_item"]
-        
+
         # Add description if not already present
         if "description" not in item_data:
             item_data["description"] = f"A {item_type} used by brave adventurers."
-        
+
         if "effect" not in item_data:
             item_data["effect"] = None
-        
+
         items[str(item_id)] = item_data
-        
+
         print(f"  {item_id:2d}: {item['name']:20s} - {buy_price:5d} gold, ATK: {item_data['attack_power']:2d}, DEF: {item_data['defense_power']:2d}")
-    
+
     return items
 
 
 def main():
     items = extract_items()
-    
+
     # Create backup directory
     BACKUP_PATH.mkdir(parents=True, exist_ok=True)
-    
+
     # Backup existing file if it exists
     if OUTPUT_PATH.exists():
         import datetime
@@ -166,12 +166,12 @@ def main():
             existing = f.read()
         with open(backup_file, "w") as f:
             f.write(existing)
-    
+
     # Save to JSON
     print(f"\nSaving to: {OUTPUT_PATH}")
     with open(OUTPUT_PATH, "w") as f:
         json.dump(items, f, indent="\t")
-    
+
     print("Done!")
 
 

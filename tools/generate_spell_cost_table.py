@@ -62,7 +62,7 @@ def generate_spell_cost_table(spells_json_path: Path) -> str:
 
         # Build the line
         comment = f";{spell_name:10s} {mp_cost}MP."
-        
+
         if idx in LABELED_OFFSETS:
             label = LABELED_OFFSETS[idx]
             line = f"{label}:  .byte ${mp_cost:02X}               {comment}"

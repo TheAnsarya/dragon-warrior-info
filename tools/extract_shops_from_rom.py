@@ -65,7 +65,7 @@ SHOP_DEFINITIONS = [
     # (id, name, location, offset_from_L9991)
     (0, "Koll Weapons & Armor", "Koll", 0x00),           # L9991: 6 items
     (1, "Brecconary Weapons & Armor", "Brecconary", 0x06),  # L9997: 7 items
-    (2, "Garinham Weapons & Armor", "Garinham", 0x0D),   # L999E: 8 items  
+    (2, "Garinham Weapons & Armor", "Garinham", 0x0D),   # L999E: 8 items
     (3, "Cantlin Weapons & Armor 1", "Cantlin", 0x15),   # L99A6: 7 items
     (4, "Cantlin Weapons & Armor 2", "Cantlin", 0x1C),   # L99AD: 5 items
     (5, "Cantlin Weapons & Armor 3", "Cantlin", 0x21),   # L99B2: 3 items
@@ -84,48 +84,48 @@ INN_TOWNS = ["Kol", "Brecconary", "Garinham", "Cantlin", "Rimuldar"]
 def extract_shops():
     """Extract shop data from ROM."""
     print(f"Reading ROM: {ROM_PATH}")
-    
+
     with open(ROM_PATH, "rb") as f:
         rom_data = f.read()
-    
+
     print(f"ROM size: {len(rom_data)} bytes")
-    
+
     # Read inn costs
     inn_costs = {}
     for i, town in enumerate(INN_TOWNS):
         inn_costs[town] = rom_data[INN_COST_OFFSET + i]
-    
+
     print("\nInn costs:")
     for town, cost in inn_costs.items():
         print(f"  {town}: {cost} gold")
-    
+
     # Extract shop data
     shops = {}
-    
+
     print("\nShop data:")
     for shop_id, name, location, offset in SHOP_DEFINITIONS:
         items = []
         pos = SHOP_ITEMS_OFFSET + offset
-        
+
         # Read items until terminator (0xFD)
         while rom_data[pos] != 0xFD:
             item_idx = rom_data[pos]
             items.append(item_idx)
             pos += 1
-            
+
             # Safety check
             if len(items) > 20:
                 print(f"  WARNING: Too many items in shop {name}, stopping")
                 break
-        
+
         # Categorize items
         weapons = [i for i in items if 0x00 <= i <= 0x06]
         armor = [i for i in items if 0x07 <= i <= 0x10]  # Includes shields
         tools = [i for i in items if i >= 0x11]
-        
+
         # Get inn price for this location
         inn_price = inn_costs.get(location)
-        
+
         shop_data = {
             "id": shop_id,
             "name": name,
@@ -137,24 +137,24 @@ def extract_shops():
             "tools": tools,
             "inn_price": inn_price if "Item" not in name else None
         }
-        
+
         shops[str(shop_id)] = shop_data
-        
+
         print(f"  {name}:")
         print(f"    Items: {[f'${i:02X}' for i in items]}")
         print(f"    Names: {shop_data['items']}")
-    
+
     return shops
 
 
 def main():
     shops = extract_shops()
-    
+
     # Save to JSON
     print(f"\nSaving to: {OUTPUT_PATH}")
     with open(OUTPUT_PATH, "w") as f:
         json.dump(shops, f, indent="\t")
-    
+
     print("Done!")
 
 

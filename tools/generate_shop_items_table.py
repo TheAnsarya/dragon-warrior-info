@@ -44,10 +44,10 @@ ITEM_NAMES = {
 def generate_shop_items_table():
     """Generate ShopItemsTbl assembly from JSON."""
     print(f"Reading: {JSON_PATH}")
-    
+
     with open(JSON_PATH, "r") as f:
         shops = json.load(f)
-    
+
     lines = [
         ";----------------------------------------------------------------------------------------------------",
         "; Shop Items Table - Generated from assets/json/shops.json",
@@ -61,39 +61,39 @@ def generate_shop_items_table():
         "ShopItemsTbl:",
         "",
     ]
-    
+
     # Process shops in order
     for shop_id in range(12):
         shop_key = str(shop_id)
         if shop_key not in shops:
             print(f"  WARNING: Shop {shop_id} not found in JSON")
             continue
-        
+
         shop = shops[shop_key]
         name = shop["name"]
         items = shop["item_indices"]
-        
+
         # Add shop comment
         lines.append(f";{name}.")
-        
+
         # Generate item bytes
         item_bytes = ", ".join(f"${i:02X}" for i in items)
         item_names = ", ".join(ITEM_NAMES.get(i, f"?{i:02X}") for i in items)
-        
+
         if items:
             lines.append(f"        .byte {item_bytes}, $FD  ;{item_names}")
         else:
             lines.append(f"        .byte $FD  ;Empty shop")
-        
+
         lines.append("")
-    
+
     # Write output
     print(f"Writing: {OUTPUT_PATH}")
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    
+
     with open(OUTPUT_PATH, "w", newline="\n") as f:
         f.write("\n".join(lines))
-    
+
     print("Done!")
 
 

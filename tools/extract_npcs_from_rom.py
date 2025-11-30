@@ -88,10 +88,10 @@ NPC_TABLES = [
 def decode_npc_entry(byte1, byte2, byte3):
     """
     Decode a 3-byte NPC entry.
-    
+
     Format from disassembly:
     NNNXXXXX _DDYYYYY CCCCCCCC
-    
+
     Byte 1: NNN = NPC graphic (3 bits), XXXXX = X position (5 bits)
     Byte 2: _ = unused, DD = direction (2 bits), YYYYY = Y position (5 bits)
     Byte 3: Dialog control byte
@@ -99,14 +99,14 @@ def decode_npc_entry(byte1, byte2, byte3):
     # Byte 1: NNNXXXXX
     sprite_type = (byte1 >> 5) & 0x07  # Top 3 bits
     x_pos = byte1 & 0x1F  # Bottom 5 bits
-    
+
     # Byte 2: _DDYYYYY
     direction = (byte2 >> 5) & 0x03  # Bits 5-6 (2 bits)
     y_pos = byte2 & 0x1F  # Bottom 5 bits
-    
+
     # Byte 3: Dialog control
     dialog_id = byte3
-    
+
     return {
         "sprite_type": sprite_type,
         "sprite_name": SPRITE_TYPES.get(sprite_type, f"Unknown_{sprite_type}"),
@@ -123,68 +123,68 @@ def extract_npc_table(rom_data, offset, table_name):
     """Extract all NPCs from a table until 0xFF terminator."""
     npcs = []
     pos = offset
-    
+
     while pos + 2 < len(rom_data):
         byte1 = rom_data[pos]
-        
+
         # 0xFF marks end of table
         if byte1 == 0xFF:
             break
-        
+
         byte2 = rom_data[pos + 1]
         byte3 = rom_data[pos + 2]
-        
+
         npc = decode_npc_entry(byte1, byte2, byte3)
         npc["offset"] = f"${pos - NES_HEADER_SIZE + 0x8000:04X}"
         npcs.append(npc)
-        
+
         pos += 3
-    
+
     return npcs
 
 
 def extract_all_npcs():
     """Extract all NPC data from ROM."""
     print(f"Reading ROM: {ROM_PATH}")
-    
+
     with open(ROM_PATH, "rb") as f:
         rom_data = f.read()
-    
+
     print(f"ROM size: {len(rom_data)} bytes")
-    
+
     all_npcs = {}
-    
+
     for label, table_name, offset in NPC_TABLES:
         print(f"\nExtracting {table_name} ({label}) at offset 0x{offset:04X}...")
-        
+
         npcs = extract_npc_table(rom_data, offset, table_name)
-        
+
         all_npcs[label] = {
             "name": table_name,
             "offset": f"${offset - NES_HEADER_SIZE + 0x8000:04X}",
             "count": len(npcs),
             "npcs": npcs
         }
-        
+
         print(f"  Found {len(npcs)} NPCs")
         for npc in npcs:
             print(f"    {npc['sprite_name']:25s} at ({npc['x']:2d}, {npc['y']:2d})")
-    
+
     return all_npcs
 
 
 def main():
     npcs = extract_all_npcs()
-    
+
     # Calculate totals
     total = sum(t["count"] for t in npcs.values())
-    
+
     print(f"\n\nTotal NPCs extracted: {total}")
     print(f"Saving to: {OUTPUT_PATH}")
-    
+
     with open(OUTPUT_PATH, "w") as f:
         json.dump(npcs, f, indent="\t")
-    
+
     print("Done!")
 
 
