@@ -37,6 +37,16 @@ from dataclasses import dataclass, field, asdict
 from enum import Enum
 import struct
 
+# Import the correct TBL-based text encoding
+try:
+	from dw_text_encoding import (
+		encode_text, decode_bytes, validate_text,
+		BYTE_TO_CHAR, CHAR_TO_BYTE, CONTROL_CODES, CONTROL_NAMES
+	)
+	_HAS_DW_ENCODING = True
+except ImportError:
+	_HAS_DW_ENCODING = False
+
 
 class DialogType(Enum):
 	"""Types of dialog nodes."""
@@ -179,124 +189,93 @@ class DragonWarriorTextEncoder:
 	"""
 	Dragon Warrior text encoding/decoding.
 
-	Character table based on NES Dragon Warrior ROM:
-	- 0x00-0x19: A-Z
-	- 0x1A-0x23: 0-9
-	- 0x24-0x2F: Punctuation and spaces
-	- 0x30-0x35: Control codes
-	- 0x80-0x9F: Word substitutions (compression)
+	Uses the correct TBL-based encoding from dw_text_encoding module:
+	- 0x00-0x09: 0-9
+	- 0x0A-0x23: a-z (lowercase)
+	- 0x24-0x3D: A-Z (uppercase)
+	- 0x3E-0x5F: Punctuation and special characters
+	- 0x5F: Space
+	- 0xF0-0xFC: Control codes (PLRL, ENMY, NAME, WAIT, END, etc.)
 	"""
-
-	# Character table (0x00-0x35)
-	CHAR_TABLE = {
-		# Letters A-Z (0x00-0x19)
-		0x00: 'A', 0x01: 'B', 0x02: 'C', 0x03: 'D', 0x04: 'E', 0x05: 'F',
-		0x06: 'G', 0x07: 'H', 0x08: 'I', 0x09: 'J', 0x0A: 'K', 0x0B: 'L',
-		0x0C: 'M', 0x0D: 'N', 0x0E: 'O', 0x0F: 'P', 0x10: 'Q', 0x11: 'R',
-		0x12: 'S', 0x13: 'T', 0x14: 'U', 0x15: 'V', 0x16: 'W', 0x17: 'X',
-		0x18: 'Y', 0x19: 'Z',
-
-		# Numbers 0-9 (0x1A-0x23)
-		0x1A: '0', 0x1B: '1', 0x1C: '2', 0x1D: '3', 0x1E: '4',
-		0x1F: '5', 0x20: '6', 0x21: '7', 0x22: '8', 0x23: '9',
-
-		# Punctuation (0x24-0x2F)
-		0x24: ' ', 0x25: ',', 0x26: '.', 0x27: "'", 0x28: '!',
-		0x29: '?', 0x2A: '-', 0x2B: ':', 0x2C: ';', 0x2D: '(',
-		0x2E: ')', 0x2F: '/',
-
-		# Control codes (0x30-0x35)
-		0x30: '<END>', 0x31: '<WAIT>', 0x32: '<CLEAR>', 0x33: '<LINE>',
-		0x34: '<PLAYER>', 0x35: '<CHOICE>',
-
-		# End marker
-		0xFF: '<TERM>',
-	}
-
-	# Word substitutions (0x80-0x9F) - common words for compression
-	WORD_SUBS = {
-		0x80: 'SWORD', 0x81: 'SHIELD', 0x82: 'ARMOR', 0x83: 'KEY',
-		0x84: 'TORCH', 0x85: 'HERB', 0x86: 'POTION', 0x87: 'WARP',
-		0x88: 'GOLD', 0x89: 'LEVEL', 0x8A: 'EXPERIENCE', 0x8B: 'MAGIC',
-		0x8C: 'MONSTER', 0x8D: 'DRAGON', 0x8E: 'CASTLE', 0x8F: 'TOWN',
-		0x90: 'TANTEGEL', 0x91: 'PRINCESS', 0x92: 'ERDRICK', 0x93: 'DRAGONLORD',
-		0x94: 'CHARLOCK', 0x95: 'BRECCONARY', 0x96: 'GARINHAM', 0x97: 'RIMULDAR',
-		0x98: 'KOLTORIA', 0x99: 'HAUKSNESS', 0x9A: 'RAINBOW', 0x9B: 'STONE',
-		0x9C: 'SILVER', 0x9D: 'STAFF', 0x9E: 'HARP', 0x9F: 'TOKEN',
-	}
-
-	# Reverse mappings for encoding
-	CHAR_TO_BYTE = {v: k for k, v in CHAR_TABLE.items()}
-	WORD_TO_BYTE = {v: k for k, v in WORD_SUBS.items()}
 
 	@classmethod
 	def encode(cls, text: str) -> bytes:
 		"""
-		Encode text to Dragon Warrior format.
-
-		Applies word substitutions first for compression, then character encoding.
+		Encode text to Dragon Warrior format using correct TBL encoding.
 		"""
-		# Convert to uppercase
-		text = text.upper()
-
-		# Replace word substitutions (longest first to avoid partial matches)
-		for word in sorted(cls.WORD_TO_BYTE.keys(), key=len, reverse=True):
-			if word in text:
-				# Use placeholder to avoid double replacement
-				placeholder = f'\x00{cls.WORD_TO_BYTE[word]:02X}\x00'
-				text = text.replace(word, placeholder)
-
-		# Encode characters
-		encoded = bytearray()
-		i = 0
-		while i < len(text):
-			# Check for placeholder (word substitution)
-			if i + 3 < len(text) and text[i] == '\x00':
-				byte_val = int(text[i+1:i+3], 16)
-				encoded.append(byte_val)
-				i += 4  # Skip placeholder
-			else:
-				char = text[i]
-				if char in cls.CHAR_TO_BYTE:
-					encoded.append(cls.CHAR_TO_BYTE[char])
-				else:
-					# Unknown character - use space
-					encoded.append(0x24)
-				i += 1
-
-		# Add terminator
-		encoded.append(0xFF)
-
-		return bytes(encoded)
+		if _HAS_DW_ENCODING:
+			return bytes(encode_text(text))
+		else:
+			# Fallback if module not available
+			return cls._legacy_encode(text)
 
 	@classmethod
 	def decode(cls, data: bytes) -> str:
-		"""Decode Dragon Warrior text data."""
-		result = []
-
-		for byte in data:
-			if byte == 0xFF:
-				break  # Terminator
-			elif byte in cls.CHAR_TABLE:
-				result.append(cls.CHAR_TABLE[byte])
-			elif byte in cls.WORD_SUBS:
-				result.append(cls.WORD_SUBS[byte])
-			else:
-				result.append(f'<{byte:02X}>')
-
-		return ''.join(result)
+		"""Decode Dragon Warrior text data using correct TBL encoding."""
+		if _HAS_DW_ENCODING:
+			return decode_bytes(list(data))
+		else:
+			# Fallback if module not available
+			return cls._legacy_decode(data)
 
 	@classmethod
 	def calculate_compression_ratio(cls, text: str) -> float:
-		"""Calculate compression ratio from word substitutions."""
+		"""Calculate compression ratio (text vs encoded)."""
 		encoded = cls.encode(text)
-		uncompressed_size = len(text.upper()) + 1  # +1 for terminator
+		uncompressed_size = len(text) + 1  # +1 for END marker
 		compressed_size = len(encoded)
 
 		if uncompressed_size == 0:
 			return 1.0
 
 		return compressed_size / uncompressed_size
+
+	# Legacy fallback methods (if dw_text_encoding not available)
+	@classmethod
+	def _legacy_encode(cls, text: str) -> bytes:
+		"""Legacy encoding fallback."""
+		# Basic ASCII-like encoding for fallback
+		encoded = bytearray()
+		for char in text:
+			if char == '\n':
+				encoded.append(0xFD)
+			elif char == ' ':
+				encoded.append(0x5F)
+			elif 'a' <= char <= 'z':
+				encoded.append(ord(char) - ord('a') + 0x0A)
+			elif 'A' <= char <= 'Z':
+				encoded.append(ord(char) - ord('A') + 0x24)
+			elif '0' <= char <= '9':
+				encoded.append(ord(char) - ord('0'))
+			else:
+				encoded.append(0x5F)  # Default to space
+		encoded.append(0xFC)  # END marker
+		return bytes(encoded)
+
+	@classmethod
+	def _legacy_decode(cls, data: bytes) -> str:
+		"""Legacy decoding fallback."""
+		result = []
+		for byte in data:
+			if byte == 0xFC:
+				result.append('{END}')
+			elif byte == 0xFB:
+				result.append('{WAIT}')
+			elif byte == 0xFD:
+				result.append('\n')
+			elif byte == 0xF8:
+				result.append('{NAME}')
+			elif byte == 0x5F:
+				result.append(' ')
+			elif 0x0A <= byte <= 0x23:
+				result.append(chr(byte - 0x0A + ord('a')))
+			elif 0x24 <= byte <= 0x3D:
+				result.append(chr(byte - 0x24 + ord('A')))
+			elif 0x00 <= byte <= 0x09:
+				result.append(chr(byte + ord('0')))
+			else:
+				result.append(f'[${byte:02X}]')
+		return ''.join(result)
 
 
 class DialogExtractor:
