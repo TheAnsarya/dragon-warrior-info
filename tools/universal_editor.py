@@ -450,7 +450,7 @@ class DashboardTab(ttk.Frame):
 			("🗺️ Maps", 7), ("🎨 Graphics", 8), ("🖌️ Palettes", 9),
 			("🔢 Hex Viewer", 10), ("📝 Script", 11), ("🔍 Compare", 12),
 			("🎮 Cheats", 13), ("🎵 Music", 14), ("📋 TBL", 15),
-			("⚔️ Encounters", 16), ("📊 Stats", 17),
+			("⚔️ Encounters", 16), ("📄 ROM Info", 17), ("📊 Stats", 18),
 		]
 
 		for i, (text, tab_idx) in enumerate(editor_buttons):
@@ -5340,6 +5340,333 @@ increase as you move further from Tantegel Castle."""
 
 
 # ============================================================================
+# ROM INFO / HEADER EDITOR TAB
+# ============================================================================
+
+class RomInfoTab(BaseTab):
+	"""View and edit NES ROM header information."""
+
+	# iNES header field definitions
+	MAPPER_NAMES = {
+		0: "NROM (No mapper)",
+		1: "MMC1 (Nintendo SxROM)",
+		2: "UxROM",
+		3: "CNROM",
+		4: "MMC3 (Nintendo TxROM)",
+		7: "AxROM",
+		9: "MMC2 (Nintendo PxROM)",
+		10: "MMC4 (Nintendo FxROM)",
+		11: "Color Dreams",
+		66: "GxROM",
+		71: "Camerica BF909x",
+		# Add more as needed
+	}
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		super().__init__(notebook, asset_manager, status_callback)
+		self.rom_data: Optional[bytearray] = None
+		self.rom_path: Optional[Path] = None
+		self.header_modified = False
+
+		self.setup_ui()
+		self.load_rom()
+
+	def setup_ui(self):
+		"""Set up ROM info UI."""
+		# Main layout
+		main_frame = ttk.Frame(self.frame)
+		main_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Left: Header Info
+		left_frame = ttk.LabelFrame(main_frame, text="iNES Header (16 bytes)")
+		left_frame.pack(side='left', fill='both', expand=True, padx=(0, 5))
+
+		# Header hex display
+		hex_frame = ttk.LabelFrame(left_frame, text="Raw Header Bytes")
+		hex_frame.pack(fill='x', padx=5, pady=5)
+
+		self.header_hex = tk.Text(hex_frame, height=3, font=('Consolas', 11), bg='#1e1e1e', fg='#4ec9b0')
+		self.header_hex.pack(fill='x', padx=5, pady=5)
+
+		# Header fields
+		fields_frame = ttk.LabelFrame(left_frame, text="Header Fields")
+		fields_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Create field entries
+		self.header_vars = {}
+
+		field_defs = [
+			('magic', 'Magic Number', False),
+			('prg_rom', 'PRG-ROM Size (16KB units)', True),
+			('chr_rom', 'CHR-ROM Size (8KB units)', True),
+			('mapper', 'Mapper Number', True),
+			('mirroring', 'Mirroring', True),
+			('battery', 'Battery-backed RAM', True),
+			('trainer', 'Trainer Present', True),
+			('four_screen', 'Four-Screen VRAM', True),
+			('vs_system', 'VS System', True),
+			('pal', 'PAL/NTSC', True),
+		]
+
+		for row, (field_id, label, editable) in enumerate(field_defs):
+			ttk.Label(fields_frame, text=f"{label}:").grid(row=row, column=0, sticky='e', padx=5, pady=3)
+			var = tk.StringVar()
+			self.header_vars[field_id] = var
+			state = 'normal' if editable else 'readonly'
+			entry = ttk.Entry(fields_frame, textvariable=var, width=30, state=state)
+			entry.grid(row=row, column=1, sticky='w', padx=5, pady=3)
+
+		# Mapper selector
+		ttk.Label(fields_frame, text="Mapper Name:").grid(row=len(field_defs), column=0, sticky='e', padx=5, pady=3)
+		self.mapper_name_var = tk.StringVar()
+		ttk.Label(fields_frame, textvariable=self.mapper_name_var, font=('Segoe UI', 9, 'italic')).grid(
+			row=len(field_defs), column=1, sticky='w', padx=5, pady=3)
+
+		# Right: ROM Stats
+		right_frame = ttk.Frame(main_frame)
+		right_frame.pack(side='right', fill='both', expand=True, padx=(5, 0))
+
+		# ROM Statistics
+		stats_frame = ttk.LabelFrame(right_frame, text="ROM Statistics")
+		stats_frame.pack(fill='x', padx=5, pady=5)
+
+		self.stats_text = tk.Text(stats_frame, height=12, font=('Consolas', 10), bg='#252526', fg='#d4d4d4')
+		self.stats_text.pack(fill='x', padx=5, pady=5)
+
+		# File Info
+		file_frame = ttk.LabelFrame(right_frame, text="File Information")
+		file_frame.pack(fill='x', padx=5, pady=5)
+
+		file_grid = ttk.Frame(file_frame)
+		file_grid.pack(fill='x', padx=5, pady=5)
+
+		ttk.Label(file_grid, text="File Path:").grid(row=0, column=0, sticky='e', padx=5)
+		self.file_path_var = tk.StringVar()
+		ttk.Entry(file_grid, textvariable=self.file_path_var, width=50, state='readonly').grid(row=0, column=1, padx=5)
+
+		ttk.Label(file_grid, text="File Size:").grid(row=1, column=0, sticky='e', padx=5)
+		self.file_size_var = tk.StringVar()
+		ttk.Entry(file_grid, textvariable=self.file_size_var, width=20, state='readonly').grid(row=1, column=1, sticky='w', padx=5)
+
+		ttk.Label(file_grid, text="CRC32:").grid(row=2, column=0, sticky='e', padx=5)
+		self.crc_var = tk.StringVar()
+		ttk.Entry(file_grid, textvariable=self.crc_var, width=20, state='readonly').grid(row=2, column=1, sticky='w', padx=5)
+
+		# Controls
+		btn_frame = ttk.Frame(right_frame)
+		btn_frame.pack(fill='x', padx=5, pady=10)
+
+		ttk.Button(btn_frame, text="Load ROM...", command=self.browse_rom).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Save Header Changes", command=self.save_header).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Calculate Checksum", command=self.calc_checksum).pack(side='left', padx=5)
+		ttk.Button(btn_frame, text="Export Header", command=self.export_header).pack(side='left', padx=5)
+
+		# Dragon Warrior specific info
+		dw_frame = ttk.LabelFrame(right_frame, text="Dragon Warrior ROM Info")
+		dw_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+		dw_info = """Dragon Warrior (USA) ROM Specifications:
+• Mapper: MMC1 (Mapper 1)
+• PRG-ROM: 64KB (4 x 16KB banks)
+• CHR-ROM: 16KB (2 x 8KB banks)
+• Mirroring: Horizontal (controlled by mapper)
+• Battery: No
+• Expected size: 81,936 bytes (with 16-byte header)
+
+The game uses memory bank switching to access
+different parts of the PRG-ROM."""
+
+		ttk.Label(dw_frame, text=dw_info, justify='left').pack(padx=5, pady=5)
+
+	def load_rom(self):
+		"""Load a ROM file."""
+		# Try built ROM first, then original
+		rom_path = PROJECT_ROOT / "build" / "dragon_warrior_rebuilt.nes"
+		if not rom_path.exists():
+			rom_path = PROJECT_ROOT / "roms" / "Dragon Warrior (USA).nes"
+
+		if rom_path.exists():
+			self.load_rom_file(rom_path)
+
+	def load_rom_file(self, path: Path):
+		"""Load ROM from file."""
+		try:
+			with open(path, 'rb') as f:
+				self.rom_data = bytearray(f.read())
+			self.rom_path = path
+			self.parse_header()
+			self.update_stats()
+			self.file_path_var.set(str(path))
+			self.file_size_var.set(f"{len(self.rom_data):,} bytes")
+			self.calc_checksum()
+			self.status_callback(f"Loaded: {path.name}")
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to load ROM: {e}")
+
+	def browse_rom(self):
+		"""Browse for ROM file."""
+		from tkinter import filedialog
+		path = filedialog.askopenfilename(
+			initialdir=PROJECT_ROOT / "roms",
+			filetypes=[("NES ROMs", "*.nes"), ("All files", "*.*")]
+		)
+		if path:
+			self.load_rom_file(Path(path))
+
+	def parse_header(self):
+		"""Parse iNES header."""
+		if not self.rom_data or len(self.rom_data) < 16:
+			return
+
+		header = self.rom_data[:16]
+
+		# Display raw hex
+		hex_str = ' '.join(f'{b:02X}' for b in header)
+		self.header_hex.delete('1.0', 'end')
+		self.header_hex.insert('1.0', hex_str)
+
+		# Parse fields
+		magic = header[0:4]
+		self.header_vars['magic'].set(magic.decode('ascii', errors='replace'))
+
+		prg_rom = header[4]
+		self.header_vars['prg_rom'].set(f"{prg_rom} ({prg_rom * 16}KB)")
+
+		chr_rom = header[5]
+		self.header_vars['chr_rom'].set(f"{chr_rom} ({chr_rom * 8}KB)")
+
+		flags6 = header[6]
+		flags7 = header[7]
+
+		mapper = (flags6 >> 4) | (flags7 & 0xF0)
+		self.header_vars['mapper'].set(str(mapper))
+		self.mapper_name_var.set(self.MAPPER_NAMES.get(mapper, "Unknown"))
+
+		mirroring = "Vertical" if (flags6 & 0x01) else "Horizontal"
+		self.header_vars['mirroring'].set(mirroring)
+
+		self.header_vars['battery'].set("Yes" if (flags6 & 0x02) else "No")
+		self.header_vars['trainer'].set("Yes" if (flags6 & 0x04) else "No")
+		self.header_vars['four_screen'].set("Yes" if (flags6 & 0x08) else "No")
+		self.header_vars['vs_system'].set("Yes" if (flags7 & 0x01) else "No")
+
+		# Check for PAL (byte 9 or 10)
+		if len(header) > 9:
+			self.header_vars['pal'].set("PAL" if (header[9] & 0x01) else "NTSC")
+		else:
+			self.header_vars['pal'].set("NTSC")
+
+	def update_stats(self):
+		"""Update ROM statistics."""
+		if not self.rom_data:
+			return
+
+		self.stats_text.delete('1.0', 'end')
+
+		lines = []
+		lines.append(f"Total ROM Size: {len(self.rom_data):,} bytes")
+		lines.append(f"Header Size: 16 bytes")
+		lines.append(f"PRG-ROM Start: 0x0010")
+
+		prg_size = self.rom_data[4] * 16384 if len(self.rom_data) > 4 else 0
+		chr_size = self.rom_data[5] * 8192 if len(self.rom_data) > 5 else 0
+
+		lines.append(f"PRG-ROM Size: {prg_size:,} bytes ({prg_size // 1024}KB)")
+		lines.append(f"CHR-ROM Start: 0x{16 + prg_size:04X}")
+		lines.append(f"CHR-ROM Size: {chr_size:,} bytes ({chr_size // 1024}KB)")
+		lines.append("")
+
+		# Count non-FF bytes (rough estimate of used space)
+		data_bytes = sum(1 for b in self.rom_data[16:] if b != 0xFF)
+		total_data = len(self.rom_data) - 16
+		pct = (data_bytes / total_data * 100) if total_data > 0 else 0
+		lines.append(f"Non-empty bytes: {data_bytes:,} ({pct:.1f}%)")
+		lines.append(f"Free space (0xFF): {total_data - data_bytes:,} bytes")
+
+		self.stats_text.insert('1.0', '\n'.join(lines))
+
+	def calc_checksum(self):
+		"""Calculate CRC32 checksum."""
+		if not self.rom_data:
+			return
+
+		import zlib
+		crc = zlib.crc32(bytes(self.rom_data)) & 0xFFFFFFFF
+		self.crc_var.set(f"{crc:08X}")
+
+	def save_header(self):
+		"""Save header changes to ROM."""
+		if not self.rom_data or not self.rom_path:
+			messagebox.showinfo("Info", "No ROM loaded")
+			return
+
+		try:
+			# Update header bytes from fields
+			prg_val = int(self.header_vars['prg_rom'].get().split()[0])
+			chr_val = int(self.header_vars['chr_rom'].get().split()[0])
+			mapper = int(self.header_vars['mapper'].get())
+
+			self.rom_data[4] = prg_val
+			self.rom_data[5] = chr_val
+
+			# Update mapper in flags
+			flags6 = (mapper & 0x0F) << 4
+			if self.header_vars['mirroring'].get() == "Vertical":
+				flags6 |= 0x01
+			if self.header_vars['battery'].get() == "Yes":
+				flags6 |= 0x02
+
+			self.rom_data[6] = flags6
+			self.rom_data[7] = (mapper & 0xF0)
+
+			# Save to file
+			with open(self.rom_path, 'wb') as f:
+				f.write(self.rom_data)
+
+			self.header_modified = False
+			messagebox.showinfo("Saved", f"Header saved to {self.rom_path.name}")
+			self.calc_checksum()
+
+		except Exception as e:
+			messagebox.showerror("Error", f"Save failed: {e}")
+
+	def export_header(self):
+		"""Export header info to text file."""
+		if not self.rom_data:
+			return
+
+		from tkinter import filedialog
+		path = filedialog.asksaveasfilename(
+			defaultextension=".txt",
+			filetypes=[("Text files", "*.txt")],
+			initialfile="rom_header_info.txt"
+		)
+
+		if path:
+			try:
+				with open(path, 'w') as f:
+					f.write("NES ROM Header Information\n")
+					f.write("=" * 40 + "\n\n")
+					f.write(f"File: {self.rom_path}\n")
+					f.write(f"Size: {len(self.rom_data):,} bytes\n")
+					f.write(f"CRC32: {self.crc_var.get()}\n\n")
+
+					f.write("Header Fields:\n")
+					for field_id, var in self.header_vars.items():
+						f.write(f"  {field_id}: {var.get()}\n")
+
+					f.write(f"\nMapper Name: {self.mapper_name_var.get()}\n")
+
+				messagebox.showinfo("Success", f"Exported to {Path(path).name}")
+			except Exception as e:
+				messagebox.showerror("Error", f"Export failed: {e}")
+
+	def refresh(self):
+		"""Refresh ROM info."""
+		self.load_rom()
+
+
+# ============================================================================
 # MAIN EDITOR WINDOW
 # ============================================================================
 
@@ -5532,7 +5859,11 @@ class UniversalEditor:
 		self.encounter_tab = EncounterEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
 		self.notebook.add(self.encounter_tab, text="⚔️ Encounters")
 
-		# Tab 18: Statistics
+		# Tab 18: ROM Info
+		self.rominfo_tab = RomInfoTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+		self.notebook.add(self.rominfo_tab, text="📄 ROM Info")
+
+		# Tab 19: Statistics
 		stats_tab = ttk.Frame(self.notebook)
 		self.notebook.add(stats_tab, text="📊 Statistics")
 
