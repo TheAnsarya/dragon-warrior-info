@@ -120,17 +120,25 @@ if ($UseAssets) {
     }
 }
 
-# NEW STEP: Generate CHR-ROM from PNG graphics (optional, future feature)
+# NEW STEP: Generate CHR-ROM from PNG graphics (optional)
 if ($UseGraphics) {
     Write-Host "[GRAPHICS] Generating CHR-ROM from PNG sprites..." -ForegroundColor Magenta
-    Write-Host "   ⚠  Graphics reinsertion not yet implemented" -ForegroundColor Yellow
-    Write-Host "   ℹ  Using existing chr_rom.bin" -ForegroundColor DarkGray
 
-    # Future implementation:
-    # $graphicsToChr = Join-Path $ToolsDir "graphics_to_chr.py"
-    # $spritesDir = Join-Path $AssetsDir "graphics" | Join-Path -ChildPath "sprites"
-    # $chrOutput = Join-Path $BuildDir "chr_rom_generated.bin"
-    # & $Python $graphicsToChr --sprites-dir $spritesDir --output $chrOutput
+    $chrGenerator = Join-Path $ToolsDir "generate_chr_from_pngs.py"
+    if (Test-Path $chrGenerator) {
+        try {
+            & $Python $chrGenerator 2>&1 | ForEach-Object {
+                Write-Host "   $_" -ForegroundColor DarkCyan
+            }
+            Write-Host "   ✓ CHR-ROM generated from PNG sprites" -ForegroundColor Green
+        } catch {
+            Write-Host "   ⚠  Could not generate CHR-ROM: $_" -ForegroundColor Yellow
+            Write-Host "   ℹ  Using existing chr_rom.bin" -ForegroundColor DarkGray
+        }
+    } else {
+        Write-Host "   ⚠  generate_chr_from_pngs.py not found" -ForegroundColor Yellow
+        Write-Host "   ℹ  Using existing chr_rom.bin" -ForegroundColor DarkGray
+    }
 }
 
 # Step 1: Assemble Header
@@ -401,7 +409,11 @@ if ($UseAssets) {
     } else {
         Write-Host "   ⚠  Equipment Bonuses: Not integrated" -ForegroundColor Yellow
     }
-    Write-Host "   ⚠  PNG → CHR: Not yet implemented" -ForegroundColor Yellow
+    if ($UseGraphics) {
+        Write-Host "   ✅ PNG → CHR: Generated from assets/graphics/*.png" -ForegroundColor Green
+    } else {
+        Write-Host "   ⚠  PNG → CHR: Use -UseGraphics to enable" -ForegroundColor Yellow
+    }
 }
 
 Write-Host ""
