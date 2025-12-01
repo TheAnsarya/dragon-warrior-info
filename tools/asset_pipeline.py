@@ -413,10 +413,10 @@ class AssetPipeline:
 			f"	.byte {int(item['equippable']) | (int(item['useable']) << 1)} ; Flags",
 			f"	.byte {item['item_type']}	 ; Item Type",
 			f"	.byte {item['sprite_id']}	 ; Sprite ID",
-				""
-			])
+			""
+		])
 
-		return "\n".join(asm_lines)
+	return "\n".join(asm_lines)
 
 	def _generate_shop_assembly(self, shops: Dict[str, Any]) -> str:
 		"""Generate shop data assembly"""
