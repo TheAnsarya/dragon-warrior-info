@@ -185,6 +185,24 @@ function Invoke-AssemblyBuild {
 function Invoke-AssetProcessing {
 	Write-BuildLog "Processing game assets..."
 
+	# Run unified asset generator first (JSON → ASM)
+	$unifiedGenerator = Join-Path $ToolsDir "generate_all_assets.py"
+	if (Test-Path $unifiedGenerator) {
+		Write-BuildLog "Running unified asset generator (JSON → ASM)..."
+		try {
+			& python $unifiedGenerator 2>&1
+			if ($LASTEXITCODE -eq 0) {
+				Write-BuildLog "Asset generation completed" "SUCCESS"
+			} else {
+				Write-BuildLog "Asset generation had warnings (continuing build)" "WARNING"
+			}
+		} catch {
+			Write-BuildLog "Asset generation failed: $_" "WARNING"
+		}
+	} else {
+		Write-BuildLog "Unified asset generator not found, skipping JSON→ASM generation" "WARNING"
+	}
+
 	# Check if Python tools are available
 	$assetTool = Join-Path $ToolsDir "build" "asset_processor.py"
 	if (Test-Path $assetTool) {
