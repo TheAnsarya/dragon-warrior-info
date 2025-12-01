@@ -14,7 +14,7 @@
 
 ## Chapter Markers (YouTube Timestamps)
 
-```
+```text
 0:00 - Introduction
 0:45 - What You'll Need
 1:30 - Forking the Repository
@@ -36,16 +36,18 @@
 **[VISUAL: Dragon Warrior title screen in emulator, fade to VS Code with project open]**
 
 **NARRATION:**
-> "Welcome to the Dragon Warrior ROM Hacking Tutorial Series! I'm going to show you how to go from zero to building your own modified Dragon Warrior ROM in just about 10 minutes.
+> "Hey everyone, welcome to the Dragon Warrior ROM Hacking Tutorial Series! If you've ever wanted to create your own version of this classic NES RPG, you're in the right place.
+>
+> I'm about to show you how to go from absolutely nothing to building your own modified Dragon Warrior ROM in just about 10 minutes. Seriously, 10 minutes!
 >
 > By the end of this video, you'll have:
 > - Your own copy of the project on GitHub
 > - All the tools you need installed
 > - A freshly built ROM running in an emulator
 >
-> Let's get started!"
+> Sound good? Let's dive in!"
 
-**[B-ROLL: Quick montage of Universal Editor, monsters.json editing, emulator gameplay]**
+**[B-ROLL: Quick montage showing the Universal Editor interface, editing monsters.json with cool stats visible, emulator gameplay showing a battle]**
 
 ---
 
@@ -54,17 +56,17 @@
 **[VISUAL: Desktop with browser open, split screen showing requirements list]**
 
 **NARRATION:**
-> "Before we begin, here's what you'll need:
+> "Alright, before we get our hands dirty, here's what you'll need:
 >
-> First, a Windows computer. This project uses PowerShell scripts optimized for Windows.
+> First, a Windows computer. This project uses PowerShell scripts that are optimized for Windows. Mac and Linux folks - it's possible but you'll need to adapt a few things.
 >
-> Second, a GitHub account. If you don't have one, go to github.com and sign up - it's free.
+> Second, a GitHub account. If you don't have one yet, head to github.com and sign up - it's completely free and only takes a minute.
 >
-> Third, we'll install two things: Python 3 and the Ophis assembler. I'll walk you through both.
+> Third, we'll be installing two things: Python 3 and the Ophis assembler. Don't worry if those sound intimidating - I'll walk you through both step by step.
 >
-> And finally, you'll need a Dragon Warrior ROM. For legal reasons, I can't provide this - you'll need to dump your own cartridge. The file should be named `dragon_warrior.nes` and placed in the `roms` folder."
+> And finally - and this is important - you'll need a Dragon Warrior ROM. For legal reasons, I can't provide this. You'll need to dump your own cartridge or find it through... other means. The file should be named `dragon_warrior.nes` and placed in the `roms` folder."
 
-**[VISUAL: Bullet point list appearing on screen as items are mentioned]**
+**[VISUAL: Bullet point list appearing on screen as items are mentioned, with little checkmark animations]**
 
 ---
 
@@ -73,21 +75,21 @@
 **[VISUAL: Browser navigating to GitHub repository]**
 
 **NARRATION:**
-> "Let's start by forking the repository. Open your browser and go to:
+> "Okay, here's where the magic starts! Let's fork the enhanced toolkit repository. Open your browser and navigate to:
 >
-> `github.com/nmikstas/dragon-warrior-disassembly`
+> `github.com/YOUR-CHANNEL/dragon-warrior-info`
 >
-> This is the original disassembly project by nmikstas that makes all of this possible."
+> Now, this isn't the original bare-bones disassembly - this is the enhanced toolkit with JSON-based editing, visual editors, and a complete build pipeline. All the good stuff we'll be using in this series!"
 
-**[VISUAL: Click on Fork button]**
+**[VISUAL: Click on Fork button with mouse cursor highlighted]**
 
-> "Click the 'Fork' button in the top right corner. This creates your own copy of the project under your GitHub account.
+> "See that 'Fork' button up in the top right corner? Give it a click. This creates your own personal copy of the entire project under your GitHub account.
 >
-> If you're prompted for options, just accept the defaults and click 'Create Fork'.
+> GitHub might ask you a few questions about the fork - just accept the defaults and hit 'Create Fork'.
 >
-> Now you have your own version that you can modify however you like!"
+> And just like that, you've got your own version! This is YOUR copy now - you can modify it however you want, break things, experiment, and push your changes back to GitHub. Pretty cool, right?"
 
-**[VISUAL: Show forked repository under user's account]**
+**[VISUAL: Show forked repository under user's account with celebration animation]**
 
 ---
 
@@ -96,25 +98,25 @@
 **[VISUAL: GitHub repository page with Code button]**
 
 **NARRATION:**
-> "Now let's get the code onto your computer. Click the green 'Code' button and copy the HTTPS URL.
+> "Now let's get all this goodness onto your computer. See that green 'Code' button? Click it and copy the HTTPS URL.
 >
-> Open PowerShell - you can search for it in the Start menu."
+> Time to open PowerShell - you can search for it in the Start menu."
 
-**[VISUAL: PowerShell window opening]**
+**[VISUAL: PowerShell window opening with dramatic sound effect]**
 
-> "Navigate to where you want to store the project. I like to use a 'repos' folder:"
+> "Navigate to where you want to store the project. I like to use a 'repos' folder in my user directory:"
 
 **[VISUAL: Type command in PowerShell]**
 
 ```powershell
 cd ~\source\repos
-git clone https://github.com/YOUR-USERNAME/dragon-warrior-disassembly.git
-cd dragon-warrior-disassembly
+git clone https://github.com/YOUR-USERNAME/dragon-warrior-info.git
+cd dragon-warrior-info
 ```
 
-> "Replace 'YOUR-USERNAME' with your actual GitHub username. Git will download all the project files."
+> "Replace 'YOUR-USERNAME' with your actual GitHub username. Watch as Git downloads all the project files - there's quite a bit here because we've got a full asset pipeline, graphical editors, documentation... the works!"
 
-**[VISUAL: Git clone progress, folder structure in VS Code]**
+**[VISUAL: Git clone progress with file count, folder structure revealing in VS Code]**
 
 ---
 
@@ -256,21 +258,21 @@ python --version
 **[VISUAL: Subscribe/like graphics, links on screen]**
 
 **NARRATION:**
-> "Thanks for watching! If this helped you get started, give the video a like and subscribe for more ROM hacking tutorials.
+> "Thanks for watching! If this helped you get started, smash that like button and subscribe for more ROM hacking tutorials.
 >
-> Drop a comment if you have questions or suggestions for future videos.
+> Got questions? Hit me up in the comments - I read every single one!
 >
-> Links to the project, documentation, and all the tools are in the description below.
+> Links to the project, documentation, and all the tools are waiting for you in the description below.
 >
 > See you in the next one - happy hacking!"
 
-**[VISUAL: Dragon Warrior ending fanfare, fade to end card]**
+**[VISUAL: Dragon Warrior ending fanfare, fade to end card with subscribe animation]**
 
 ---
 
 ## Video Description Template
 
-```
+```text
 🎮 Dragon Warrior ROM Hacking: Getting Started Tutorial
 
 In this video, I show you how to set up everything you need to start modifying Dragon Warrior for the NES. Go from zero to a working build in just 10 minutes!
@@ -288,9 +290,10 @@ In this video, I show you how to set up everything you need to start modifying D
 10:15 - Closing
 
 📁 PROJECT LINKS:
-• Main Repository: https://github.com/nmikstas/dragon-warrior-disassembly
+• Enhanced Toolkit: https://github.com/YOUR-CHANNEL/dragon-warrior-info
+• Original Disassembly: https://github.com/nmikstas/dragon-warrior-disassembly
 • Documentation: [YOUR FORK]/docs/
-• Universal Editor: Run `python tools/universal_editor.py`
+• Universal Editor: Run python tools/universal_editor.py
 
 🔧 TOOLS:
 • Python: https://python.org
@@ -299,24 +302,17 @@ In this video, I show you how to set up everything you need to start modifying D
 • FCEUX Emulator: https://fceux.com
 
 ⌨️ COMMANDS USED:
-```powershell
-# Clone the repository
 cd ~\source\repos
-git clone https://github.com/YOUR-USERNAME/dragon-warrior-disassembly.git
-cd dragon-warrior-disassembly
-
-# Check Python installation
+git clone https://github.com/YOUR-USERNAME/dragon-warrior-info.git
+cd dragon-warrior-info
 python --version
-
-# Build the ROM
 .\build.ps1
-```
 
 📺 NEXT VIDEO: Modifying Monster Stats
 
 👍 Like and subscribe for more NES ROM hacking tutorials!
 
-#DragonWarrior #NES #ROMHacking #Retrogaming #Tutorial
+Tags: DragonWarrior, NES, ROMHacking, Retrogaming, Tutorial
 ```
 
 ---
@@ -324,6 +320,7 @@ python --version
 ## Production Notes
 
 ### B-Roll Needed
+
 - [ ] Dragon Warrior title screen (5-10 seconds)
 - [ ] Various gameplay clips (walking, menu, battle)
 - [ ] Universal Editor interface tour
@@ -331,6 +328,7 @@ python --version
 - [ ] Build success terminal output
 
 ### Screen Recording Tips
+
 1. **VS Code Settings**
    - Increase font size to 16+ for readability
    - Use a high-contrast theme (One Dark Pro recommended)
@@ -347,6 +345,7 @@ python --version
    - Configure clean video output filters
 
 ### Timing Notes
+
 - Each section has buffer time built in
 - Target 10 minutes, acceptable up to 12
 - Can trim filler words and pauses in editing
@@ -358,4 +357,5 @@ python --version
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial script creation |
+| 2025-12-02 | 1.1 | Update to fork enhanced toolkit, add more personality |
 

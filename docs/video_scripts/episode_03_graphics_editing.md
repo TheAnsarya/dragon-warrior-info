@@ -1,29 +1,29 @@
-# Episode 3: Graphics Editing with CHR Tools
+# Episode 3: Graphics Editing - PNG Workflow
 
 ## Video Metadata
 
 | Field | Value |
 |-------|-------|
-| **Title** | "Dragon Warrior ROM Hacking: Graphics Editing with CHR Tools" |
+| **Title** | "Dragon Warrior ROM Hacking: Edit Graphics with PNG Files" |
 | **Duration** | 12-15 minutes |
 | **Difficulty** | Intermediate |
-| **Prerequisites** | Completed Episode 1, CHR editing software |
+| **Prerequisites** | Completed Episode 1, image editor (any!) |
 | **Related Docs** | `docs/CHR_WORKFLOW.md`, `assets/graphics/` |
 
 ---
 
 ## Chapter Markers (YouTube Timestamps)
 
-```
+```text
 0:00 - Introduction
 0:45 - Understanding NES Graphics
-2:00 - The CHR-ROM Explained
-3:30 - Extracting Graphics
-4:30 - Using YY-CHR
+2:00 - The Asset Pipeline Approach
+3:30 - Extracting to PNG
+4:30 - Editing with Any Image Editor
 6:00 - NES Palette Limitations
-7:30 - Editing a Tile
-9:00 - Reinserting Graphics
-10:30 - Testing Changes
+7:30 - Let's Edit a Monster!
+9:00 - Rebuilding the ROM
+10:30 - Testing Your Changes
 11:30 - Common Pitfalls
 12:30 - Closing
 ```
@@ -34,177 +34,189 @@
 
 ### [0:00] Introduction (45 seconds)
 
-**[VISUAL: Dragon Warrior sprites, transition to tile editor]**
+**[VISUAL: Dragon Warrior sprites showcased, transition to PNG files in VS Code]**
 
 **NARRATION:**
-> "Welcome back to Dragon Warrior ROM Hacking! So far we've modified stats, but what if you want to change how things look?
+> "What's up everyone! Welcome back to the Dragon Warrior ROM Hacking series. So far we've been tweaking numbers - stats, experience, damage. But what if you want to change how things *look*?
 >
-> In this episode, we're diving into graphics editing. By the end, you'll know how to:
-> - Extract graphics from the ROM
-> - Edit tiles and sprites
-> - Work within NES limitations
-> - Reinsert your custom graphics
+> In this episode, we're getting visual! By the end, you'll know how to:
 >
-> This is where ROM hacking gets really creative!"
+> - Extract graphics from the ROM as PNG files
+> - Edit them with your favorite image editor - Photoshop, GIMP, Paint.NET, whatever you like!
+> - Understand NES palette limitations (it's weird, but manageable)
+> - Rebuild your ROM with custom graphics
+>
+> This is where ROM hacking gets REALLY creative. Let's make some art!"
 
 ---
 
 ### [0:45] Understanding NES Graphics (1 minute 15 seconds)
 
-**[VISUAL: Diagram of NES graphics system]**
+**[VISUAL: Animated diagram of NES tile system]**
 
 **NARRATION:**
-> "Before we edit anything, let's understand how NES graphics work.
+> "Before we start editing, let's understand how NES graphics actually work. Trust me, this will save you headaches later!
 >
-> The NES uses tile-based graphics. Everything you see - characters, monsters, terrain - is made of 8x8 pixel tiles.
+> The NES uses something called *tile-based* graphics. Everything you see on screen - characters, monsters, terrain, even text - is made up of tiny 8x8 pixel tiles, kind of like a mosaic.
 >
-> These tiles are arranged in two tables:
-> - **Background tiles** for maps, menus, and text
-> - **Sprite tiles** for characters, NPCs, and animations
+> These tiles live in two areas:
 >
-> Dragon Warrior uses both extensively. The hero, monsters, and NPCs are sprites. The overworld, towns, and dungeons use background tiles."
+> - **Sprite tiles** - for things that move: the hero, monsters, NPCs
+> - **Background tiles** - for the world: maps, buildings, menus
+>
+> Dragon Warrior uses both. The Dragonlord, Slimes, and our hero are sprites. The overworld, dungeons, and those fancy menus are backgrounds."
 
-**[VISUAL: Show examples of each in-game]**
+**[VISUAL: In-game examples highlighted with tile grid overlay]**
 
 ---
 
-### [2:00] The CHR-ROM Explained (1 minute 30 seconds)
+### [2:00] The Asset Pipeline Approach (1 minute 30 seconds)
 
-**[VISUAL: Hex view of ROM, CHR section highlighted]**
+**[VISUAL: Diagram showing ROM → PNG → Edit → ROM pipeline]**
 
 **NARRATION:**
-> "All these tiles are stored in a section of the ROM called CHR-ROM, short for Character ROM.
+> "Here's the beautiful thing about this project - we don't touch the ROM directly for graphics!
 >
-> Dragon Warrior's CHR data starts at a specific offset in the ROM file. The project has already extracted these into PNG files in the `assets/graphics` folder.
+> Our asset pipeline works like this:
 >
-> Let's look at what we have:"
+> 1. Extract CHR data from ROM → PNG files
+> 2. Edit the PNG files with any image editor you like
+> 3. Build pipeline converts PNG back to CHR
+> 4. Final ROM includes your custom graphics
+>
+> This means you can use Photoshop, GIMP, Paint.NET, Aseprite - literally any tool that saves PNG files. No specialized CHR editor required!
+>
+> The project has already extracted everything to `assets/graphics/`. Let's check it out."
 
-**[VISUAL: File explorer showing assets/graphics folder]**
+**[VISUAL: File explorer showing assets/graphics folder with PNG files]**
 
-```
+```text
 assets/graphics/
-├── chr_bank_00.png    # Main sprite tiles
-├── chr_bank_01.png    # More sprites
-├── chr_bank_02.png    # Background tiles
+├── chr_bank_00.png    # Main sprite tiles (hero, slimes)
+├── chr_bank_01.png    # More sprites (monsters)
+├── chr_bank_02.png    # Background tiles (overworld)
+├── palettes/          # Color palette definitions
 └── ...
 ```
 
-> "Each PNG represents a bank of tiles. The project converts these back into the binary CHR format during build."
+> "Each PNG is a bank of tiles laid out in a grid. Edit the PNG, save it, rebuild - that's it!"
 
 ---
 
-### [3:30] Extracting Graphics (1 minute)
+### [3:30] Extracting to PNG (1 minute)
 
 **[VISUAL: Running extraction command]**
 
 **NARRATION:**
-> "If you want fresh extractions or haven't extracted yet, run:"
+> "If you need fresh extractions or want to see how it works, run:"
 
 ```powershell
 python tools/extract_chr_data.py
 ```
 
-> "This pulls the CHR data from the ROM and saves it as PNG files.
->
-> You can also extract to other formats, but PNG works great with most tile editors."
+> "This pulls the CHR data from the ROM and saves it as PNG files. But honestly, the project already has these extracted for you!"
 
-**[VISUAL: Show extraction output]**
+**[VISUAL: Show extraction output and the resulting PNG files]**
 
 ---
 
-### [4:30] Using YY-CHR (1 minute 30 seconds)
+### [4:30] Editing with Any Image Editor (1 minute 30 seconds)
 
-**[VISUAL: Opening YY-CHR, loading a PNG]**
+**[VISUAL: Opening Paint.NET with a CHR PNG file]**
 
 **NARRATION:**
-> "For editing, I recommend YY-CHR. It's a free tile editor designed specifically for retro console graphics.
+> "Here's the magic - you can use literally ANY image editor! Let me show you with Paint.NET, which is free and easy.
 >
-> Download it, open it, and load one of the PNG files. You'll see all the tiles laid out in a grid."
-
-**[VISUAL: YY-CHR interface tour]**
-
-> "On the left, you have your palette selector. On the right, your drawing tools. The main area shows your tiles.
+> Open one of the PNG files from `assets/graphics/`. You'll see all the tiles laid out in a grid format.
 >
-> Click on any tile to select it, then draw with the pencil tool. It's like a very simple paint program, but limited to 4 colors per tile."
+> The important thing is to save as **indexed PNG** or at least preserve the exact colors. Don't add anti-aliasing or smoothing!
+>
+> For those who want a specialized tool, YY-CHR is great for viewing tiles and understanding the layout. But for actual editing, your favorite image editor works perfectly.
+>
+> I personally like Aseprite for pixel art, but GIMP, Photoshop, even MS Paint works in a pinch!"
 
-**[VISUAL: Demonstrate selecting and drawing]**
+**[VISUAL: Show the same file open in different editors side by side]**
+
+> "The key is: what you see in the PNG is what goes in the ROM. Edit it, save it, rebuild!"
 
 ---
 
 ### [6:00] NES Palette Limitations (1 minute 30 seconds)
 
-**[VISUAL: Palette diagram, examples of color limitations]**
+**[VISUAL: Colorful palette diagram with NES limitations highlighted]**
 
 **NARRATION:**
-> "Here's the tricky part - NES palette limitations.
+> "Alright, here's the one tricky part - NES palette limitations. Pay attention, this WILL save you headaches!
 >
 > The NES can display 54 colors total, but with restrictions:
 > - Each tile uses only 4 colors
 > - One color is always transparent for sprites
 > - The game defines which palette applies to which tiles
 >
-> In YY-CHR, stick to the indexed colors already in use. If you add new colors, they might not display correctly in-game."
+> When editing in your image editor, just stick to the exact colors already in the PNG. Don't add new colors, don't use anti-aliasing, don't blend!"
 
-**[VISUAL: Show a tile with correct vs incorrect colors]**
+**[VISUAL: Show a tile with correct vs incorrect colors - crisp vs blurry]**
 
-> "For Dragon Warrior specifically:
+> "For Dragon Warrior specifically, the palette assignments are:
+>
 > - Sprites typically use palette 0 or 1
 > - Overworld uses palette 2
 > - Dungeons use palette 3
 >
-> Check `docs/CHR_WORKFLOW.md` for the exact palette definitions."
+> Check `docs/CHR_WORKFLOW.md` for the exact RGB values."
 
 ---
 
-### [7:30] Editing a Tile (1 minute 30 seconds)
+### [7:30] Let's Edit a Monster! (1 minute 30 seconds)
 
-**[VISUAL: Step-by-step tile editing]**
+**[VISUAL: Step-by-step monster sprite editing in Paint.NET]**
 
 **NARRATION:**
-> "Let's edit something! I'm going to modify the hero's walking sprite.
+> "Okay, enough theory - let's actually make something! I'm going to edit the Slime sprite to make it look angrier.
 >
-> Find the hero tiles - they're in bank 00 around offset 0x20."
+> Open `chr_bank_01.png` in your image editor. The monster sprites are all here."
 
-**[VISUAL: Navigate to hero tiles]**
+**[VISUAL: Navigate to Slime tiles, zoom in]**
 
-> "I'll give our hero a cape by adding some pixels behind them."
+> "There's our happy little Slime! Let's give it angry eyebrows and some teeth.
+>
+> Zoom way in - we're working at the pixel level here. Each pixel matters!
+>
+> I'm using the pencil tool, making sure I only use colors that are already in the image."
 
-**[VISUAL: Draw modifications]**
+**[VISUAL: Draw angry eyebrows and fangs on the Slime]**
 
-> "Remember:
-> - Work within the 8x8 grid
-> - Use only existing palette colors
-> - The transparent color won't show in-game
-> - Save your changes!"
+> "And... look at that angry boy! Remember to save - and make sure it's still a PNG with the same color format. Don't let your editor add compression artifacts!"
 
-**[VISUAL: Save the modified PNG]**
+**[VISUAL: Save the modified PNG with correct settings]**
 
 ---
 
-### [9:00] Reinserting Graphics (1 minute 30 seconds)
+### [9:00] Rebuilding the ROM (1 minute 30 seconds)
 
-**[VISUAL: Build process with CHR conversion]**
+**[VISUAL: Build process with CHR conversion highlighted]**
 
 **NARRATION:**
-> "To get your changes into the ROM, save the PNG and run the build script."
+> "Time to see our angry Slime in action! Save the PNG and run our build script."
 
 ```powershell
 .\build.ps1
 ```
 
-> "The build pipeline:
+> "Watch the build output - you'll see it processing the graphics files:
+>
 > 1. Converts PNG files back to binary CHR format
 > 2. Includes the CHR data in the assembly
-> 3. Produces the final ROM with your graphics
+> 3. Produces the final ROM with your custom graphics
 >
-> If you've edited multiple files, they'll all be processed."
+> Every PNG you've modified gets automatically processed!"
 
-**[VISUAL: Build output highlighting CHR processing]**
+**[VISUAL: Build output with "Processing chr_bank_01.png" highlighted]**
 
-> "For advanced users, you can also use the chr_tool.py directly:"
+> "For those who want more control, there's also a standalone tool:"
 
 ```powershell
-python tools/chr_tool.py convert assets/graphics/chr_bank_00.png -o build/chr_bank_00.chr
+python tools/chr_tool.py convert assets/graphics/chr_bank_01.png -o build/chr_bank_01.chr
 ```
 
 ---
@@ -255,35 +267,37 @@ python tools/chr_tool.py convert assets/graphics/chr_bank_00.png -o build/chr_ba
 > - Menu graphics
 > - Title screen
 >
-> In the next episode, we'll tackle dialog editing - changing what characters say.
+> In the next episode, we'll tackle dialog editing - changing what characters say. The King will say whatever YOU want!
 >
-> Show off your custom graphics in the comments! Like and subscribe for more tutorials."
+> Show off your custom graphics in the comments! I want to see your angry Slimes, caped heroes, whatever you create. Like and subscribe for more tutorials!"
 
 ---
 
 ## Video Description Template
 
-```
-🎮 Dragon Warrior ROM Hacking: Graphics Editing with CHR Tools
+```text
+🎮 Dragon Warrior ROM Hacking: Edit Graphics with PNG Files!
 
-Learn how to edit graphics in Dragon Warrior! This tutorial covers extracting CHR data, using tile editors, understanding NES palette limitations, and reinserting your custom art.
+Learn how to create custom graphics for Dragon Warrior! This tutorial covers the PNG workflow - extract, edit with ANY image editor, rebuild. No specialized tools required!
 
 📋 TIMESTAMPS:
 0:00 - Introduction
 0:45 - Understanding NES Graphics
-2:00 - The CHR-ROM Explained
-3:30 - Extracting Graphics
-4:30 - Using YY-CHR
+2:00 - The Asset Pipeline Approach
+3:30 - Extracting to PNG
+4:30 - Editing with Any Image Editor
 6:00 - NES Palette Limitations
-7:30 - Editing a Tile
-9:00 - Reinserting Graphics
-10:30 - Testing Changes
+7:30 - Let's Edit a Monster!
+9:00 - Rebuilding the ROM
+10:30 - Testing Your Changes
 11:30 - Common Pitfalls
 12:30 - Closing
 
-🔧 TOOLS:
-• YY-CHR: https://www.romhacking.net/utilities/119/
-• Tile Molester: https://www.romhacking.net/utilities/109/
+🔧 IMAGE EDITORS (any of these work!):
+• Paint.NET (free): https://getpaint.net
+• GIMP (free): https://gimp.org
+• Aseprite (pixel art): https://aseprite.org
+• YY-CHR (reference): https://www.romhacking.net/utilities/119/
 
 📁 FILES INVOLVED:
 • assets/graphics/*.png - Extracted tile graphics
@@ -292,20 +306,15 @@ Learn how to edit graphics in Dragon Warrior! This tutorial covers extracting CH
 • docs/CHR_WORKFLOW.md - Detailed guide
 
 ⌨️ COMMANDS:
-```powershell
-# Extract CHR data
-python tools/extract_chr_data.py
-
-# Build with new graphics
-.\build.ps1
-```
+python tools/extract_chr_data.py   # Extract fresh PNGs
+.\build.ps1                        # Build with your changes
 
 📺 SERIES:
 • Ep 1: Getting Started: [LINK]
 • Ep 2: Monster Stats: [LINK]
 • Ep 4: Dialog Editing: [COMING SOON]
 
-#DragonWarrior #NES #ROMHacking #PixelArt #Tutorial
+Tags: DragonWarrior, NES, ROMHacking, PixelArt, Tutorial
 ```
 
 ---
@@ -313,16 +322,19 @@ python tools/extract_chr_data.py
 ## Production Notes
 
 ### Visual Assets Needed
+
 - [ ] NES graphics architecture diagram
 - [ ] Palette limitation examples
-- [ ] Before/after comparison shots
-- [ ] YY-CHR interface annotations
+- [ ] Before/after comparison shots (original vs angry Slime)
+- [ ] Image editor interface screenshots
 
 ### Example Modifications
+
 Prepare these ahead of time:
-- Hero with cape (demonstrated)
-- Slime with hat (bonus)
-- Custom tile example
+
+- Angry Slime (demonstrated)
+- Hero with cape (bonus)
+- Custom monster recolor
 
 ---
 
@@ -331,4 +343,5 @@ Prepare these ahead of time:
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial script creation |
+| 2025-12-02 | 1.1 | Rewrite for PNG workflow, add personality |
 

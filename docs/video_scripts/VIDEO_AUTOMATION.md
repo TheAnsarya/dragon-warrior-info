@@ -414,10 +414,237 @@ if __name__ == '__main__':
 
 ---
 
+## Mesen Emulator Automation
+
+Mesen is the recommended emulator for Dragon Warrior video tutorials because it supports:
+
+- High-quality video and screenshot capture
+- Lua scripting for automation
+- Built-in recording tools
+- Debugging and memory viewing
+
+### Installation
+
+Download Mesen from: <https://mesen.ca>
+
+### Screenshot Automation
+
+Mesen can capture screenshots via:
+
+1. **Menu:** Tools → Take Screenshot (F12 by default)
+2. **Command Line:** `Mesen.exe rom.nes --screenshot output.png`
+3. **Lua Script:** Automated screenshot sequences
+
+### Video Recording
+
+#### Built-in Recording
+
+```text
+1. File → Movies → Record Movie
+2. Play through the sequence
+3. File → Movies → Stop Recording
+4. Result: .mmo movie file (can export to AVI)
+```
+
+#### Export to AVI
+
+```text
+1. File → Movies → Play Movie
+2. File → Video Recording → Start Recording
+3. Let movie play
+4. File → Video Recording → Stop Recording
+5. Result: High-quality AVI file
+```
+
+### Lua Scripting for Automated Captures
+
+Mesen supports Lua scripting for advanced automation.
+
+#### Screenshot Sequence Script
+
+```lua
+-- screenshot_sequence.lua
+-- Takes screenshots at specific game states
+
+local screenshots_taken = 0
+local screenshot_folder = "C:/screenshots/"
+
+-- Define when to capture
+local capture_triggers = {
+    {address = 0x0045, value = 0x01, name = "title_screen"},
+    {address = 0x0045, value = 0x03, name = "overworld"},
+    {address = 0x0045, value = 0x05, name = "battle"},
+    {address = 0x0045, value = 0x07, name = "menu"},
+}
+
+function onMemoryRead(address, value)
+    for _, trigger in ipairs(capture_triggers) do
+        if address == trigger.address and value == trigger.value then
+            local filename = screenshot_folder .. trigger.name .. "_" .. os.time() .. ".png"
+            emu.takeScreenshot(filename)
+            screenshots_taken = screenshots_taken + 1
+            emu.log("Screenshot: " .. trigger.name)
+        end
+    end
+end
+
+emu.addMemoryCallback(onMemoryRead, emu.callbackType.read, 0x0045)
+
+emu.log("Screenshot automation loaded - watching for game state changes")
+```
+
+#### Save State Automation
+
+```lua
+-- save_state_demo.lua
+-- Create save states for video demonstration points
+
+local demo_points = {
+    {name = "start_game", frames = 600},      -- After 10 seconds
+    {name = "first_battle", frames = 3600},   -- After 1 minute  
+    {name = "level_up", frames = 7200},       -- After 2 minutes
+}
+
+local frame_count = 0
+
+function onFrame()
+    frame_count = frame_count + 1
+    
+    for _, point in ipairs(demo_points) do
+        if frame_count == point.frames then
+            local filename = "demo_" .. point.name .. ".mss"
+            emu.saveSavestate(filename)
+            emu.log("Saved: " .. point.name)
+        end
+    end
+end
+
+emu.addEventCallback(onFrame, emu.eventType.endFrame)
+```
+
+### Batch Processing with Mesen
+
+#### PowerShell Script for Multiple Screenshots
+
+```powershell
+# batch_screenshots.ps1
+# Take screenshots from multiple save states
+
+$mesenPath = "C:\Tools\Mesen\Mesen.exe"
+$romPath = "roms\dragon_warrior.nes"
+$outputFolder = "video_assets\screenshots"
+
+# Ensure output folder exists
+New-Item -ItemType Directory -Force -Path $outputFolder | Out-Null
+
+# List of save states and their screenshot names
+$saveStates = @(
+    @{state = "savestates\title.mss"; name = "title_screen"},
+    @{state = "savestates\overworld.mss"; name = "overworld_view"},
+    @{state = "savestates\castle.mss"; name = "castle_interior"},
+    @{state = "savestates\battle.mss"; name = "battle_scene"},
+    @{state = "savestates\menu.mss"; name = "menu_open"},
+    @{state = "savestates\shop.mss"; name = "weapon_shop"},
+    @{state = "savestates\dragon_lord.mss"; name = "final_boss"}
+)
+
+foreach ($item in $saveStates) {
+    $outputPath = Join-Path $outputFolder "$($item.name).png"
+    
+    Write-Host "Capturing: $($item.name)"
+    
+    # Load save state and take screenshot
+    & $mesenPath $romPath `
+        --load-state $item.state `
+        --screenshot $outputPath `
+        --no-audio `
+        --headless
+    
+    Start-Sleep -Milliseconds 500
+}
+
+Write-Host "Done! Screenshots saved to: $outputFolder"
+```
+
+#### Automated Demo Video Recording
+
+```powershell
+# record_demo.ps1
+# Record a demo video from a movie file
+
+$mesenPath = "C:\Tools\Mesen\Mesen.exe"
+$romPath = "roms\dragon_warrior.nes"
+$movieFile = "movies\demo_playthrough.mmo"
+$outputVideo = "video_assets\demo_capture.avi"
+
+Write-Host "Recording demo video..."
+
+& $mesenPath $romPath `
+    --movie $movieFile `
+    --record-avi $outputVideo `
+    --no-audio `
+    --video-scale 3
+
+Write-Host "Video saved to: $outputVideo"
+```
+
+### Creating Demo Save States
+
+To create save states for automated capture:
+
+1. **Play through the game** and save at key moments
+2. **Name saves descriptively:** `title.mss`, `first_town.mss`, `slime_battle.mss`
+3. **Store in project:** `video_assets/savestates/`
+
+Key moments for Dragon Warrior tutorials:
+
+| Save State | Scene | Use Case |
+|------------|-------|----------|
+| `title.mss` | Title screen | Episode intros |
+| `new_game.mss` | Name entry | Character creation |
+| `throne_room.mss` | King's dialogue | NPC/dialog editing |
+| `overworld.mss` | Field exploration | Map tutorials |
+| `slime_battle.mss` | Combat with Slime | Monster stat demos |
+| `level_up.mss` | Level up screen | Experience table demos |
+| `weapon_shop.mss` | Brecconary shop | Shop editing |
+| `spell_menu.mss` | Spell selection | Spell editing |
+| `dragonlord.mss` | Final boss | Advanced examples |
+
+### Mesen Video Settings for Recording
+
+For best video quality in tutorials:
+
+```text
+Options → Video:
+- Video Scale: 3x or 4x
+- Aspect Ratio: Auto (8:7 NTSC)
+- Filter: None (crisp pixels) or NTSC (authentic look)
+- Use Integer Scale: Enabled
+
+Options → AVI Recording:
+- Codec: Uncompressed or Lagarith Lossless
+- Scale: Match display
+```
+
+### Integrating with OBS
+
+For complex recording setups, use Mesen as a game capture source in OBS:
+
+1. Open OBS with NES Recording scene
+2. Add Game Capture source → Select Mesen window
+3. Start Mesen and load game
+4. Record in OBS with overlays, facecam, etc.
+
+This gives you OBS's flexibility with Mesen's accuracy.
+
+---
+
 ## Asset Templates
 
 ### OBS Scene Collection (JSON export)
+
 The OBS scene collection should include:
+
 - **Main Recording** scene with screen capture
 - **Emulator** scene with game capture
 - **Code** scene with VS Code capture
@@ -427,14 +654,18 @@ The OBS scene collection should include:
 Save scene collection and import on each machine.
 
 ### DaVinci Resolve Project Template
+
 Create a template project with:
+
 - Standard timeline settings (1080p, 30fps)
 - Color grading presets
 - Intro/outro media imported
 - Audio tracks configured (narration, music, SFX)
 
 ### Thumbnail Template (Photoshop/GIMP)
+
 Create a 1280x720 template with:
+
 - Dragon Warrior background
 - Episode number placeholder
 - Title placeholder
@@ -445,6 +676,7 @@ Create a 1280x720 template with:
 ## Quality Checklist
 
 ### Before Recording
+
 - [ ] Script reviewed and finalized
 - [ ] Project clean and ready to demonstrate
 - [ ] OBS scenes configured
@@ -452,12 +684,14 @@ Create a 1280x720 template with:
 - [ ] Screen resolution and scaling correct
 
 ### After Recording
+
 - [ ] All sections recorded
 - [ ] Audio clear (no clipping, background noise minimal)
 - [ ] No personal info visible in footage
 - [ ] Markers placed for editing
 
 ### Before Publishing
+
 - [ ] Captions reviewed for accuracy
 - [ ] Description includes all links
 - [ ] Timestamps accurate
@@ -481,6 +715,7 @@ Create a 1280x720 template with:
 | **Total** | **4-6 hours** |
 
 With automation, the manual work can be reduced to primarily:
+
 - Script writing
 - Recording
 - Review and polish
@@ -493,4 +728,5 @@ With automation, the manual work can be reduced to primarily:
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial automation guide |
+| 2025-12-02 | 1.1 | Add Mesen emulator automation section |
 
