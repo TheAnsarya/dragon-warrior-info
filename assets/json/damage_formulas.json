@@ -1,0 +1,147 @@
+{
+	"_comment": "Dragon Warrior damage calculation parameters extracted from Bank03.asm",
+	"_source": "PlayerCalcHitDmg ($EFE5), EnCalcHitDmg ($EFF4), EnCastHurt ($EC23), etc.",
+	"_note": "Modifying these values requires regenerating assembly code",
+
+	"physical_damage": {
+		"player_attack": {
+			"description": "Player attacking an enemy",
+			"formula": "((ATK - DEF/2) * rand(0-255) / 256 + base) / divisor",
+			"defense_divisor": 2,
+			"result_divisor": 4,
+			"weak_threshold": 2,
+			"weak_attack": {
+				"description": "When player ATK <= DEF/2 + 1",
+				"random_mask": 1,
+				"min_damage": 0,
+				"max_damage": 1
+			},
+			"normal_attack": {
+				"description": "Normal attack formula",
+				"random_range": 256,
+				"base_multiplier": 1
+			}
+		},
+		"enemy_attack": {
+			"description": "Enemy attacking the player",
+			"formula": "((ATK - DEF/2) * rand(0-255) / 256 + base) / divisor",
+			"defense_divisor": 2,
+			"result_divisor": 4,
+			"weak_attack": {
+				"description": "When enemy ATK <= DEF/2",
+				"formula": "(base * rand(0-255) / 256 + addend) / divisor",
+				"addend": 2,
+				"divisor": 3,
+				"min_damage": 1
+			},
+			"normal_attack": {
+				"description": "Normal attack formula",
+				"random_range": 256,
+				"base_multiplier": 1
+			}
+		}
+	},
+
+	"dodge_mechanics": {
+		"enemy_dodge": {
+			"description": "Chance for enemy to dodge player attack",
+			"threshold": 14,
+			"out_of": 64,
+			"percentage": 21.875,
+			"note": "Only when enemy agility flag not set to $0F"
+		}
+	},
+
+	"spell_damage": {
+		"player_spells": {
+			"HURT": {
+				"base_damage": 5,
+				"variance_mask": 7,
+				"min_damage": 5,
+				"max_damage": 12,
+				"resistable": true,
+				"resistance_divisor": 16,
+				"description": "Player casts HURT on enemy"
+			},
+			"HURTMORE": {
+				"base_damage": 58,
+				"variance_mask": 7,
+				"min_damage": 58,
+				"max_damage": 65,
+				"resistable": true,
+				"resistance_divisor": 16,
+				"description": "Player casts HURTMORE on enemy"
+			}
+		},
+		"enemy_spells": {
+			"HURT": {
+				"base_damage": 3,
+				"variance_mask": 7,
+				"min_damage": 3,
+				"max_damage": 10,
+				"description": "Enemy casts HURT on player"
+			},
+			"HURTMORE": {
+				"base_damage": 30,
+				"variance_mask": 15,
+				"min_damage": 30,
+				"max_damage": 45,
+				"description": "Enemy casts HURTMORE on player"
+			}
+		},
+		"armor_reduction": {
+			"erdrick_armor": {
+				"multiplier": 2,
+				"divisor": 3,
+				"description": "Erdrick's armor reduces spell damage to 2/3"
+			},
+			"magic_armor": {
+				"multiplier": 2,
+				"divisor": 3,
+				"description": "Magic armor reduces spell damage to 2/3"
+			}
+		}
+	},
+
+	"healing_spells": {
+		"HEAL": {
+			"base_value": 10,
+			"variance_mask": 7,
+			"min_heal": 10,
+			"max_heal": 17,
+			"description": "Restores 10-17 HP"
+		},
+		"HEALMORE": {
+			"base_value": 85,
+			"variance_mask": 15,
+			"min_heal": 85,
+			"max_heal": 100,
+			"description": "Restores 85-100 HP"
+		}
+	},
+
+	"environmental_damage": {
+		"swamp": {
+			"damage": 2,
+			"description": "Damage per step in swamp"
+		},
+		"barrier": {
+			"damage": 15,
+			"description": "Damage per step on barrier tiles"
+		}
+	},
+
+	"code_locations": {
+		"PlayerCalcHitDmg": "$EFE5",
+		"EnCalcHitDmg": "$EFF4",
+		"PlayerWeakAttack": "$F026",
+		"EnWeakAttack": "$F008",
+		"NormalAttack": "$F030",
+		"DoHeal": "$DBB8",
+		"DoHealmore": "$DBD7",
+		"EnCastHurt": "$EC23",
+		"EnCastHurtmore": "$EC55",
+		"PlayerHurt": "$E736",
+		"PlayerHurtmore": "$E751"
+	}
+}

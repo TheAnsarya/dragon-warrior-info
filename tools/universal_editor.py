@@ -40,6 +40,14 @@ except ImportError:
 	HAS_PIL = False
 	print("WARNING: PIL not installed. Some features disabled.")
 
+# Import extended editor tabs
+try:
+	from editor_tabs_extended import DamageEditorTab, SpellEffectsEditorTab, ExperienceEditorTab
+	HAS_EXTENDED_TABS = True
+except ImportError:
+	HAS_EXTENDED_TABS = False
+	print("Note: Extended editor tabs not loaded (editor_tabs_extended.py)")
+
 # Project paths
 PROJECT_ROOT = Path(__file__).parent.parent
 ASSETS_JSON = PROJECT_ROOT / "assets" / "json"
@@ -6874,6 +6882,20 @@ class UniversalEditor:
 		self.stats_text = scrolledtext.ScrolledText(stats_tab, font=('Courier', 10))
 		self.stats_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 		self.update_stats()
+
+		# Extended tabs (Damage, Spell Effects, Experience)
+		if HAS_EXTENDED_TABS:
+			# Tab 20: Damage Formulas
+			self.damage_tab = DamageEditorTab(self.notebook, self.asset_manager)
+			self.notebook.add(self.damage_tab, text="⚔️ Damage")
+
+			# Tab 21: Spell Effects
+			self.spell_fx_tab = SpellEffectsEditorTab(self.notebook, self.asset_manager)
+			self.notebook.add(self.spell_fx_tab, text="✨ Spell FX")
+
+			# Tab 22: Experience/Levels
+			self.exp_tab = ExperienceEditorTab(self.notebook, self.asset_manager)
+			self.notebook.add(self.exp_tab, text="📈 Experience")
 
 	def create_statusbar(self):
 		"""Create status bar."""

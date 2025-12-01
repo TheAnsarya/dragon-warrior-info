@@ -1,0 +1,237 @@
+{
+	"_comment": "Dragon Warrior spell effects abstracted from Bank03.asm code",
+	"_note": "This allows editing spell behavior without touching assembly",
+	"_generator": "tools/generate_spell_effects.py",
+
+	"spell_count": 10,
+
+	"effect_types": {
+		"heal": "Restore HP to target",
+		"damage": "Deal damage to target",
+		"status_sleep": "Put target to sleep",
+		"status_stopspell": "Block target's magic",
+		"field_light": "Light up dark areas",
+		"teleport_exit": "Exit dungeon to surface",
+		"teleport_return": "Return to save point",
+		"field_repel": "Reduce encounters"
+	},
+
+	"spells": {
+		"HEAL": {
+			"id": 0,
+			"mp_cost": 4,
+			"effect_type": "heal",
+			"target": "self",
+			"base_value": 10,
+			"variance_mask": 7,
+			"min_effect": 10,
+			"max_effect": 17,
+			"usable_battle": true,
+			"usable_field": true,
+			"learn_level": 3,
+			"description": "Restore 10-17 HP to the hero",
+			"code_location": "$DBB8"
+		},
+		"HURT": {
+			"id": 1,
+			"mp_cost": 2,
+			"effect_type": "damage",
+			"target": "enemy",
+			"base_value": 5,
+			"variance_mask": 7,
+			"min_effect": 5,
+			"max_effect": 12,
+			"resistable": true,
+			"resistance_stat": "magic_defense",
+			"resistance_divisor": 16,
+			"usable_battle": true,
+			"usable_field": false,
+			"learn_level": 4,
+			"description": "Deal 5-12 damage to one enemy",
+			"code_location": "$E736"
+		},
+		"SLEEP": {
+			"id": 2,
+			"mp_cost": 2,
+			"effect_type": "status_sleep",
+			"target": "enemy",
+			"base_success": 100,
+			"resistable": true,
+			"resistance_stat": "agility",
+			"resistance_divisor": 16,
+			"usable_battle": true,
+			"usable_field": false,
+			"learn_level": 7,
+			"description": "Put one enemy to sleep",
+			"code_location": "$E76C"
+		},
+		"RADIANT": {
+			"id": 3,
+			"mp_cost": 3,
+			"effect_type": "field_light",
+			"target": "area",
+			"duration": "until_exit",
+			"light_radius": 3,
+			"usable_battle": false,
+			"usable_field": true,
+			"learn_level": 9,
+			"description": "Light up dark dungeons",
+			"code_location": "$DA00"
+		},
+		"STOPSPELL": {
+			"id": 4,
+			"mp_cost": 2,
+			"effect_type": "status_stopspell",
+			"target": "enemy",
+			"base_success": 100,
+			"resistable": true,
+			"resistance_stat": "agility",
+			"resistance_divisor": 16,
+			"usable_battle": true,
+			"usable_field": false,
+			"learn_level": 10,
+			"description": "Block enemy's spellcasting",
+			"code_location": "$E78A"
+		},
+		"OUTSIDE": {
+			"id": 5,
+			"mp_cost": 6,
+			"effect_type": "teleport_exit",
+			"target": "party",
+			"destination": "dungeon_entrance",
+			"usable_battle": false,
+			"usable_field": true,
+			"learn_level": 12,
+			"description": "Teleport out of dungeons",
+			"code_location": "$D900"
+		},
+		"RETURN": {
+			"id": 6,
+			"mp_cost": 8,
+			"effect_type": "teleport_return",
+			"target": "party",
+			"destination": "tantegel_castle",
+			"usable_battle": false,
+			"usable_field": true,
+			"learn_level": 13,
+			"description": "Return to Tantegel Castle",
+			"code_location": "$D800"
+		},
+		"REPEL": {
+			"id": 7,
+			"mp_cost": 2,
+			"effect_type": "field_repel",
+			"target": "party",
+			"duration_steps": 127,
+			"encounter_reduction": "level_based",
+			"usable_battle": false,
+			"usable_field": true,
+			"learn_level": 15,
+			"description": "Reduce random encounters",
+			"code_location": "$D700"
+		},
+		"HEALMORE": {
+			"id": 8,
+			"mp_cost": 10,
+			"effect_type": "heal",
+			"target": "self",
+			"base_value": 85,
+			"variance_mask": 15,
+			"min_effect": 85,
+			"max_effect": 100,
+			"usable_battle": true,
+			"usable_field": true,
+			"learn_level": 17,
+			"description": "Restore 85-100 HP to the hero",
+			"code_location": "$DBD7"
+		},
+		"HURTMORE": {
+			"id": 9,
+			"mp_cost": 5,
+			"effect_type": "damage",
+			"target": "enemy",
+			"base_value": 58,
+			"variance_mask": 7,
+			"min_effect": 58,
+			"max_effect": 65,
+			"resistable": true,
+			"resistance_stat": "magic_defense",
+			"resistance_divisor": 16,
+			"usable_battle": true,
+			"usable_field": false,
+			"learn_level": 19,
+			"description": "Deal 58-65 damage to one enemy",
+			"code_location": "$E751"
+		}
+	},
+
+	"enemy_spells": {
+		"HURT": {
+			"base_value": 3,
+			"variance_mask": 7,
+			"min_effect": 3,
+			"max_effect": 10,
+			"armor_reducible": true,
+			"code_location": "$EC23"
+		},
+		"HURTMORE": {
+			"base_value": 30,
+			"variance_mask": 15,
+			"min_effect": 30,
+			"max_effect": 45,
+			"armor_reducible": true,
+			"code_location": "$EC55"
+		},
+		"SLEEP": {
+			"success_rate": 50,
+			"blocked_by": "erdrick_armor",
+			"code_location": "$EC92"
+		},
+		"STOPSPELL": {
+			"success_rate": 50,
+			"blocked_by": "erdrick_armor",
+			"code_location": "$EC69"
+		},
+		"HEALMORE": {
+			"base_value": 85,
+			"variance_mask": 15,
+			"min_effect": 85,
+			"max_effect": 100,
+			"code_location": "$EBD8"
+		}
+	},
+
+	"breath_attacks": {
+		"FIRE_BREATH": {
+			"base_value": 16,
+			"variance_mask": 7,
+			"min_effect": 16,
+			"max_effect": 23,
+			"armor_reducible": true
+		},
+		"STRONG_FIRE_BREATH": {
+			"base_value": 42,
+			"variance_mask": 23,
+			"min_effect": 42,
+			"max_effect": 65,
+			"armor_reducible": true
+		}
+	},
+
+	"spell_flags": {
+		"byte_5_healmore_hurtmore": {
+			"bit_0": "HEALMORE",
+			"bit_1": "HURTMORE"
+		},
+		"byte_6_other_spells": {
+			"bit_0": "HEAL",
+			"bit_1": "HURT",
+			"bit_2": "SLEEP",
+			"bit_3": "RADIANT",
+			"bit_4": "STOPSPELL",
+			"bit_5": "OUTSIDE",
+			"bit_6": "RETURN",
+			"bit_7": "REPEL"
+		}
+	}
+}
