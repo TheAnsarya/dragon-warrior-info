@@ -35,15 +35,18 @@
 **[VISUAL: Assembly code on screen, transitioning to gameplay]**
 
 **NARRATION:**
-> "We've modified JSON data to change monsters, items, dialog, and balance. But some changes require going deeper - into the assembly code itself.
+> "We've modified JSON data to change monsters, items, dialog, and balance. But some changes require going deeper - into the assembly code itself. This is where the real magic happens.
 >
 > This episode covers:
+>
 > - Basic 6502 assembly concepts
 > - Navigating Dragon Warrior's source code
 > - Using debuggers to find code locations
 > - Making actual code modifications
 >
-> This is advanced material. Don't worry if you don't understand everything immediately - even understanding the concepts helps!"
+> Don't let assembly intimidate you. Yes, it's more challenging than editing JSON, but the payoff is massive - you can literally change anything about how the game works.
+>
+> Don't worry if you don't understand everything immediately - even understanding the concepts opens doors!"
 
 ---
 
@@ -55,6 +58,7 @@
 > "The NES uses a 6502 processor. Here are the key concepts:
 >
 > **Registers:**
+>
 > - **A** (Accumulator) - Main math register
 > - **X** and **Y** - Index registers for loops and addresses
 >
@@ -70,6 +74,7 @@ RTS           ; Return from subroutine
 ```
 
 > "**Memory:**
+>
 > - `$` prefix means hexadecimal
 > - `#` prefix means immediate value
 > - No prefix means memory address
@@ -85,7 +90,7 @@ RTS           ; Return from subroutine
 **NARRATION:**
 > "The disassembly lives in `source_files/`. Key files:"
 
-```
+```text
 source_files/
 ├── Bank00.asm        # Main game loop, core systems
 ├── Bank01.asm        # Music, some gameplay
@@ -100,7 +105,7 @@ source_files/
 >
 > Use VS Code's search (Ctrl+Shift+F) to find specific code. Labels are named descriptively:"
 
-```
+```asm
 ProcessPlayerAttack:    ; Player attack logic
 CalculateDamage:        ; Damage calculation
 HandleVictory:          ; After winning a battle
@@ -120,6 +125,7 @@ HandleVictory:          ; After winning a battle
 **[VISUAL: Setting a breakpoint]**
 
 > "To find the damage calculation:
+>
 > 1. Start a battle
 > 2. Set a write breakpoint on the HP variable
 > 3. Attack - the debugger pauses when HP changes
@@ -214,6 +220,7 @@ CalculateDamage:
 ```
 
 > "This code:
+>
 > 1. Calls the random number generator
 > 2. If < 25 (about 10%), we critical hit
 > 3. Critical does Attack×3 instead of Attack×1
@@ -235,6 +242,7 @@ CalculateDamage:
 ```
 
 > "If you have syntax errors, the assembler will tell you which line failed. Common mistakes:
+>
 > - Missing labels
 > - Wrong instruction names
 > - Incorrect addressing modes
@@ -282,10 +290,13 @@ CalculateDamage:
 
 **NARRATION:**
 > "You've seen how assembly modifications unlock unlimited possibilities:
+>
 > - Custom damage formulas
 > - New game mechanics
 > - Bug fixes for the original game
 > - Completely new features
+>
+> This is where ROM hacking becomes true programming. You're not just tweaking numbers anymore - you're writing real code that runs on real hardware.
 >
 > This concludes the main tutorial series! The final episode covers troubleshooting common issues.
 >
@@ -297,7 +308,7 @@ CalculateDamage:
 
 ## Video Description Template
 
-```
+```text
 🎮 Dragon Warrior ROM Hacking: Advanced Assembly Modifications
 
 Go deep into Dragon Warrior's 6502 assembly code! Learn to navigate the disassembly, use debuggers to find code, and make modifications that aren't possible with JSON alone.
@@ -342,7 +353,7 @@ Go deep into Dragon Warrior's 6502 assembly code! Learn to navigate the disassem
 • Ep 5: Game Balance: [LINK]
 • Ep 7: Troubleshooting: [COMING SOON]
 
-#DragonWarrior #NES #ROMHacking #Assembly #6502 #Tutorial
+TAGS: DragonWarrior, NES, ROMHacking, Assembly, 6502, Tutorial
 ```
 
 ---
@@ -350,16 +361,19 @@ Go deep into Dragon Warrior's 6502 assembly code! Learn to navigate the disassem
 ## Production Notes
 
 ### Diagrams Needed
+
 - [ ] 6502 register diagram
 - [ ] Memory addressing modes visual
 - [ ] Code flow diagram for damage calculation
 
 ### Key Code Sections to Show
+
 - Actual CalculateDamage (or equivalent) from source
 - Random number generation routine
 - Bank structure overview
 
 ### Debugger Footage
+
 - [ ] Setting breakpoints in Mesen
 - [ ] Stepping through code
 - [ ] Memory viewer showing variables
@@ -371,4 +385,3 @@ Go deep into Dragon Warrior's 6502 assembly code! Learn to navigate the disassem
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial script creation |
-

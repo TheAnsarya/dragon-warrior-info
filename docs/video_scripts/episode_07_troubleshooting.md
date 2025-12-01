@@ -35,9 +35,11 @@
 **[VISUAL: Error message on screen, person looking confused]**
 
 **NARRATION:**
-> "Getting errors? Don't worry - they happen to everyone! This episode covers the most common Dragon Warrior ROM hacking errors and how to fix them.
+> "Getting errors? Don't worry - they happen to everyone! Even experienced ROM hackers spend time debugging. It's part of the process.
 >
-> I'll walk you through build errors, JSON mistakes, emulator issues, and setup problems. Let's debug together!"
+> This episode covers the most common Dragon Warrior ROM hacking errors and how to fix them.
+>
+> I'll walk you through build errors, JSON mistakes, emulator issues, and setup problems. Grab a coffee, take a deep breath, and let's debug together!"
 
 ---
 
@@ -47,6 +49,13 @@
 
 **NARRATION:**
 > "Errors fall into four main categories:
+>
+> 1. **Build/Assembly** - Ophis can't assemble the code
+> 2. **JSON/Data** - Invalid or corrupt data files
+> 3. **Runtime** - ROM builds but crashes in emulator
+> 4. **Environment** - Missing tools or bad configuration
+>
+> Let's tackle each one. I'll show you the error, then the fix."
 >
 > 1. **Build/Assembly** - Ophis can't assemble the code
 > 2. **JSON/Data** - Invalid or corrupt data files
@@ -66,7 +75,7 @@
 >
 > **'Ophis not found' or 'command not recognized':**"
 
-```
+```text
 Ophis : The term 'Ophis' is not recognized as the name of a cmdlet
 ```
 
@@ -74,7 +83,7 @@ Ophis : The term 'Ophis' is not recognized as the name of a cmdlet
 >
 > **'Undefined label' error:**"
 
-```
+```text
 Error: Undefined label 'MonsterTable' in Bank02.asm
 ```
 
@@ -82,7 +91,7 @@ Error: Undefined label 'MonsterTable' in Bank02.asm
 >
 > **'Branch out of range':**"
 
-```
+```text
 Error: Branch out of range at line 1234
 ```
 
@@ -90,7 +99,7 @@ Error: Branch out of range at line 1234
 >
 > **'Duplicate symbol' or 'redefined label':**"
 
-```
+```text
 Warning: Symbol 'DamageCalc' redefined
 ```
 
@@ -126,7 +135,7 @@ Warning: Symbol 'DamageCalc' redefined
 >
 > **Missing required fields:**"
 
-```
+```text
 Generator error: Missing required field 'id' in monster entry
 ```
 
@@ -170,7 +179,7 @@ Generator error: Missing required field 'id' in monster entry
 >
 > **'Python not found':**"
 
-```
+```text
 Python : The term 'python' is not recognized
 ```
 
@@ -178,7 +187,7 @@ Python : The term 'python' is not recognized
 >
 > **'ROM not found':**"
 
-```
+```text
 Error: Cannot find dragon_warrior.nes in roms/
 ```
 
@@ -186,7 +195,7 @@ Error: Cannot find dragon_warrior.nes in roms/
 >
 > **Permission denied:**"
 
-```
+```text
 Access to the path 'build/output.nes' is denied
 ```
 
@@ -252,10 +261,13 @@ pytest tests/
 
 **NARRATION:**
 > "Errors are frustrating but fixable. Remember:
+>
 > - Read error messages carefully - they usually point to the problem
 > - Undo recent changes to find what broke
 > - Use version control to compare working vs broken states
 > - Ask for help when needed
+>
+> Every error you solve teaches you something. That's how you grow as a ROM hacker.
 >
 > That's the complete tutorial series! You have all the tools to create amazing Dragon Warrior mods.
 >
@@ -265,7 +277,7 @@ pytest tests/
 
 ## Video Description Template
 
-```
+```text
 🎮 Dragon Warrior ROM Hacking: Troubleshooting Common Errors
 
 Having build problems? This episode covers all the common errors you'll encounter and how to fix them - assembly errors, JSON mistakes, runtime crashes, and setup issues.
@@ -323,7 +335,7 @@ pytest tests/
 • Ep 5: Game Balance: [LINK]
 • Ep 6: Advanced Assembly: [LINK]
 
-#DragonWarrior #NES #ROMHacking #Troubleshooting #Tutorial
+TAGS: DragonWarrior, NES, ROMHacking, Troubleshooting, Tutorial
 ```
 
 ---
@@ -331,6 +343,7 @@ pytest tests/
 ## Production Notes
 
 ### Error Examples to Capture
+
 - [ ] Ophis not found error
 - [ ] Python not found error
 - [ ] JSON syntax error in VS Code
@@ -338,6 +351,7 @@ pytest tests/
 - [ ] Emulator crash/glitch footage
 
 ### Before/After Clips
+
 - [ ] Broken build → fixed build
 - [ ] Corrupt graphics → fixed graphics
 - [ ] Error message → running game
@@ -349,4 +363,3 @@ pytest tests/
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial script creation |
-

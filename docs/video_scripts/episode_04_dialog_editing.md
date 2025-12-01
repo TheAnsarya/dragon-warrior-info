@@ -35,14 +35,15 @@
 **[VISUAL: King's throne room dialog in-game]**
 
 **NARRATION:**
-> "In Dragon Warrior, dialog brings the world to life - from the King's opening speech to the barkeep's rumors.
+> "In Dragon Warrior, dialog brings the world to life - from the King's opening speech to the barkeep's rumors. These are the lines we all remember, the words that stuck with us through childhood.
 >
 > In this episode, we'll learn how to edit and create custom dialog. You'll be able to:
+>
 > - Modify any NPC's text
 > - Use special control codes
 > - Create entirely new messages
 >
-> Let's give Alefgard a new voice!"
+> Whether you want to fix that cringe-worthy translation or create an entirely new story, let's give Alefgard a new voice!"
 
 ---
 
@@ -138,7 +139,7 @@ python tools/universal_editor.py
 >
 > In the text field, let's make it more dramatic:"
 
-```
+```text
 "Descendant of Erdrick, the legendary hero!{WAIT}At last, thou hast arrived! Our kingdom's darkest hour is upon us."
 ```
 
@@ -223,10 +224,13 @@ python tools/universal_editor.py
 
 **NARRATION:**
 > "You now know how to customize Dragon Warrior's dialog! This opens up:
+>
 > - Story modifications
-> - Humor and personality changes  
+> - Humor and personality changes
 > - Hint system improvements
 > - Complete translation projects
+>
+> Imagine retelling the story with your own twist - a comedic parody, a harder-hitting drama, or a faithful re-translation that captures the original Japanese intent.
 >
 > Next episode covers game balance - adjusting experience curves, shop prices, and spell effects.
 >
@@ -236,7 +240,7 @@ python tools/universal_editor.py
 
 ## Video Description Template
 
-```
+```text
 🎮 Dragon Warrior ROM Hacking: Custom Dialog and Text
 
 Learn how to edit NPC dialog in Dragon Warrior! This tutorial covers the dialog system, control codes like {NAME} and {WAIT}, and using the Universal Editor to customize every line of text.
@@ -271,7 +275,7 @@ Learn how to edit NPC dialog in Dragon Warrior! This tutorial covers the dialog 
 • Ep 3: Graphics Editing: [LINK]
 • Ep 5: Game Balance: [COMING SOON]
 
-#DragonWarrior #NES #ROMHacking #Dialog #Tutorial
+TAGS: DragonWarrior, NES, ROMHacking, Dialog, Tutorial
 ```
 
 ---
@@ -279,6 +283,7 @@ Learn how to edit NPC dialog in Dragon Warrior! This tutorial covers the dialog 
 ## Production Notes
 
 ### Scenes to Record
+
 - [ ] King's dialog before and after edit
 - [ ] Universal Editor dialog tab walkthrough
 - [ ] Control codes in action ({NAME}, {WAIT})
@@ -291,4 +296,3 @@ Learn how to edit NPC dialog in Dragon Warrior! This tutorial covers the dialog 
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial script creation |
-

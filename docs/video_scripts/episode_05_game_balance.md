@@ -35,15 +35,16 @@
 **[VISUAL: Gameplay showing grinding, shop purchases, level up]**
 
 **NARRATION:**
-> "Dragon Warrior is infamous for its grinding. Hours spent fighting Slimes outside Tantegel just to afford a Copper Sword.
+> "Dragon Warrior is infamous for its grinding. Hours spent fighting Slimes outside Tantegel just to afford a Copper Sword. We've all been there - and honestly, that's part of what makes the victory so sweet.
 >
-> But what if you could change that? In this episode, we'll adjust:
+> But what if you could change that? What if you could tailor the experience to your exact preferences? In this episode, we'll adjust:
+>
 > - Experience curves for faster leveling
 > - Gold drops and shop prices
 > - Spell costs and effects
 > - Equipment bonuses
 >
-> Whether you want an easier first playthrough or a brutal challenge run, let's dive in!"
+> Whether you want an easier first playthrough for a friend, or a brutal challenge run that would make even the original developers cry, let's dive in!"
 
 ---
 
@@ -255,11 +256,12 @@ python tools/apply_difficulty_preset.py --preset easy
 > "After making changes, rebuild and test thoroughly.
 >
 > Start a new game and play for a few levels. Check:
+>
 > - Is leveling too fast or too slow?
 > - Can you afford early equipment reasonably?
 > - Are battles challenging but fair?
 >
-> Balance is subjective - test until it feels right for your vision."
+> Balance is subjective - test until it feels right for your vision. What feels 'easy' to you might be perfect for someone else."
 
 **[VISUAL: Level up happening quickly, buying equipment easily]**
 
@@ -273,10 +275,13 @@ python tools/apply_difficulty_preset.py --preset easy
 
 **NARRATION:**
 > "You now control Dragon Warrior's difficulty! Create:
+>
 > - 'Story Mode' for new players
 > - 'Hard Mode' for veterans
 > - 'Randomizer' with wild stat changes
 > - 'Speedrun' optimized for fast completion
+>
+> The beauty of ROM hacking is making the game YOUR game. Share your creations with the community!
 >
 > Next episode goes advanced - we'll look at assembly code modifications for effects that can't be achieved with JSON alone.
 >
@@ -286,7 +291,7 @@ python tools/apply_difficulty_preset.py --preset easy
 
 ## Video Description Template
 
-```
+```text
 🎮 Dragon Warrior ROM Hacking: Game Balance and Difficulty
 
 Learn how to adjust Dragon Warrior's difficulty! Modify experience curves, gold drops, shop prices, spell effects, and equipment bonuses to create your perfect game balance.
@@ -323,7 +328,7 @@ Learn how to adjust Dragon Warrior's difficulty! Modify experience curves, gold 
 • Ep 4: Dialog Editing: [LINK]
 • Ep 6: Advanced Assembly: [COMING SOON]
 
-#DragonWarrior #NES #ROMHacking #GameBalance #Tutorial
+TAGS: DragonWarrior, NES, ROMHacking, GameBalance, Tutorial
 ```
 
 ---
@@ -331,13 +336,16 @@ Learn how to adjust Dragon Warrior's difficulty! Modify experience curves, gold 
 ## Production Notes
 
 ### Gameplay Footage Needed
+
 - [ ] Grinding comparison (original vs modded)
 - [ ] Shop purchase with different prices
 - [ ] Spell usage with modified costs
 - [ ] Level up sequences
 
 ### Data for Reference
+
 Prepare these stats for on-screen graphics:
+
 - Original vs Modified XP table (levels 1-10)
 - Original vs Modified shop prices
 - Spell MP costs comparison
@@ -349,4 +357,3 @@ Prepare these stats for on-screen graphics:
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial script creation |
-
