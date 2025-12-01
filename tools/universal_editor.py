@@ -26,11 +26,11 @@ import os
 import json
 import subprocess
 from pathlib import Path
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Any, Tuple
 from dataclasses import dataclass
 from datetime import datetime
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox, scrolledtext
+from tkinter import ttk, filedialog, messagebox, scrolledtext, simpledialog
 
 try:
 	from PIL import Image, ImageTk
@@ -3559,6 +3559,28 @@ class PaletteEditorTab(ttk.Frame):
 		self.current_palette = list(self.DW_PALETTES[self.current_palette_name])
 		self.update_slot_display()
 		self.update_preview()
+
+
+# ============================================================================
+# BASE TAB CLASS
+# ============================================================================
+
+class BaseTab(ttk.Frame):
+	"""Base class for tabs that need a simpler initialization pattern."""
+
+	def __init__(self, notebook: ttk.Notebook, asset_manager: AssetManager, status_callback):
+		"""Initialize the base tab.
+
+		Args:
+			notebook: Parent notebook widget.
+			asset_manager: Asset manager instance.
+			status_callback: Callback for status messages.
+		"""
+		super().__init__(notebook)
+		self.notebook = notebook
+		self.asset_manager = asset_manager
+		self.status_callback = status_callback
+		self.frame = self  # For compatibility with existing code
 
 
 # ============================================================================
