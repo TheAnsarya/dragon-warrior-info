@@ -6,7 +6,7 @@ Complete documentation of the asset extraction → editing → generation → bu
 
 The Dragon Warrior ROM hacking toolkit uses a JSON-based asset pipeline that allows editing game data through human-readable files which are then compiled back into assembly code and built into the ROM.
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                     ASSET PIPELINE FLOW                              │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -122,7 +122,8 @@ python tools/generate_music_tables.py
 ```
 
 **Unified Generator Output Example:**
-```
+
+```text
 ======================================================================
 DRAGON WARRIOR - ASSET GENERATOR
 ======================================================================
@@ -166,7 +167,7 @@ Build the ROM with generated assets:
 
 ## Directory Structure
 
-```
+```text
 dragon-warrior-info/
 ├── assets/
 │   └── json/               # Editable JSON asset files
@@ -317,6 +318,7 @@ python tools/universal_editor.py
 ```
 
 Features:
+
 - 🚀 Dashboard with asset status
 - 👾 Monster stats editor
 - 📦 Item property editor
@@ -343,11 +345,69 @@ Specialized editors are also available:
 - `tile_editor.py` - Graphics tiles
 - `palette_editor.py` - Color palettes
 
+## Binary Intermediate Format (.dwdata)
+
+For data integrity verification, the pipeline supports an optional binary intermediate stage:
+
+```text
+ROM → .dwdata (binary) → .json (editable) → .dwdata (rebuilt) → validate → .asm
+```
+
+### Tools
+
+| Tool | Purpose |
+|------|---------|
+| `extract_to_binary.py` | Extract ROM data to `.dwdata` files |
+| `binary_to_assets.py` | Convert `.dwdata` to JSON/PNG |
+| `validate_roundtrip.py` | Verify JSON→binary matches original |
+
+### Usage
+
+```powershell
+# Extract to binary intermediate format
+python tools/extract_to_binary.py --rom roms/dragon_warrior.nes
+
+# Convert binary to editable assets
+python tools/binary_to_assets.py
+
+# Validate roundtrip (JSON matches original if unedited)
+python tools/validate_roundtrip.py --verbose
+
+# Verify extracted files
+python tools/extract_to_binary.py --verify
+```
+
+### Benefits
+
+1. **Data Integrity** - CRC32 checksums detect corruption
+2. **Roundtrip Testing** - Verify JSON→binary is lossless
+3. **Debugging** - Binary diffs easier to analyze
+4. **Timestamps** - Track extraction history
+
+### File Format
+
+`.dwdata` files have a 32-byte header:
+
+| Offset | Size | Field |
+|--------|------|-------|
+| 0x00 | 4 | Magic (`DWDT`) |
+| 0x04 | 2 | Version (1.0) |
+| 0x06 | 1 | Data type ID |
+| 0x07 | 1 | Flags |
+| 0x08 | 4 | Data size |
+| 0x0C | 4 | ROM offset |
+| 0x10 | 4 | CRC32 |
+| 0x14 | 4 | Timestamp |
+| 0x18 | 8 | Reserved |
+
+Data types: Monster (0x01), Spell (0x02), Item (0x03), Map (0x04), Text (0x05), Graphics (0x06), Music (0x07), SFX (0x08)
+
 ## Build Scripts
 
 ### build_with_assets.ps1 (Recommended)
 
 Full asset-first build pipeline:
+
 1. Generates ASM from JSON assets
 2. Assembles iNES header
 3. Assembles all PRG banks
@@ -362,16 +422,19 @@ Basic build without asset integration.
 ## Troubleshooting
 
 ### JSON Parse Errors
+
 - Ensure JSON is valid (no trailing commas)
 - Use UTF-8 encoding
 - Check for proper escaping of special characters
 
 ### Generator Failures
+
 - Verify JSON file exists and is readable
 - Check Python dependencies: `pip install -r requirements.txt`
 - Run with verbose mode for debugging
 
 ### Build Failures
+
 - Ensure Ophis assembler is installed
 - Check that reference ROM exists
 - Verify generated ASM files are valid
