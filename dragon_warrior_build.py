@@ -18,6 +18,16 @@ from rich.panel import Panel
 from rich.table import Table
 from rich import box
 
+# Import enhanced error handling
+try:
+	from tools.build_errors import (
+		BuildErrorHandler, BuildError, ErrorCategory,
+		AssemblerErrorParser, print_diagnostics, run_diagnostics
+	)
+	HAS_ERROR_HANDLER = True
+except ImportError:
+	HAS_ERROR_HANDLER = False
+
 console = Console()
 
 class DragonWarriorBuild:
@@ -30,6 +40,12 @@ class DragonWarriorBuild:
 		self.build_dir = Path(build_dir)
 		self.output_dir = Path(output_dir)
 		self.tools_dir = Path("tools")
+
+		# Enhanced error handling
+		if HAS_ERROR_HANDLER:
+			self.error_handler = BuildErrorHandler()
+		else:
+			self.error_handler = None
 
 		# Create directories
 		self.assets_dir.mkdir(exist_ok=True)
@@ -396,10 +412,25 @@ class DragonWarriorBuild:
 				return True
 			else:
 				console.print("[red]❌ ROM build failed[/red]")
-				if result.stdout:
-					console.print(f"[dim]stdout: {result.stdout}[/dim]")
-				if result.stderr:
-					console.print(f"[dim]stderr: {result.stderr}[/dim]")
+
+				# Use enhanced error handler if available
+				if self.error_handler and result.stderr:
+					errors = AssemblerErrorParser.parse_error(result.stderr, self.source_dir)
+					if errors:
+						console.print("\n[bold yellow]📋 Detailed Error Analysis:[/bold yellow]")
+						for error in errors:
+							self.error_handler.print_error(error)
+					else:
+						# Fallback to raw output
+						if result.stdout:
+							console.print(f"[dim]stdout: {result.stdout}[/dim]")
+						if result.stderr:
+							console.print(f"[dim]stderr: {result.stderr}[/dim]")
+				else:
+					if result.stdout:
+						console.print(f"[dim]stdout: {result.stdout}[/dim]")
+					if result.stderr:
+						console.print(f"[dim]stderr: {result.stderr}[/dim]")
 				return False
 
 		except Exception as e:
@@ -564,7 +595,8 @@ class DragonWarriorBuild:
 			console.print("9. Show build status")
 			console.print("10. Clean build")
 			console.print("11. Full build pipeline")
-			console.print("12. Exit")
+			console.print("12. Run diagnostics")
+			console.print("13. Exit")
 
 			choice = click.prompt("\nSelect option", type=str).strip()
 
@@ -622,13 +654,22 @@ class DragonWarriorBuild:
 					console.print("\n[bold green]✅ Full build pipeline completed successfully![/bold green]")
 				else:
 					console.print("\n[bold red]❌ Build pipeline failed at some stage[/bold red]")
+					# Show error summary if available
+					if self.error_handler and self.error_handler.errors:
+						console.print(f"\n[yellow]{self.error_handler.get_summary()}[/yellow]")
 
 			elif choice == "12":
+				# Run diagnostics
+				if HAS_ERROR_HANDLER:
+					print_diagnostics()
+				else:
+					console.print("[yellow]⚠️ Diagnostics module not available[/yellow]")
+
+			elif choice == "13":
 				console.print("\n[bold cyan]Thanks for using Dragon Warrior Build System![/bold cyan]")
 				break
 
 			else:
-				console.print(f"[red]Invalid choice: {choice}[/red]")
 				console.print(f"[red]Invalid choice: {choice}[/red]")
 
 @click.command()
