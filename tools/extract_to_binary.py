@@ -37,6 +37,8 @@ TYPE_ITEM = 0x03
 TYPE_MAP = 0x04
 TYPE_TEXT = 0x05
 TYPE_GRAPHICS = 0x06
+TYPE_MUSIC = 0x07
+TYPE_SFX = 0x08
 
 # ROM offsets (Dragon Warrior U PRG1)
 MONSTER_OFFSET = 0x5e5b
@@ -50,6 +52,17 @@ ITEM_SIZE = 32 * 8  # 32 items, 8 bytes each
 
 CHR_OFFSET = 0x10010
 CHR_SIZE = 0x4000  # 16KB CHR-ROM (1024 tiles)
+
+# Music offsets (Bank 1)
+MUSIC_POINTERS_OFFSET = 0x8297  # Relative to Bank 1 start
+MUSIC_POINTERS_SIZE = 54       # 27 tracks * 2 bytes
+SFX_POINTERS_OFFSET = 0x8339   # Relative to Bank 1 start
+SFX_POINTERS_SIZE = 44         # 22 SFX * 2 bytes
+NOTE_TABLE_OFFSET = 0x8205     # Relative to Bank 1 start
+NOTE_TABLE_SIZE = 146          # 73 notes * 2 bytes
+
+# Bank 1 start in ROM (after 16-byte header)
+BANK1_START = 0x4010
 
 # Default paths
 DEFAULT_ROM = "roms/Dragon Warrior (U) (PRG1) [!].nes"
@@ -313,6 +326,102 @@ class ROMExtractor:
 
 		return True
 
+	def extract_music_pointers(self, output_path: str) -> bool:
+		"""
+		Extract music pointer table to music_pointers.dwdata
+
+		Args:
+			output_path: Path for music_pointers.dwdata
+
+		Returns:
+			True if successful
+		"""
+		print("\n--- Extracting Music Pointers ---")
+
+		# Calculate absolute offset in ROM
+		rom_offset = BANK1_START + (MUSIC_POINTERS_OFFSET - 0x8000)
+		data = self.rom_data[rom_offset:rom_offset + MUSIC_POINTERS_SIZE]
+
+		print(f"  ROM Offset: 0x{rom_offset:04X} (Bank 1)")
+		print(f"  Data Size: {len(data)} bytes ({len(data)//2} pointers)")
+
+		# Write .dwdata file
+		crc, crc_hex = self.builder.write_dwdata_file(
+			output_path,
+			TYPE_MUSIC,
+			rom_offset,
+			data
+		)
+
+		print(f"  CRC32: {crc_hex}")
+		print(f"✓ Wrote: {output_path}")
+
+		return True
+
+	def extract_sfx_pointers(self, output_path: str) -> bool:
+		"""
+		Extract SFX pointer table to sfx_pointers.dwdata
+
+		Args:
+			output_path: Path for sfx_pointers.dwdata
+
+		Returns:
+			True if successful
+		"""
+		print("\n--- Extracting SFX Pointers ---")
+
+		# Calculate absolute offset in ROM
+		rom_offset = BANK1_START + (SFX_POINTERS_OFFSET - 0x8000)
+		data = self.rom_data[rom_offset:rom_offset + SFX_POINTERS_SIZE]
+
+		print(f"  ROM Offset: 0x{rom_offset:04X} (Bank 1)")
+		print(f"  Data Size: {len(data)} bytes ({len(data)//2} pointers)")
+
+		# Write .dwdata file
+		crc, crc_hex = self.builder.write_dwdata_file(
+			output_path,
+			TYPE_SFX,
+			rom_offset,
+			data
+		)
+
+		print(f"  CRC32: {crc_hex}")
+		print(f"✓ Wrote: {output_path}")
+
+		return True
+
+	def extract_note_table(self, output_path: str) -> bool:
+		"""
+		Extract musical note frequency table to note_table.dwdata
+
+		Args:
+			output_path: Path for note_table.dwdata
+
+		Returns:
+			True if successful
+		"""
+		print("\n--- Extracting Note Table ---")
+
+		# Calculate absolute offset in ROM
+		rom_offset = BANK1_START + (NOTE_TABLE_OFFSET - 0x8000)
+		data = self.rom_data[rom_offset:rom_offset + NOTE_TABLE_SIZE]
+
+		print(f"  ROM Offset: 0x{rom_offset:04X} (Bank 1)")
+		print(f"  Data Size: {len(data)} bytes ({len(data)//2} notes)")
+
+		# Write .dwdata file
+		crc, crc_hex = self.builder.write_dwdata_file(
+			output_path,
+			TYPE_MUSIC,
+			rom_offset,
+			data
+		)
+
+		print(f"  CRC32: {crc_hex}")
+		print(f"✓ Wrote: {output_path}")
+
+		return True
+
 	def extract_all(self, output_dir: str) -> Dict[str, bool]:
 		"""
 		Extract all data types to output directory
@@ -343,6 +452,19 @@ class ROMExtractor:
 
 		results['graphics.dwdata'] = self.extract_graphics(
 			os.path.join(output_dir, 'graphics.dwdata')
+		)
+
+		# Extract music/audio data
+		results['music_pointers.dwdata'] = self.extract_music_pointers(
+			os.path.join(output_dir, 'music_pointers.dwdata')
+		)
+
+		results['sfx_pointers.dwdata'] = self.extract_sfx_pointers(
+			os.path.join(output_dir, 'sfx_pointers.dwdata')
+		)
+
+		results['note_table.dwdata'] = self.extract_note_table(
+			os.path.join(output_dir, 'note_table.dwdata')
 		)
 
 		return results
@@ -447,7 +569,10 @@ Examples:
 			'monsters.dwdata',
 			'spells.dwdata',
 			'items.dwdata',
-			'graphics.dwdata'
+			'graphics.dwdata',
+			'music_pointers.dwdata',
+			'sfx_pointers.dwdata',
+			'note_table.dwdata'
 		]
 
 		all_valid = True
