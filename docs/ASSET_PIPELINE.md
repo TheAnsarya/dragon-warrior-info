@@ -32,18 +32,34 @@ The Dragon Warrior ROM hacking toolkit uses a JSON-based asset pipeline that all
 
 ## Asset Types
 
+### Core Game Data
+
 | Asset | JSON File | Generator | ASM Output | Records |
 |-------|-----------|-----------|------------|---------|
-| 👾 Monsters | `monsters_verified.json` | `generate_monster_tables.py` | `monster_data.asm` | 40 |
-| 📦 Items | `items_corrected.json` | `generate_item_cost_table.py` | `item_data.asm` | 29 |
-| ✨ Spells | `spells.json` | `generate_spell_cost_table.py` | `spell_data.asm` | 10 |
-| 🏪 Shops | `shops.json` | `generate_shop_items_table.py` | `shop_data.asm` | 12 |
-| 💬 Dialogs | `dialogs_extracted.json` | `generate_dialog_tables.py` | `dialog_data.asm` | 298 |
-| 🧙 NPCs | `npcs_extracted.json` | `generate_npc_tables.py` | `npc_tables.asm` | 24 |
-| ⚔️ Equipment | `equipment_bonuses.json` | `generate_equipment_bonus_tables.py` | `equipment_bonus_tables.asm` | 3 |
-| 🗺️ Maps | `maps.json` | `asset_reinserter.py` | `map_data.asm` | 1 |
-| 🎨 Graphics | `graphics_data.json` | `generate_chr_from_pngs.py` | `chr_rom.bin` | 144 tiles |
-| 🎨 Palettes | `palettes.json` | `asset_reinserter.py` | `palette_data.asm` | 8 |
+| 👾 Monsters | `monsters.json` | `generate_monster_tables.py` | `MonsterTables.asm` | 40 |
+| 📦 Items | `items.json` | `generate_item_cost_table.py` | `ItemTable.asm` | 29 |
+| ✨ Spells | `spells.json` | `generate_spell_cost_table.py` | `SpellTable.asm` | 10 |
+| 🏪 Shops | `shops.json` | `generate_shop_items_table.py` | `ShopTables.asm` | 12 |
+| 💬 Dialogs | `dialogs.json` | `generate_dialog_tables.py` | `DialogTables.asm` | 298 |
+| 🧙 NPCs | `npcs.json` | `generate_npc_tables.py` | `NpcTables.asm` | 24 |
+| ⚔️ Equipment | `equipment_bonuses.json` | `generate_equipment_bonus_tables.py` | `EquipmentBonuses.asm` | 32 |
+| 🗺️ Maps | `maps.json` | `asset_reinserter.py` | `map_data.asm` | 25 |
+| 🎨 Graphics | `graphics_data.json` | `generate_chr_from_pngs.py` | `chr_rom.bin` | 512 tiles |
+| 🎨 Palettes | `palettes.json` | `asset_reinserter.py` | `palette_data.asm` | 20 |
+
+### Formula/Mechanics Assets (NEW)
+
+| Asset | JSON File | Generator | ASM Output | Description |
+|-------|-----------|-----------|------------|-------------|
+| ⚔️ Damage | `damage_formulas.json` | `generate_damage_tables.py` | `damage_tables.asm` | Physical/spell damage parameters |
+| ✨ Spell FX | `spell_effects.json` | `generate_spell_effects.py` | `spell_effects.asm` | Spell behavior, ranges, resistances |
+| 📈 Experience | `experience_table.json` | `generate_experience_table.py` | `experience_table.asm` | Level 1-30 progression curve |
+
+### Audio Assets (NEW)
+
+| Asset | JSON File | Generator | ASM Output | Records |
+|-------|-----------|-----------|------------|---------|
+| 🎵 Music | `music.json` | `generate_music_tables.py` | `music_tables.asm` | 27 tracks, 22 SFX |
 
 ## Pipeline Steps
 
@@ -77,13 +93,21 @@ python tools/universal_editor.py
 
 ### Step 3: Generate Assembly
 
-Generate ASM code from edited JSON:
+Generate ASM code from edited JSON using the unified generator:
 
 ```powershell
-# Generate all assembly
-python tools/asset_reinserter.py assets -o source_files/generated
+# Run all 11 generators at once (RECOMMENDED)
+python tools/generate_all_assets.py
 
-# Or generate specific assets:
+# Run specific generators only
+python tools/generate_all_assets.py --only monsters
+python tools/generate_all_assets.py --only damage
+python tools/generate_all_assets.py --only music
+
+# Force regeneration even if up-to-date
+python tools/generate_all_assets.py --force
+
+# Or generate specific assets individually:
 python tools/generate_monster_tables.py
 python tools/generate_dialog_tables.py
 python tools/generate_item_cost_table.py
@@ -91,6 +115,23 @@ python tools/generate_spell_cost_table.py
 python tools/generate_shop_items_table.py
 python tools/generate_npc_tables.py
 python tools/generate_equipment_bonus_tables.py
+python tools/generate_damage_tables.py
+python tools/generate_spell_effects.py
+python tools/generate_experience_table.py
+python tools/generate_music_tables.py
+```
+
+**Unified Generator Output Example:**
+```
+======================================================================
+DRAGON WARRIOR - ASSET GENERATOR
+======================================================================
+[MONSTERS] ✅ Generated successfully
+[ITEMS] ✅ Generated successfully
+[DAMAGE] ✅ Generated successfully
+[MUSIC] ✅ Generated successfully
+----------------------------------------------------------------------
+Total: 11/11 generators succeeded
 ```
 
 ### Step 4: Edit Graphics (Optional)
