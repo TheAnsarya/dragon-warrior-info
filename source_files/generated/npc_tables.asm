@@ -30,7 +30,7 @@ TantagelMobileTable:
         .byte $42, $4C, $1B     ;Guard at  2,12.
         .byte $66, $59, $20     ;Shopkeeper at  6,25.
         .byte $38, $55, $22     ;Fighter at 24,21.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 TantStatTbl:
         .byte $78, $41, $0E     ;Shopkeeper at 24, 1.
@@ -43,25 +43,25 @@ TantStatTbl:
         .byte $B4, $7A, $6A     ;Wizard at 20,26.
         .byte $49, $3B, $21     ;Guard at  9,27.
         .byte $4C, $7B, $21     ;Guard at 12,27.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 ThRmMobTbl:
         .byte $47, $45, $65     ;Guard at  7, 5.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 ThRmStatTbl:
         .byte $83, $43, $6E     ;King Lorik at  3, 3.
         .byte $43, $26, $23     ;Guard at  3, 6.
         .byte $45, $66, $24     ;Guard at  5, 6.
         .byte $C6, $43, $6F     ;Female villager at  6, 3.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 TaSLMobTbl:
-        .byte $FF               ;No NPCs.
+        .byte $ff               ;No NPCs.
 
 TaSLStatTbl:
         .byte $A4, $46, $66     ;Wizard at  4, 6.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 TaDLMobTbl:
         .byte $53, $42, $17     ;Guard at 19, 2.
@@ -71,7 +71,7 @@ TaDLMobTbl:
         .byte $42, $4C, $1B     ;Guard at  2,12.
         .byte $66, $59, $20     ;Shopkeeper at  6,25.
         .byte $38, $55, $22     ;Fighter at 24,21.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 TaDLStatTbl:
         .byte $8B, $47, $FE     ;King Lorik at 11, 7.
@@ -83,28 +83,28 @@ TaDLStatTbl:
         .byte $AC, $4D, $FD     ;Wizard at 12,13.
         .byte $49, $3B, $FD     ;Guard at  9,27.
         .byte $4C, $7B, $FD     ;Guard at 12,27.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 DLBFMobTbl:
-        .byte $FF               ;No NPCs.
+        .byte $ff               ;No NPCs.
 
 DLBFStatTbl:
         .byte $B0, $58, $70     ;Wizard at 16,24.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 RainMobTbl:
-        .byte $FF               ;No NPCs.
+        .byte $ff               ;No NPCs.
 
 RainStatTbl:
         .byte $A4, $24, $6C     ;Wizard at  4, 4.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 RnbwMobTbl:
-        .byte $FF               ;No NPCs.
+        .byte $ff               ;No NPCs.
 
 RnbwStatTbl:
         .byte $A4, $65, $6D     ;Wizard at  4, 5.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 CantMobTbl:
         .byte $14, $4F, $4B     ;Male villager at 20,15.
@@ -117,7 +117,7 @@ CantMobTbl:
         .byte $4F, $46, $48     ;Guard at 15, 6.
         .byte $63, $5A, $4E     ;Shopkeeper at  3,26.
         .byte $56, $49, $4D     ;Guard at 22, 9.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 CantStatTbl:
         .byte $68, $43, $14     ;Shopkeeper at  8, 3.
@@ -130,7 +130,7 @@ CantStatTbl:
         .byte $AF, $50, $46     ;Wizard at 15,16.
         .byte $B6, $56, $47     ;Wizard at 22,22.
         .byte $7B, $7A, $04     ;Shopkeeper at 27,26.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 RimMobTbl:
         .byte $C6, $55, $59     ;Female villager at  6,21.
@@ -143,7 +143,7 @@ RimMobTbl:
         .byte $30, $5A, $69     ;Fighter at 16,26.
         .byte $48, $50, $54     ;Guard at  8,16.
         .byte $38, $53, $57     ;Fighter at 24,19.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 RimStatTbl:
         .byte $1B, $40, $51     ;Male villager at 27, 0.
@@ -156,7 +156,7 @@ RimStatTbl:
         .byte $A3, $37, $61     ;Wizard at  3,23.
         .byte $B4, $57, $58     ;Wizard at 20,23.
         .byte $C0, $5A, $5C     ;Female villager at  0,26.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 BrecMobTbl:
         .byte $A9, $44, $2B     ;Wizard at  9, 4.
@@ -169,7 +169,7 @@ BrecMobTbl:
         .byte $CF, $58, $2D     ;Female villager at 15,24.
         .byte $33, $52, $30     ;Fighter at 19,18.
         .byte $23, $5A, $27     ;Fighter at  3,26.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 BrecStatTbl:
         .byte $65, $44, $01     ;Shopkeeper at  5, 4.
@@ -182,7 +182,7 @@ BrecStatTbl:
         .byte $14, $17, $28     ;Male villager at 20,23.
         .byte $79, $79, $08     ;Shopkeeper at 25,25.
         .byte $4A, $1A, $64     ;Guard at 10,26.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 KolMobTbl:
         .byte $0E, $4D, $36     ;Male villager at 14,13.
@@ -194,7 +194,7 @@ KolMobTbl:
         .byte $CB, $4E, $2E     ;Female villager at 11,14.
         .byte $67, $53, $5F     ;Shopkeeper at  7,19.
         .byte $B4, $48, $39     ;Wizard at 20, 8.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 KolStatTbl:
         .byte $A1, $41, $68     ;Wizard at  1, 1.
@@ -204,7 +204,7 @@ KolStatTbl:
         .byte $34, $4D, $33     ;Fighter at 20,13.
         .byte $6E, $75, $07     ;Shopkeeper at 14,21.
         .byte $41, $57, $34     ;Guard at  1,23.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 GarMobTbl:
         .byte $CC, $44, $3E     ;Female villager at 12, 4.
@@ -214,7 +214,7 @@ GarMobTbl:
         .byte $0B, $47, $3D     ;Male villager at 11, 7.
         .byte $12, $4C, $44     ;Male villager at 18,12.
         .byte $27, $51, $41     ;Fighter at  7,17.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.
 
 GarStatTbl:
         .byte $AE, $41, $3A     ;Wizard at 14, 1.
@@ -225,4 +225,4 @@ GarStatTbl:
         .byte $71, $6F, $13     ;Shopkeeper at 17,15.
         .byte $A2, $31, $40     ;Wizard at  2,17.
         .byte $6A, $12, $02     ;Shopkeeper at 10,18.
-        .byte $FF               ;End of table.
+        .byte $ff               ;End of table.

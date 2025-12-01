@@ -42,7 +42,7 @@ except ImportError:
 
 # Import extended editor tabs
 try:
-	from editor_tabs_extended import DamageEditorTab, SpellEffectsEditorTab, ExperienceEditorTab
+	from editor_tabs_extended import DamageEditorTab, SpellEffectsEditorTab, ExperienceEditorTab, MusicEditorTab as MusicDataEditorTab
 	HAS_EXTENDED_TABS = True
 except ImportError:
 	HAS_EXTENDED_TABS = False
@@ -6896,6 +6896,10 @@ class UniversalEditor:
 			# Tab 22: Experience/Levels
 			self.exp_tab = ExperienceEditorTab(self.notebook, self.asset_manager)
 			self.notebook.add(self.exp_tab, text="📈 Experience")
+
+			# Tab 23: Music Data (JSON-based)
+			self.music_data_tab = MusicDataEditorTab(self.notebook, self.asset_manager)
+			self.notebook.add(self.music_data_tab, text="🎶 Music Data")
 
 	def create_statusbar(self):
 		"""Create status bar."""

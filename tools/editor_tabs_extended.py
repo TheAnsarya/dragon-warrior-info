@@ -931,6 +931,362 @@ class ExperienceEditorTab(ttk.Frame):
 
 
 # ============================================================================
+# MUSIC EDITOR TAB
+# ============================================================================
+
+class MusicEditorTab(ttk.Frame):
+	"""Edit music and sound effect data from music.json."""
+
+	def __init__(self, parent, asset_manager):
+		super().__init__(parent)
+		self.asset_manager = asset_manager
+		self.data = None
+		self.modified = False
+
+		self.create_widgets()
+		self.load_data()
+
+	def create_widgets(self):
+		"""Create music editor widgets."""
+		# Header
+		header = ttk.Frame(self)
+		header.pack(fill=tk.X, padx=10, pady=5)
+
+		ttk.Label(header, text="🎵 Music & SFX Editor", font=('Arial', 16, 'bold')).pack(side=tk.LEFT)
+
+		ttk.Button(header, text="💾 Save All", command=self.save_all).pack(side=tk.RIGHT, padx=5)
+		ttk.Button(header, text="⚡ Generate ASM", command=self.generate_asm).pack(side=tk.RIGHT, padx=5)
+
+		# Main notebook for categories
+		self.notebook = ttk.Notebook(self)
+		self.notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Tab 1: Music Tracks
+		self.tracks_frame = ttk.Frame(self.notebook)
+		self.notebook.add(self.tracks_frame, text="Music Tracks")
+		self.create_tracks_tab()
+
+		# Tab 2: Sound Effects
+		self.sfx_frame = ttk.Frame(self.notebook)
+		self.notebook.add(self.sfx_frame, text="Sound Effects")
+		self.create_sfx_tab()
+
+		# Tab 3: Map Assignments
+		self.maps_frame = ttk.Frame(self.notebook)
+		self.notebook.add(self.maps_frame, text="Map Music")
+		self.create_maps_tab()
+
+		# Tab 4: Note Reference
+		self.notes_frame = ttk.Frame(self.notebook)
+		self.notebook.add(self.notes_frame, text="Notes Reference")
+		self.create_notes_tab()
+
+	def create_tracks_tab(self):
+		"""Create music tracks editing interface."""
+		# Top controls
+		controls = ttk.Frame(self.tracks_frame)
+		controls.pack(fill=tk.X, padx=5, pady=5)
+
+		ttk.Label(controls, text="Select Track:").pack(side=tk.LEFT, padx=5)
+		self.track_combo = ttk.Combobox(controls, state="readonly", width=40)
+		self.track_combo.pack(side=tk.LEFT, padx=5)
+		self.track_combo.bind("<<ComboboxSelected>>", self.on_track_selected)
+
+		# Track details frame
+		self.track_details = ttk.LabelFrame(self.tracks_frame, text="Track Details", padding=10)
+		self.track_details.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+		# Track info labels
+		self.track_vars = {}
+		fields = [
+			('track_id', 'Track ID', 'Internal track number'),
+			('name', 'Name', 'Display name'),
+			('description', 'Description', 'Track description'),
+			('tempo', 'Tempo', 'Playback speed (0-255)'),
+		]
+
+		for i, (field, label, desc) in enumerate(fields):
+			row = ttk.Frame(self.track_details)
+			row.pack(fill=tk.X, pady=2)
+
+			ttk.Label(row, text=f"{label}:", width=15).pack(side=tk.LEFT)
+
+			if field == 'track_id' or field == 'tempo':
+				var = tk.IntVar(value=0)
+				entry = ttk.Spinbox(row, textvariable=var, from_=0, to=255, width=10)
+			else:
+				var = tk.StringVar(value='')
+				entry = ttk.Entry(row, textvariable=var, width=40)
+
+			entry.pack(side=tk.LEFT, padx=5)
+			ttk.Label(row, text=desc, foreground='gray').pack(side=tk.LEFT)
+
+			self.track_vars[field] = var
+
+		# Channel info
+		channel_frame = ttk.LabelFrame(self.track_details, text="Channels", padding=5)
+		channel_frame.pack(fill=tk.X, pady=5)
+
+		self.channel_vars = {}
+		for ch in ['sq1', 'sq2', 'tri']:
+			row = ttk.Frame(channel_frame)
+			row.pack(fill=tk.X, pady=2)
+
+			label_var = tk.StringVar(value='')
+			enabled_var = tk.BooleanVar(value=True)
+
+			ttk.Label(row, text=f"{ch.upper()}:", width=6).pack(side=tk.LEFT)
+			ttk.Entry(row, textvariable=label_var, width=25).pack(side=tk.LEFT, padx=5)
+			ttk.Checkbutton(row, text="Enabled", variable=enabled_var).pack(side=tk.LEFT)
+
+			self.channel_vars[ch] = {'label': label_var, 'enabled': enabled_var}
+
+		# Loop checkbox
+		self.loop_var = tk.BooleanVar(value=True)
+		ttk.Checkbutton(self.track_details, text="Loop track", variable=self.loop_var).pack(anchor=tk.W, pady=5)
+
+		# Update button
+		ttk.Button(self.track_details, text="Update Track", command=self.update_track).pack(pady=10)
+
+	def create_sfx_tab(self):
+		"""Create sound effects editing interface."""
+		# Top controls
+		controls = ttk.Frame(self.sfx_frame)
+		controls.pack(fill=tk.X, padx=5, pady=5)
+
+		ttk.Label(controls, text="Select SFX:").pack(side=tk.LEFT, padx=5)
+		self.sfx_combo = ttk.Combobox(controls, state="readonly", width=40)
+		self.sfx_combo.pack(side=tk.LEFT, padx=5)
+		self.sfx_combo.bind("<<ComboboxSelected>>", self.on_sfx_selected)
+
+		# SFX list with treeview
+		columns = ('ID', 'Name', 'Description', 'SQ1', 'SQ2', 'TRI')
+		self.sfx_tree = ttk.Treeview(self.sfx_frame, columns=columns, show='headings', height=15)
+
+		for col in columns:
+			self.sfx_tree.heading(col, text=col)
+			self.sfx_tree.column(col, width=100)
+
+		self.sfx_tree.column('ID', width=50)
+		self.sfx_tree.column('Name', width=150)
+		self.sfx_tree.column('Description', width=200)
+
+		scrollbar = ttk.Scrollbar(self.sfx_frame, orient=tk.VERTICAL, command=self.sfx_tree.yview)
+		self.sfx_tree.configure(yscrollcommand=scrollbar.set)
+
+		self.sfx_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
+		scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=5)
+
+	def create_maps_tab(self):
+		"""Create map music assignment interface."""
+		# Create treeview for map assignments
+		columns = ('Area', 'Track', 'Track Name')
+		self.maps_tree = ttk.Treeview(self.maps_frame, columns=columns, show='headings', height=20)
+
+		for col in columns:
+			self.maps_tree.heading(col, text=col)
+			self.maps_tree.column(col, width=150)
+
+		self.maps_tree.column('Area', width=200)
+
+		scrollbar = ttk.Scrollbar(self.maps_frame, orient=tk.VERTICAL, command=self.maps_tree.yview)
+		self.maps_tree.configure(yscrollcommand=scrollbar.set)
+
+		self.maps_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
+		scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=5)
+
+	def create_notes_tab(self):
+		"""Create musical notes reference display."""
+		# Info label
+		info = ttk.Label(self.notes_frame, text="NES APU Musical Notes Reference\nNote values: $80 (C2) to $C8 (C8)", font=('Arial', 10))
+		info.pack(pady=10)
+
+		# Create treeview for notes
+		columns = ('Hex', 'Note', 'Octave', 'Frequency')
+		self.notes_tree = ttk.Treeview(self.notes_frame, columns=columns, show='headings', height=20)
+
+		for col in columns:
+			self.notes_tree.heading(col, text=col)
+			self.notes_tree.column(col, width=100)
+
+		scrollbar = ttk.Scrollbar(self.notes_frame, orient=tk.VERTICAL, command=self.notes_tree.yview)
+		self.notes_tree.configure(yscrollcommand=scrollbar.set)
+
+		self.notes_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
+		scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=5)
+
+	def load_data(self):
+		"""Load music data from JSON file."""
+		json_path = ASSETS_JSON / 'music.json'
+		if json_path.exists():
+			try:
+				with open(json_path, 'r', encoding='utf-8') as f:
+					self.data = json.load(f)
+				self.populate_ui()
+			except Exception as e:
+				messagebox.showerror("Error", f"Failed to load music.json:\n{e}")
+
+	def populate_ui(self):
+		"""Populate UI with loaded data."""
+		if not self.data:
+			return
+
+		# Populate track list
+		tracks = self.data.get('music_tracks', {})
+		track_names = [f"{k} - {v.get('name', 'Unknown')}" for k, v in sorted(tracks.items(), key=lambda x: x[1].get('track_id', 0))]
+		self.track_combo['values'] = track_names
+		if track_names:
+			self.track_combo.current(0)
+			self.on_track_selected(None)
+
+		# Populate SFX list
+		sfx = self.data.get('sound_effects', {})
+		sfx_names = [f"{k} - {v.get('name', 'Unknown')}" for k, v in sorted(sfx.items(), key=lambda x: x[1].get('sfx_id', 0))]
+		self.sfx_combo['values'] = sfx_names
+
+		# Populate SFX tree
+		self.sfx_tree.delete(*self.sfx_tree.get_children())
+		for sfx_name, sfx_data in sorted(sfx.items(), key=lambda x: x[1].get('sfx_id', 0)):
+			channels = sfx_data.get('channels', {})
+			self.sfx_tree.insert('', tk.END, values=(
+				sfx_data.get('sfx_id', 0),
+				sfx_data.get('name', 'Unknown'),
+				sfx_data.get('description', ''),
+				channels.get('sq1', {}).get('label', ''),
+				channels.get('sq2', {}).get('label', ''),
+				channels.get('tri', {}).get('label', ''),
+			))
+
+		# Populate map music assignments
+		self.maps_tree.delete(*self.maps_tree.get_children())
+		map_music = self.data.get('map_music', {})
+		for area, track in sorted(map_music.items()):
+			if isinstance(track, list):
+				for i, t in enumerate(track):
+					track_data = tracks.get(t, {})
+					self.maps_tree.insert('', tk.END, values=(
+						f"{area}[{i}]",
+						t,
+						track_data.get('name', 'Unknown')
+					))
+			else:
+				track_data = tracks.get(track, {})
+				self.maps_tree.insert('', tk.END, values=(
+					area,
+					track,
+					track_data.get('name', 'Unknown')
+				))
+
+		# Populate notes reference
+		self.notes_tree.delete(*self.notes_tree.get_children())
+		notes = self.data.get('musical_notes', {})
+		for hex_val, note_data in sorted(notes.items(), key=lambda x: int(x[0], 16)):
+			self.notes_tree.insert('', tk.END, values=(
+				hex_val,
+				note_data.get('note', '?'),
+				note_data.get('octave', 0),
+				f"{note_data.get('frequency_hz', 0):.1f} Hz"
+			))
+
+	def on_track_selected(self, event):
+		"""Handle track selection."""
+		if not self.data:
+			return
+
+		selection = self.track_combo.get()
+		if not selection:
+			return
+
+		track_key = selection.split(' - ')[0]
+		tracks = self.data.get('music_tracks', {})
+		track_data = tracks.get(track_key, {})
+
+		# Update fields
+		self.track_vars['track_id'].set(track_data.get('track_id', 0))
+		self.track_vars['name'].set(track_data.get('name', ''))
+		self.track_vars['description'].set(track_data.get('description', ''))
+		self.track_vars['tempo'].set(track_data.get('tempo', 120))
+
+		# Update channels
+		channels = track_data.get('channels', {})
+		for ch in ['sq1', 'sq2', 'tri']:
+			ch_data = channels.get(ch, {})
+			self.channel_vars[ch]['label'].set(ch_data.get('label', ''))
+			self.channel_vars[ch]['enabled'].set(ch_data.get('enabled', True))
+
+		self.loop_var.set(track_data.get('loop', True))
+
+	def on_sfx_selected(self, event):
+		"""Handle SFX selection."""
+		pass  # Could add SFX editing later
+
+	def update_track(self):
+		"""Update track data from UI."""
+		if not self.data:
+			return
+
+		selection = self.track_combo.get()
+		if not selection:
+			return
+
+		track_key = selection.split(' - ')[0]
+		tracks = self.data.get('music_tracks', {})
+
+		if track_key not in tracks:
+			tracks[track_key] = {}
+
+		tracks[track_key]['track_id'] = self.track_vars['track_id'].get()
+		tracks[track_key]['name'] = self.track_vars['name'].get()
+		tracks[track_key]['description'] = self.track_vars['description'].get()
+		tracks[track_key]['tempo'] = self.track_vars['tempo'].get()
+		tracks[track_key]['loop'] = self.loop_var.get()
+
+		# Update channels
+		if 'channels' not in tracks[track_key]:
+			tracks[track_key]['channels'] = {}
+
+		for ch in ['sq1', 'sq2', 'tri']:
+			tracks[track_key]['channels'][ch] = {
+				'label': self.channel_vars[ch]['label'].get(),
+				'enabled': self.channel_vars[ch]['enabled'].get()
+			}
+
+		self.modified = True
+		messagebox.showinfo("Success", f"Updated track: {track_key}")
+
+	def save_all(self):
+		"""Save all music data to JSON file."""
+		if not self.data:
+			return
+
+		json_path = ASSETS_JSON / 'music.json'
+		try:
+			with open(json_path, 'w', encoding='utf-8') as f:
+				json.dump(self.data, f, indent=2)
+			self.modified = False
+			messagebox.showinfo("Success", f"Saved music data to:\n{json_path}")
+		except Exception as e:
+			messagebox.showerror("Error", f"Failed to save: {e}")
+
+	def generate_asm(self):
+		"""Generate assembly code from current data."""
+		import subprocess
+
+		generator = PROJECT_ROOT / 'tools' / 'generate_music_tables.py'
+		if generator.exists():
+			try:
+				result = subprocess.run(['python', str(generator)], capture_output=True, text=True)
+				if result.returncode == 0:
+					messagebox.showinfo("Success", "Generated music_tables.asm!")
+				else:
+					messagebox.showerror("Error", f"Generation failed:\n{result.stderr}")
+			except Exception as e:
+				messagebox.showerror("Error", f"Failed to run generator: {e}")
+		else:
+			messagebox.showwarning("Warning", "Generator not found: tools/generate_music_tables.py")
+
+
+# ============================================================================
 # REGISTRATION HELPER
 # ============================================================================
 
@@ -958,7 +1314,11 @@ def register_new_tabs(universal_editor):
 	experience_tab = ExperienceEditorTab(notebook, asset_manager)
 	notebook.add(experience_tab, text="📈 Experience")
 
-	return damage_tab, spell_effects_tab, experience_tab
+	# Add Music Tab
+	music_tab = MusicEditorTab(notebook, asset_manager)
+	notebook.add(music_tab, text="🎵 Music")
+
+	return damage_tab, spell_effects_tab, experience_tab, music_tab
 
 
 if __name__ == '__main__':
@@ -985,5 +1345,8 @@ if __name__ == '__main__':
 
 	exp_tab = ExperienceEditorTab(notebook, am)
 	notebook.add(exp_tab, text="📈 Experience")
+
+	music_tab = MusicEditorTab(notebook, am)
+	notebook.add(music_tab, text="🎵 Music")
 
 	root.mainloop()

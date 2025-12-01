@@ -18,7 +18,61 @@ from pathlib import Path
 def load_experience_table(json_path: str) -> dict:
 	"""Load experience table definitions from JSON file."""
 	with open(json_path, 'r', encoding='utf-8') as f:
-		return json.load(f)
+		data = json.load(f)
+	
+	# Normalize levels format - convert from object to array if needed
+	levels = data.get('levels', {})
+	if isinstance(levels, dict):
+		# Convert {"1": {...}, "2": {...}} to [{level: 1, ...}, {level: 2, ...}]
+		normalized_levels = []
+		for level_num in sorted(levels.keys(), key=int):
+			level_data = levels[level_num].copy()
+			level_data['level'] = int(level_num)
+			
+			# Normalize stats structure
+			if 'strength' in level_data:
+				level_data['stats'] = {
+					'strength': level_data.pop('strength', 4),
+					'agility': level_data.pop('agility', 4),
+					'max_hp': level_data.pop('max_hp', 15),
+					'max_mp': level_data.pop('max_mp', 0),
+				}
+			
+			# Normalize spells structure  
+			spells_learned = level_data.pop('spells_learned', [])
+			if spells_learned:
+				level_data['spells'] = {
+					'known': spells_learned,
+					'spell_mask': calculate_spell_mask(spells_learned),
+				}
+			else:
+				level_data['spells'] = {'known': [], 'spell_mask': 0}
+			
+			normalized_levels.append(level_data)
+		
+		data['levels'] = normalized_levels
+	
+	return data
+
+
+def calculate_spell_mask(spells: list) -> int:
+	"""Calculate spell bitmask from spell names."""
+	spell_bits = {
+		'HEAL': 0x01,
+		'HURT': 0x02,
+		'SLEEP': 0x04,
+		'RADIANT': 0x08,
+		'STOPSPELL': 0x10,
+		'OUTSIDE': 0x20,
+		'RETURN': 0x40,
+		'REPEL': 0x80,
+		'HEALMORE': 0x100,
+		'HURTMORE': 0x200,
+	}
+	mask = 0
+	for spell in spells:
+		mask |= spell_bits.get(spell.upper(), 0)
+	return mask
 
 
 def generate_experience_table(data: dict) -> str:

@@ -163,6 +163,7 @@ format everything using our `.editorconfig` especially utf-8, tabs not spaces, a
 
 ***continue!***; go through all associated github issues and todo-lists;
 
+git comment everything and push; make sure you're making and updating todo-lists and make sure you are creating and updating github issues for all work, especially new work; are we extracting all assess that can be extracted? is every extracted asset in the build pipeline and has an editor inside the big universal editor? ; extract the damage calculation code and make a build-pipeline asset for it, and make an editor; is there any way to abstract what spells do even though they're implemented as code, not data? this would be so we can edit them in a json file and in an editor; ***continue!***; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
 
 
@@ -171,6 +172,10 @@ format everything using our `.editorconfig` especially utf-8, tabs not spaces, a
 
 
 
+
+
+
+timestamp the ai chat responses and questions so I can see how long it's been and how long things take; Create a whole script for the video documentation for `Episode 1: Getting Started` on how to use the project, and tool installation, and project git and configuration, with references to video clips like tool usage and emulator scenes, and if can make these for me; after the frst episode, make assets and scripts, etc, for the rest of the series;
 
 
 

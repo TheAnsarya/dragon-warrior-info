@@ -17,9 +17,9 @@ their current extraction status, JSON representation, generators, and editor int
 | **Text** | 3 | 3/3 ✅ | 3/3 ✅ | 2/3 ⚠️ | 2/3 ⚠️ | 67% |
 | **Graphics** | 4 | 4/4 ✅ | 2/4 ⚠️ | 1/4 ❌ | 2/4 ⚠️ | 50% |
 | **Maps** | 2 | 2/2 ✅ | 2/2 ✅ | 1/2 ⚠️ | 1/2 ⚠️ | 50% |
-| **Audio** | 2 | 2/2 ✅ | 1/2 ⚠️ | 0/2 ❌ | 1/2 ⚠️ | 50% |
+| **Audio** | 2 | 2/2 ✅ | 2/2 ✅ | 1/2 ✅ | 2/2 ✅ | 100% |
 | **Formulas** | 3 | 3/3 ✅ | 3/3 ✅ | 3/3 ✅ | 3/3 ✅ | 100% |
-| **TOTAL** | **22** | **22/22** | **20/22** | **14/22** | **17/22** | **73%** |
+| **TOTAL** | **22** | **22/22** | **21/22** | **15/22** | **18/22** | **77%** |
 
 ---
 
@@ -193,20 +193,22 @@ their current extraction status, JSON representation, generators, and editor int
 
 ### 5. Audio Assets
 
-#### Music/NSF Data (✅ Partially Complete)
+#### Music/NSF Data (✅ Complete)
 - **ROM Location:** Bank01 $8297 (pointers), $8205 (note table)
 - **JSON File:** `assets/json/music.json`
 - **Extractor:** `tools/extract_music.py`
-- **Generator:** ⚠️ Not yet implemented
-- **Editor Tab:** MusicEditorTab in Universal Editor
+- **Generator:** `tools/generate_music_tables.py`
+- **ASM Output:** `build/reinsertion/music_tables.asm`
+- **Editor Tab:** MusicEditorTab (ROM), MusicDataEditorTab (JSON) in Universal Editor
 - **Records:** 27 music tracks, 22 sound effects, 73 notes
-- **Status:** ✅ JSON extracted with metadata, editor exists
+- **Status:** ✅ Fully integrated - JSON + Generator + Two Editors
 
-#### Sound Effects (✅ Documented)
+#### Sound Effects (✅ Complete)
 - **ROM Location:** Bank01 $8339 (SFX pointer table)
 - **JSON File:** `assets/json/music.json` (combined with music)
+- **Generator:** `tools/generate_music_tables.py` (combined with music)
 - **Records:** 22 sound effects
-- **Status:** ✅ Documented in music.json
+- **Status:** ✅ Fully integrated in music pipeline
 
 ---
 
