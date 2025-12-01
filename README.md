@@ -308,16 +308,24 @@ dragon-warrior-info/
 - Authentic ROM addresses from Dragon Warrior assembly source analysis
 - JSON output with cross-referenced asset relationships
 
-### Interactive Editors
+### Asset Generation Pipeline
 
-- **monster_editor.py** - Visual monster stats and abilities editor
-- **item_editor.py** - Item properties, costs, and bonuses editor  
-- **spell_editor.py** - Spell system and magic costs editor
-- **shop_editor.py** - Shop inventories and inn pricing editor
-- **dialog_editor.py** - Text and dialog content editor
-- **map_editor.py** - Map terrain and layout editor
-- **graphics_editor.py** - Visual graphics and palette editor
-- Rich CLI interfaces with validation and real-time preview
+- **generate_all_assets.py** - Unified generator runs all JSON→ASM generators
+- 11 generators: monsters, items, spells, equipment, shops, npcs, dialogs, damage, spell_fx, experience, music
+- Build pipeline integration: `build.ps1` runs generators automatically
+- See `docs/ASSET_PIPELINE.md` for complete documentation
+
+### Interactive Editors (Universal Editor)
+
+- **universal_editor.py** - 24+ tab comprehensive GUI editor
+  - Core: Monsters, Items, Spells, Equipment, Shops, NPCs, Dialogs
+  - Maps: World Map, Interior Maps, Encounters
+  - Graphics: CHR Tiles, Palettes, Sprites
+  - Formulas: ⚔️ Damage, ✨ Spell Effects, 📈 Experience
+  - Audio: 🎵 Music Tracks, Sound Effects
+- Rich tkinter interfaces with validation and real-time preview
+- Direct JSON editing and ASM generation
+- Integrated with build pipeline
 
 ### ROM Analysis
 
