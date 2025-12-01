@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Title** | "Dragon Warrior ROM Hacking: Modifying Monster Stats" |
+| **Title** | "Dragon Warrior ROM Hacking: Make Slimes TERRIFYING!" |
 | **Duration** | 8-10 minutes |
 | **Difficulty** | Beginner |
 | **Prerequisites** | Completed Episode 1, Working build environment |
@@ -14,11 +14,11 @@
 
 ## Chapter Markers (YouTube Timestamps)
 
-```
+```text
 0:00 - Introduction
 0:30 - Understanding Monster Data
 1:30 - Opening the JSON File
-2:30 - Changing Slime Stats
+2:30 - Creating Our Super Slime
 4:00 - Regenerating Assets
 5:00 - Building & Testing
 6:30 - Using the Universal Editor
@@ -32,47 +32,49 @@
 
 ### [0:00] Introduction (30 seconds)
 
-**[VISUAL: Red Slime battle in emulator, transition to monsters.json]**
+**[VISUAL: Red Slime battle in emulator, hero getting demolished, transition to monsters.json]**
 
 **NARRATION:**
-> "Welcome back to the Dragon Warrior ROM Hacking series! In our last video, we set up the development environment. Now we're going to make our first real modification - changing monster stats.
+> "Hey everyone! Welcome back to Dragon Warrior ROM Hacking! In our last video, we got everything set up and running. Now it's time to make our first REAL change to the game.
 >
-> By the end of this video, you'll know how to make any monster easier, harder, or completely ridiculous."
+> We're going to turn the humble Slime - that cute little blue blob that's basically free XP - into an absolute NIGHTMARE. By the end of this video, you'll know how to make any monster as easy or as brutally difficult as you want.
+>
+> Let's break some game balance!"
 
 ---
 
 ### [0:30] Understanding Monster Data (1 minute)
 
-**[VISUAL: monsters.json structure on screen, highlight key fields]**
+**[VISUAL: monsters.json structure on screen, highlight key fields with callout boxes]**
 
 **NARRATION:**
-> "Dragon Warrior has 40 monsters, each with these main stats:
+> "Dragon Warrior has 40 monsters total, from the lowly Slime to the mighty Dragonlord. Each one has these stats:
 >
-> - **Strength** - Affects physical attack damage
-> - **Agility** - Determines turn order and dodge chance  
-> - **HP** - How much damage they can take
-> - **Sleep Resist** - Resistance to SLEEP spell
-> - **Stopspell Resist** - Resistance to STOPSPELL
-> - **Hurt Resist** - Resistance to HURT and HURTMORE
-> - **Experience** - XP awarded when defeated
-> - **Gold** - Gold dropped when defeated
+> - **Strength** - How hard they punch. Higher = ouchie.
+> - **Agility** - Who goes first AND how often they dodge your attacks
+> - **HP** - The health pool. You gotta drain this to win!
+> - **Sleep Resist** - Can they shrug off your SLEEP spell?
+> - **Stopspell Resist** - Can they ignore your STOPSPELL?
+> - **Hurt Resist** - Protection against HURT and HURTMORE
+> - **Experience** - What you get for killing them
+> - **Gold** - What they drop (monsters carry coins, don't question it)
 >
-> All of this is stored in `assets/json/monsters.json` in an easy-to-edit format."
+> All of this lives in `assets/json/monsters.json` - human-readable JSON, not cryptic hex codes!"
 
-**[VISUAL: Show actual JSON highlighting each stat]**
+**[VISUAL: Side-by-side comparison of hex data vs JSON - dramatically easier to read]**
 
 ---
 
 ### [1:30] Opening the JSON File (1 minute)
 
-**[VISUAL: VS Code opening monsters.json]**
+**[VISUAL: VS Code opening monsters.json with smooth animation]**
 
 **NARRATION:**
-> "Let's open the monster data. In VS Code, navigate to `assets/json/monsters.json`.
+> "Let's crack open that monster data! In VS Code, hit Ctrl+P and type `monsters.json` to quick-open it.
 >
-> You'll see each monster defined with all their properties. Let's look at the Slime - the weakest monster in the game."
+> Scroll through and... look at all these monsters! Each one is a JSON object with all their stats laid out clearly. Let's find our victim - er, subject. The Slime!"
 
-**[VISUAL: Scroll to Slime entry, zoom in on stats]**
+**[VISUAL: Scroll to Slime entry, zoom in with highlight effect]**
 
 ```json
 {
@@ -87,18 +89,18 @@
 }
 ```
 
-> "Pretty weak, right? Let's make it a bit more interesting."
+> "Look at these pathetic numbers! Strength 5, HP 2-3... this thing dies if you sneeze at it. Time to fix that!"
 
 ---
 
-### [2:30] Changing Slime Stats (1 minute 30 seconds)
+### [2:30] Creating Our Super Slime (1 minute 30 seconds)
 
-**[VISUAL: Editing JSON in VS Code]**
+**[VISUAL: Editing JSON in VS Code with typing sounds]**
 
 **NARRATION:**
-> "Let's create a Super Slime! I'm going to bump up its stats:"
+> "Alright, let's create our SUPER SLIME! I'm going to crank these stats way up:"
 
-**[VISUAL: Type changes live]**
+**[VISUAL: Type changes live with dramatic zoom]**
 
 ```json
 {
@@ -113,14 +115,15 @@
 }
 ```
 
-> "I've increased:
-> - Strength from 5 to 20 - it'll hit harder
-> - Agility from 3 to 15 - faster and harder to hit
-> - HP from 2-3 to 10-15 - takes more hits to kill
-> - Experience from 1 to 5 - better rewards
-> - Gold from 2 to 10 - more money!
+> "Check out these changes:
 >
-> Save the file with Ctrl+S."
+> - Strength from 5 to 20 - this blob now hits like a truck!
+> - Agility from 3 to 15 - good luck hitting it, AND it goes first
+> - HP from 2-3 to 10-15 - no more one-shotting these guys
+> - Experience from 1 to 5 - at least you get rewarded for the pain
+> - Gold from 2 to 10 - they're carrying more treasure now
+>
+> Save the file with Ctrl+S. Our Slime is ready to terrorize some heroes!"
 
 ---
 
@@ -229,6 +232,7 @@ with open('assets/json/monsters.json', 'w') as f:
 
 **NARRATION:**
 > "You've just made your first Dragon Warrior mod! You learned how to:
+>
 > - Edit monster stats in JSON
 > - Regenerate assets and build
 > - Use the Universal Editor
@@ -242,7 +246,7 @@ with open('assets/json/monsters.json', 'w') as f:
 
 ## Video Description Template
 
-```
+```text
 🎮 Dragon Warrior ROM Hacking: Modifying Monster Stats
 
 Learn how to change monster statistics in Dragon Warrior! From a simple JSON edit to using the Universal Editor, this tutorial covers everything you need to rebalance the game.
@@ -271,13 +275,12 @@ python tools/generate_all_assets.py
 
 # Open Universal Editor
 python tools/universal_editor.py
-```
 
 📺 SERIES:
 • Ep 1: Getting Started: [LINK]
 • Ep 3: Graphics Editing: [COMING SOON]
 
-#DragonWarrior #NES #ROMHacking #Modding #Tutorial
+TAGS: DragonWarrior, NES, ROMHacking, Modding, Tutorial
 ```
 
 ---
@@ -285,15 +288,18 @@ python tools/universal_editor.py
 ## Production Notes
 
 ### Key Footage Needed
+
 - [ ] Before/after Slime battle comparison
 - [ ] JSON editing close-up
 - [ ] Universal Editor monster tab demo
 - [ ] Build output success
 
 ### Monster Stat Ranges
+
 For reference when demonstrating:
+
 - Strength: 5-180
-- Agility: 3-200  
+- Agility: 3-200
 - HP: 2-230
 - Resistances: 0-15
 
@@ -304,4 +310,3 @@ For reference when demonstrating:
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-02 | 1.0 | Initial script creation |
-
