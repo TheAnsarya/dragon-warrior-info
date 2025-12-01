@@ -19,7 +19,7 @@ def load_experience_table(json_path: str) -> dict:
 	"""Load experience table definitions from JSON file."""
 	with open(json_path, 'r', encoding='utf-8') as f:
 		data = json.load(f)
-	
+
 	# Normalize levels format - convert from object to array if needed
 	levels = data.get('levels', {})
 	if isinstance(levels, dict):
@@ -28,7 +28,7 @@ def load_experience_table(json_path: str) -> dict:
 		for level_num in sorted(levels.keys(), key=int):
 			level_data = levels[level_num].copy()
 			level_data['level'] = int(level_num)
-			
+
 			# Normalize stats structure
 			if 'strength' in level_data:
 				level_data['stats'] = {
@@ -37,8 +37,8 @@ def load_experience_table(json_path: str) -> dict:
 					'max_hp': level_data.pop('max_hp', 15),
 					'max_mp': level_data.pop('max_mp', 0),
 				}
-			
-			# Normalize spells structure  
+
+			# Normalize spells structure
 			spells_learned = level_data.pop('spells_learned', [])
 			if spells_learned:
 				level_data['spells'] = {
@@ -47,11 +47,11 @@ def load_experience_table(json_path: str) -> dict:
 				}
 			else:
 				level_data['spells'] = {'known': [], 'spell_mask': 0}
-			
+
 			normalized_levels.append(level_data)
-		
+
 		data['levels'] = normalized_levels
-	
+
 	return data
 
 

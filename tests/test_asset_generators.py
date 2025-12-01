@@ -35,12 +35,12 @@ class TestUnifiedGenerator(unittest.TestCase):
         """Test that all expected generators are registered."""
         try:
             from generate_all_assets import GENERATORS
-            
+
             expected_generators = [
                 'monsters', 'items', 'spells', 'equipment', 'shops',
                 'npcs', 'dialogs', 'damage', 'spell_fx', 'experience', 'music'
             ]
-            
+
             for gen in expected_generators:
                 self.assertIn(gen, GENERATORS, f"Generator '{gen}' not registered")
         except ImportError:
@@ -50,11 +50,11 @@ class TestUnifiedGenerator(unittest.TestCase):
         """Test that each generator config has required fields."""
         try:
             from generate_all_assets import GENERATORS
-            
+
             for name, config in GENERATORS.items():
                 self.assertIsInstance(config, tuple, f"{name}: config should be tuple")
                 self.assertEqual(len(config), 4, f"{name}: config should have 4 elements")
-                
+
                 json_file, script, output, description = config
                 self.assertTrue(json_file.endswith('.json'), f"{name}: JSON file should end with .json")
                 self.assertTrue(script.endswith('.py'), f"{name}: Script should end with .py")
@@ -71,7 +71,7 @@ class TestDamageGenerator(unittest.TestCase):
     def setUpClass(cls):
         """Set up test fixtures."""
         cls.json_path = PROJECT_ROOT / 'assets' / 'json' / 'damage_formulas.json'
-        
+
     def test_json_exists(self):
         """Test that damage_formulas.json exists."""
         self.assertTrue(self.json_path.exists(), "damage_formulas.json not found")
@@ -80,10 +80,10 @@ class TestDamageGenerator(unittest.TestCase):
         """Test damage_formulas.json structure."""
         if not self.json_path.exists():
             self.skipTest("damage_formulas.json not found")
-            
+
         with open(self.json_path, 'r') as f:
             data = json.load(f)
-        
+
         # Check required sections
         expected_sections = ['physical_damage', 'spell_damage', 'healing_spells', 'environmental_damage']
         for section in expected_sections:
@@ -111,14 +111,14 @@ class TestSpellEffectsGenerator(unittest.TestCase):
         """Test spell_effects.json structure."""
         if not self.json_path.exists():
             self.skipTest("spell_effects.json not found")
-            
+
         with open(self.json_path, 'r') as f:
             data = json.load(f)
-        
+
         # Check required sections
         self.assertIn('spells', data, "Missing spells section")
         self.assertIn('enemy_spells', data, "Missing enemy_spells section")
-        
+
         # Check some specific spells
         spells = data.get('spells', {})
         expected_spells = ['HEAL', 'HURT', 'SLEEP']
@@ -147,14 +147,14 @@ class TestExperienceGenerator(unittest.TestCase):
         """Test experience_table.json structure."""
         if not self.json_path.exists():
             self.skipTest("experience_table.json not found")
-            
+
         with open(self.json_path, 'r') as f:
             data = json.load(f)
-        
+
         # Check required fields
         self.assertIn('levels', data, "Missing levels section")
         self.assertIn('max_level', data, "Missing max_level field")
-        
+
         # Check that we have 30 levels
         levels = data.get('levels', {})
         self.assertEqual(len(levels), 30, f"Expected 30 levels, got {len(levels)}")
@@ -181,21 +181,21 @@ class TestMusicGenerator(unittest.TestCase):
         """Test music.json structure."""
         if not self.json_path.exists():
             self.skipTest("music.json not found")
-            
+
         with open(self.json_path, 'r') as f:
             data = json.load(f)
-        
+
         # Check required sections
         self.assertIn('_metadata', data, "Missing _metadata section")
         self.assertIn('music_tracks', data, "Missing music_tracks section")
         self.assertIn('sound_effects', data, "Missing sound_effects section")
         self.assertIn('note_table', data, "Missing note_table section")
-        
+
         # Check track counts
         tracks = data.get('music_tracks', {})
         sfx = data.get('sound_effects', {})
         notes = data.get('note_table', {})
-        
+
         self.assertEqual(len(tracks), 27, f"Expected 27 music tracks, got {len(tracks)}")
         self.assertEqual(len(sfx), 22, f"Expected 22 sound effects, got {len(sfx)}")
         self.assertEqual(len(notes), 73, f"Expected 73 musical notes, got {len(notes)}")
@@ -230,7 +230,7 @@ class TestEditorTabsExtended(unittest.TestCase):
                 ExperienceEditorTab,
                 MusicEditorTab
             )
-            
+
             # Verify they're classes
             self.assertTrue(hasattr(DamageEditorTab, '__init__'))
             self.assertTrue(hasattr(SpellEffectsEditorTab, '__init__'))

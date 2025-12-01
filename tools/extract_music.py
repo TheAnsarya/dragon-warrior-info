@@ -119,28 +119,28 @@ def byte_to_note(byte_val: int) -> Optional[str]:
 def parse_asm_music_data(asm_content: str) -> Dict[str, Any]:
 	"""
 	Parse music data from ASM source file.
-	
+
 	Looks for music label patterns like:
 	- SQ1Village:
 	- TRIOutdoor:
 	- SQ2EndBoss:
 	"""
 	tracks = {}
-	
+
 	# Find music labels
 	label_pattern = re.compile(r'^(SQ[12]|TRI)\w+:', re.MULTILINE)
 	byte_pattern = re.compile(r'\.byte\s+([^;]+)', re.IGNORECASE)
-	
+
 	for match in label_pattern.finditer(asm_content):
 		label = match.group(0).rstrip(':')
 		start_pos = match.end()
-		
+
 		# Find next label to get data bounds
 		next_match = label_pattern.search(asm_content, start_pos)
 		end_pos = next_match.start() if next_match else len(asm_content)
-		
+
 		block = asm_content[start_pos:end_pos]
-		
+
 		# Extract bytes
 		bytes_data = []
 		for byte_match in byte_pattern.finditer(block):
@@ -162,13 +162,13 @@ def parse_asm_music_data(asm_content: str) -> Dict[str, Any]:
 						bytes_data.append(int(val[1:], 2))
 					except ValueError:
 						pass
-		
+
 		if bytes_data:
 			tracks[label] = {
 				'raw_bytes': bytes_data[:50],  # Limit for JSON size
 				'length': len(bytes_data)
 			}
-	
+
 	return tracks
 
 
@@ -262,24 +262,24 @@ def main():
 	# Determine paths
 	script_dir = Path(__file__).parent
 	project_root = script_dir.parent
-	
+
 	output_path = project_root / 'assets' / 'json' / 'music.json'
-	
+
 	# Allow command line override
 	if len(sys.argv) > 2 and sys.argv[1] == '--output':
 		output_path = Path(sys.argv[2])
-	
+
 	# Create music JSON
 	print("Extracting music data...")
 	music_data = create_music_json()
-	
+
 	# Ensure output directory exists
 	output_path.parent.mkdir(parents=True, exist_ok=True)
-	
+
 	# Write output
 	with open(output_path, 'w', encoding='utf-8') as f:
 		json.dump(music_data, f, indent=2)
-	
+
 	print(f"Generated music JSON: {output_path}")
 	print(f"  - {len(MUSIC_TRACKS)} music tracks")
 	print(f"  - {len(SFX_LIST)} sound effects")

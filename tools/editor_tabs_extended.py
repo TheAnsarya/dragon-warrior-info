@@ -4,7 +4,7 @@ Additional Editor Tabs for Dragon Warrior Universal Editor
 
 This module adds three new editor tabs:
 - DamageEditorTab: Edit damage calculation parameters
-- SpellEffectsEditorTab: Edit spell behavior parameters  
+- SpellEffectsEditorTab: Edit spell behavior parameters
 - ExperienceEditorTab: Edit experience/level progression
 
 These tabs should be added to the main universal_editor.py
@@ -1293,9 +1293,9 @@ class MusicEditorTab(ttk.Frame):
 def register_new_tabs(universal_editor):
 	"""
 	Register the new editor tabs in the Universal Editor.
-	
+
 	Call this after creating tabs in the main application:
-	
+
 		from editor_tabs_extended import register_new_tabs
 		register_new_tabs(app)
 	"""
