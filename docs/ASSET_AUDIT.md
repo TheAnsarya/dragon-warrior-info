@@ -17,9 +17,9 @@ their current extraction status, JSON representation, generators, and editor int
 | **Text** | 3 | 3/3 ✅ | 3/3 ✅ | 2/3 ⚠️ | 2/3 ⚠️ | 67% |
 | **Graphics** | 4 | 4/4 ✅ | 2/4 ⚠️ | 1/4 ❌ | 2/4 ⚠️ | 50% |
 | **Maps** | 2 | 2/2 ✅ | 2/2 ✅ | 1/2 ⚠️ | 1/2 ⚠️ | 50% |
-| **Audio** | 2 | 1/2 ⚠️ | 1/2 ⚠️ | 0/2 ❌ | 1/2 ⚠️ | 25% |
+| **Audio** | 2 | 2/2 ✅ | 1/2 ⚠️ | 0/2 ❌ | 1/2 ⚠️ | 50% |
 | **Formulas** | 3 | 3/3 ✅ | 3/3 ✅ | 3/3 ✅ | 3/3 ✅ | 100% |
-| **TOTAL** | **22** | **21/22** | **19/22** | **14/22** | **16/22** | **68%** |
+| **TOTAL** | **22** | **22/22** | **20/22** | **14/22** | **17/22** | **73%** |
 
 ---
 
@@ -193,21 +193,20 @@ their current extraction status, JSON representation, generators, and editor int
 
 ### 5. Audio Assets
 
-#### Music/NSF Data (⚠️ Partial)
-- **ROM Location:** Bank03 music engine, various
-- **JSON File:** `assets/music/*.json` (if exists)
-- **Generator:** ❌ Not implemented
+#### Music/NSF Data (✅ Partially Complete)
+- **ROM Location:** Bank01 $8297 (pointers), $8205 (note table)
+- **JSON File:** `assets/json/music.json`
+- **Extractor:** `tools/extract_music.py`
+- **Generator:** ⚠️ Not yet implemented
 - **Editor Tab:** MusicEditorTab in Universal Editor
-- **Records:** ~15 music tracks
-- **Status:** ⚠️ Editor exists, no JSON extraction/generation
+- **Records:** 27 music tracks, 22 sound effects, 73 notes
+- **Status:** ✅ JSON extracted with metadata, editor exists
 
-#### Sound Effects (❌ Not Extracted)
-- **ROM Location:** Bank03 SFX data
-- **JSON File:** ❌ Not extracted
-- **Generator:** ❌ Not implemented
-- **Editor Tab:** (part of MusicEditorTab)
-- **Records:** ~20 sound effects
-- **Status:** ❌ Needs extraction and pipeline
+#### Sound Effects (✅ Documented)
+- **ROM Location:** Bank01 $8339 (SFX pointer table)
+- **JSON File:** `assets/json/music.json` (combined with music)
+- **Records:** 22 sound effects
+- **Status:** ✅ Documented in music.json
 
 ---
 
@@ -274,11 +273,12 @@ their current extraction status, JSON representation, generators, and editor int
 ## Action Items
 
 ### High Priority
+
 1. ✅ DONE: Extract damage formulas to JSON
 2. ✅ DONE: Create spell effects abstraction
 3. ✅ DONE: Extract experience/level progression
-4. ⬜ Create music JSON extraction tool
-5. ⬜ Create sound effects extraction tool
+4. ✅ DONE: Create music JSON extraction tool
+5. ⬜ Create music generator (ASM from JSON)
 
 ### Medium Priority
 6. ⬜ Improve indoor map editor functionality
@@ -341,6 +341,7 @@ their current extraction status, JSON representation, generators, and editor int
 | generate_damage_tables.py | damage_formulas.json | damage_tables.asm | ✅ NEW |
 | generate_spell_effects.py | spell_effects.json | spell_effects.asm | ✅ NEW |
 | generate_experience_table.py | experience_table.json | experience_table.asm | ✅ NEW |
+| extract_music.py | ROM/ASM | music.json | ✅ NEW |
 
 ---
 
