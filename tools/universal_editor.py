@@ -5058,7 +5058,20 @@ class CheatCodeTab(BaseTab):
 # ============================================================================
 
 class MusicEditorTab(BaseTab):
-	"""View and edit music/sound data from the ROM."""
+	"""
+	View music/sound data from the ROM (DEPRECATED).
+
+	NOTE: This ROM-based editor is deprecated in favor of the JSON-based
+	MusicEditorTab in editor_tabs_extended.py which uses the asset pipeline.
+
+	The JSON-based workflow is preferred because:
+	- Edits are human-readable and version-controllable
+	- Changes integrate with the build pipeline
+	- No direct ROM manipulation needed
+
+	This class is kept for backwards compatibility when extended tabs
+	are not available.
+	"""
 
 	# NES APU note frequencies (NTSC, based on CPU clock 1.789773 MHz)
 	# These are period values for the square wave channels
@@ -6859,9 +6872,12 @@ class UniversalEditor:
 		self.cheat_tab = CheatCodeTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
 		self.notebook.add(self.cheat_tab, text="🎮 Cheat Codes")
 
-		# Tab 15: Music/Sound
-		self.music_tab = MusicEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
-		self.notebook.add(self.music_tab, text="🎵 Music")
+		# Tab 15: Music/Sound (now JSON-based via extended tabs if available)
+		# The ROM-based MusicEditorTab is deprecated in favor of JSON workflow
+		# If extended tabs are available, we skip this and use MusicDataEditorTab below
+		if not HAS_EXTENDED_TABS:
+			self.music_tab = MusicEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
+			self.notebook.add(self.music_tab, text="🎵 Music (Legacy)")
 
 		# Tab 16: Text Table
 		self.tbl_tab = TextTableEditorTab(self.notebook, self.asset_manager, lambda msg: self.status_var.set(msg))
@@ -6897,9 +6913,9 @@ class UniversalEditor:
 			self.exp_tab = ExperienceEditorTab(self.notebook, self.asset_manager)
 			self.notebook.add(self.exp_tab, text="📈 Experience")
 
-			# Tab 23: Music Data (JSON-based)
+			# Tab 23: Music (JSON-based - preferred over ROM-based)
 			self.music_data_tab = MusicDataEditorTab(self.notebook, self.asset_manager)
-			self.notebook.add(self.music_data_tab, text="🎶 Music Data")
+			self.notebook.add(self.music_data_tab, text="🎵 Music")
 
 	def create_statusbar(self):
 		"""Create status bar."""
