@@ -41,6 +41,7 @@
 > I'm about to show you how to go from absolutely nothing to building your own modified Dragon Warrior ROM in just about 10 minutes. Seriously, 10 minutes!
 >
 > By the end of this video, you'll have:
+>
 > - Your own copy of the project on GitHub
 > - All the tools you need installed
 > - A freshly built ROM running in an emulator
@@ -165,6 +166,7 @@ python --version
 > "Extract it somewhere convenient. I recommend creating an 'Ophis' folder in the project directory.
 >
 > The key file is `Ophis.exe`. You can either:
+>
 > - Add the Ophis folder to your system PATH, or
 > - Copy `Ophis.exe` into the project root folder
 >
@@ -192,6 +194,7 @@ python --version
 **[VISUAL: Build script running, showing output]**
 
 > "You'll see the build process go through several stages:
+>
 > - First, it regenerates asset files from JSON
 > - Then it assembles the source code with Ophis
 > - Finally, it creates the ROM in the `build` folder"
@@ -203,6 +206,7 @@ python --version
 **[VISUAL: File explorer showing built ROM]**
 
 > "If you see errors, don't panic! The most common issues are:
+>
 > - Missing ROM in the roms folder
 > - Ophis not found - check your PATH or copy Ophis.exe to the project
 > - Python not found - try restarting PowerShell"

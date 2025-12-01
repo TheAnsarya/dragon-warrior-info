@@ -149,6 +149,7 @@ python tools/extract_chr_data.py
 > "Alright, here's the one tricky part - NES palette limitations. Pay attention, this WILL save you headaches!
 >
 > The NES can display 54 colors total, but with restrictions:
+>
 > - Each tile uses only 4 colors
 > - One color is always transparent for sprites
 > - The game defines which palette applies to which tiles
@@ -233,6 +234,7 @@ python tools/chr_tool.py convert assets/graphics/chr_bank_01.png -o build/chr_ba
 **[VISUAL: Walking around showing the modification]**
 
 > "If something looks wrong, check:
+>
 > - Did you save the PNG?
 > - Did the build complete successfully?
 > - Did you edit the right tile?"
@@ -262,6 +264,7 @@ python tools/chr_tool.py convert assets/graphics/chr_bank_01.png -o build/chr_ba
 
 **NARRATION:**
 > "You now know how to edit Dragon Warrior graphics! The same process works for:
+>
 > - Monster sprites
 > - Terrain tiles
 > - Menu graphics
