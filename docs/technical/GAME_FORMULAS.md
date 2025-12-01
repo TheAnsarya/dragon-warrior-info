@@ -1114,6 +1114,53 @@ GRASS_RATE = 64    ; 25% (double encounters)
 
 ---
 
+## Verified Assembly Code Locations
+
+The following are exact verified locations from the disassembly:
+
+### Bank01.asm Addresses
+
+| Address | Label | Description |
+|---------|-------|-------------|
+| $99B4 | SetBaseStats | Load player base stats for level |
+| $9E49 | EnStatTblPtr | Pointer to enemy stats table |
+| $9E4B | EnStatTbl | Enemy statistics table (16 bytes/enemy) |
+| $A0CB | BaseStatsTbl | Player base stats per level (6 bytes/level) |
+
+### Bank03.asm Addresses
+
+| Address | Label | Description |
+|---------|-------|-------------|
+| $DBB8 | DoHeal | HEAL spell: `10 + random(0-7)` HP |
+| $DBD7 | DoHealmore | HEALMORE spell: `85 + random(0-15)` HP |
+| $EFE5 | PlayerCalcHitDmg | Player physical damage calculation |
+| $EFF4 | EnCalcHitDmg | Enemy physical damage calculation |
+| $F050 | LoadStats | Level determination from experience |
+| $F0CD | AddItemBonuses | Apply equipment bonuses to stats |
+| $F35B | LevelUpTbl | Experience requirements (2 bytes/level) |
+
+### Dragon_Warrior_Defines.asm
+
+| Alias | Address | Description |
+|-------|---------|-------------|
+| CalcDamage | $3C | Calculated damage storage |
+| AttackStat | $3D | Current attack value |
+| DefenseStat | $3E | Current defense value |
+| ExpLB | $BA | Experience lower byte |
+| ExpUB | $BB | Experience upper byte |
+| HitPoints | $C5 | Current HP |
+| DisplayedMaxHP | $C6 | Max HP display value |
+
+### Generated Files
+
+| File | Description |
+|------|-------------|
+| `source_files/generated/equipment_bonus_tables.asm` | Weapon/Armor/Shield bonuses |
+| `source_files/generated/spell_data.asm` | Spell MP costs and effect types |
+| `source_files/generated/spell_cost_table.asm` | Spell MP cost table |
+
+---
+
 ## Credits
 
 - **Original Game** - Chunsoft, Enix (1989)
