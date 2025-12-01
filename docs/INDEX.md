@@ -23,6 +23,13 @@ Essential guides for getting started with the project.
 - [**Enhanced Graphics**](guides/ENHANCED_GRAPHICS_README.md) - Enhanced sprite sheets
 - [**Asset System**](guides/README_ASSET_SYSTEM.md) - Asset management overview
 
+### 🎬 Video Tutorials
+
+Complete video tutorial series scripts for learning Dragon Warrior ROM hacking.
+
+- [**Video Scripts Index**](video_scripts/INDEX.md) - Full 7-episode tutorial series
+- [**Video Automation Guide**](video_scripts/VIDEO_AUTOMATION.md) - Production automation with Mesen, screen capture, and Lua scripting
+
 ### 🔧 Technical Documentation
 
 In-depth technical information about Dragon Warrior's systems.
@@ -82,6 +89,7 @@ Session logs documenting the development process.
 This project aims to create a complete disassembly and modding environment for Dragon Warrior (NES), following the proven patterns established by the [FFMQ project](https://github.com/TheAnsarya/ffmq-info).
 
 ### 🎯 Goals
+
 - **Complete ROM Documentation** - Every byte mapped and understood
 - **Asset Extraction Tools** - Extract and edit all game content
 - **Build Pipeline** - Reassemble modified ROMs
@@ -89,19 +97,22 @@ This project aims to create a complete disassembly and modding environment for D
 - **DataCrystal Wiki** - Comprehensive hacking reference
 
 ### ✅ Current Status
+
 - 🏗️ **Foundation** - Project structure and build system
-- 🐍 **Python Environment** - Virtual environment with dependencies  
+- 🐍 **Python Environment** - Virtual environment with dependencies
 - 🔧 **GitHub Integration** - Issues and project management automation
 - 📝 **Documentation Framework** - Structured docs following FFMQ patterns
 - 🎨 **Asset Extraction** - Basic ROM analysis and extraction tools
 
 ### 🔄 In Progress
+
 - 📊 **ROM Analysis** - Detailed structure mapping
 - 🎮 **Game Data Tools** - Character, item, and monster editors
 - 🎨 **Graphics Tools** - CHR-ROM extraction and editing
 - 📚 **Wiki Documentation** - DataCrystal format documentation
 
 ### ⏳ Planned
+
 - 🎵 **Music Tools** - Audio extraction and editing
 - 🧪 **Testing Framework** - Automated validation and testing
 - 🔀 **Advanced Modding** - Complex ROM modifications
@@ -130,6 +141,7 @@ This project aims to create a complete disassembly and modding environment for D
 ## 🏷️ Document Standards
 
 All documentation follows these standards:
+
 - **Markdown Format** - GitHub-flavored markdown with extensions
 - **CRLF Line Endings** - Windows standard for consistency
 - **UTF-8 Encoding** - Unicode support for special characters
