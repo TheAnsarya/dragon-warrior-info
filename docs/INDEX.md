@@ -29,6 +29,18 @@ Complete video tutorial series scripts for learning Dragon Warrior ROM hacking.
 
 - [**Video Scripts Index**](video_scripts/INDEX.md) - Full 7-episode tutorial series
 - [**Video Automation Guide**](video_scripts/VIDEO_AUTOMATION.md) - Production automation with Mesen, screen capture, and Lua scripting
+- [**Video Production Guide**](VIDEO_PRODUCTION_GUIDE.md) - Comprehensive production pipeline documentation
+- [**Video Production Issues**](VIDEO_PRODUCTION_ISSUES.md) - GitHub issues for video toolchain implementation
+
+#### Video Tools (`tools/video/`)
+
+Python toolchain for automated video production:
+
+- `extract_narration.py` - Extract narration from scripts for teleprompter/TTS
+- `mesen_automation.py` - Generate Mesen Lua scripts for gameplay capture
+- `scene_planner.py` - Parse scripts into structured scene definitions
+- `generate_description.py` - Extract YouTube descriptions from scripts
+- `video_assembler.py` - FFmpeg wrapper for final video assembly
 
 ### 🔧 Technical Documentation
 
