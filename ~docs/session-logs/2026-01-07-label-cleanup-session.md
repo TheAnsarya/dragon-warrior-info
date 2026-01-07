@@ -10,8 +10,8 @@ Convert all generic `_L_XXXX` address-based labels in the Dragon Warrior disasse
 |------|----------|---------|-----------|--------|
 | Bank02.asm | 10 | 10 | 0 | ✅ Complete |
 | Bank00.asm | 266 | 266 | 0 | ✅ Complete |
-| Bank01.asm | 259 | 145 | 114 | 🔄 In Progress |
-| **Total** | **535** | **421** | **114** | 79% Complete |
+| Bank01.asm | 259 | 182 | 77 | 🔄 In Progress |
+| **Total** | **535** | **458** | **77** | 86% Complete |
 
 ## Naming Convention
 - **Before:** `FunctionName_L_XXXX` (e.g., `RemoveWindow_L_A7AA`)

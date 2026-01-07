@@ -6620,7 +6620,7 @@ UpdateNTAddr_Exit_AC82:  RTS                     ;
 
 WindowLoadRowBuf:
 WindowLoad_Load_AC83:  LDA WindowPPUAddrUB        ;Get upper ddress byte.
-WindowLoad_L_AC86:  ORA #$80                ;MSB set = PPU control byte(counter next byte).
+WindowLoad_SetCtrl:  ORA #$80                ;MSB set = PPU control byte(counter next byte).
 WindowLoad_Store_AC88:  STA BlockRAM,X          ;Store in buffer.
 
         LDA WindowThisNTRow     ;($AC8B)Load counter value for remainder of this NT row.
@@ -6629,8 +6629,8 @@ WindowLoad_Store_AC88:  STA BlockRAM,X          ;Store in buffer.
         LDA WindowPPUAddrLB     ;($AC91)Load lower PPU address byte into buffer.
         STA BlockRAM+2,X        ;($AC94)
 
-WindowLoad_L_AC97:  INX                     ;
-WindowLoad_L_AC98:  INX                     ;Move to data portion of buffer.
+WindowLoad_ToData:  INX                     ;
+WindowLoad_AdvBuf:  INX                     ;Move to data portion of buffer.
         INX                     ;($AC99)
 
 WindowLoad_Load_AC9A:  LDA WindowThisNTRow        ;Save a copy of the count of tiles on this NT.
@@ -6642,14 +6642,14 @@ WindowBufLoadLoop:
 WindowBufL_Load_ACA1:  LDA WindowLineBuffer,Y        ;
         STA BlockRAM,X          ;($ACA4)Load line buffer into PPU buffer.
         INX                     ;($ACA7)
-WindowBufL_L_ACA8:  INY                     ;
+WindowBufL_IncIdx:  INY                     ;
         DEC WindowThisNTRow     ;($ACA9)Is there more buffer data for this nametable?
 WindowBufL_Branch_ACAC:  BNE WindowBufLoadLoop      ;If so, branch to get the next byte.
 
 WindowBufL_Store_ACAE:  STY WindowLineBufferIndex     ;Update line buffer index.
 
         PLA                     ;($ACB1)/2. Use this now to load attribute table bytes.
-WindowBufL_L_ACB2:  LSR                     ;1 attribute table byte per 2X2 block.
+WindowBufL_Div2:  LSR                     ;1 attribute table byte per 2X2 block.
         STA WindowThisNTRow     ;($ACB3)
 
 WindowBufL_Load_ACB6:  LDA WindowBlkTileRow       ;Is this the second tile row that just finished?
@@ -6666,7 +6666,7 @@ WindowLoadAttribLoop:
         TXA                     ;($ACCC)
 WindowLoad_Store_ACCD:  PHA                     ;Save BlockRAM index and AttributeTblBuf index on stack.
         TYA                     ;($ACCE)
-WindowLoad_L_ACCF:  PHA                     ;
+WindowLoad_SaveY:  PHA                     ;
 
 WindowLoad_Load_ACD0:  LDA WindowPPUAddrUB        ;Save upper byte of PPU address on stack.
         PHA                     ;($ACD3)
@@ -6681,11 +6681,11 @@ WindowLoad_Store_ACDE:  STA WindowPPUAddrUB        ;
         PLA                     ;($ACE1)
 WindowLoad_Store_ACE2:  TAY                     ;Restore BlockRAM index and AttributeTblBuf index from stack.
         PLA                     ;($ACE3)
-WindowLoad_L_ACE4:  TAX                     ;
+WindowLoad_RestoreX:  TAX                     ;
 
         LDA WindowAtribAdrUB    ;($ACE5)
 WindowLoad_Store_ACE8:  STA BlockRAM,X          ;
-WindowLoad_L_ACEB:  INX                     ;Save attribute table data address in buffer.
+WindowLoad_ToAttrib:  INX                     ;Save attribute table data address in buffer.
 WindowLoad_Load_ACEC:  LDA WindowAtribAdrLB       ;
 WindowLoad_Store_ACEF:  STA BlockRAM,X          ;
 
@@ -6713,7 +6713,7 @@ WindowLoad_Exit_AD0F:  RTS                     ;
 ;----------------------------------------------------------------------------------------------------
 
 WindowStartRow:
-WindowStar_L_AD10:  PHA                     ;Save A. Always 0.
+WindowStar_SaveA:  PHA                     ;Save A. Always 0.
 WindowStar_Call_AD11:  JSR WindowGetRowStartPos   ;($AD1F)Load X and Y start position of window row.
         PLA                     ;($AD14)Restore A. Always 0.
 WindowStar_Branch_AD15:  BNE WindowNTSwap           ;Branch never.
@@ -6730,14 +6730,14 @@ WindowNTSwap:
 WindowGetRowStartPos:
 WindowGetR_Load_AD1F:  LDA _WndPosition        ;
         ASL                     ;($AD22)Get start X position in tiles
-WindowGetR_L_AD23:  AND #$1E                ;relative to screen for window row.
+WindowGetR_MaskX:  AND #$1E                ;relative to screen for window row.
 WindowGetR_Store_AD25:  STA ScreenTextXCoordinate       ;
 
         LDA _WndPosition        ;($AD28)
-WindowGetR_L_AD2B:  LSR                     ;
+WindowGetR_ShiftY:  LSR                     ;
         LSR                     ;($AD2C)Get start Y position in tiles
         LSR                     ;($AD2D)relative to screen for window row.
-WindowGetR_L_AD2E:  AND #$1E                ;
+WindowGetR_MaskY:  AND #$1E                ;
 WindowGetR_Store_AD30:  STA ScreenTextYCoordinate       ;
 WindowGetR_Jmp_AD33:  JMP WindowCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
 
@@ -6748,25 +6748,25 @@ WindowCalc_Store_AD36:  STA WindowAttribVal        ;Save a copy of the attibute 
 
         LDA #$1F                ;($AD39)Get tile offset in row and divide by 4. This gives
         AND _WndPPUAddrLB       ;($AD3B)a value of 0-7. There are 8 bytes of attribute
-WindowCalc_L_AD3E:  LSR                     ;table data per nametable row. WindowPPUAddrUB now has
-WindowCalc_L_AD3F:  LSR                     ;the byte number in the attribute table for this
+WindowCalc_Div4:  LSR                     ;table data per nametable row. WindowPPUAddrUB now has
+WindowCalc_Shift:  LSR                     ;the byte number in the attribute table for this
 WindowCalc_Store_AD40:  STA WindowPPUAddrUB        ;row offset.
 
 WindowCalc_Load_AD43:  LDA #$80                ;
-WindowCalc_L_AD45:  AND _WndPPUAddrLB       ;
+WindowCalc_MaskMSB:  AND _WndPPUAddrLB       ;
         LSR                     ;($AD48)Get MSB of lower address byte and shift it to the
-WindowCalc_L_AD49:  LSR                     ;lower nibble.  This cuts the rows of the attribute
+WindowCalc_ShiftLo:  LSR                     ;lower nibble.  This cuts the rows of the attribute
         LSR                     ;($AD4A)table in half.  There are now 4 possible addreses
-WindowCalc_L_AD4B:  LSR                     ;in the attribute table that correspond to the target
+WindowCalc_ShiftMore:  LSR                     ;in the attribute table that correspond to the target
         ORA WindowPPUAddrUB     ;($AD4C)in the nametable.
 WindowCalc_Store_AD4F:  STA WindowPPUAddrUB        ;
 
 WindowCalc_Load_AD52:  LDA #$03                ;
-WindowCalc_L_AD54:  AND _WndPPUAddrUB       ;Getting the 2 LSB of the upper address selects the
-WindowCalc_L_AD57:  ASL                     ;proper byte from the 4 remaining from above. Move
+WindowCalc_Get2LSB:  AND _WndPPUAddrUB       ;Getting the 2 LSB of the upper address selects the
+WindowCalc_ShiftHi:  ASL                     ;proper byte from the 4 remaining from above. Move
         ASL                     ;($AD58)The 2 bits to the upper nibble and or them with the
         ASL                     ;($AD59)lower byte of the base address of the attribute
-WindowCalc_L_AD5A:  ASL                     ;table.  Finally, or the result with the other
+WindowCalc_ShiftTop:  ASL                     ;table.  Finally, or the result with the other
         ORA #$C0                ;($AD5B)result to get the final result of the lower address
         ORA WindowPPUAddrUB     ;($AD5D)byte of the attribute table byte.
 WindowCalc_Store_AD60:  STA WindowAtribAdrLB       ;
@@ -6774,7 +6774,7 @@ WindowCalc_Store_AD60:  STA WindowAtribAdrLB       ;
         LDX #AT_ATRBTBL0_UB     ;($AD63)Assume we are working on nametable 0.
         LDA _WndPPUAddrUB       ;($AD65)
 WindowCalc_Cmp_AD68:  CMP #NT_NAMETBL1_UB     ;Are we actually working on nametable 1?
-WindowCalc_L_AD6A:  BCC WindowSetAtribUB       ;If not, branch to save upper address byte.
+WindowCalc_ChkNT0:  BCC WindowSetAtribUB       ;If not, branch to save upper address byte.
 
 WindowCalc_Load_AD6C:  LDX #AT_ATRBTBL1_UB     ;Set attribute table upper address for nametable 1.
 
@@ -6785,13 +6785,13 @@ WindowSetA_Load_AD71:  LDA _WndPPUAddrLB       ;
         AND #$40                ;($AD74)
         LSR                     ;($AD76)Get bit 6 of address and move to lower nibble.
         LSR                     ;($AD77)This sets the upper bit for offset shifting.
-WindowSetA_L_AD78:  LSR                     ;
+WindowSetA_ShiftOff:  LSR                     ;
         LSR                     ;($AD79)
 WindowSetA_Store_AD7A:  STA AtribBitsOfst       ;
 
         LDA _WndPPUAddrLB       ;($AD7D)
-WindowSetA_L_AD80:  AND #$02                ;Get bit 1 of lower address bit.
-WindowSetA_L_AD82:  ORA AtribBitsOfst       ;This sets the lower bit for offset shifting.
+WindowSetA_GetBit1:  AND #$02                ;Get bit 1 of lower address bit.
+WindowSetA_OrOffset:  ORA AtribBitsOfst       ;This sets the lower bit for offset shifting.
 WindowSetA_Store_AD85:  STA AtribBitsOfst       ;
 
 WindowSetA_Load_AD88:  LDA WindowAtribAdrLB       ;Set attrib table pointer to lower byte of attrib table address.
@@ -6818,14 +6818,14 @@ ModAtribByte_Load_AD9E:  LDY #$00                ;
 ModAtribByte_Branch_ADAA:  BEQ AddNewAtribVal      ;Is there no shifting needed? If none, branch. done.
 
 AtribValShiftLoop:
-AtribValSh_L_ADAC:  ASL                     ;Shift bitmask into proper position.
+AtribValSh_ShiftMask:  ASL                     ;Shift bitmask into proper position.
         ASL WindowAttribVal     ;($ADAD)Shift new attribute bits into proper position.
-AtribValSh_L_ADB0:  DEY                     ;Is shifting done?
+AtribValSh_DecShift:  DEY                     ;Is shifting done?
         BNE AtribValShiftLoop   ;($ADB1)If not branch to shift by another bit.
 
 AddNewAtribVal:
-AddNewAtri_L_ADB3:  EOR #$FF                ;Clear the two bits to be modified.
-AddNewAtri_L_ADB5:  AND AttributeByte          ;
+AddNewAtri_Invert:  EOR #$FF                ;Clear the two bits to be modified.
+AddNewAtri_ClearBits:  AND AttributeByte          ;
 
         ORA WindowAttribVal     ;($ADB8)Insert the 2 new bits.
         LDY #$00                ;($ADBB)
@@ -6837,15 +6837,15 @@ AddNewAtri_L_ADB5:  AND AttributeByte          ;
 
 WindowCalcPPUAddr:
 WindowCalc_Load_ADC0:  LDA ActiveNmTbl         ;
-WindowCalc_L_ADC2:  ASL                     ;
+WindowCalc_ShiftNT:  ASL                     ;
         ASL                     ;($ADC3)Calculate base upper address byte of current
-WindowCalc_L_ADC4:  AND #$04                ;name table. It will be either #$20 or #$24.
-WindowCalc_L_ADC6:  ORA #$20                ;
+WindowCalc_MaskNT:  AND #$04                ;name table. It will be either #$20 or #$24.
+WindowCalc_BaseAddr:  ORA #$20                ;
 WindowCalc_Store_ADC8:  STA PPUAddrUB           ;
 
 WindowCalc_Load_ADCA:  LDA ScreenTextXCoordinate       ;
         ASL                     ;($ADCD)*8. Convert X tile coord to X pixel coord.
-WindowCalc_L_ADCE:  ASL                     ;
+WindowCalc_Mult8:  ASL                     ;
         ASL                     ;($ADCF)
 
 WindowCalc_L_ADD0:  CLC                     ;Add scroll offset.  It is a pixel offset.
@@ -6862,7 +6862,7 @@ WindowXOverRun:
 WindowAddY:
 WindowAddY_Load_ADDD:  LDA ScrollY             ;
         LSR                     ;($ADDF)/8. Convert Y scroll pixel coord to tile coord.
-WindowAddY_L_ADE0:  LSR                     ;
+WindowAddY_Div8:  LSR                     ;
         LSR                     ;($ADE1)
 
 WindowAddY_L_ADE2:  CLC                     ;Add Tile Y coord of window. A now
@@ -6875,11 +6875,11 @@ WindowYOverRun:
         SBC #$1E                ;($ADEA)Window tile went below end of nametable. Loop back to top.
 
 WindowAddressCombine:
-WindowAddr_L_ADEC:  LSR                     ;A is upper byte of result and PPUAddrLB is lower byte.
-WindowAddr_L_ADED:  ROR PPUAddrLB           ;
+WindowAddr_Combine:  LSR                     ;A is upper byte of result and PPUAddrLB is lower byte.
+WindowAddr_RorLow:  ROR PPUAddrLB           ;
         LSR                     ;($ADEF)Need to divide by 8 because X coord is still in pixel
-WindowAddr_L_ADF0:  ROR PPUAddrLB           ;coords.
-WindowAddr_L_ADF2:  LSR                     ;
+WindowAddr_RorMore:  ROR PPUAddrLB           ;coords.
+WindowAddr_Final:  LSR                     ;
         ROR PPUAddrLB           ;($ADF3)Result is now calculated with respect to screen.
 
         ORA PPUAddrUB           ;($ADF5)Combine A with PPUAddrUB to convert from
