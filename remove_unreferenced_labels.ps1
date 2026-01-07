@@ -14,25 +14,25 @@ Write-Host "Found $($unreferencedLabels.Count) unreferenced labels across $($lab
 foreach ($fileGroup in $labelsByFile) {
 	$fileName = $fileGroup.Name
 	$filePath = Get-ChildItem -Path $sourceDir -Filter $fileName -Recurse | Select-Object -First 1 -ExpandProperty FullName
-	
+
 	if (-not $filePath) {
 		Write-Host "File not found: $fileName" -ForegroundColor Yellow
 		continue
 	}
-	
+
 	Write-Host "Processing: $fileName ($($fileGroup.Count) labels)"
-	
+
 	# Read file content as lines
 	$lines = Get-Content -Path $filePath -Encoding UTF8
 	$newLines = @()
 	$removedCount = 0
-	
+
 	# Create a set of labels to remove for fast lookup
 	$labelsToRemove = @{}
 	foreach ($item in $fileGroup.Group) {
 		$labelsToRemove[$item.Label] = $true
 	}
-	
+
 	foreach ($line in $lines) {
 		# Check if line starts with a label definition
 		if ($line -match '^([A-Za-z_][A-Za-z0-9_]*):') {
@@ -53,10 +53,10 @@ foreach ($fileGroup in $labelsByFile) {
 				}
 			}
 		}
-		
+
 		$newLines += $line
 	}
-	
+
 	# Write back
 	Set-Content -Path $filePath -Value ($newLines -join "`n") -NoNewline -Encoding UTF8
 	Write-Host "  Removed $removedCount labels"

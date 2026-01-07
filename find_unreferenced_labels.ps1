@@ -12,7 +12,7 @@ $allContent = ""
 foreach ($file in $files) {
 	$content = Get-Content -Path $file.FullName -Raw -Encoding UTF8
 	$allContent += "`n" + $content
-	
+
 	# Match labels: start of line, identifier (letters/numbers/_), colon
 	$matches = [regex]::Matches($content, '(?m)^([A-Za-z_][A-Za-z0-9_]*):')
 	foreach ($match in $matches) {
@@ -34,7 +34,7 @@ foreach ($label in $labelDefinitions.Keys) {
 	# Count all occurrences (including definition)
 	$pattern = [regex]::Escape($label)
 	$allMatches = [regex]::Matches($allContent, "\b$pattern\b")
-	
+
 	# If count is 1, it's only the definition - no references
 	if ($allMatches.Count -le 1) {
 		$unreferenced += [PSCustomObject]@{
