@@ -4577,7 +4577,7 @@ GetWndConfig:
 GetWndConfig_ToTiles:  ASL                     ;
         STA WindowHeight        ;($A1F2)Convert window height to tiles,
 
-GetWndConfig_L_A1F5:  INY                     ;
+GetWndConfig_IncToW:  INY                     ;
         LDA (WindowDataPointer),Y;($A1F6)Get window width from table.
         STA WindowWidth         ;($A1F8)
 
@@ -5639,9 +5639,9 @@ ClearTempB_Load_A77B:  LDA #TL_BLANK_TILE1     ;
 ClearTempB_DecIdx:  DEX                     ;
         BPL -                   ;($A781)
 
-ClearTempB_L_A783:  PLA                     ;
+ClearTempB_RestoreX:  PLA                     ;
         TAX                     ;($A784)Restore X and A.
-ClearTempB_L_A785:  PLA                     ;
+ClearTempB_RestoreA:  PLA                     ;
         RTS                     ;($A786)
 
 ;----------------------------------------------------------------------------------------------------
@@ -5804,7 +5804,7 @@ Descriptio_Word_A840:  .word EnemyNames2Table       ;($BDA2)Enemy names, second 
 ;----------------------------------------------------------------------------------------------------
 
 WindowBuildTempBuf:
-WindowBuil_L_A842:  TAX                     ;Transfer description table index to X.
+WindowBuil_ToIndex:  TAX                     ;Transfer description table index to X.
         LDY #$00                ;($A843)
 
 DescSearchOuterLoop:
@@ -6074,7 +6074,7 @@ WindowProc_Store_A99B:  LSR                     ;Skip select and start while in 
 WindowProc_ChkUp:  LSR                     ;Has the up button been pressed?
         BCS WindowUpPressed     ;($A99E)If so, branch.
 
-WindowProc_L_A9A0:  LSR                     ;Has the down button been pressed?
+WindowProc_ChkDown:  LSR                     ;Has the down button been pressed?
         BCS WindowDownPressed   ;($A9A1)If so, branch.
 
         LSR                     ;($A9A3)Has the left button been pressed?
@@ -6848,7 +6848,7 @@ WindowCalc_Load_ADCA:  LDA ScreenTextXCoordinate       ;
 WindowCalc_Mult8:  ASL                     ;
         ASL                     ;($ADCF)
 
-WindowCalc_L_ADD0:  CLC                     ;Add scroll offset.  It is a pixel offset.
+WindowCalc_AddScroll:  CLC                     ;Add scroll offset.  It is a pixel offset.
         ADC ScrollX             ;($ADD1)
 
         STA PPUAddrLB           ;($ADD3)The X coordinate in pixels is now calculated.
@@ -6865,7 +6865,7 @@ WindowAddY_Load_ADDD:  LDA ScrollY             ;
 WindowAddY_Div8:  LSR                     ;
         LSR                     ;($ADE1)
 
-WindowAddY_L_ADE2:  CLC                     ;Add Tile Y coord of window. A now
+WindowAddY_AddTile:  CLC                     ;Add Tile Y coord of window. A now
         ADC ScreenTextYCoordinate;($ADE3)contains Y coordinate in tiles.
 
         CMP #$1E                ;($ADE6)Did Y position go below nametable boundary?
@@ -6944,7 +6944,7 @@ InitNameWi_Load_AE48:  LDA #TL_BLANK_TILE2     ;Prepare to clear temp buffer.
 
 ClearNameBufLoop:
         STA TempBuffer,X        ;($AE4C)Place blank tile value in temp buffer.
-ClearNameB_L_AE4F:  DEX                     ;
+ClearNameB_DecIdx:  DEX                     ;
         BPL ClearNameBufLoop    ;($AE50)Have 12 values been written to the buffer?
         RTS                     ;($AE52)If not, branch to write another.
 
@@ -6955,13 +6955,13 @@ WindowProc_Cmp_AE53:  CMP #WINDOW_ABORT          ;Did player press the B button?
         BEQ WindowDoBackspace   ;($AE55)If so, back up 1 character.
 
         CMP #$1A                ;($AE57)Did player select character A-Z?
-WindowProc_L_AE59:  BCC WindowUpperCaseConvert   ;If so, branch to covert to nametables values.
+WindowProc_ChkUpper:  BCC WindowUpperCaseConvert   ;If so, branch to covert to nametables values.
 
 WindowProc_Cmp_AE5B:  CMP #$21                ;Did player select symbol -'!?() or _?
-WindowProc_L_AE5D:  BCC WndSymbConvert1     ;If so, branch to covert to nametables values.
+WindowProc_ChkSymb1:  BCC WndSymbConvert1     ;If so, branch to covert to nametables values.
 
 WindowProc_Cmp_AE5F:  CMP #$3B                ;Did player select character a-z?
-WindowProc_L_AE61:  BCC WindowLowerCaseConvert   ;If so, branch to covert to nametables values.
+WindowProc_ChkLower:  BCC WindowLowerCaseConvert   ;If so, branch to covert to nametables values.
 
 WindowProc_Cmp_AE63:  CMP #$3D                ;Did player select symbol , or .?
         BCC WndSymbConvert2     ;($AE65)If so, branch to covert to nametables values.
@@ -6974,13 +6974,13 @@ WindowProc_Store_AE6D:  STA WindowNameIndex        ;Set name index to max value 
         RTS                     ;($AE70)
 
 WindowUpperCaseConvert:
-WindowUppe_L_AE71:  CLC                     ;
+WindowUppe_PrepAdd:  CLC                     ;
         ADC #TXT_UPR_A          ;($AE72)Add value to convert to nametable character.
         BNE WindowUpdateName    ;($AE74)
 
 WindowLowerCaseConvert:
         SEC                     ;($AE76)
-WindowLowe_L_AE77:  SBC #$17                ;Subtract value to convert to nametable character.
+WindowLowe_SubConv:  SBC #$17                ;Subtract value to convert to nametable character.
 WindowLowe_Branch_AE79:  BNE WindowUpdateName       ;
 
 WndSymbConvert1:
@@ -6989,7 +6989,7 @@ WndSymbCon_Load_AE7C:  LDA SymbolConvTbl-$1A,X ;Use table to convert to nametabl
 WndSymbCon_Branch_AE7F:  BNE WindowUpdateName       ;
 
 WndSymbConvert2:
-WndSymbCon_L_AE81:  TAX                     ;
+WndSymbCon_ToIndex:  TAX                     ;
         LDA SymbolConvTbl-$34,X ;($AE82)Use table to convert to nametable character.
 WndSymbCon_Branch_AE85:  BNE WindowUpdateName       ;
 
@@ -7051,7 +7051,7 @@ WindowShow_Store_AEC4:  STX ScreenTextYCoordinate       ;Calculate X position fo
         STA PPUDataByte         ;($AEC7)
 
         LDA WindowNameIndex     ;($AEC9)
-WindowShow_L_AECC:  CLC                     ;Calculate Y position for character to add to name window.
+WindowShow_PrepAddY:  CLC                     ;Calculate Y position for character to add to name window.
         ADC #$0C                ;($AECD)
         STA ScreenTextXCoordinate;($AECF)
 
@@ -7079,14 +7079,14 @@ DoWindowPrep_Store_AEE1:  PHA                     ;Save window type byte on the 
 DoWindowPrep_Load_AEE7:  LDX #$03                ;Prepare to look through table below for window type.
 DoWindowPrep_Cmp_AEE9:* CMP WindowType1Table,X    ;
         BEQ +                   ;($AEEC)
-DoWindowPrep_L_AEEE:  DEX                     ;If working on one of the 4 windows from the table below,
+DoWindowPrep_DecIdx:  DEX                     ;If working on one of the 4 windows from the table below,
         BPL -                   ;($AEEF)Set the WindowBuildPhase variable to 0.  This seems to have
         BMI ++                  ;($AEF1)no effect as the MSB is set after this function is run.
         * LDA #$00              ;($AEF3)
         STA WindowBuildPhase    ;($AEF5)
 
         * PLA                   ;($AEF8)Get window type byte again.
-DoWindowPrep_L_AEF9:  PHA                     ;
+DoWindowPrep_SaveType:  PHA                     ;
 
         CMP #WINDOW_CMD_NONCMB  ;($AEFA)Is this the command, non-combat window?
         BEQ DoBeepSFX           ;($AEFC)If so, branch to make menu button SFX.
@@ -7138,7 +7138,7 @@ WindowEras_Branch_AF26:  BEQ WindowErsAlphabet      ;
         BEQ WindowErsOther      ;($AF2A)
 
         ASL                     ;($AF2C)*2. Widow data pointer is 2 bytes.
-WindowEras_L_AF2D:  TAY                     ;
+WindowEras_ToIndex:  TAY                     ;
 
         LDA WindowwDataPtrTbl,Y ;($AF2E)
 WindowEras_Store_AF31:  STA GenPtr3ELB          ;Get pointer base of window data.
@@ -7997,19 +7997,19 @@ FindDialog_Store_B532:  STA TextEntry           ;Store byte and process later.
 
         AND #NBL_UPPER          ;($B534)
         LSR                     ;($B536)
-FindDialog_L_B537:  LSR                     ;Keep upper nibble and shift it to lower nibble.
+FindDialog_Shift1:  LSR                     ;Keep upper nibble and shift it to lower nibble.
         LSR                     ;($B538)
-FindDialog_L_B539:  LSR                     ;
+FindDialog_Shift2:  LSR                     ;
         STA TextBlock           ;($B53A)
 
         TXA                     ;($B53C)Get upper/lower text block bit and move to upper nibble.
         ASL                     ;($B53D)
-FindDialog_L_B53E:  ASL                     ;
+FindDialog_ShiftUp:  ASL                     ;
         ASL                     ;($B53F)
         ASL                     ;($B540)
-FindDialog_L_B541:  ADC TextBlock           ;Add to text block byte. Text block calculation complete.
+FindDialog_AddBlock:  ADC TextBlock           ;Add to text block byte. Text block calculation complete.
 
-FindDialog_L_B543:  CLC                     ;
+FindDialog_PrepAdd:  CLC                     ;
         ADC #$01                ;($B544)Use TextBlock as pointer into bank table. Incremented
         STA BankPtrIndex        ;($B546)by 1 as first pointer is for intro routine.
 
@@ -8020,11 +8020,11 @@ FindDialog_L_B543:  CLC                     ;
         JSR GetAndStrDatPtr     ;($B54E)($FD00)
 
         LDA TextEntry           ;($B551)
-FindDialog_L_B553:  AND #NBL_LOWER          ;Keep only lower nibble for text entry number.
+FindDialog_MaskEntry:  AND #NBL_LOWER          ;Keep only lower nibble for text entry number.
         STA TextEntry           ;($B555)
 
         TAX                     ;($B557)Keep copy of entry number in X.
-FindDialog_Branch_B558:  BEQ ++++                ;Entry 0? If so, done! branch to exit.
+FindDialog_ChkEntry0:  BEQ ++++                ;Entry 0? If so, done! branch to exit.
 
         LDY #$00                ;($B55A)No offset from pointer.
         * LDX #DialogPtr        ;($B55C)DialogPtr is the pointer to use.
@@ -8086,7 +8086,7 @@ CheckDialo_Exit_B5AE:  RTS                     ;
 CalcWordCoord:
         JSR GetTxtWord          ;($B5AF)($B635)Get the next word of text.
 
-CalcWordCo_L_B5B2:  BIT Dialog00            ;Should never branch.
+CalcWordCo_TestDone:  BIT Dialog00            ;Should never branch.
         BMI CalcCoordEnd        ;($B5B5)
 
         LDA WindowTextXCoordinate;($B5B7)Make sure x coordinate after word is
@@ -8104,7 +8104,7 @@ SearchWord_Cmp_B5CA:  CMP #TL_BLANK_TILE1     ;Has a space in the word buffer be
 SearchWord_Branch_B5CC:  BEQ WordBufBreakFound   ;If so, branch to see if it will fit it into text window.
 
 SearchWord_Cmp_B5CE:  CMP #TXT_SUBEND         ;Has a sub-buffer end character been found?
-SearchWord_L_B5D0:  BCS WordBufBreakFound   ;If so, branch to see if word will fit it into text window.
+SearchWord_ChkEnd:  BCS WordBufBreakFound   ;If so, branch to see if word will fit it into text window.
 
         INC WindowXPositionAfterWord;($B5D2)Increment window position pointer.
 
@@ -8135,12 +8135,12 @@ WordToScreen_Load_B5EE:  LDA WordBuffer,X        ;Get next character in the word
 WordToScreen_Cmp_B5F4:  CMP #TXT_SUBEND         ;Is character a control character that will cause a newline?
         BCS TextControlChars    ;($B5F6)If so, branch to determine the character.
 
-WordToScreen_L_B5F8:  PHA                     ;
+WordToScreen_SaveChar:  PHA                     ;
         JSR TextToPPU           ;($B5F9)($B9C7)Send dialog text character to the screen.
-WordToScreen_L_B5FC:  PLA                     ;
+WordToScreen_RestoreChar:  PLA                     ;
 
         JSR CheckBetweenWords   ;($B5FD)($B8F9)Check for non-word character.
-WordToScreen_L_B600:  BCS -                   ;Was the character a text character?
+WordToScreen_ChkWord:  BCS -                   ;Was the character a text character?
 WordToScreen_Exit_B602:  RTS                     ;If so, branch to get another character.
 
 TextControlChars:
@@ -8192,7 +8192,7 @@ GetTxtByte_Cmp_B63D:  CMP #TXT_NOP            ;Is character a no-op character?
         BNE BuildWordBuf        ;($B63F)If not, branch to add to word buffer.
 
         BIT Dialog00            ;($B641)Branch always.
-GetTxtByte_L_B644:  BPL GetTxtByteLoop      ;Get next character.
+GetTxtByte_Loop:  BPL GetTxtByteLoop      ;Get next character.
 
 BuildWordBuf:
 BuildWordBuf_Cmp_B646:  CMP #TXT_OPN_QUOTE      ;"'"(open quotes).
@@ -8334,7 +8334,7 @@ BinWordToBCD_Load_B6F1:  LDY #$00                ;
         * LDA TempBuffer,X      ;($B6F3)Transfer contents of BCD buffer to work buffer.
 BinWordToBCD_Store_B6F6:  STA WorkBuffer,Y        ;
         INY                     ;($B6F9)BCD buffer is backwards so it needs to be
-BinWordToBCD_L_B6FA:  DEX                     ;written in reverse into the work buffer.
+BinWordToBCD_DecIdx:  DEX                     ;written in reverse into the work buffer.
         BPL -                   ;($B6FB)
         RTS                     ;($B6FD)
 
@@ -8373,26 +8373,26 @@ DoAMTP_Call_B724:  JSR BinWordToBCD        ;($B6DA)Convert word in $00/$01 to BC
 
 DoAMTP_Load_B727:  LDA SubBufLength        ;
         CLC                     ;($B72A)Increase buffer length by 6.
-DoAMTP_L_B72B:  ADC #$06                ;
+DoAMTP_Add6:  ADC #$06                ;
 
         * STA SubBufLength      ;($B72D)Set initial buffer length.
 
 DoAMTP_Load_B730:  LDX #$05                ;
 DoAMTP_Load_B732:* LDA PointsTable,X           ;
         STA WorkBuffer,Y        ;($B735)Load "Point" into work buffer.
-DoAMTP_L_B738:  INY                     ;
+DoAMTP_IncIdx:  INY                     ;
         DEX                     ;($B739)
         BPL -                   ;($B73A)
 
 DoAMTP_Load_B73C:  LDA GenWrd00UB          ;
 DoAMTP_Branch_B73E:  BNE +                   ;Is number to convert to BCD greater than 1?
         LDX GenWrd00LB          ;($B740)If so, add an "s" to the end of "Point".
-DoAMTP_L_B742:  DEX                     ;
+DoAMTP_DecChkPlural:  DEX                     ;
 DoAMTP_Branch_B743:  BEQ ++                  ;
 
 DoAMTP_Load_B745:* LDA #TXT_LWR_S          ;Add "s" to the end of the buffer.
         STA WorkBuffer,Y        ;($B747)
-DoAMTP_L_B74A:  INY                     ;
+DoAMTP_IncS:  INY                     ;
         INC SubBufLength        ;($B74B)Increment buffer length.
 DoAMTP_Jmp_B74E:* JMP WorkBufEndChar      ;($B6D0)Place termination character on work buffer.
 
@@ -8417,14 +8417,14 @@ GetDescHal_Store_B76A:  STA WorkBuffer,Y        ;Place a blank space between wor
 
         INY                     ;($B76D)
         TYA                     ;($B76E)Save pointer into work buffer.
-GetDescHal_L_B76F:  PHA                     ;
+GetDescHal_SavePtr:  PHA                     ;
 
         INC WindowDescHalf      ;($B770)Do second half of description.
         JSR PrepGetDesc         ;($B773)($B77E)Do some prep then locate description.
         STY DescriptionLength   ;($B776)Store length of description string.
 
         PLA                     ;($B779)Restore current index into the work buffer.
-GetDescHal_L_B77A:  TAY                     ;
+GetDescHal_RestoreIdx:  TAY                     ;
         JMP XferTempToWork      ;($B77B)($B830)Transfer temp buffer contents to work buffer.
 
 PrepGetDesc:
@@ -8437,7 +8437,7 @@ PrepGetDesc_Load_B788:  LDA #$04                ;
         STA WindowParam         ;($B78A)
 
 PrepGetDesc_Load_B78D:  LDA DescBuf             ;Load first byte from description buffer and remove upper 2 bits.
-PrepGetDesc_L_B78F:  AND #$3F                ;
+PrepGetDesc_Mask6Bits:  AND #$3F                ;
 PrepGetDesc_Jmp_B791:  JMP LookupDescriptions  ;($A790)Get description from tables.
 
 DoDESC:
@@ -8478,9 +8478,9 @@ WorkBufShift_Load_B7CB:  LDX #$26                ;Prepare to shift 39 bytes.
 WorkBufShift_Load_B7CD:* LDA WorkBuffer,X        ;Move buffer value over 1 byte.
 WorkBufShift_Store_B7D0:  STA WorkBuffer+1,X      ;
         DEX                     ;($B7D3)More to shift?
-WorkBufShift_L_B7D4:  BPL -                   ;If so, branch to shift next byte.
+WorkBufShift_ChkMore:  BPL -                   ;If so, branch to shift next byte.
 
-WorkBufShift_L_B7D6:  INY                     ;Done shifting. Buffer is now 1 byte longer.
+WorkBufShift_IncLen:  INY                     ;Done shifting. Buffer is now 1 byte longer.
         RTS                     ;($B7D7)
 
 ;----------------------------------------------------------------------------------------------------
@@ -8501,7 +8501,7 @@ DoCOPY_Load_B7E8:  LDX #$00                ;Start at beginning of buffers.
 
 DoCOPY_Load_B7EA:* LDA DescBuf,X           ;Copy description buffer byte into work buffer.
         STA WorkBuffer,X        ;($B7EC)
-DoCOPY_L_B7EF:  INX                     ;
+DoCOPY_IncIdx:  INX                     ;
         CMP #TXT_SUBEND         ;($B7F0)End of buffer reached? If not, branch to copy more.
         BNE -                   ;($B7F2)
 
@@ -8564,7 +8564,7 @@ XferTempTo_Load_B839:  LDX SubBufLength        ;X stores end index.
 XferTempTo_Load_B83C:* LDA TempBuffer-1,X      ;Transfer temp buffer byte into work buffer.
         STA WorkBuffer,Y        ;($B83F)
 
-XferTempTo_L_B842:  DEX                     ;
+XferTempTo_DecIdx:  DEX                     ;
         INY                     ;($B843)Update indexes.
 XferTempTo_Count_B844:  INC ThisTempIndex       ;
 
@@ -8612,10 +8612,10 @@ CopyDialog_Count_B86F:  INX                     ;Increment screen buffer index.
 CopyDialog_Count_B871:  DEC ColumnsRemaining       ;Are there stil characters left in current row?
 CopyDialog_Branch_B873:  BNE CopyDialogByte      ;If so, branch to get next character.
 
-CopyDialog_L_B875:  TXA                     ;
+CopyDialog_ToA:  TXA                     ;
         CLC                     ;($B876)Move to next row in WinBufRAM by adding
-CopyDialog_L_B877:  ADC #$0A                ;10 to the WinBufRAM index.
-CopyDialog_L_B879:  TAX                     ;
+CopyDialog_AddRow:  ADC #$0A                ;10 to the WinBufRAM index.
+CopyDialog_ToX:  TAX                     ;
 
 CopyDialog_Count_B87A:  DEC RowsRemaining       ;One more row completed.
 CopyDialog_Branch_B87C:  BNE NewDialogRow        ;More rows left to get? If so, branch to get more.
@@ -8651,7 +8651,7 @@ EndNameBuf_Exit_B89E:  RTS                     ;
 GetEnName:
         CLC                     ;($B89F)
 GetEnName_Store_B8A0:  ADC #$01                ;Increment enemy number and save it on the stack.
-GetEnName_L_B8A2:  PHA                     ;
+GetEnName_SaveEnemy:  PHA                     ;
 
         LDA #$00                ;($B8A3)Start with first half of name.
         STA WindowDescHalf      ;($B8A5)
@@ -8659,7 +8659,7 @@ GetEnName_L_B8A2:  PHA                     ;
 GetEnName_Load_B8A8:  LDA #$0B                ;Max buf length of first half of name is 11 characters.
 GetEnName_Store_B8AA:  STA SubBufLength        ;
 
-GetEnName_L_B8AD:  PLA                     ;Restore enemy number.
+GetEnName_RestoreEnemy:  PLA                     ;Restore enemy number.
 GetEnName_Call_B8AE:  JSR GetEnDescHalf       ;($A801)Get first half of enemy name.
 
 GetEnName_Load_B8B1:  LDY #$00                ;Start at beginning of name buffer.
@@ -8669,9 +8669,9 @@ GetEnName_Call_B8B3:  JSR AddTempBufToNameBuf ;($B8EA)Add temp buffer to name bu
 GetEnName_Load_B8B9:  LDA #TL_BLANK_TILE1     ;Store a blank tile after first half.
         STA NameBuffer,Y        ;($B8BB)
 
-GetEnName_L_B8BE:  INY                     ;
+GetEnName_IncIdx:  INY                     ;
         TYA                     ;($B8BF)Move to next spot in name buffer and store the index.
-GetEnName_L_B8C0:  PHA                     ;
+GetEnName_SaveIdx:  PHA                     ;
 
         INC WindowDescHalf      ;($B8C1)Move to second half of enemy name.
 
@@ -8681,7 +8681,7 @@ GetEnName_Store_B8C6:  STA SubBufLength        ;
         LDA DescriptionEntry    ;($B8C9)Not used in this set of functions.
         JSR GetEnDescHalf       ;($B8CB)($A801)Get second half of enemy name.
 
-GetEnName_L_B8CE:  PLA                     ;Restore index to end of namme buffer.
+GetEnName_RestoreIdx:  PLA                     ;Restore index to end of namme buffer.
         TAY                     ;($B8CF)
 
         JSR AddTempBufToNameBuf ;($B8D0)($B8EA)Add temp buffer to name buffer.
@@ -8698,7 +8698,7 @@ FindNameEnd_Branch_B8DE:  BEQ +                   ;
 FindNameEnd_Cmp_B8E0:  CMP #TL_BLANK_TILE1     ;
 FindNameEnd_Branch_B8E2:  BNE ++                  ;If not, branch to end.  Last character found.
 
-FindNameEnd_L_B8E4:* DEY                     ;Blank character space found.
+FindNameEnd_DecIdx:* DEY                     ;Blank character space found.
         BMI +                   ;($B8E5)If no characters in buffer, branch to end.
         BNE FindNameEnd         ;($B8E7)If more characters in buffer, branch to process next character.
         * RTS                   ;($B8E9)
@@ -8734,11 +8734,11 @@ CheckBetwe_Cmp_B909:  CMP #TXT_APOS           ;"'"(apostrophe).
         CMP #TXT_PRD_QUOTE      ;($B90D)".'"(Period end-quote).
 CheckBetwe_Branch_B90F:  BEQ NonWordChar         ;
 
-CheckBetwe_L_B911:  SEC                     ;Alpha-numberic character found. Set carry and return.
+CheckBetwe_SetWord:  SEC                     ;Alpha-numberic character found. Set carry and return.
         RTS                     ;($B912)
 
 NonWordChar:
-NonWordChar_L_B913:  CLC                     ;Non-word character found. Clear carry and return.
+NonWordChar_ClrCarry:  CLC                     ;Non-word character found. Clear carry and return.
         RTS                     ;($B914)
 
 ;----------------------------------------------------------------------------------------------------
@@ -8756,17 +8756,17 @@ DoNewline_Branch_B922:  BEQ NewlineEnd          ;At beginning of text line? If s
 
 MoveToNextLine:
 MoveToNext_Load_B924:  LDX WindowTextYCoordinate        ;Move to the next line in the text window.
-MoveToNext_L_B926:  INX                     ;
+MoveToNext_IncY:  INX                     ;
 
         CPX #$08                ;($B927)Are we at or beyond the last row in the dialog box?
-MoveToNext_L_B929:  BCS ScrollDialog        ;If so, branch to scroll the dialog window.
+MoveToNext_ChkScroll:  BCS ScrollDialog        ;If so, branch to scroll the dialog window.
 
         LDA TxtLineSpace        ;($B92B)
-MoveToNext_L_B92E:  LSR                     ;
-MoveToNext_L_B92F:  LSR                     ;It looks like there used to be some code for controlling
+MoveToNext_Shift1:  LSR                     ;
+MoveToNext_Shift2:  LSR                     ;It looks like there used to be some code for controlling
         EOR #$03                ;($B930)how many lines to skip when going to a new line. The value
         CLC                     ;($B932)in TxtLineSpace is always #$08 so the line always increments
-MoveToNext_L_B933:  ADC WindowTextYCoordinate        ;by 1.
+MoveToNext_AddLine:  ADC WindowTextYCoordinate        ;by 1.
 MoveToNext_Store_B935:  STA WindowTextYCoordinate        ;
 
 LineDone:
@@ -8801,7 +8801,7 @@ ScrollUpdate_Call_B958:  JSR WaitForNMI          ;($FF74)Wait for VBlank interru
         * JSR Display2ScrollLines;($B95B)($B990)Display two scrolled lines on screen.
 ScrollUpdate_Load_B95E:  LDA DialogScrlY         ;
         CMP #$1B                ;($B961)Has entire dialog window been updated?
-ScrollUpdate_L_B963:  BCC -                   ;If not, branch to update more.
+ScrollUpdate_ChkMore:  BCC -                   ;If not, branch to update more.
         BCS LineDone            ;($B965)($B937)Scroll done, branch to exit.
 
 Scroll1Line:
@@ -8811,13 +8811,13 @@ ScrollDialogLoop:
         LDA DialogOutBuf+$16,X  ;($B969)Get byte to move up one row.
         AND #$7F                ;($B96C)
 ScrollDial_Cmp_B96E:  CMP #$76                ;Is it a text byte?
-ScrollDial_L_B970:  BCS NextScrollByte      ;If not, branch to skip moving it up.
+ScrollDial_ChkText:  BCS NextScrollByte      ;If not, branch to skip moving it up.
 
-ScrollDial_L_B972:  PHA                     ;Get byte to be replaced.
+ScrollDial_SaveNext:  PHA                     ;Get byte to be replaced.
         LDA DialogOutBuf,X      ;($B973)
-ScrollDial_L_B976:  AND #$7F                ;
+ScrollDial_MaskCur:  AND #$7F                ;
 ScrollDial_Cmp_B978:  CMP #$76                ;Is it a text byte?
-ScrollDial_L_B97A:  PLA                     ;
+ScrollDial_RestoreByte:  PLA                     ;
         BCS NextScrollByte      ;($B97B)If not, branch to skip replacing byte.
 
         STA DialogOutBuf,X      ;($B97D)Move text byte up one row.
@@ -8830,7 +8830,7 @@ NextScroll_Branch_B983:  BNE ScrollDialogLoop    ;If not, branch to get next dia
 _ClearDialogOutBuf:
 _ClearDial_Load_B985:  LDA #TL_BLANK_TILE1     ;Blank tile,
 _ClearDial_Store_B987:* STA DialogOutBuf,X      ;Write blank tiles to the entire text buffer.
-_ClearDial_L_B98A:  INX                     ;
+_ClearDial_IncIdx:  INX                     ;
         CPX #$B0                ;($B98B)Has 176 bytes been written?
 _ClearDial_Branch_B98D:  BNE -                   ;If not, branch to write more.
 _ClearDial_Exit_B98F:  RTS                     ;
@@ -8869,7 +8869,7 @@ DisplayScr_Cmp_B9C2:  CMP #$1B                ;Have all 22 text byte in the line
 ;----------------------------------------------------------------------------------------------------
 
 TextToPPU:
-TextToPPU_L_B9C7:  PHA                     ;Save word buffer character.
+TextToPPU_SaveChar:  PHA                     ;Save word buffer character.
 
 TextToPPU_Load_B9C8:  LDA WindowTextXCoordinate        ;Make sure x position before and after a word are the same.
 TextToPPU_Store_B9CA:  STA WindowXPositionAfterWord           ;
@@ -8878,10 +8878,10 @@ TextToPPU_Store_B9CA:  STA WindowXPositionAfterWord           ;
 
 TextToPPU_Load_B9D0:  LDA WindowTextYCoordinate        ;Get row number.
 TextToPPU_Call_B9D2:  JSR CalcWndYByteNum     ;($BAA6)Calculate the byte number of row start in dialog window.
-TextToPPU_L_B9D5:  ADC WindowTextXCoordinate        ;Add x position to get final buffer index value.
-TextToPPU_L_B9D7:  TAX                     ;Save the index in X.
+TextToPPU_AddX:  ADC WindowTextXCoordinate        ;Add x position to get final buffer index value.
+TextToPPU_ToIndex:  TAX                     ;Save the index in X.
 
-TextToPPU_L_B9D8:  PLA                     ;Restore the word buffer character.
+TextToPPU_RestoreChar:  PLA                     ;Restore the word buffer character.
 TextToPPU_Cmp_B9D9:  CMP #TL_BLANK_TILE1     ;Is it a blank tile?
 TextToPPU_Branch_B9DB:  BEQ CheckXCoordIndent   ;If so, branch to check if the x position is at the indent mark.
 
@@ -8903,10 +8903,10 @@ CheckXCoordIndent:
         BEQ EndTextToPPU        ;($B9F3)If so, branch to end.
 
 CheckNextBufByte:
-CheckNextB_L_B9F5:  PHA                     ;Save the word buffer character.
+CheckNextB_SaveChar:  PHA                     ;Save the word buffer character.
 CheckNextB_Load_B9F6:  LDA DialogOutBuf,X      ;Get next word in Dialog buffer
         STA PPUDataByte         ;($B9F9)and prepare to save it in the PPU.
-CheckNextB_L_B9FB:  TAY                     ;
+CheckNextB_ToY:  TAY                     ;
         PLA                     ;($B9FC)Restore original text byte. Is it a blank tile?
 CheckNextB_Cmp_B9FD:  CPY #TL_BLANK_TILE1     ;If so, branch.  This keeps the indent even.
 CheckNextB_Branch_B9FF:  BNE +
@@ -8923,7 +8923,7 @@ CheckNextB_Load_BA06:* LDA TxtIndent           ;Is the text indented?
 
         LDA WindowTextXCoordinate;($BA11)
         LSR                     ;($BA13)Only play text SFX every other printable character.
-CheckNextB_L_BA14:  BCC CalcTextWndPos      ;
+CheckNextB_ChkOdd:  BCC CalcTextWndPos      ;
 
         LDA #SFX_TEXT           ;($BA16)Text SFX.
         BRK                     ;($BA18)
@@ -8937,7 +8937,7 @@ CalcTextWn_Store_BA1D:  CLC                     ;Dialog text columns start on th
 
 CalcTextWn_Load_BA23:  LDA WindowTextYCoordinate        ;
         CLC                     ;($BA25)Dialog text lines start on the 19th screen line.
-CalcTextWn_L_BA26:  ADC #$13                ;Need to add current dialog line to this offset.
+CalcTextWn_AddLine:  ADC #$13                ;Need to add current dialog line to this offset.
 CalcTextWn_Store_BA28:  STA ScreenTextYCoordinate       ;
 
 CalcTextWn_Call_BA2B:  JSR WindowCalcPPUAddr      ;($ADC0)Calculate PPU address for window/text byte.
@@ -8946,7 +8946,7 @@ CalcTextWn_Call_BA2E:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer
         LDX MessageSpeed        ;($BA31)Load text speed to use as counter to slow text.
 CalcTextWn_Call_BA33:* JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
         DEX                     ;($BA36)Delay based on message speed.
-CalcTextWn_L_BA37:  BPL -                   ;Loop to slow text speed.
+CalcTextWn_DelayLoop:  BPL -                   ;Loop to slow text speed.
 
         INC WindowTextXCoordinate;($BA39)Set pointer to X position for next character.
 
@@ -8963,7 +8963,7 @@ EndTextToPPU_Exit_BA3B:  RTS                     ;Done witing text character to 
 
         * CMP VowelTable,X      ;($BA40)Is text character a lowercase vowel?
 EndTextToPPU_Branch_BA43:  BEQ TextSetCarry        ;If so, branch to set carry and exit.
-EndTextToPPU_L_BA45:  DEX                     ;Done looking through vowel table?
+EndTextToPPU_DecIdx:  DEX                     ;Done looking through vowel table?
         BPL -                   ;($BA46)If not, branch to look at next entry.
 
         CMP #$24                ;($BA48)Lowercase letters.
@@ -8977,7 +8977,7 @@ TextClearCarry:
 TextClearC_Exit_BA51:  RTS                     ;
 
 TextSetCarry:
-TextSetCarry_L_BA52:  SEC                     ;Set carry and return.
+TextSetCarry_SetFlag:  SEC                     ;Set carry and return.
         RTS                     ;($BA53)
 
 VowelTable:
@@ -9031,7 +9031,7 @@ TxtClearAr_Jmp_BA94:  JMP AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 TxtCheckInput:
         JSR GetJoypadStatus     ;($BA97)($C608)Get input button presses.
 TxtCheckIn_Load_BA9A:  LDA JoypadBtns          ;Get joypad button presses.
-TxtCheckIn_L_BA9C:  AND #IN_A_OR_B          ;Mask off everything except A and B buttons.
+TxtCheckIn_MaskAB:  AND #IN_A_OR_B          ;Mask off everything except A and B buttons.
 TxtCheckIn_Exit_BA9E:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -9488,7 +9488,7 @@ SpellNameTbl_Byte_BFBF:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,
 NMI:
 RESET:
 IRQ:
-IRQ_L_BFD8:  SEI                     ;Disable interrupts.
+IRQ_DisableInt:  SEI                     ;Disable interrupts.
 IRQ_Count_BFD9:  INC MMCReset1           ;Reset MMC1 chip.
 IRQ_Jmp_BFDC:  JMP _DoReset            ;($FF8E)Continue with the reset process.
 
