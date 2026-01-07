@@ -6,7 +6,6 @@
 ;This table contains weapon bonuses added to the
 ;strength score to produce the attack power stat.
 
-WeaponsBonusTbl:
 		.byte $00			   ;None			 +0.
 		.byte $02			   ;Bamboo Pole	  +2.
 		.byte $04			   ;Club			 +4.
@@ -19,7 +18,6 @@ WeaponsBonusTbl:
 ;This table contains armor bonuses added to the
 ;agility score to produce the defense power stat.
 
-ArmorBonusTbl:
 		.byte $00			   ;None			 +0.
 		.byte $02			   ;Clothes		  +2.
 		.byte $04			   ;Leather Armor	+4.
@@ -32,7 +30,6 @@ ArmorBonusTbl:
 ;This table contains shield bonuses added to the
 ;agility score to produce the defense power stat.
 
-ShieldBonusTbl:
 		.byte $00			   ;None			 +0.
 		.byte $04			   ;Small Shield	 +4.
 		.byte $0A			   ;Large Shield	 +10.

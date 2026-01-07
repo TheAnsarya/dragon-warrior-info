@@ -6,7 +6,6 @@
 .segment "SpellData"
 
 ; Spell MP Cost Table
-SpellMPCosts:
 	.byte $04				; HEAL: 4 MP
 	.byte $02				; HURT: 2 MP
 	.byte $02				; SLEEP: 2 MP
@@ -19,7 +18,6 @@ SpellMPCosts:
 	.byte $05				; HURTMORE: 5 MP
 
 ; Spell Effect Types
-SpellEffectTypes:
 	.byte $00				; HEAL: heal
 	.byte $01				; HURT: damage
 	.byte $02				; SLEEP: status

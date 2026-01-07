@@ -267,7 +267,6 @@ GetNPCSpriteIndex:
 		LSR					 ;($C0F8)/2 to get initial offset into sprite pattern table.
 		STA GenByte24		   ;($C0F9)
 
-ChkFemaleNPC:
 		CMP #$60				;($C0FB)Is this the princess or a female villager?
 		BNE ChkWizardNPC		;($C0FD)If not, branch to check for dragonlord/wizard NPC.
 
@@ -302,7 +301,6 @@ ChkWizardNPC:
 		AND #F_DGNLRD_DEAD	  ;($C125)
 		BEQ ChkDrgnLordNPC	  ;($C127)If not, branch to check for dragonlord NPC sprites.
 
-SetWizardNPC:
 		LDA #$F0				;($C129)Load index to wizard sprites.
 		STA GenByte24		   ;($C12B)
 
@@ -321,7 +319,6 @@ ChkDrgnLordNPC:
 		CMP #MAP_DLCSTL_BF	  ;($C13D)
 		BNE NPCWalkAnim		 ;($C13F)If not, branch. Get wizard NPC sprites.
 
-SetDgnLordNPC:
 		LDA #$E0				;($C141)Load index to dragonlord sprites.
 		STA GenByte24		   ;($C143)
 		BNE NPCWalkAnim		 ;($C145)Branch always.
@@ -1230,7 +1227,6 @@ ContinueReset:
 
 ;The game is completely reset at this point.  Start the intro routine stuff.
 
-IntroRoutineStuff:
 		BRK					 ;($C9F2)
 		.byte $00, $27		  ;($C9F3)($BCB0)DoIntroRoutine, bank 2.
 
@@ -1251,7 +1247,6 @@ IntroRoutineStuff:
 
 ;The gameplay has started.
 
-MainGameEngine:
 		LDA #$FA				;($CA0B)Indicate game has been started.
 		STA GameStarted		 ;($CA0D)
 
@@ -2101,7 +2096,6 @@ DoRandomFight:
 		CMP #BLK_HILL		   ;($CEC6)If not, branch. Another check will be done to avoid a
 		BNE NormFightModifier   ;($CEC8)fight. 50% chance the fight may not happen.
 
-HighFightModifier:
 		LDA RandomNumberUB	  ;($CECA)Player is in hilly terrain. Increased chance of fight!
 		AND #$03				;($CECC)Do another check to avoid the fight. 25% chance the fight
 		BEQ GetEnemyRow		 ;($CECE)may not happen. Is fight going to happen?
@@ -2178,7 +2172,6 @@ GetEnemyInRow:
 		CMP #MAP_OVERWORLD	  ;($CF22)If so, there is a chance the fight can be repelled.
 		BNE ReadyFight		  ;($CF24)If not, branch to prepare the fight.
 
-ChkFightRepel:
 		LDA RepelTimer		  ;($CF26)Is the repel spell active?
 		BEQ ReadyFight		  ;($CF28)If not, branch to start fight.
 
@@ -2341,7 +2334,6 @@ CheckTalk:
 		LDA CharYPos			;($D005)
 		STA YTarget			 ;($D007)
 
-CheckFacingUp:
 		PLA					 ;($D009)Get player's direction.
 		BNE CheckFacingRight	;($D00A)Is player facing up? If not branch to check other directions.
 
@@ -2401,7 +2393,6 @@ DoTalkResults:
 		LDA _TargetY			;($D05A)
 		PHA					 ;($D05C)
 
-DoGwaelinRescue:
 		JSR DoDialogLoBlock	 ;($D05D)($C7CB)Though art brave to rescue me, I'm Gwaelin...
 		.byte $B5			   ;($D060)TextBlock12, entry 5.
 
@@ -2701,7 +2692,6 @@ CheckYesNoDialog:
 
 		BNE NoRespDialog		;($D1D5)Did player select yes? If so, branch.
 
-YesRespDialog:
 		LDA DialogTemp		  ;($D1D7)Get "yes" dialog response.
 		CLC					 ;($D1D9)
 		ADC #$05				;($D1DA)
@@ -3315,7 +3305,6 @@ ChooseDrgnLrd:
 		JSR DoDialogLoBlock	 ;($D4EB)($C7CB)If thou dies I can bring thee back...
 		.byte $C2			   ;($D4EE)TextBlock13, entry 2.
 
-ZeroStats:
 		LDA #$00				;($D4EF)
 		STA ExpLB			   ;($D4F1)
 		STA ExpUB			   ;($D4F3)
@@ -3467,7 +3456,6 @@ ChkItem:
 		CMP #$1C				;($D5AA)Is the selected item armor?
 		BCS ChkShield		   ;($D5AC)If not, branch.
 
-ChkArmor:
 		LDA EqippedItems		;($D5AE)Get player's equipped armor.
 		LSR					 ;($D5B0)
 		LSR					 ;($D5B1)
@@ -3581,7 +3569,6 @@ CompWeapPurchase:
 		.byte WINDOW_POPUP	  ;($D638)Pop-up window.
 		JMP NextWeapDialog	  ;($D639)($D664)Jump to see if player wants to buy something else.
 
-ChkApplyArmor:
 		CMP #$0E				;($D63C)Is the purchased item armor?
 		BCS ApplyShield		 ;($D63E)If not branch to apply the new shield(the only one left).
 
@@ -4296,7 +4283,6 @@ ChkStairsUp:
 		CMP #BLK_STAIR_UP	   ;($D9C3)Is player standing on stair up block?
 		BNE NoStairsFound	   ;($D9C5)If not, branch to tell player no stairs are here.
 
-StairUpFound:
 		LDX #$00				;($D9C7)Zero out indexes.
 		LDY #$00				;($D9C9)
 
@@ -4462,7 +4448,6 @@ ChkOutside:
 		CMP #SPL_OUTSIDE		;($DA9F)Was outside cast?
 		BNE ChkHealmore		 ;($DAA1)If not, branch to move on.
 
-ChkErdricksCave:
 		LDA MapNumber		   ;($DAA3)Is player in Erdrick's cave?
 		CMP #MAP_ERDRCK_B1	  ;($DAA5)
 		BCC ChkGarinhamCave	 ;($DAA7)If not, branch.
@@ -4784,7 +4769,6 @@ ChkItemUsed:
 
 ;----------------------------------------------------------------------------------------------------
 
-ChkKey:
 		CMP #INV_KEY			;($DC3B)Did player select a key?
 		BEQ CheckDoor		   ;($DC3D)If so, branch to check if a door is near.
 		JMP ChkHerb			 ;($DC3F)($DCEA)Check if player used an herb.
@@ -6627,7 +6611,6 @@ EnAppearText:
 		JSR DoDialogLoBlock	 ;($E595)($C7CB)An enemy draws near...
 		.byte $E2			   ;($E598)TextBlock15, entry 2.
 
-ModEnHitPoints:
 		LDA EnBaseHP			;($E599)Prepare to multiply enemy HP by random number(0 to 255).
 		STA MultiplyNumber2LB   ;($E59C)
 		JSR UpdateRandNum	   ;($E59E)($C55B)Get random number.
@@ -7037,7 +7020,6 @@ ChkCmbtItemUsed:
 		TAX					 ;($E7D3)Get description of item used.
 		LDA DescBuf+1,X		 ;($E7D4)
 
-ChkUseHerb:
 		CMP #INV_HERB		   ;($E7D6)Did player use an herb?
 		BNE ChkUseFlute		 ;($E7D8)If not, branch to check next item.
 
@@ -7561,7 +7543,6 @@ DoLevelUp:
 		LDA #$00				;($EAA4)Always set upper amount to 0.
 		STA AmountUB			;($EAA6)
 
-ChkStrengthUp:
 		PLA					 ;($EAA8)
 		STA PlayerTempStat	  ;($EAA9)
 		LDA DisplayedStr		;($EAAB)Did the player's strength increase this level?
@@ -7598,7 +7579,6 @@ ChkHPUp:
 		JSR DoDialogHiBlock	 ;($EAD2)($C7C5)Thy maximum hit points Increase by...
 		.byte $10			   ;($EAD5)TextBlock18, entry 0.
 
-ChkMPUp:
 		PLA					 ;($EAD6)
 		STA PlayerTempStat	  ;($EAD7)
 		LDA DisplayedMaxMP	  ;($EAD9)Did the player's MP increase this level?
@@ -8037,7 +8017,6 @@ ChkShakeCounter:
 		AND #$01				;($ED58)Shake screen in X or Y directions every other counter decrement.
 		BNE UpdateShakeY		;($ED5A)
 
-UpdateShakeX:
 		LDA ShakeX			  ;($ED5C)
 		CLC					 ;($ED5E)
 		ADC #$02				;($ED5F)Shake screen 2 pixels to the right.
@@ -8513,7 +8492,6 @@ EnCalcHitDmg:
 		CMP MultiplyNumber2LB   ;($F004)Is enemy AttackStat more than 2X player DefenseStat?
 		BCS NormalAttack		;($F006)If so, branch to do normal attack damage.
 
-EnWeakAttack:
 		* JSR UpdateRandNum	 ;($F008)($C55B)Get random number.
 		LDA RandomNumberUB	  ;($F00B)
 		STA MultiplyNumber1LB   ;($F00D)
@@ -8790,7 +8768,6 @@ PrepSaveGame:
 
 ;----------------------------------------------------------------------------------------------------
 
-UnusedTblPtr1:
 		.word DescTable+1	   ;($F150)($F155)Unused pointer into table below.
 
 DescTblPtr:
@@ -9759,7 +9736,6 @@ ShowUsedLogsExit:
 CalcSelectedSlot:
 		LDX _SaveBitMask		;($F9BB)Get bit mask for saved game slots.
 
-ChkUsedSlot2:
 		CPX #$02				;($F9BE)Was used game slot 2 selected?
 		BNE ChkUsedSlot3		;($F9C0)If not branch to check next.
 
@@ -10363,7 +10339,6 @@ Bank0ToNT0:
 		LDA #CHR_BANK_0		 ;($FCA4)Indicate CHR ROM bank 0 to be loaded.
 		BEQ SetActiveNT0		;($FCA6)Load it into nametable 0.
 
-Bank0ToNT1:
 		PHA					 ;($FCA8)Indicate CHR ROM bank 0 to be loaded.
 		LDA #CHR_BANK_0		 ;($FCA9)
 		BEQ SetActiveNT1		;($FCAB)Load it into nametable 1.
@@ -10688,7 +10663,6 @@ NMI:
 		CMP #<WaitForNMI+9	  ;($FE7B)Do less processing if not VBlank ready.
 		BCS NotVBlankReady	  ;($FE7D)
 
-ProcessVBlank:
 		LDA PPUStatusus		 ;($FE7F)No effect.
 		INC FrameCounter		;($FE82)Increment frame counter.
 
@@ -10813,7 +10787,6 @@ SetPPUValues:
 		LDA ActiveNmTbl		 ;($FF3C)Get which nametable is supposed to be active.
 		BNE SetNT1			  ;($FF3E)Is it nametable 1? If so, branch to set.
 
-SetNT0:
 		LDA #%10001000		  ;($FF40)Set nametable 0 as active nametable.
 		BNE SetScrollRegisters  ;($FF42)Branch always.
 

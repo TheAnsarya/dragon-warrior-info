@@ -7,7 +7,6 @@
 
 ; Item Statistics Table
 ; Format: ATK(1), DEF(1), BUY_PRICE(2), SELL_PRICE(2), FLAGS(1), TYPE(1), SPRITE(1)
-ItemStatsTable:
 
 ; Torch (ID: 0)
 Item_00_Stats:
@@ -300,7 +299,6 @@ Item_28_Stats:
 	.byte $1C				 ; Sprite ID: 28
 
 ; Item Stats Pointer Table
-ItemStatsPointers:
 	.word Item_00_Stats
 	.word Item_01_Stats
 	.word Item_02_Stats

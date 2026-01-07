@@ -7,7 +7,6 @@
 
 ; Palette Data Table
 ; Each palette has 4 colors (NES standard)
-PaletteTable:
 
 ; Overworld Palette (ID: 0)
 Palette_00:
@@ -42,7 +41,6 @@ Palette_07:
 	.byte $0F, $00, $10, $30
 
 ; Palette Pointer Table
-PalettePointers:
 	.word Palette_00
 	.word Palette_01
 	.word Palette_02
