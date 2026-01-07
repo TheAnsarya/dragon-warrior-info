@@ -3520,7 +3520,7 @@ DoIntroRou_Call_BCC1:  JSR PrepBGPalLoad       ;($C63D)Setup PPU buffer
         JSR SetBlackBackDrop    ;($BCC4)($BDE0)Set black background.
 
         LDA #MSC_INTRO          ;($BCC7)Start intro music.
-DoIntroRou_L_BCC9:  BRK                     ;
+DoIntroRou_PlayMusic:  BRK                     ;
         .byte $04, $17          ;($BCCA)($81A0)InitMusicSFX, bank 1.
 
         JSR WaitForNMI          ;($BCCC)($FF74)Wait for VBlank interrupt.
@@ -3602,26 +3602,26 @@ IntroSpLoadLoop:
 
         STA SpriteRAM+$40,X     ;($BD52)
         INY                     ;($BD55)Store sprite Y position.
-IntroSpLoa_L_BD56:  INX                     ;
+IntroSpLoad_NextYPos:  INX                     ;
 
         LDA (DatPntr1),Y        ;($BD57)
         STA SpriteRAM+$40,X     ;($BD59)Store sprite pattern table value.
-IntroSpLoa_L_BD5C:  INY                     ;
+IntroSpLoad_NextPattern:  INY                     ;
         INX                     ;($BD5D)
 
 IntroSpLoa_Load_BD5E:  LDA (DatPntr1),Y        ;
         AND #$C0                ;($BD60)Get upper 2 bits of sprite data and store
         ORA #$01                ;($BD62)them as the sprite attribute byte.
 IntroSpLoa_Store_BD64:  STA SpriteRAM+$40,X     ;
-IntroSpLoa_L_BD67:  INX                     ;
+IntroSpLoad_NextAttrib:  INX                     ;
 
         LDA (DatPntr1),Y        ;($BD68)
         AND #$3F                ;($BD6A)Use the same byte but this time keep the
-IntroSpLoa_L_BD6C:  CLC                     ;lower 6 bits for the sprite x position.
+IntroSpLoad_CalcXPos:  CLC                     ;lower 6 bits for the sprite x position.
         ADC #$B4                ;($BD6D)
         STA SpriteRAM+$40,X     ;($BD6F)Add 180 to the x position and store it.
-IntroSpLoa_L_BD72:  INY                     ;
-IntroSpLoa_L_BD73:  INX                     ;
+IntroSpLoad_AdvanceData:  INY                     ;
+IntroSpLoad_AdvanceSprite:  INX                     ;
 
         BNE IntroSpLoadLoop     ;($BD74)Looop to load more sprite data.
 
@@ -3663,9 +3663,9 @@ IntroSpLoa_Load_BDA7:* LDA #$00                ;Point to the beginning of the St
 IntroSpLoa_Store_BDA9:  STA IntroPointer        ;
 
 IntroSpLoa_Load_BDAB:* LDA JoypadBtns          ;Get old button values and store them on the stack.
-IntroSpLoa_L_BDAD:  PHA                     ;
+IntroSpLoad_SaveButtons:  PHA                     ;
 IntroSpLoa_Call_BDAE:  JSR GetJoypadStatus     ;($C608)Get input button presses.
-IntroSpLoa_L_BDB1:  PLA                     ;Get the old values again and branch if something
+IntroSpLoad_RestoreButtons:  PLA                     ;Get the old values again and branch if something
 IntroSpLoa_Branch_BDB2:  BNE +                   ;was previously pressed.
 
 IntroSpLoa_Load_BDB4:  LDA JoypadBtns          ;Get joypad button presses.
@@ -3837,7 +3837,7 @@ IntroPalTbl3_Byte_BFB1:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,
 NMI:
 RESET:
 IRQ:
-IRQ_L_BFD8:  SEI                     ;Disable interrupts.
+IRQ_DisableInterrupts:  SEI                     ;Disable interrupts.
 IRQ_Count_BFD9:  INC MMCReset1           ;Reset MMC1 chip.
 IRQ_Jmp_BFDC:  JMP _DoReset            ;($FF8E)Continue with the reset process.
 

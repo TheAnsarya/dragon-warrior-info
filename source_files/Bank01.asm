@@ -47,11 +47,11 @@ BankPtr_Word_8026:  .word NULL              ;Unused.
 ;-------------------------------------------[Sound Engine]-------------------------------------------
 
 UpdateSound:
-UpdateSound_L_8028:  PHA                     ;
-UpdateSound_L_8029:  TXA                     ;
+UpdateSound_SaveA:  PHA                     ;
+UpdateSound_XToA:  TXA                     ;
         PHA                     ;($802A)Store X, Y and A.
-UpdateSound_L_802B:  TYA                     ;
-UpdateSound_L_802C:  PHA                     ;
+UpdateSound_YToA:  TYA                     ;
+UpdateSound_SaveY:  PHA                     ;
 
 UpdateSound_Load_802D:  LDX #MCTL_NOIS_SW       ;Noise channel software regs index.
         LDY #MCTL_SQ2_HW        ;($802F)SQ2 channel hardware regs index.
@@ -59,14 +59,14 @@ UpdateSound_Load_8031:  LDA SFXActive           ;Is an SFX active?
 UpdateSound_Branch_8033:  BEQ +                   ;If not, branch to skip SFX processing.
 
 UpdateSound_Load_8035:  LDA NoteOffset          ;
-UpdateSound_L_8037:  PHA                     ;Save a copy of note offset and then clear
+UpdateSound_SaveNote:  PHA                     ;Save a copy of note offset and then clear
 UpdateSound_Load_8038:  LDA #$00                ;it as it is not used in SFX processing.
 UpdateSound_Store_803A:  STA NoteOffset          ;
 
 UpdateSound_Call_803C:  JSR GetNextNote         ;($80CB)Check to see if time to get next channel note.
-UpdateSound_L_803F:  TAX                     ;
+UpdateSound_ResultToX:  TAX                     ;
 
-UpdateSound_L_8040:  PLA                     ;Restore note offset value.
+UpdateSound_RestNote:  PLA                     ;Restore note offset value.
 UpdateSound_Store_8041:  STA NoteOffset          ;
 
         TXA                     ;($8043)Is SFX still processing?
@@ -88,11 +88,11 @@ UpdateSound_Load_805A:  LDA #%00110000          ;Turn off volume for noise chann
 
 UpdateSound_Load_805F:* LDA TempoCounter           ;Tempo counter has the effect of slowing down the length
         CLC                     ;($8061)The music plays.  If the tempo is less than 150, the
-UpdateSound_L_8062:  ADC Tempo               ;amount it slows down is linear.  For example, if tempo is
+UpdateSound_AddTempo:  ADC Tempo               ;amount it slows down is linear.  For example, if tempo is
 UpdateSound_Store_8064:  STA TempoCounter           ;125, the music will slow down by 150/125 = 1.2 times.
         BCC SoundUpdateEnd      ;($8066)The values varies if tempo is greater than 150.
 
-UpdateSound_L_8068:  SBC #$96                ;Subtract 150 from tempo counter.
+UpdateSound_SubBase:  SBC #$96                ;Subtract 150 from tempo counter.
 UpdateSound_Store_806A:  STA TempoCounter           ;
 
 UpdateSound_Load_806C:  LDX #MCTL_TRI_SW        ;TRI channel software regs index.
@@ -117,10 +117,10 @@ SoundUpdat_Load_8087:  LDY #$00                ;
 SoundUpdat_Store_808B:  STA MusicTrigger        ;
 
         PLA                     ;($808E)
-SoundUpdat_L_808F:  TAY                     ;
-SoundUpdat_L_8090:  PLA                     ;Restore X, Y and A.
-SoundUpdat_L_8091:  TAX                     ;
-SoundUpdat_L_8092:  PLA                     ;
+SoundUpdat_RestoreY:  TAY                     ;
+SoundUpdat_RestoreX:  PLA                     ;Restore X, Y and A.
+SoundUpdat_ToXReg:  TAX                     ;
+SoundUpdat_RestoreA:  PLA                     ;
         RTS                     ;($8093)
 
 ;----------------------------------------------------------------------------------------------------
@@ -135,12 +135,12 @@ MusicReturn_Branch_809C:  BNE ProcessAudioByte    ;
 ;----------------------------------------------------------------------------------------------------
 
 LoadMusicNote:
-LoadMusicN_L_809E:  CLC                     ;Add any existing offset into note table.
-LoadMusicN_L_809F:  ADC NoteOffset          ;Used to change the sound of various dungeon levels.
+LoadMusicN_PrepAdd:  CLC                     ;Add any existing offset into note table.
+LoadMusicN_AddOffset:  ADC NoteOffset          ;Used to change the sound of various dungeon levels.
 
-LoadMusicN_L_80A1:  ASL                     ;*2.  Each table value is 2 bytes.
+LoadMusicN_Mult2:  ASL                     ;*2.  Each table value is 2 bytes.
         STX MusicTemp           ;($80A2)Save X.
-LoadMusicN_L_80A4:  TAX                     ;Use calculated value as index into note table.
+LoadMusicN_ToIndex:  TAX                     ;Use calculated value as index into note table.
 
 LoadMusicN_Load_80A5:  LDA MusicalNotesTbl,X   ;
 LoadMusicN_Store_80A8:  STA SQ1Cntrl2,Y         ;Store note data bytes into its
@@ -201,7 +201,7 @@ ProcessAud_Cmp_80E2:  CMP #MCTL_CNTRL1        ;Check if channel control 1 byte.
         CMP #MCTL_NOISE_VOL     ;($80E8)Check if noise channel volume control byte.
         BEQ NoiseVolume         ;($80EA)If so, branch to load noise volume.
 
-ProcessAud_L_80EC:  BCS GetNoteOffset       ;Is this a note offset byte? If so, branch.
+ProcessAud_ChkNoteOff:  BCS GetNoteOffset       ;Is this a note offset byte? If so, branch.
 
         CMP #MCTL_END_SPACE     ;($80EE)Check if end quiet time between notes byte.
         BEQ EndChnlQuietTime    ;($80F0)If so, branch to end quiet time.
@@ -209,7 +209,7 @@ ProcessAud_L_80EC:  BCS GetNoteOffset       ;Is this a note offset byte? If so, 
         BCS ChannelQuietTime    ;($80F2)Add quiet time between notes? if so branch to get quiet time.
 
 ProcessAud_Cmp_80F4:  CMP #MCTL_NOISE_CFG     ;Is byte a noise channel config byte?
-ProcessAud_L_80F6:  BCS LoadNoise           ;If so, branch to configure noise channel.
+ProcessAud_ChkNoise:  BCS LoadNoise           ;If so, branch to configure noise channel.
 
         CMP #MCTL_NOTE          ;($80F8)Is byte a musical note?
         BCS LoadMusicNote       ;($80FA)If so, branch to load note.
@@ -233,7 +233,7 @@ ChangeTempo_Jmp_8104:  JMP ProcessAudioByte    ;($80D3)Determine what to do with
 
 MusicJump:
         JSR GetAudioData        ;($8107)($8155)Get next music data byte.
-MusicJump_L_810A:  PHA                     ;
+MusicJump_SaveLo:  PHA                     ;
         JSR GetAudioData        ;($810B)($8155)Get next music data byte.
         PHA                     ;($810E)Get jump address from music data.
         LDA SQ1IndexLB,X        ;($810F)
@@ -355,7 +355,7 @@ InitMusicSFX_Load_81A0:  LDX #$FF                ;Indicate the sound engine is a
 DoMusic:
         ASL                     ;($81A8)Index into table is 4*n + 4. Points to last word in table entry.
         STA MusicTemp           ;($81A9)
-DoMusic_L_81AB:  ASL                     ;There are 3 words for each music entry in the table.
+DoMusic_Mult2:  ASL                     ;There are 3 words for each music entry in the table.
         ADC MusicTemp           ;($81AC)The entries are for SQ1, SQ2 and TRI from left to right.
         ADC #$04                ;($81AE)
         TAY                     ;($81B0)Use Y as index into table.
@@ -382,7 +382,7 @@ ChannelIni_Store_81C8:* STA SQ1IndexLB,X        ;
         DEY                     ;($81CF)
         DEX                     ;($81D0)
         DEX                     ;($81D1)Have three pointers been picked up?
-ChannelIni_L_81D2:  BPL ChannelInitializeLoop        ;If not, branch to get the next pointer.
+ChannelIni_LoopCont:  BPL ChannelInitializeLoop        ;If not, branch to get the next pointer.
 
         LDA #$00                ;($81D4)
 ChannelIni_Store_81D6:  STA NoteOffset          ;
@@ -3064,7 +3064,7 @@ EndGameCle_Store_935E:  STA PPUControl1         ;Turn on sprites and background.
 
 ExitGame:
 ExitGame_Load_9362:  LDA #MSC_NOSOUND        ;Silence music.
-ExitGame_L_9364:  BRK                     ;
+ExitGame_PlaySilence:  BRK                     ;
         .byte $04, $17          ;($9365)($81A0)InitMusicSFX, bank 1.
 
         BRK                     ;($9367)Load palettes for end credits.
@@ -3080,7 +3080,7 @@ ExitGame_Store_9374:  STA NPCUpdateCounter       ;
 ExitGame_Load_9376:  LDX #$3B                ;Prepare to clear NPC position RAM.
 
 ExitGame_Store_9378:* STA NPCXPos,X           ;
-ExitGame_L_937A:  DEX                     ;Clear NPC map position RAM (60 bytes).
+ExitGame_DecNPCIdx:  DEX                     ;Clear NPC map position RAM (60 bytes).
         BPL -                   ;($937B)
 
         LDA #EN_DRAGONLORD2     ;($937D)Set enemy number.
@@ -3093,7 +3093,7 @@ ExitGame_Call_9384:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
 ExitGame_Load_938A:  LDA #$FF                ;Set hit points.
 ExitGame_Store_938C:  STA HitPoints           ;
 
-ExitGame_L_938E:  BRK                     ;Load BG and sprite palettes for selecting saved game.
+ExitGame_LoadPals:  BRK                     ;Load BG and sprite palettes for selecting saved game.
         .byte $01, $07          ;($938F)($AA7E)LoadStartPals, bank 0.
 
         JSR Dowindow            ;($9391)($C6F0)display on-screen window.
@@ -3112,7 +3112,7 @@ DoEndCredits_Call_939A:  JSR WaitForNMI          ;($FF74)Wait for VBlank interru
         BRK                     ;($939F)
 DoEndCredits_Byte_93A0:  .byte $04, $17          ;($81A0)InitMusicSFX, bank 1.
 
-DoEndCredits_L_93A2:  BRK                     ;Wait for the music clip to end.
+DoEndCredits_WaitMusic:  BRK                     ;Wait for the music clip to end.
         .byte $03, $17          ;($93A3)($815E)WaitForMusicEnd, bank 1.
 
         BRK                     ;($93A5)Load palettes for end credits.
@@ -3145,7 +3145,7 @@ DoEndCredits_Call_93C4:  JSR EndGameClearPPU     ;($9354)Clear the display conte
 
         LDY #$08                ;($93D3)Load 8 bytes of attribute table data.
         * JSR AddPPUBufferEntry ;($93D5)($C690)Add data to PPU buffer.
-DoEndCredits_L_93D8:  DEY                     ;Done loading attribute table bytes?
+DoEndCredits_DecAttrib:  DEY                     ;Done loading attribute table bytes?
         BNE -                   ;($93D9)If not, branch to load more.
 
         LDA #$AA                ;($93DB)Load different attribute table data.
@@ -3153,7 +3153,7 @@ DoEndCredits_L_93D8:  DEY                     ;Done loading attribute table byte
 
         LDY #$20                ;($93DF)Fill the remainder of the attribute table with the data.
         * JSR AddPPUBufferEntry ;($93E1)($C690)Add data to PPU buffer.
-DoEndCredits_L_93E4:  DEY                     ;Done loading attribute table bytes?
+DoEndCredits_DecFill:  DEY                     ;Done loading attribute table bytes?
         BNE -                   ;($93E5)If not, branch to load more.
 
         JSR WaitForNMI          ;($93E7)($FF74)Wait for VBlank interrupt.
@@ -3172,7 +3172,7 @@ RollCredits:
 RollCredits_Load_93FA:  LDY #$00                ;
 RollCredits_Load_93FC:  LDA (DatPntr1),Y        ;First 2 bytes of data block are the PPU address.
 RollCredits_Store_93FE:  STA PPUAddrLB           ;Load those bytes into the PPU data buffer as the
-RollCredits_L_9400:  INY                     ;target address for the data write.
+RollCredits_ToHiByte:  INY                     ;target address for the data write.
         LDA (DatPntr1),Y        ;($9401)
         STA PPUAddrUB           ;($9403)
 
@@ -3188,7 +3188,7 @@ DoRepeatedValue:
         INY                     ;($940F)
 DoRepeated_Load_9410:  LDA (DatPntr1),Y        ;Get next byte. It is the number of times to repeat.
 DoRepeated_Store_9412:  STA GenByte3C           ;
-DoRepeated_L_9414:  INY                     ;
+DoRepeated_ToRepByte:  INY                     ;
         LDA (DatPntr1),Y        ;($9415)Get next byte. It is the byte to repeatedly load.
         STA PPUDataByte         ;($9417)Store byte in PPU buffer.
 
@@ -3212,7 +3212,7 @@ DoNonRepea_Count_942E:  INY                     ;Increment data index.
 
 FinishEndDataBlock:
         INY                     ;($9431)Increment data index and prepare to add
-FinishEndD_L_9432:  TYA                     ;it to the data pointer.
+FinishEndD_YToAcc:  TYA                     ;it to the data pointer.
 
         CLC                     ;($9433)
 FinishEndD_Store_9434:  ADC DatPntr1LB          ;Move pointer to start of next block of credits.
@@ -3254,11 +3254,11 @@ CheckCredi_Branch_9462:  BEQ CheckCreditEnd      ;if so, branch to wait for 3 mu
 
 CheckCredi_Cmp_9464:  CMP #$0D                ;Is this the 14th or less credit screen?
 CheckCredi_Branch_9466:  BEQ MusicTiming2        ;
-CheckCredi_L_9468:  BCC MusicTiming2        ;if so, branch to wait for 2 music timing events.
+CheckCredi_Do2Timing:  BCC MusicTiming2        ;if so, branch to wait for 2 music timing events.
 
 CheckCreditEnd:
 CheckCredi_Cmp_946A:  CMP #$12                ;Have all 18 screens of credits been shown?
-CheckCredi_L_946C:  BCC MusicTiming3        ;If not, branch to do more.
+CheckCredi_NotDone:  BCC MusicTiming3        ;If not, branch to do more.
 
 FinishCredits:
 FinishCred_Load_946E:  LDY #$A0                ;Wait 160 frames.
@@ -3278,7 +3278,7 @@ WaitForMusTmng:
         * BRK                   ;($947D)Wait for timing queue in music.
 WaitForMus_Byte_947E:  .byte $03, $17          ;($815E)WaitForMusicEnd, bank 1.
 
-WaitForMus_L_9480:  DEY                     ;Is it time to move to the next set of credits?
+WaitForMus_DecTimer:  DEY                     ;Is it time to move to the next set of credits?
 WaitForMus_Branch_9481:  BNE -                   ;If not, branch to wait more.
         INC EndCreditCount      ;($9483)Increment credit screen counter.
 
