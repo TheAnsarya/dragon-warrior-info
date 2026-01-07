@@ -10,8 +10,8 @@ Convert all generic `_L_XXXX` address-based labels in the Dragon Warrior disasse
 |------|----------|---------|-----------|--------|
 | Bank02.asm | 10 | 10 | 0 | ✅ Complete |
 | Bank00.asm | 266 | 266 | 0 | ✅ Complete |
-| Bank01.asm | 259 | 34 | 225 | 🔄 In Progress |
-| **Total** | **535** | **310** | **225** | 58% Complete |
+| Bank01.asm | 259 | 145 | 114 | 🔄 In Progress |
+| **Total** | **535** | **421** | **114** | 79% Complete |
 
 ## Naming Convention
 - **Before:** `FunctionName_L_XXXX` (e.g., `RemoveWindow_L_A7AA`)
@@ -71,18 +71,66 @@ All 266 labels renamed! Key sections completed:
 - **NPCXScreen/NPCYScreen** - NPC screen coordinate calculation
 - **IRQ** - Interrupt handler
 
-### Bank01.asm Labels (34 renamed, 225 remaining)
+### Bank01.asm Labels (145 renamed, 114 remaining)
 
 Sections renamed:
-- **UpdateSound** - Sound engine register saves/restores, tempo handling
-- **LoadMusicN** - Music note loading
-- **ProcessAud** - Audio byte processing
-- **MusicJump** - Music data jump handling
-- **DoMusic/ChannelIni** - Music initialization
-- **ExitGame** - Game exit and cleanup
-- **DoEndCredits** - End credits display
-- **RollCredits** - Credits scrolling
-- **WaitForMus** - Music timing sync
+- **UpdateSound** - Sound engine register saves/restores, tempo handling (13 labels)
+- **LoadMusicN** - Music note loading (4 labels)
+- **ProcessAud** - Audio byte processing (3 labels)
+- **MusicJump** - Music data jump handling (1 label)
+- **DoMusic/ChannelIni** - Music initialization (2 labels)
+- **ExitGame** - Game exit and cleanup (3 labels)
+- **DoEndCredits** - End credits display (2 labels)
+- **RollCredits** - Credits scrolling (3 labels)
+- **WaitForMus** - Music timing sync (3 labels)
+- **CopyTreasu** - Treasure table copy (1 label)
+- **LoadEnemyS** - Enemy stats loading (1 label)
+- **CopyROMDone** - ROM copy completion (1 label)
+- **SetBaseStats** - Player base stats setup (7 labels)
+- **WindowUnus** - Unused window function (1 label)
+- **WindowCons** - Window construction (2 labels)
+- **GetWndConfig** - Window configuration (4 labels)
+- **CheckWndBo** - Window bottom border check (1 label)
+- **SeparateCo** - Control byte separation (1 label)
+- **WindowBlan** - Window blank tiles (1 label)
+- **WindowHori** - Window horizontal tiles (1 label)
+- **WindowHitM** - Hit/magic points display (1 label)
+- **WindowShow** - Show level, name, etc (1 label)
+- **WindowGetU** - Get upper name characters (1 label)
+- **WndLwr4Saved** - Get lower 4 saved chars (1 label)
+- **WindowItem** - Item descriptions (1 label)
+- **WindowBuil** - Window build variable/end (2 labels)
+- **WindowStor** - Store PPU data (3 labels)
+- **DoInvConv** - Inventory conversion (1 label)
+- **IndexedMult** - Indexed multiplication (1 label)
+- **GetBCDByte** - BCD byte conversion (2 labels)
+- **ClearBCDLe** - Clear BCD leading zeros (1 label)
+- **ClearTempB** - Clear temp buffer (3 labels)
+- **LookupDesc** - Description lookup (2 labels)
+- **ClearAndSe** - Clear and set buffer length (1 label)
+- **PrepIndexes** - Prepare description indexes (5 labels)
+- **SecondDesc** - Second description half (1 label)
+- **WindowGetS** - Get spell description (2 labels)
+- **GetEnDescH** - Get enemy description half (4 labels)
+- **GetDescPtr** - Get description pointer (1 label)
+- **BaseDescFo** - Base description found (2 labels)
+- **ControlNex** - Control next row/column (2 labels)
+- **PrepPPUAdd** - Prepare PPU address (1 label)
+- **UpdateCurs** - Update cursor graphics (1 label)
+- **SetCursorT** - Set cursor tile (2 labels)
+- **WindowProc** - Window process input (6 labels)
+- **WindowAPre** - Window A button pressed (1 label)
+- **WindowBPre** - Window B button pressed (1 label)
+- **WndDownCont3** - Window down continuation (1 label)
+- **WindowLeft** - Window left pressed (1 label)
+- **WndRightCo** - Window right continuation (2 labels)
+- **WindowSpcl** - Window special cursor move (1 label)
+- **WindowCalc** - Window calculate selection (6 labels)
+- **WindowDoRow** - Window do row (4 labels)
+- **WindowRowL** - Window row loop (3 labels)
+- **WindowCros** - Window cross nametable (1 label)
+- **WindowSing** - Window single nametable (1 label)
+- **WindowIncP** - Window increment PPU row (1 label)
 
 ## Next Steps
 1. Continue Bank01.asm label renaming (225 remaining)

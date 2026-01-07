@@ -3846,7 +3846,7 @@ CopyTreasureTable:
 
         * LDA TreasureTable,X   ;($9954)Copy treasure table into RAM starting at $0320.
         STA BlockRAM+$20,X      ;($9957)
-CopyTreasu_L_995A:  DEX                     ;Have 124 bytes been copied?
+CopyTreasu_DecIdx:  DEX                     ;Have 124 bytes been copied?
         BPL -                   ;($995B)If not, branch to copy more.
 
         PLA                     ;($995D)
@@ -3872,7 +3872,7 @@ LoadEnemyStats:
 
         * LDA (GenPtr3C),Y      ;($9975)Use the general pointer to load the enemy data.
         STA EnBaseAtt,Y         ;($9977)
-LoadEnemyS_L_997A:  DEY                     ;
+LoadEnemyS_DecIdx:  DEY                     ;
         BPL -                   ;($997B)More data to load? If so, branch to load more.
 
         PLA                     ;($997D)
@@ -3920,14 +3920,14 @@ CopyROMLoop_Jmp_99AD:* JMP CopyROMLoop         ;($998C)Loop to copy more data.
 CopyROMDone:
         PLA                     ;($99B0)
         TAY                     ;($99B1)Restore Y and A and return.
-CopyROMDone_L_99B2:  PLA                     ;
+CopyROMDone_RestoreA:  PLA                     ;
         RTS                     ;($99B3)
 
 ;----------------------------------------------------------------------------------------------------
 
 SetBaseStats:
         TYA                     ;($99B4)Save Y on the stack.
-SetBaseStats_L_99B5:  PHA                     ;
+SetBaseStats_SaveY:  PHA                     ;
 
         LDA BaseStatsTable-2    ;($99B6)
         STA PlayerDatPtrLB      ;($99B9)Load base address for the BaseStatsTable.
@@ -3945,22 +3945,22 @@ SetBaseStats_Store_99C9:  STA DisplayedAgility        ;Load player's base agilit
 
 SetBaseStats_Load_99CC:  LDA (PlayerDatPtr),Y    ;
         STA DisplayedMaxHP      ;($99CE)Load player's base max HP.
-SetBaseStats_L_99D0:  INY                     ;
+SetBaseStats_NextStat:  INY                     ;
 
 SetBaseStats_Load_99D1:  LDA (PlayerDatPtr),Y    ;
 SetBaseStats_Store_99D3:  STA DisplayedMaxMP      ;Load player's base MP.
-SetBaseStats_L_99D5:  INY                     ;
+SetBaseStats_ToSpells:  INY                     ;
 
 SetBaseStats_Load_99D6:  LDA (PlayerDatPtr),Y    ;
-SetBaseStats_L_99D8:  ORA ModsnSpells         ;Load player's healmore/hurtmore spells.
+SetBaseStats_MergeSpells:  ORA ModsnSpells         ;Load player's healmore/hurtmore spells.
 SetBaseStats_Store_99DA:  STA ModsnSpells         ;
-SetBaseStats_L_99DC:  INY                     ;
+SetBaseStats_ToOther:  INY                     ;
 
 SetBaseStats_Load_99DD:  LDA (PlayerDatPtr),Y    ;Load player's other spells.
 SetBaseStats_Store_99DF:  STA SpellFlags          ;
 
-SetBaseStats_L_99E1:  PLA                     ;
-SetBaseStats_L_99E2:  TAY                     ;Restore Y and return.
+SetBaseStats_RestoreY:  PLA                     ;
+SetBaseStats_YBack:  TAY                     ;Restore Y and return.
 SetBaseStats_Exit_99E3:  RTS                     ;
 
 ;----------------------------------------------------------------------------------------------------
@@ -4494,7 +4494,7 @@ WindowUnus_Store_A181:  PLA                     ;Pull the value off the stack.
         ADC #$01                ;($A183)
         STA GenPtr3ELB          ;($A185)Add the value to the pointer.
         PLA                     ;($A187)
-WindowUnus_L_A188:  ADC #$00                ;
+WindowUnus_AddCarry:  ADC #$00                ;
         STA GenPtr3EUB          ;($A18A)
 
         PHA                     ;($A18C)
@@ -4536,11 +4536,11 @@ WindowCons_Call_A1B4:  JSR GetWndConfig        ;($A1E4)Get window configuration 
 
         LDA WindowType          ;($A1BF)
         CMP #WND_SPELL1         ;($A1C2)Special case. Don't destroy these windows when done.
-WindowCons_L_A1C4:  BCC WindowConstructDone    ;The spell 1 window is never used and the alphabet
+WindowCons_ChkLower:  BCC WindowConstructDone    ;The spell 1 window is never used and the alphabet
         CMP #WINDOW_ALPHBT      ;($A1C6)window does not disappear when an item is selected.
         BCS WindowConstructDone ;($A1C8)
 
-WindowCons_L_A1CA:  BRK                     ;Remove window from screen.
+WindowCons_RemoveWnd:  BRK                     ;Remove window from screen.
         .byte $05, $07          ;($A1CB)($A7A2)RemoveWindow, bank 0.
 
 WindowConstructDone:
@@ -4574,7 +4574,7 @@ GetWndConfig:
         INY                     ;($A1EB)
         LDA (WindowDataPointer),Y;($A1EC)
         STA WindowHeightBlocks  ;($A1EE)Get window height in block from table.
-GetWndConfig_L_A1F1:  ASL                     ;
+GetWndConfig_ToTiles:  ASL                     ;
         STA WindowHeight        ;($A1F2)Convert window height to tiles,
 
 GetWndConfig_L_A1F5:  INY                     ;
@@ -4584,7 +4584,7 @@ GetWndConfig_L_A1F5:  INY                     ;
         INY                     ;($A1FB)
         LDA (WindowDataPointer),Y;($A1FC)Get window position from table.
         STA WindowPosition      ;($A1FE)
-GetWndConfig_L_A201:  PHA                     ;
+GetWndConfig_SavePos:  PHA                     ;
 
         AND #$0F                ;($A202)
         ASL                     ;($A204)Extract and save column position nibble.
@@ -4599,7 +4599,7 @@ GetWndConfig_Store_A205:  STA WindowColumnPosition           ;
 
         INY                     ;($A20F)MSB set in window options byte indicates its
         LDA WindowOptions       ;($A210)a selection window. Is this a selection window?
-GetWndConfig_L_A213:  BPL +                   ;If not, branch to skip selection window bytes.
+GetWndConfig_NotSelect:  BPL +                   ;If not, branch to skip selection window bytes.
 
 GetWndConfig_Load_A215:  LDA (WindowDataPointer),Y       ;A selection window.  Get byte containing
         STA WindowColumns       ;($A217)column width in tiles.
@@ -4705,7 +4705,7 @@ WindowBotLeftCorner:
 
 CheckWndBottom:
         LDX WindowYPosition     ;($A2A8)Not in left most or right most columns.
-CheckWndBo_L_A2AB:  INX                     ;
+CheckWndBo_IncYPos:  INX                     ;
         CPX WindowHeight        ;($A2AC)In bottom column?
         BNE +                   ;($A2AF)If not, branch to keep blank tile as working tile.
         LDA #TL_BOTTOM          ;($A2B1)Border pattern - bottom border.
@@ -4762,7 +4762,7 @@ SeparateControlByte:
 
         PLA                     ;($A2F9)
         LSR                     ;($A2FA)
-SeparateCo_L_A2FB:  LSR                     ;Shift control bits to lower end of byte and save.
+SeparateCo_ShiftBits:  LSR                     ;Shift control bits to lower end of byte and save.
         LSR                     ;($A2FC)
         STA WindowCcontrol      ;($A2FD)
         RTS                     ;($A300)
@@ -4796,7 +4796,7 @@ WindowBlankTiles:
 
         JSR SetCountLength      ;($A321)($A600)Calculate the required length of the counter.
         * BIT WindowBuildPhase  ;($A324)In the second phase of window building?
-WindowBlan_L_A327:  BVS +                   ;If so, branch to skip building buffer.
+WindowBlan_Phase2:  BVS +                   ;If so, branch to skip building buffer.
 
         JSR BuildWndLine        ;($A329)($A546)Transfer data into window line buffer.
 WindowBlan_Jmp_A32C:  JMP NextBlankTile       ;($A332)Move to next blank tile.
@@ -4812,7 +4812,7 @@ NextBlankTile:
 
 WindowHorizontalTiles:
         BIT WindowOptions       ;($A338)Branch always.  This bit is never set for any of the windows.
-WindowHori_L_A33B:  BVC DoHorizontalTiles         ;
+WindowHori_DoTiles:  BVC DoHorizontalTiles         ;
 
         LDA #TL_BLANK_TILE1     ;($A33D)Blank tile.
         STA WorkTile            ;($A33F)
@@ -4840,7 +4840,7 @@ WindowHitM_Load_A35E:  LDA #$03                ;Max number is 3 digits.
 
         LDX #HitPoints          ;($A363)Prepare to convert hitpoints to BCD.
         LDA WindowParam         ;($A365)
-WindowHitM_L_A368:  AND #$04                ;Is bit 2 of parameter byte set?
+WindowHitM_ChkBit2:  AND #$04                ;Is bit 2 of parameter byte set?
         BEQ +                   ;($A36A)If so, branch to convert hit points.
 
         LDX #MagicPoints        ;($A36C)Convert magic points to BCD.
@@ -4896,7 +4896,7 @@ WindowShowName:
         BEQ WindowFullSaved     ;($A3AA)The SaveSelected variable is set before this function is called.
 
         CMP #$05                ;($A3AC)Get the lower 4 letters of a saved character.
-WindowShow_L_A3AE:  BCS WndLwr4Saved        ;The SaveSelected variable is set with the WindowParam variable.
+WindowShow_DoLower:  BCS WndLwr4Saved        ;The SaveSelected variable is set with the WindowParam variable.
 
 WindowPrepareGetLower:
         LDA #$04                ;($A3B0)Set buffer length to 4.
@@ -4926,7 +4926,7 @@ WindowGetfullName:
 WindowGetUpperName:
         LDA DispName4,X         ;($A3D3)Load name character and save it in the buffer.
         STA TempBuffer-1,Y      ;($A3D6)
-WindowGetU_L_A3D9:  INX                     ;
+WindowGetU_NextChar:  INX                     ;
         DEY                     ;($A3DA)Have 4 characters been loaded?
         BNE WindowGetUpperName  ;($A3DB)If not, branch to get next character.
 
@@ -4938,7 +4938,7 @@ WndLwr4Saved_Store_A3E2:  STA SubBufLength        ;
 
         LDA WindowParameter     ;($A3E5)
         SEC                     ;($A3E8)Select the desired save game by subtracting 5
-WndLwr4Saved_L_A3E9:  SBC #$05                ;from the WindowParameter variable.
+WndLwr4Saved_GetSlot:  SBC #$05                ;from the WindowParameter variable.
 WndLwr4Saved_Store_A3EB:  STA SaveSelected        ;
 
         JSR WindowLoadGameDat   ;($A3EE)($F685)Load selected game into memory.
@@ -4962,7 +4962,7 @@ WindowItem_Load_A3FF:  LDA #$09                ;Max buffer length is 9 character
 
         LDA WindowParameter     ;($A40B)
         ADC #$08                ;($A40E)Add 8 to the description buffer
-WindowItem_L_A410:  TAX                     ;index and get description byte.
+WindowItem_ToIndex:  TAX                     ;index and get description byte.
         LDA DescBuf,X           ;($A411)
 
 WindowItem_Call_A413:  JSR WpnArmrConv         ;($A685)Convert index to proper weapon/armor description byte.
@@ -5132,7 +5132,7 @@ WindowBuildVariable:
         CMP #$02                ;($A4EA)without handling the last line.
         BEQ WindowBuildVarDone  ;($A4EC)
 
-WindowBuil_L_A4EE:  AND #$03                ;Is the parameter anything but 0 or 2?
+WindowBuil_MaskParm:  AND #$03                ;Is the parameter anything but 0 or 2?
         BNE WindowBuildEnd      ;($A4F0)If so, branch to finish window.
 
         LDA WindowBuildRow      ;($A4F2)Is this the last row?
@@ -5162,7 +5162,7 @@ WindowBuil_Load_A50B:  LDA WindowYPosition             ;If Y position of window 
         ADC WindowYPosition     ;($A515)
         STA WindowHeight        ;($A518)Required to properly form inventory windows.
 
-WindowBuil_L_A51B:  LSR                     ;
+WindowBuil_ToBlocks:  LSR                     ;
 WindowBuil_Store_A51C:  STA WindowHeightBlocks       ;/2. Block height is half the tile height.
         LDA WindowYPosition     ;($A51F)
 
@@ -5244,7 +5244,7 @@ WindowNext_Cmp_A579:  CMP WindowWidth            ;If so, branch to exit.
 ;----------------------------------------------------------------------------------------------------
 
 WindowStorePPUDat:
-WindowStor_L_A58B:  PHA                     ;
+WindowStor_SaveA:  PHA                     ;
         TXA                     ;($A58C)
         PHA                     ;($A58D)Save a current copy of X,Y and A on the stack.
         TYA                     ;($A58E)
@@ -5265,7 +5265,7 @@ WindowStor_L_A58B:  PHA                     ;
 
         LDA PPURowBytesLB       ;($A5A8)
         CLC                     ;($A5AA)
-WindowStor_L_A5AB:  ADC WindowXPosition             ;Add X position of window to calculated value.
+WindowStor_AddXPos:  ADC WindowXPosition             ;Add X position of window to calculated value.
         STA PPURowBytesLB       ;($A5AE)Increment upper byte on a carry.
         BCC WindowAddOffsetToAddr;($A5B0)
         INC PPURowBytesUB       ;($A5B2)
@@ -5286,7 +5286,7 @@ WindowAddO_Store_A5BF:  STA PPUAddrUB           ;
 
 WindowStorePPUDatEnd:
         PLA                     ;($A5C8)
-WindowStor_L_A5C9:  TAY                     ;
+WindowStor_RestoreY:  TAY                     ;
         PLA                     ;($A5CA)Restore X,Y and A from the stack.
         TAX                     ;($A5CB)
         PLA                     ;($A5CC)
@@ -5410,7 +5410,7 @@ DoInvConv:
 DoInvConv_Cmp_A65F:  CMP #$04                ;Is item shop inventory the target?
         BEQ ShopInvConv         ;($A661)If so, branch.
 
-DoInvConv_L_A663:  PLA                     ;No other matches. Return description
+DoInvConv_RestoreA:  PLA                     ;No other matches. Return description
         RTS                     ;($A664)buffer byte as description byte.
 
 PlayerInvConv:
@@ -5548,7 +5548,7 @@ IndexedMult_Store_A6F3:  STA IndexedMultiplyNum2         ;
         LDA GenPtr00UB,X        ;($A704)This function takes 2 bytes and multiplies them together.
         ADC IndexedMultiplyNum2 ;($A706)The 16-bit result is stored in the registers indexed by X.
         STA IndexedMultiplyNum2 ;($A709)
-IndexedMult_L_A70C:* ASL GenPtr00LB,X        ;
+IndexedMult_Shift:* ASL GenPtr00LB,X        ;
         ROL GenPtr00UB,X        ;($A70E)
         LDA IndexedMultiplyByte ;($A710)
 IndexedMult_Branch_A713:  BNE --                  ;
@@ -5573,7 +5573,7 @@ GetBCDByte:
         ROL BCDResult           ;($A72E)
         SEC                     ;($A730)Convert binary number in BCDByte0 to BCDByte2 to BCD.
         LDA BCDResult           ;($A731)
-GetBCDByte_L_A733:  SBC #$0A                ;
+GetBCDByte_Sub10:  SBC #$0A                ;
         BCC +                   ;($A735)
         STA BCDResult           ;($A737)
         INC BCDByte0            ;($A739)
@@ -5581,7 +5581,7 @@ GetBCDByte_L_A733:  SBC #$0A                ;
         BNE --                  ;($A73C)
 
         PLA                     ;($A73E)
-GetBCDByte_L_A73F:  TAX                     ;Restore X and return.
+GetBCDByte_RestoreX:  TAX                     ;Restore X and return.
         RTS                     ;($A740)
 
 ;----------------------------------------------------------------------------------------------------
@@ -5616,7 +5616,7 @@ ConvertToBCD_Exit_A763:  RTS                     ;
 
 ClearBCDLeadZeros:
         LDX SubBufLength        ;($A764)Point to end of BCD buffer.
-ClearBCDLe_L_A767:  DEX                     ;
+ClearBCDLe_DecIdx:  DEX                     ;
 
         * LDA TempBuffer,X      ;($A768)Decrement through buffer replacing all
         BNE +                   ;($A76B)leading zeros with blank tiles.
@@ -5629,14 +5629,14 @@ ClearBCDLe_Store_A76F:  STA TempBuffer,X        ;
 ;----------------------------------------------------------------------------------------------------
 
 ClearTempBuffer:
-ClearTempB_L_A776:  PHA                     ;
+ClearTempB_SaveA:  PHA                     ;
         TXA                     ;($A777)Save A and X.
         PHA                     ;($A778)
 
 ClearTempB_Load_A779:  LDX #$0C                ;
 ClearTempB_Load_A77B:  LDA #TL_BLANK_TILE1     ;
         * STA TempBuffer,X      ;($A77D)Load the entire 13 bytes of the buffer with blank tiles.
-ClearTempB_L_A780:  DEX                     ;
+ClearTempB_DecIdx:  DEX                     ;
         BPL -                   ;($A781)
 
 ClearTempB_L_A783:  PLA                     ;
@@ -5661,10 +5661,10 @@ LookupDesc_Store_A790:  STA WindowDescriptionIndex        ;Save a copy of descri
         JSR ClearAndSetBufferLen;($A793)($A7AE)Initialize buffer.
 
 LookupDesc_Load_A796:  LDA WindowDescriptionHalf         ;If on first half of description, load Y with 0.
-LookupDesc_L_A799:  AND #$01                ;
+LookupDesc_MaskHalf:  AND #$01                ;
 LookupDesc_Branch_A79B:  BEQ +                   ;If on second half of description, load Y with 1.
 LookupDesc_Load_A79D:  LDA #$01                ;
-LookupDesc_L_A79F:* TAY                     ;
+LookupDesc_ToY:* TAY                     ;
 
 LookupDesc_Load_A7A0:  LDA WindowDescriptionIndex        ;
         AND #$3F                ;($A7A3)Remove upper 2 bits of index.
@@ -5680,7 +5680,7 @@ ClearAndSetBufferLen:
         JSR ClearTempBuffer     ;($A7AE)($A7AE)Write blank tiles to buffer.
         LDA WindowDescriptionHalf;($A7B1)
 
-ClearAndSe_L_A7B4:  LSR                     ;On first half of description? If so, buffer length
+ClearAndSe_ChkHalf:  LSR                     ;On first half of description? If so, buffer length
         BCC +                   ;($A7B5)is fine.  Branch to return.
 
 ClearAndSe_Load_A7B7:  LDA #$08                ;
@@ -5690,23 +5690,23 @@ ClearAndSe_Store_A7B9:  STA SubBufLength        ;If on second half of descriptio
 ;----------------------------------------------------------------------------------------------------
 
 PrepIndexes:
-PrepIndexes_L_A7BD:  PHA                     ;Is item description on second table?
+PrepIndexes_SaveIdx:  PHA                     ;Is item description on second table?
         CMP #$20                ;($A7BE)
-PrepIndexes_L_A7C0:  BCC +                   ;If not, branch to use indexes as is.
+PrepIndexes_Table1:  BCC +                   ;If not, branch to use indexes as is.
 
         PLA                     ;($A7C2)Need to recompute index for ItemNames21Table.
-PrepIndexes_L_A7C3:  SBC #$1F                ;Subtract 31(first table has 31 entries).
-PrepIndexes_L_A7C5:  PHA                     ;
+PrepIndexes_SubOff:  SBC #$1F                ;Subtract 31(first table has 31 entries).
+PrepIndexes_SaveNew:  PHA                     ;
 
         TYA                     ;($A7C6)Need to recompute index into DescPtrTbl.
-PrepIndexes_L_A7C7:  CLC                     ;
-PrepIndexes_L_A7C8:  ADC #$02                ;Add 2 to index to point to table 2.
-PrepIndexes_L_A7CA:  TAY                     ;
+PrepIndexes_PrepAdd:  CLC                     ;
+PrepIndexes_Add2:  ADC #$02                ;Add 2 to index to point to table 2.
+PrepIndexes_ToY:  TAY                     ;
 
-PrepIndexes_L_A7CB:* INY                     ;Add 2 to pointer for DescPtrTbl. Index is now ready for use.
+PrepIndexes_Advance:* INY                     ;Add 2 to pointer for DescPtrTbl. Index is now ready for use.
         INY                     ;($A7CC)
 
-PrepIndexes_L_A7CD:  TYA                     ;A is used as the index.
+PrepIndexes_YToA:  TYA                     ;A is used as the index.
         JSR GetDescPtr          ;($A7CE)($A823)Get pointer into description table.
 
         PLA                     ;($A7D1)Restore index into description table.
@@ -5717,7 +5717,7 @@ PrepIndexes_Branch_A7D2:  BEQ --                  ;Is index 0? If so, branch to 
 
 SecondDescHalf:
         LDA WindowDescriptionHalf;($A7D7)Get which description half we are currently on.
-SecondDesc_L_A7DA:  EOR #$01                ;
+SecondDesc_Toggle:  EOR #$01                ;
 SecondDesc_Branch_A7DC:  BNE +                   ;Branch if value is set to 1.
 
         INC WindowThisDescription;($A7DE)Set value to 1.
@@ -5734,9 +5734,9 @@ SetWorkTile_Jmp_A7E8:  JMP BuildWndLine        ;($A546)Transfer data into window
 ;----------------------------------------------------------------------------------------------------
 
 WindowGetSpellDesc:
-WindowGetS_L_A7EB:  PHA                     ;
+WindowGetS_SaveIdx:  PHA                     ;
         JSR ClearTempBuffer     ;($A7EC)($A776)Write blank tiles to buffer.
-WindowGetS_L_A7EF:  PLA                     ;
+WindowGetS_RestoreIdx:  PLA                     ;
 
         STA DescriptionEntry    ;($A7F0)Store a copy of the description entry byte.
         CMP #$FF                ;($A7F2)Has the end of the buffer been reached?
@@ -5756,31 +5756,31 @@ GetEnDescH_Store_A801:  STA DescriptionEntry           ;Save index into enemy de
         LDY #$07                ;($A803)Start at index to first half of enemy names.
 GetEnDescH_Load_A805:  LDA WindowDescriptionHalf         ;Get indicator to which name half to retreive.
 
-GetEnDescH_L_A808:  LSR                     ;Do we want the first half of the name?
+GetEnDescH_ChkHalf:  LSR                     ;Do we want the first half of the name?
         BCC +                   ;($A809)If so branch.
 
         INY                     ;($A80B)We want second half of the enemy name. Increment index.
 
 GetEnDescH_Load_A80C:* LDA DescriptionEntry           ;
-GetEnDescH_L_A80E:  PHA                     ;
+GetEnDescH_SaveEntry:  PHA                     ;
         CMP #$33                ;($A80F)This part of the code should never be executed because
         BCC +                   ;($A811)it is incrementing to another table entry for enemy
         PLA                     ;($A813)numbers greater than 51 but there are only 40 different
-GetEnDescH_L_A814:  SBC #$32                ;enemies in the entire game.
-GetEnDescH_L_A816:  PHA                     ;
+GetEnDescH_SubOffset:  SBC #$32                ;enemies in the entire game.
+GetEnDescH_SaveAdj:  PHA                     ;
         INY                     ;($A817)
 
-GetEnDescH_L_A818:* TYA                     ;A now contains entry number into DescriptionPointerTable.
+GetEnDescH_YToA:* TYA                     ;A now contains entry number into DescriptionPointerTable.
         JSR GetDescPtr          ;($A819)($A823)Get pointer into description table.
 GetEnDescH_Call_A81C:  JSR ClearTempBuffer     ;($A776)Write blank tiles to buffer.
-GetEnDescH_L_A81F:  PLA
+GetEnDescH_RestoreIdx:  PLA
 GetEnDescH_Jmp_A820:  JMP WindowBuildTempBuf     ;($A842)Place description in temp buffer.
 
 ;----------------------------------------------------------------------------------------------------
 
 GetDescPtr:
         ASL                     ;($A823)*2. words in table are two bytes.
-GetDescPtr_L_A824:  TAX                     ;
+GetDescPtr_ToIndex:  TAX                     ;
 
         LDA DescPtrTbl,X        ;($A825)
 GetDescPtr_Store_A828:  STA DescPtrLB           ;Get desired address from table below.
@@ -5829,11 +5829,11 @@ NextDescri_Branch_A856:  BNE DescSearchOuterLoop   ;Is it 0?
         BNE DescSearchOuterLoop ;($A85A)Should always branch.
 
 BaseDescFound:
-BaseDescFo_L_A85C:* TYA                     ;
+BaseDescFo_YToA:* TYA                     ;
         CLC                     ;($A85D)
-BaseDescFo_L_A85E:  ADC DescPtrLB           ;Set description pointer to base of the description.
+BaseDescFo_AddOff:  ADC DescPtrLB           ;Set description pointer to base of the description.
 BaseDescFo_Store_A860:  STA DescPtrLB           ;
-BaseDescFo_L_A862:  BCC +                   ;
+BaseDescFo_ChkCarry:  BCC +                   ;
 BaseDescFo_Count_A864:  INC DescPtrUB           ;
 
         * LDY #$00              ;($A866)Zero out current index into description.
@@ -5877,11 +5877,11 @@ ControlNextCol:
 ControlNex_Count_A893:  DEC _ColumnsRemaining      ;was that the last column?
 ControlNex_Branch_A895:  BNE ControlCharSwapCol    ;If not, branch to move to next column.
 
-ControlNex_L_A897:  CLC                     ;
+ControlNex_PrepAdd:  CLC                     ;
         LDA PPUAddrLB           ;($A898)
         ADC #$20                ;($A89A)Move buffer address to next row.
 ControlNex_Store_A89C:  STA PPUAddrLB           ;Handle carry, if necessary.
-ControlNex_L_A89E:  BCC ControlNextRow        ;
+ControlNex_ChkCarry:  BCC ControlNextRow        ;
 ControlNex_Count_A8A0:  INC PPUAddrUB           ;
 
 ControlNextRow:
@@ -5896,7 +5896,7 @@ ControlNex_Exit_A8AC:  RTS                     ;
 
 PrepPPUAddressCalc:
 PrepPPUAdd_Load_A8AD:  LDA WindowColPos           ;Convert column tile position into block position.
-PrepPPUAdd_L_A8AF:  LSR                     ;
+PrepPPUAdd_ToBlocks:  LSR                     ;
 PrepPPUAdd_Store_A8B0:  STA XPosFromLeft        ;
 
 PrepPPUAdd_Load_A8B2:  LDA WindowRowPos           ;Convert row tile position into block position.
@@ -5951,7 +5951,7 @@ WindowGetB_Call_A8F0:  JSR UpdateCursorGFX     ;($A96C)Update cursor graphic in 
 WindowGetB_Branch_A8F5:  BEQ SetRetrigger        ;If not, branch to reset the retrigger.
 
 WindowGetB_Load_A8F7:  LDA FrameCounter        ;Reset the retrigger every 15 frames.
-WindowGetB_L_A8F9:  AND #$0F                ;Is it time to reset the retrigger?
+WindowGetB_ChkFrame:  AND #$0F                ;Is it time to reset the retrigger?
 WindowGetB_Branch_A8FB:  BNE NoRetrigger         ;If not, branch.
 
 SetRetrigger:
@@ -5983,11 +5983,11 @@ WindowInit_Store_A923:  STA WindowCursorYPosition       ;
 WindowInit_Store_A926:  STA WindowButtonRetrigger        ;
 
         LDA WindowColumns       ;($A929)
-WindowInit_L_A92C:  LSR                     ;Use WindowColumns to determine how many columns there
+WindowInit_ShiftCol:  LSR                     ;Use WindowColumns to determine how many columns there
         LSR                     ;($A92D)should be in multi column windows.  The only windows
-WindowInit_L_A92E:  LSR                     ;with multiple columns are the command windows and
+WindowInit_ShiftMore:  LSR                     ;with multiple columns are the command windows and
         LSR                     ;($A92F)the alphabet window.  The command windows have 2
-WindowInit_L_A930:  TAX                     ;columns while the alphabet window has 11.
+WindowInit_ToIndex:  TAX                     ;columns while the alphabet window has 11.
         LDA NumberColumnTable,X ;($A931)
         STA WindowSelectionNumberColumns;($A934)
 
@@ -5998,29 +5998,29 @@ WindowInit_Branch_A93C:  BNE WindowSetCrsrHome      ;If not, branch to skip sett
         LDX MessageSpeed        ;($A93E)Use current message speed to set the cursor in the window.
         STX WindowRow           ;($A940)Set the window row the same as the message speed(0,1 or 2).
         TXA                     ;($A942)
-WindowInit_L_A943:  ASL                     ;Multiply by 2 and set the Y cursor position.
+WindowInit_Mult2:  ASL                     ;Multiply by 2 and set the Y cursor position.
         STA WindowCursorYPosition;($A944)
 
 WindowSetCrsrHome:
         LDA WindowCursorHome    ;($A947)Save a copy of the cursor X,Y home position.
-WindowSetC_L_A94A:  PHA                     ;
+WindowSetC_SaveHome:  PHA                     ;
 
-WindowSetC_L_A94B:  AND #$0F                ;Save a copy of the home X coord but it is never used.
+WindowSetC_ExtractX:  AND #$0F                ;Save a copy of the home X coord but it is never used.
 WindowSetC_Store_A94D:  STA WindowUnused64F4       ;
 
         CLC                     ;($A950)
-WindowSetC_L_A951:  ADC WindowCursorXPosition       ;Convert home X coord from window coord to screen coord.
+WindowSetC_AddXOff:  ADC WindowCursorXPosition       ;Convert home X coord from window coord to screen coord.
         STA WindowCursorXPosition;($A954)
 
         PLA                     ;($A957)Restore cursor X,Y home position.
-WindowSetC_L_A958:  AND #$F0                ;
-WindowSetC_L_A95A:  LSR                     ;
+WindowSetC_MaskY:  AND #$F0                ;
+WindowSetC_ShiftY:  LSR                     ;
         LSR                     ;($A95B)Keep only Y coord and shift to lower nibble.
-WindowSetC_L_A95C:  LSR                     ;
+WindowSetC_ShiftMore:  LSR                     ;
         LSR                     ;($A95D)
 WindowSetC_Store_A95E:  STA WindowCursorYHome      ;This is the Y coord home position for the cursor.
 
-WindowSetC_L_A961:  ADC WindowCursorYPosition       ;Convert home Y coord from window coord to screen coord.
+WindowSetC_AddYOff:  ADC WindowCursorYPosition       ;Convert home Y coord from window coord to screen coord.
         STA WindowCursorYPosition;($A964)
 
 WindowSetC_Load_A967:  LDA #$05                ;
@@ -6033,7 +6033,7 @@ UpdateCursorGFX:
         LDX #TL_BLANK_TILE1     ;($A96C)Set cursor tile as blank tile.
 
 UpdateCurs_Load_A96E:  LDA FrameCounter        ;Get lower 5 bits of the frame counter.
-UpdateCurs_L_A970:  AND #$1F                ;
+UpdateCurs_MaskFrame:  AND #$1F                ;
 
 UpdateCurs_Cmp_A972:  CMP #$10                ;Is count halfway through?
         BCS SetCursorTile       ;($A974)If not, load cursor tile as right pointing arrow.
@@ -6046,11 +6046,11 @@ SetCursorTile:
 
         LDA WindowColumnPosition;($A97A)
         CLC                     ;($A97C)Calculate cursor X position on screen, in tiles.
-SetCursorT_L_A97D:  ADC WindowCursorXPosition       ;
+SetCursorT_AddX:  ADC WindowCursorXPosition       ;
         STA ScreenTextXCoordinate;($A980)
 
 SetCursorT_Load_A983:  LDA WindowRowPosition           ;
-SetCursorT_L_A985:  CLC                     ;Calculate cursor Y position on screen, in tiles.
+SetCursorT_PrepY:  CLC                     ;Calculate cursor Y position on screen, in tiles.
         ADC WindowCursorYPosition;($A986)
 SetCursorT_Store_A989:  STA ScreenTextYCoordinate       ;
 
@@ -6062,26 +6062,26 @@ SetCursorT_Jmp_A98F:  JMP AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
 WindowProcessInput:
         LDA WindowButtonPresses ;($A992)Get any buttons that have been pressed by the player.
 
-WindowProc_L_A995:  LSR                     ;Has the A button been pressed?
+WindowProc_ChkA:  LSR                     ;Has the A button been pressed?
         BCS WindowAPressed      ;($A996)If so, branch.
 
         LSR                     ;($A998)Has the B button been pressed?
-WindowProc_L_A999:  BCS WindowBPressed         ;If so, branch.
+WindowProc_ChkB:  BCS WindowBPressed         ;If so, branch.
 
 WindowProc_Store_A99B:  LSR                     ;Skip select and start while in selection window.
         LSR                     ;($A99C)
 
-WindowProc_L_A99D:  LSR                     ;Has the up button been pressed?
+WindowProc_ChkUp:  LSR                     ;Has the up button been pressed?
         BCS WindowUpPressed     ;($A99E)If so, branch.
 
 WindowProc_L_A9A0:  LSR                     ;Has the down button been pressed?
         BCS WindowDownPressed   ;($A9A1)If so, branch.
 
         LSR                     ;($A9A3)Has the left button been pressed?
-WindowProc_L_A9A4:  BCS WindowLeftPressed      ;If so, branch.
+WindowProc_ChkLeft:  BCS WindowLeftPressed      ;If so, branch.
 
         LSR                     ;($A9A6)Has no button been pressed?
-WindowProc_L_A9A7:  BCC WindowEndUpPressed     ;If so, branch to exit.
+WindowProc_ChkNone:  BCC WindowEndUpPressed     ;If so, branch to exit.
 
 WindowProc_Jmp_A9A9:  JMP WindowRightPressed     ;($AAC8)Process right button press.
 
@@ -6096,7 +6096,7 @@ WindowAPre_Store_A9B1:  STA WindowButtonRetrigger        ;
         JSR WindowUpdateCrsrPos ;($A9B4)($AB35)Update cursor position on screen.
 
 WindowAPre_Load_A9B7:  LDA #SFX_MENU_BTN       ;Menu button SFX.
-WindowAPre_L_A9B9:  BRK                     ;
+WindowAPre_PlaySFX:  BRK                     ;
         .byte $04, $17          ;($A9BA)($81A0)InitMusicSFX, bank 1.
 
         LDA WindowColumn        ;($A9BC)
@@ -6120,7 +6120,7 @@ WindowBPressed:
         JSR WindowUpdateCrsrPos ;($A9D1)($AB35)Update cursor position on screen.
 
 WindowBPre_Store_A9D4:  PLA                     ;Pull last return address off of stack.
-WindowBPre_L_A9D5:  PLA                     ;
+WindowBPre_RemoveRet:  PLA                     ;
 
 WindowBPre_Load_A9D6:  LDA #WINDOW_ABORT          ;Load abort indicator into A
 WindowBPre_Store_A9D8:  STA WindowSelectionResults       ;Store abort indicator in the selection results.
@@ -6201,7 +6201,7 @@ WndDownCont2_Store_AA3C:  STA WindowCursorYPosition       ;Is cursor Y position 
 
 WndDownCont3:
         CLC                     ;($AA41)
-WndDownCont3_L_AA42:  ADC #$02                ;Update cursor Y position and cursor row.
+WndDownCont3_Add2:  ADC #$02                ;Update cursor Y position and cursor row.
         STA WindowCursorYPosition;($AA44)
         INC WindowRow           ;($AA47)
 
@@ -6269,7 +6269,7 @@ WindowLeft_Store_AA9F:  STA WindowColumnLowerByte            ;
 
 WindowLeft_Load_AAA1:  LDA WindowCursorXPosition       ;
         SEC                     ;($AAA4)Subtract tiles to get final cursor X position.
-WindowLeft_L_AAA5:  SBC WindowColumnLowerByte            ;
+WindowLeft_SubTiles:  SBC WindowColumnLowerByte            ;
 
 WindowLeftUpdateFinish:
 WindowLeft_Store_AAA7:  STA WindowCursorXPosition       ;Update cursor X position.
@@ -6338,9 +6338,9 @@ WndRightCo_Call_AB01:  JSR WindowClearCursor      ;($AB30)Blank out cursor tile.
         INC WindowColumn        ;($AB04)Increment cursor column position.
 
 WndRightCo_Load_AB06:  LDA WindowColumns          ;Get number of tiles per column for this window.
-WndRightCo_L_AB09:  AND #$0F                ;
+WndRightCo_MaskTiles:  AND #$0F                ;
 
-WndRightCo_L_AB0B:  CLC                     ;Use tiles per column from above to update cursor X pos.
+WndRightCo_AddTiles:  CLC                     ;Use tiles per column from above to update cursor X pos.
         ADC WindowCursorXPosition;($AB0C)
 
 WindowRightUpdateFinish:
@@ -6392,7 +6392,7 @@ WindowSpcl_Cmp_AB47:  CMP #$07                ;
 WindowSpcl_Branch_AB49:  BEQ WindowSetCrsrBack      ;If so, branch to set cursor to BACK selection.
 
 WindowSpcl_Cmp_AB4B:  CMP #$08                ;is this the 9th, 10th or 11th column?
-WindowSpcl_L_AB4D:  BCC WindowEndUpdateCrsr    ;If so, branch to set cursor to END selection.
+WindowSpcl_ToEnd:  BCC WindowEndUpdateCrsr    ;If so, branch to set cursor to END selection.
 
 WindowSetCrsrEnd:
 WindowSetC_Load_AB4F:  LDA #$09                ;Set cursor to END selection in alphabet window.
@@ -6422,12 +6422,12 @@ WindowCalc_Store_AB6D:  STA WindowColumnLowerByte            ;Store number of co
 WindowCalc_Load_AB6F:  LDA #$00                ;
         STA WindowColumnUpperByte;($AB71)
 
-WindowCalc_L_AB73:  SEC                     ;
+WindowCalc_PrepSub:  SEC                     ;
 WindowCalc_Load_AB74:  LDA WindowHeight           ;
-WindowCalc_L_AB77:  SBC #$03                ;Value of first multiplicand is:
-WindowCalc_L_AB79:  LSR                     ;(window height in tiles-3)/2 + 1.
-WindowCalc_L_AB7A:  TAX                     ;
-WindowCalc_L_AB7B:  INX                     ;
+WindowCalc_Sub3:  SBC #$03                ;Value of first multiplicand is:
+WindowCalc_Div2:  LSR                     ;(window height in tiles-3)/2 + 1.
+WindowCalc_ToX:  TAX                     ;
+WindowCalc_Inc:  INX                     ;
         TXA                     ;($AB7C)
 
 WindowCalc_Load_AB7D:  LDX #WindowColumnLowerByte            ;Multiply values for selection result.
@@ -6435,7 +6435,7 @@ WindowCalc_Call_AB7F:  JSR IndexedMult         ;($A6EB)Get first part of selecti
 
         LDA WindowColumnLowerByte;($AB82)
         CLC                     ;($AB84)
-WindowCalc_L_AB85:  ADC _WindowRow             ;Add the window row to get final value of selection result.
+WindowCalc_AddRow:  ADC _WindowRow             ;Add the window row to get final value of selection result.
 WindowCalc_Store_AB87:  STA WindowSelectionResults       ;
 WindowCalc_Exit_AB89:  RTS                     ;
 
@@ -6445,7 +6445,7 @@ WindowCalcAlphaResult:
         LDX WindowColumns       ;($AB8C)Branch never.
 WindowCalc_Branch_AB8F:  BEQ WindowSetAlphaResult   ;
 
-WindowCalc_L_AB91:  AND #$0F                ;
+WindowCalc_MaskRow:  AND #$0F                ;
 WindowCalc_Store_AB93:  STA WindowColumnLowerByte            ;Save only lower 4 bits of window row.
 WindowCalc_Load_AB95:  LDA #$00                ;
 WindowCalc_Store_AB97:  STA WindowColumnUpperByte            ;
@@ -6455,7 +6455,7 @@ WindowCalc_Load_AB99:  LDX #WindowColumnLowerByte            ;Multiply the curre
 WindowCalc_Call_AB9E:  JSR IndexedMult         ;($A6EB)Get multiplied value.
 
         LDA WindowColumnLowerByte;($ABA1)
-WindowCalc_L_ABA3:  CLC                     ;Add current selected column to result for final answer.
+WindowCalc_PrepAdd:  CLC                     ;Add current selected column to result for final answer.
         ADC _WindowColumn       ;($ABA4)
 
 WindowSetAlphaResult:
@@ -6501,7 +6501,7 @@ WindowShowHide:
         JMP WindowUpdateTiles   ;($ABC9)($ADFA)Update background tiles next NMI.
 
 WindowDoRow:
-WindowDoRow_L_ABCC:  PHA                     ;Save A. Always 0.
+WindowDoRow_SaveA:  PHA                     ;Save A. Always 0.
         .byte $AD, $03, $00     ;($ABCD)LDA $0003(PPUEntryCount)Is PPU buffer empty?
         BEQ WindowDoRowReady    ;($ABD0)If so, branch to fill it with window row data.
 
@@ -6511,7 +6511,7 @@ WindowDoRowReady:
 WindowDoRo_Load_ABD5:  LDA #$00                ;Zero out unused variable.
         STA WindowUnused64AB    ;($ABD7)
 
-WindowDoRo_L_ABDA:  PLA                     ;Restore A. Always 0.
+WindowDoRo_RestoreA:  PLA                     ;Restore A. Always 0.
         JSR WindowStartRow      ;($ABDB)($AD10)Set nametable and X,Y start position of window line.
 
         LDA #$00                ;($ABDE)
@@ -6519,14 +6519,14 @@ WindowDoRo_L_ABDA:  PLA                     ;Restore A. Always 0.
 WindowDoRo_Store_ABE3:  STA WindowAtrbBufIndex     ;
 
 WindowDoRo_Load_ABE6:  LDA WindowWidthTemp        ;
-WindowDoRo_L_ABE9:  PHA                     ;
-WindowDoRo_L_ABEA:  AND #$F0                ;Will always set WindowBlkTileRow to 2.
+WindowDoRo_SaveWidth:  PHA                     ;
+WindowDoRo_MaskHi:  AND #$F0                ;Will always set WindowBlkTileRow to 2.
         LSR                     ;($ABEC)Two rows of tiles in a window row.
-WindowDoRo_L_ABED:  LSR                     ;
+WindowDoRo_Shift:  LSR                     ;
         LSR                     ;($ABEE)
 WindowDoRo_Store_ABEF:  STA WindowBlkTileRow       ;
 
-WindowDoRo_L_ABF2:  PLA                     ;
+WindowDoRo_RestoreW:  PLA                     ;
         AND #$0F                ;($ABF3)Make a copy of window width.
         ASL                     ;($ABF5)
 WindowDoRo_Store_ABF6:  STA _WndWidth           ;
@@ -6550,11 +6550,11 @@ WindowRowL_Store_AC14:  STA WindowThisNTRow        ;row and end of nametable row
 
 WindowRowL_Load_AC17:  LDA _WndWidth           ;Subtract window width from difference above
         SEC                     ;($AC1A)If the value is negative, the window spans
-WindowRowL_L_AC1B:  SBC WindowThisNTRow        ;both nametables.
+WindowRowL_SubWidth:  SBC WindowThisNTRow        ;both nametables.
         STA WindowNextNTRow     ;($AC1E)
 WindowRowL_Branch_AC21:  BEQ WindowNoCrossNT        ;Does window run to end of this NT? if so, branch.
 
-WindowRowL_L_AC23:  BCS WindowCrossNT          ;Does window span both nametables? if so, branch.
+WindowRowL_ChkCross:  BCS WindowCrossNT          ;Does window span both nametables? if so, branch.
 
 WindowNoCrossNT:
 WindowNoCr_Load_AC25:  LDA _WndWidth           ;Entire window row is on this nametable.
@@ -6574,7 +6574,7 @@ WindowCros_Load_AC39:  LDA WindowPPUAddrLB        ;
 
 WindowCros_Load_AC41:  LDA WindowPPUAddrLB        ;
         SEC                     ;($AC44)Subtract the saved value above to set the nametable->
-WindowCros_L_AC45:  SBC WindowNTRowOffset      ;address to the beginning of the nametable row.
+WindowCros_SubOff:  SBC WindowNTRowOffset      ;address to the beginning of the nametable row.
         STA WindowPPUAddrLB     ;($AC48)
 
 WindowCros_Load_AC4B:  LDA WindowNextNTRow        ;Completed window row portion on first nametable.
@@ -6596,13 +6596,13 @@ WindowSing_Cmp_AC5E:  CMP #$A0                ;If so, branch to increment row. W
         STA PPUAddrLB           ;($AC64)
 
 WindowSing_Load_AC66:  LDA PPUAddrUB           ;Address is off bottom of nametable. discard lower bits
-WindowSing_L_AC68:  AND #$FC                ;to wrap window around to the top of the nametable.
+WindowSing_WrapTop:  AND #$FC                ;to wrap window around to the top of the nametable.
 WindowSing_Jmp_AC6A:  JMP UpdateNTAddr        ;Update nametable address.
 
 WindowIncPPURow:
         LDA PPUAddrLB           ;($AC6D)
         CLC                     ;($AC6F)
-WindowIncP_L_AC70:  ADC #$20                ;Add 32 to PPU address to move to next row.
+WindowIncP_Add32:  ADC #$20                ;Add 32 to PPU address to move to next row.
 WindowIncP_Store_AC72:  STA PPUAddrLB           ;32 blocks per row.
         LDA PPUAddrUB           ;($AC74)
         ADC #$00                ;($AC76)
