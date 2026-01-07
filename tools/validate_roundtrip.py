@@ -42,11 +42,16 @@ class ValidationResult:
 class BinaryValidator:
     """Validates binary roundtrip integrity."""
 
-    def __init__(self, project_root: Path):
+    def __init__(self, project_root: Path, use_roundtrip: bool = False):
         self.project_root = project_root
         self.binary_dir = project_root / 'assets' / 'binary'
-        self.json_dir = project_root / 'assets' / 'json'
         self.dwdata_dir = project_root / 'extracted_assets' / 'binary'
+
+        # Use roundtrip JSON files if specified (produced by binary_to_json.py)
+        if use_roundtrip:
+            self.json_dir = project_root / 'assets' / 'json' / 'roundtrip'
+        else:
+            self.json_dir = project_root / 'assets' / 'json'
 
     def load_dwdata(self, filename: str) -> Optional[bytes]:
         """Load data section from .dwdata file."""
@@ -75,86 +80,141 @@ class BinaryValidator:
             return json.load(f)
 
     def monster_json_to_binary(self, json_data: Dict) -> bytes:
-        """Convert monsters JSON back to binary format."""
-        monsters = json_data.get('monsters', [])
+        """Convert monsters JSON back to binary format.
+
+        The ROM format is 16 bytes per monster:
+        Bytes 0-7 (used stats):
+            0: Strength (attack power)
+            1: Defense
+            2: HP
+            3: Spell pattern
+            4: Agility
+            5: Resistance (magic defense)
+            6: Experience
+            7: Gold
+        Bytes 8-15 (unused but preserved):
+            Stored in _raw_bytes_8_15 for exact roundtrip
+        """
         result = bytearray()
+
+        # Handle dict format with string keys ("0", "1", etc.)
+        if isinstance(json_data, dict) and not json_data.get('monsters'):
+            # Convert dict to sorted list by ID
+            monsters = []
+            for key in sorted(json_data.keys(), key=lambda x: int(x) if x.isdigit() else 999):
+                if key.isdigit():
+                    monsters.append(json_data[key])
+        else:
+            monsters = json_data.get('monsters', [])
 
         for monster in monsters:
             # Each monster is 16 bytes
             record = bytearray(16)
 
-            # Pack monster data (format from original extraction)
+            # Pack monster data matching ROM format (8 used bytes)
             record[0] = monster.get('strength', 0) & 0xFF
-            record[1] = monster.get('agility', 0) & 0xFF
+            record[1] = monster.get('defense', 0) & 0xFF
             record[2] = monster.get('hp', 0) & 0xFF
-            record[3] = monster.get('hurt_resist', 0) & 0xFF
-            record[4] = monster.get('sleep_resist', 0) & 0xFF
-            record[5] = monster.get('stopspell_resist', 0) & 0xFF
-            record[6] = monster.get('attack_pattern', 0) & 0xFF
-            record[7] = monster.get('sprite', 0) & 0xFF
-            record[8] = monster.get('color', 0) & 0xFF
-            record[9] = monster.get('run_factor', 0) & 0xFF
+            record[3] = monster.get('spell_pattern', 0) & 0xFF
+            record[4] = monster.get('agility', 0) & 0xFF
+            record[5] = monster.get('resistance', 0) & 0xFF
+            record[6] = monster.get('experience', 0) & 0xFF
+            record[7] = monster.get('gold', 0) & 0xFF
 
-            # Experience (2 bytes, little-endian)
-            exp = monster.get('experience', 0)
-            record[10] = exp & 0xFF
-            record[11] = (exp >> 8) & 0xFF
-
-            # Gold (2 bytes, little-endian)
-            gold = monster.get('gold', 0)
-            record[12] = gold & 0xFF
-            record[13] = (gold >> 8) & 0xFF
-
-            # Reserved bytes
-            record[14] = 0
-            record[15] = 0
+            # Restore raw bytes 8-15 for exact roundtrip
+            raw_bytes = monster.get('_raw_bytes_8_15', [0] * 8)
+            for i, byte in enumerate(raw_bytes[:8]):
+                record[8 + i] = byte & 0xFF
 
             result.extend(record)
 
         return bytes(result)
 
+        return bytes(result)
+
     def spell_json_to_binary(self, json_data: Dict) -> bytes:
-        """Convert spells JSON back to binary format."""
-        spells = json_data.get('spells', json_data.get('player_spells', []))
+        """Convert spells JSON back to binary format.
+
+        Uses raw bytes for exact roundtrip since spell offsets may need verification.
+        Each spell is 8 bytes.
+        """
         result = bytearray()
 
-        for spell in spells:
-            # Each spell is 8 bytes
-            record = bytearray(8)
+        # Handle dict format with string keys ("0", "1", etc.)
+        if isinstance(json_data, dict) and not json_data.get('spells'):
+            spells = []
+            for key in sorted(json_data.keys(), key=lambda x: int(x) if x.isdigit() else 999):
+                if key.isdigit():
+                    spells.append(json_data[key])
+        else:
+            spells = json_data.get('spells', json_data.get('player_spells', []))
 
-            record[0] = spell.get('mp_cost', 0) & 0xFF
-            record[1] = spell.get('power', 0) & 0xFF
-            record[2] = spell.get('type', 0) & 0xFF
-            record[3] = spell.get('level_learned', 0) & 0xFF
-            record[4] = spell.get('target', 0) & 0xFF
-            record[5] = spell.get('flags', 0) & 0xFF
-            record[6] = 0
-            record[7] = 0
+        for spell in spells:
+            # Check for raw bytes first (roundtrip format)
+            raw_bytes = spell.get('_raw_bytes', None)
+            if raw_bytes:
+                record = bytearray(8)
+                for i, byte in enumerate(raw_bytes[:8]):
+                    record[i] = byte & 0xFF
+            else:
+                # Legacy format fallback
+                record = bytearray(8)
+                record[0] = spell.get('mp_cost', 0) & 0xFF
+                record[1] = spell.get('power', 0) & 0xFF
+                record[2] = spell.get('type', 0) & 0xFF
+                record[3] = spell.get('level_learned', 0) & 0xFF
+                record[4] = spell.get('target', 0) & 0xFF
+                record[5] = spell.get('flags', 0) & 0xFF
+                record[6] = 0
+                record[7] = 0
 
             result.extend(record)
 
         return bytes(result)
 
     def item_json_to_binary(self, json_data: Dict) -> bytes:
-        """Convert items JSON back to binary format."""
-        items = json_data.get('items', [])
+        """Convert items JSON back to binary format.
+
+        Uses raw bytes for exact roundtrip since item offsets may need verification.
+        Each item is 8 bytes.
+        """
         result = bytearray()
 
+        # Handle dict format with string keys ("0", "1", etc.)
+        if isinstance(json_data, dict) and not json_data.get('items'):
+            items = []
+            for key in sorted(json_data.keys(), key=lambda x: int(x) if x.isdigit() else 999):
+                if key.isdigit():
+                    items.append(json_data[key])
+        else:
+            items = json_data.get('items', [])
+
         for item in items:
-            # Each item is 8 bytes
-            record = bytearray(8)
+            # Check for raw bytes first (roundtrip format)
+            raw_bytes = item.get('_raw_bytes', None)
+            if raw_bytes:
+                record = bytearray(8)
+                for i, byte in enumerate(raw_bytes[:8]):
+                    record[i] = byte & 0xFF
+            else:
+                # Legacy format fallback
+                record = bytearray(8)
+                item_type_map = {'weapon': 0, 'armor': 1, 'shield': 2, 'accessory': 3, 'consumable': 4, 'key': 5}
+                item_type = item.get('type', item.get('item_type', 'consumable'))
+                if isinstance(item_type, str):
+                    item_type = item_type_map.get(item_type.lower(), 0)
 
-            record[0] = item.get('type', 0) & 0xFF
-            record[1] = item.get('flags', 0) & 0xFF
+                record[0] = item_type & 0xFF
+                record[1] = item.get('flags', 0) & 0xFF
 
-            price = item.get('price', 0)
-            record[2] = price & 0xFF
-            record[3] = (price >> 8) & 0xFF
+                price = item.get('price', item.get('buy_price', 0))
+                record[2] = price & 0xFF
+                record[3] = (price >> 8) & 0xFF
 
-            record[4] = item.get('effect', 0) & 0xFF
-            record[5] = item.get('parameter', 0) & 0xFF
-            record[6] = 0
-            record[7] = 0
+                record[4] = item.get('attack_power', item.get('effect', 0)) & 0xFF
+                record[5] = item.get('defense_power', item.get('parameter', 0)) & 0xFF
+                record[6] = 0
+                record[7] = 0
 
             result.extend(record)
 
@@ -176,7 +236,7 @@ class BinaryValidator:
             if original[i] != rebuilt[i]:
                 diff_positions.append(i)
                 if verbose:
-                    print(f"    Offset 0x{i:04X}: 0x{original[i]:02X} → 0x{rebuilt[i]:02X}")
+                    print(f"    Offset 0x{i:04X}: 0x{original[i]:02X} -> 0x{rebuilt[i]:02X}")
 
         # Size difference counts as differences
         if len(original) != len(rebuilt):
@@ -264,10 +324,11 @@ class BinaryValidator:
         results = []
 
         # Define validation targets
+        # Use roundtrip JSON files for proper validation
         validations = [
-            ('monsters', 'monsters.dwdata', 'monsters.json', self.monster_json_to_binary),
-            ('spells', 'spells.dwdata', 'spells.json', self.spell_json_to_binary),
-            ('items', 'items.dwdata', 'items.json', self.item_json_to_binary),
+            ('monsters', 'monsters.dwdata', 'monsters_roundtrip.json', self.monster_json_to_binary),
+            ('spells', 'spells.dwdata', 'spells_roundtrip.json', self.spell_json_to_binary),
+            ('items', 'items.dwdata', 'items_roundtrip.json', self.item_json_to_binary),
         ]
 
         for name, dwdata, json_file, converter in validations:
@@ -318,6 +379,11 @@ def main():
         help='Show detailed differences'
     )
     parser.add_argument(
+        '--roundtrip', '-R',
+        action='store_true',
+        help='Use roundtrip JSON files from assets/json/roundtrip/'
+    )
+    parser.add_argument(
         '--report', '-r',
         type=Path,
         help='Write validation report to file'
@@ -333,14 +399,16 @@ def main():
     print("Dragon Warrior Binary Roundtrip Validator")
     print("=" * 60)
 
-    validator = BinaryValidator(project_root)
+    validator = BinaryValidator(project_root, use_roundtrip=args.roundtrip)
 
     if args.asset:
         # Single asset validation
+        # Define validation targets
+        # Use roundtrip JSON files for proper validation
         validations = {
-            'monsters': ('monsters.dwdata', 'monsters.json', validator.monster_json_to_binary),
-            'spells': ('spells.dwdata', 'spells.json', validator.spell_json_to_binary),
-            'items': ('items.dwdata', 'items.json', validator.item_json_to_binary),
+            'monsters': ('monsters.dwdata', 'monsters_roundtrip.json', validator.monster_json_to_binary),
+            'spells': ('spells.dwdata', 'spells_roundtrip.json', validator.spell_json_to_binary),
+            'items': ('items.dwdata', 'items_roundtrip.json', validator.item_json_to_binary),
         }
 
         if args.asset not in validations:

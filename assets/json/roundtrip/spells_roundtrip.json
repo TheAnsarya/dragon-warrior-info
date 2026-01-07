@@ -1,0 +1,147 @@
+{
+	"_comment": "Dragon Warrior spell data - roundtrip compatible",
+	"_source": "Extracted from spells.dwdata",
+	"_warning": "Spell offsets may need verification",
+	"spells": [
+		{
+			"id": 0,
+			"name": "HEAL",
+			"_raw_bytes": [
+				40,
+				30,
+				34,
+				0,
+				31,
+				2,
+				16,
+				50
+			]
+		},
+		{
+			"id": 1,
+			"name": "HURT",
+			"_raw_bytes": [
+				49,
+				76,
+				70,
+				107,
+				250,
+				250,
+				250,
+				250
+			]
+		},
+		{
+			"id": 2,
+			"name": "SLEEP",
+			"_raw_bytes": [
+				44,
+				34,
+				36,
+				144,
+				112,
+				4,
+				17,
+				60
+			]
+		},
+		{
+			"id": 3,
+			"name": "RADIANT",
+			"_raw_bytes": [
+				21,
+				49,
+				59,
+				12,
+				250,
+				250,
+				250,
+				250
+			]
+		},
+		{
+			"id": 4,
+			"name": "STOPSPELL",
+			"_raw_bytes": [
+				10,
+				255,
+				4,
+				3,
+				255,
+				241,
+				115,
+				6
+			]
+		},
+		{
+			"id": 5,
+			"name": "OUTSIDE",
+			"_raw_bytes": [
+				63,
+				71,
+				67,
+				105,
+				64,
+				74,
+				77,
+				250
+			]
+		},
+		{
+			"id": 6,
+			"name": "RETURN",
+			"_raw_bytes": [
+				40,
+				38,
+				36,
+				19,
+				49,
+				4,
+				18,
+				70
+			]
+		},
+		{
+			"id": 7,
+			"name": "REPEL",
+			"_raw_bytes": [
+				38,
+				67,
+				69,
+				248,
+				78,
+				105,
+				107,
+				250
+			]
+		},
+		{
+			"id": 8,
+			"name": "HEALMORE",
+			"_raw_bytes": [
+				50,
+				36,
+				38,
+				96,
+				71,
+				2,
+				20,
+				80
+			]
+		},
+		{
+			"id": 9,
+			"name": "HURTMORE",
+			"_raw_bytes": [
+				49,
+				76,
+				70,
+				107,
+				75,
+				77,
+				67,
+				250
+			]
+		}
+	]
+}
