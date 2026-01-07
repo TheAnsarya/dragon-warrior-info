@@ -22,14 +22,14 @@ from typing import List, Optional
 @dataclass
 class NarrationBlock:
     """A single narration block with metadata."""
-    
+
     index: int
     timestamp: Optional[str]
     section_title: Optional[str]
     text: str
     visual_cue: Optional[str]
     duration_hint: Optional[str]
-    
+
     def to_teleprompter(self) -> str:
         """Format for teleprompter display."""
         lines = []
@@ -41,7 +41,7 @@ class NarrationBlock:
         lines.append(self.text)
         lines.append("")
         return "\n".join(lines)
-    
+
     def to_tts_text(self) -> str:
         """Format for text-to-speech processing."""
         # Clean up text for TTS
@@ -58,49 +58,49 @@ class NarrationBlock:
 def extract_narration_blocks(markdown_content: str) -> List[NarrationBlock]:
     """
     Extract all narration blocks from a video script markdown file.
-    
+
     Narration is expected to be in blockquote format:
     > "Narration text here..."
-    
+
     With optional visual cues:
     **[VISUAL: Description]**
     """
     blocks = []
-    
+
     # Find all sections with timestamps
     section_pattern = r'###\s*\[([^\]]+)\]\s*([^\n]+)'
     sections = list(re.finditer(section_pattern, markdown_content))
-    
+
     # Find all narration blocks (blockquotes with quotes)
     narration_pattern = r'>\s*"([^"]+(?:\n>[^"]*)*)"'
-    
+
     current_section = None
     current_timestamp = None
     current_duration = None
-    
+
     # Process the markdown line by line to track context
     lines = markdown_content.split('\n')
     in_narration = False
     current_narration = []
     last_visual = None
     block_index = 0
-    
+
     i = 0
     while i < len(lines):
         line = lines[i]
-        
+
         # Check for section header with timestamp
         section_match = re.match(r'###\s*\[([^\]]+)\]\s*(.+?)(?:\s*\(([^)]+)\))?$', line)
         if section_match:
             current_timestamp = section_match.group(1)
             current_section = section_match.group(2).strip()
             current_duration = section_match.group(3) if section_match.lastindex >= 3 else None
-        
+
         # Check for visual cue
         visual_match = re.match(r'\*\*\[VISUAL:\s*([^\]]+)\]\*\*', line)
         if visual_match:
             last_visual = visual_match.group(1)
-        
+
         # Check for narration start
         if line.strip().startswith('> "'):
             in_narration = True
@@ -159,9 +159,9 @@ def extract_narration_blocks(markdown_content: str) -> List[NarrationBlock]:
                 in_narration = False
                 current_narration = []
                 last_visual = None
-        
+
         i += 1
-    
+
     return blocks
 
 
@@ -172,11 +172,11 @@ def format_for_teleprompter(blocks: List[NarrationBlock]) -> str:
     output.append("TELEPROMPTER SCRIPT")
     output.append("=" * 60)
     output.append("")
-    
+
     for block in blocks:
         output.append(block.to_teleprompter())
         output.append("-" * 40)
-    
+
     return "\n".join(output)
 
 
@@ -219,35 +219,35 @@ def main():
         type=Path,
         help="Output file path (default: stdout)"
     )
-    
+
     args = parser.parse_args()
-    
+
     if not args.script_file.exists():
         print(f"Error: File not found: {args.script_file}")
         return 1
-    
+
     content = args.script_file.read_text(encoding='utf-8')
     blocks = extract_narration_blocks(content)
-    
+
     if not blocks:
         print("Warning: No narration blocks found in script")
         return 1
-    
+
     print(f"Found {len(blocks)} narration blocks", file=__import__('sys').stderr)
-    
+
     if args.format == "teleprompter":
         output = format_for_teleprompter(blocks)
     elif args.format == "json":
         output = format_for_json(blocks)
     elif args.format == "tts":
         output = json.dumps(format_for_tts(blocks), indent=2)
-    
+
     if args.output:
         args.output.write_text(output, encoding='utf-8')
         print(f"Written to: {args.output}", file=__import__('sys').stderr)
     else:
         print(output)
-    
+
     return 0
 
 

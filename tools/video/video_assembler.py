@@ -51,7 +51,7 @@ class VideoClip:
     fade_in: float = 0.0
     fade_out: float = 0.0
     scale: Optional[str] = None  # e.g., "1920:1080"
-    
+
     def to_dict(self) -> dict:
         d = asdict(self)
         d['clip_type'] = self.clip_type.value
@@ -69,7 +69,7 @@ class AudioTrack:
     fade_in: float = 0.0
     fade_out: float = 0.0
     loop: bool = False
-    
+
     def to_dict(self) -> dict:
         d = asdict(self)
         d['track_type'] = self.track_type.value
@@ -85,7 +85,7 @@ class VideoProject:
     frame_rate: int = 30
     video_clips: list = field(default_factory=list)
     audio_tracks: list = field(default_factory=list)
-    
+
     def to_dict(self) -> dict:
         return {
             'name': self.name,
@@ -95,7 +95,7 @@ class VideoProject:
             'video_clips': [c.to_dict() for c in self.video_clips],
             'audio_tracks': [a.to_dict() for a in self.audio_tracks]
         }
-    
+
     @classmethod
     def from_dict(cls, data: dict) -> 'VideoProject':
         project = cls(
@@ -104,27 +104,27 @@ class VideoProject:
             resolution=data.get('resolution', '1920x1080'),
             frame_rate=data.get('frame_rate', 30)
         )
-        
+
         for clip_data in data.get('video_clips', []):
             clip_data['clip_type'] = ClipType(clip_data['clip_type'])
             project.video_clips.append(VideoClip(**clip_data))
-        
+
         for track_data in data.get('audio_tracks', []):
             track_data['track_type'] = AudioTrackType(track_data['track_type'])
             project.audio_tracks.append(AudioTrack(**track_data))
-        
+
         return project
-    
+
     def save(self, path: Path):
         """Save project to JSON file."""
         path.write_text(json.dumps(self.to_dict(), indent=2), encoding='utf-8')
-    
+
     @classmethod
     def load(cls, path: Path) -> 'VideoProject':
         """Load project from JSON file."""
         data = json.loads(path.read_text(encoding='utf-8'))
         return cls.from_dict(data)
-    
+
     def total_duration(self) -> float:
         """Calculate total project duration."""
         max_video = max((c.start_time + c.duration for c in self.video_clips), default=0)
@@ -134,19 +134,19 @@ class VideoProject:
 
 class FFmpegAssembler:
     """Assemble video using FFmpeg."""
-    
+
     def __init__(self, project: VideoProject):
         self.project = project
         self.temp_dir = Path("temp_assembly")
-    
+
     def generate_concat_file(self) -> Path:
         """Generate FFmpeg concat demuxer file for video clips."""
         self.temp_dir.mkdir(exist_ok=True)
         concat_file = self.temp_dir / "concat.txt"
-        
+
         # Sort clips by start time
         sorted_clips = sorted(self.project.video_clips, key=lambda c: c.start_time)
-        
+
         with open(concat_file, 'w') as f:
             for clip in sorted_clips:
                 # Use FFmpeg's file directive format
@@ -156,42 +156,42 @@ class FFmpegAssembler:
                     f.write(f"inpoint {clip.source_in}\n")
                     if clip.source_out:
                         f.write(f"outpoint {clip.source_out}\n")
-        
+
         return concat_file
-    
+
     def build_filter_complex(self) -> str:
         """Build FFmpeg filter_complex for advanced assembly."""
         filters = []
         width, height = self.project.resolution.split('x')
-        
+
         # Scale and pad each video input
         for i, clip in enumerate(self.project.video_clips):
             filters.append(
                 f"[{i}:v]scale={width}:{height}:force_original_aspect_ratio=decrease,"
                 f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2[v{i}]"
             )
-        
+
         # Concatenate all video streams
         video_streams = ''.join(f'[v{i}]' for i in range(len(self.project.video_clips)))
         filters.append(f"{video_streams}concat=n={len(self.project.video_clips)}:v=1:a=0[outv]")
-        
+
         return ';'.join(filters)
-    
+
     def generate_simple_command(self) -> list:
         """Generate a simple FFmpeg command for basic assembly."""
         concat_file = self.generate_concat_file()
-        
+
         cmd = [
             'ffmpeg',
             '-f', 'concat',
             '-safe', '0',
             '-i', str(concat_file),
         ]
-        
+
         # Add audio tracks
         for track in self.project.audio_tracks:
             cmd.extend(['-i', track.source_path])
-        
+
         # Output settings
         cmd.extend([
             '-c:v', 'libx264',
@@ -203,13 +203,13 @@ class FFmpegAssembler:
             '-y',  # Overwrite output
             self.project.output_path
         ])
-        
+
         return cmd
-    
+
     def generate_complex_command(self) -> list:
         """Generate FFmpeg command with filter_complex for advanced features."""
         cmd = ['ffmpeg']
-        
+
         # Add video inputs
         for clip in self.project.video_clips:
             if clip.source_in > 0:
@@ -217,23 +217,23 @@ class FFmpegAssembler:
             if clip.source_out and clip.source_out > clip.source_in:
                 cmd.extend(['-t', str(clip.source_out - clip.source_in)])
             cmd.extend(['-i', clip.source_path])
-        
+
         # Add audio inputs
         for track in self.project.audio_tracks:
             cmd.extend(['-i', track.source_path])
-        
+
         # Build and add filter complex
         filter_complex = self.build_filter_complex()
         cmd.extend(['-filter_complex', filter_complex])
-        
+
         # Map outputs
         cmd.extend(['-map', '[outv]'])
-        
+
         # Audio mixing (if we have audio tracks)
         if self.project.audio_tracks:
             audio_mix = self._build_audio_mix()
             cmd.extend(['-filter_complex', audio_mix])
-        
+
         # Output settings
         cmd.extend([
             '-c:v', 'libx264',
@@ -244,36 +244,36 @@ class FFmpegAssembler:
             '-y',
             self.project.output_path
         ])
-        
+
         return cmd
-    
+
     def _build_audio_mix(self) -> str:
         """Build audio mixing filter."""
         audio_inputs = []
         num_video = len(self.project.video_clips)
-        
+
         for i, track in enumerate(self.project.audio_tracks):
             input_idx = num_video + i
             volume_filter = f"[{input_idx}:a]volume={track.volume}[a{i}]"
             audio_inputs.append(f'[a{i}]')
-        
+
         if len(audio_inputs) > 1:
             return f"{''.join(audio_inputs)}amix=inputs={len(audio_inputs)}[outa]"
         elif audio_inputs:
             return f"{audio_inputs[0]}anull[outa]"
         return ""
-    
+
     def run(self, dry_run: bool = False) -> bool:
         """Execute the assembly."""
         cmd = self.generate_simple_command()
-        
+
         print("FFmpeg command:")
         print(' '.join(cmd))
-        
+
         if dry_run:
             print("\n[DRY RUN - not executing]")
             return True
-        
+
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
             if result.returncode != 0:
@@ -292,7 +292,7 @@ def create_project_template(name: str, output_dir: Path) -> VideoProject:
         name=name,
         output_path=str(output_dir / f"{name}_final.mp4")
     )
-    
+
     # Add placeholder clips
     project.video_clips.append(VideoClip(
         source_path="recordings/intro.mp4",
@@ -300,7 +300,7 @@ def create_project_template(name: str, output_dir: Path) -> VideoProject:
         start_time=0,
         duration=5
     ))
-    
+
     project.video_clips.append(VideoClip(
         source_path="recordings/gameplay_01.mp4",
         clip_type=ClipType.GAMEPLAY,
@@ -309,7 +309,7 @@ def create_project_template(name: str, output_dir: Path) -> VideoProject:
         source_in=0,
         source_out=60
     ))
-    
+
     # Add placeholder audio
     project.audio_tracks.append(AudioTrack(
         source_path="audio/narration.wav",
@@ -317,7 +317,7 @@ def create_project_template(name: str, output_dir: Path) -> VideoProject:
         start_time=0,
         volume=1.0
     ))
-    
+
     project.audio_tracks.append(AudioTrack(
         source_path="audio/background_music.mp3",
         track_type=AudioTrackType.MUSIC,
@@ -325,7 +325,7 @@ def create_project_template(name: str, output_dir: Path) -> VideoProject:
         volume=0.3,
         loop=True
     ))
-    
+
     return project
 
 
@@ -333,7 +333,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Video assembly pipeline using FFmpeg"
     )
-    
+
     parser.add_argument(
         "project_file",
         nargs="?",
@@ -357,9 +357,9 @@ def main():
         action="store_true",
         help="Print FFmpeg command without executing"
     )
-    
+
     args = parser.parse_args()
-    
+
     if args.create_project:
         args.output.mkdir(parents=True, exist_ok=True)
         project = create_project_template(args.create_project, args.output)
@@ -368,18 +368,18 @@ def main():
         print(f"Project template created: {project_path}")
         print("\nEdit the JSON file to configure your video clips and audio tracks.")
         return 0
-    
+
     if args.project_file:
         if not args.project_file.exists():
             print(f"Error: Project file not found: {args.project_file}")
             return 1
-        
+
         project = VideoProject.load(args.project_file)
         assembler = FFmpegAssembler(project)
-        
+
         success = assembler.run(dry_run=args.dry_run)
         return 0 if success else 1
-    
+
     parser.print_help()
     return 1
 
