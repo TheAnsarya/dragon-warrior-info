@@ -400,7 +400,65 @@ python tools/extract_to_binary.py --verify
 | 0x14 | 4 | Timestamp |
 | 0x18 | 8 | Reserved |
 
-Data types: Monster (0x01), Spell (0x02), Item (0x03), Map (0x04), Text (0x05), Graphics (0x06), Music (0x07), SFX (0x08)
+Data types: Monster (0x01), Spell (0x02), Item (0x03), Map (0x04), Text (0x05), Graphics (0x06), Music (0x07), SFX (0x08), SpellCost (0x09), ItemCost (0x0A), Equipment (0x0B)
+
+## Verified ROM Offsets
+
+These offsets were verified from disassembly label aliases on 2026-01-07:
+
+### Bank 0 (PRG0)
+
+| Data | CPU Address | File Offset | Size | Notes |
+|------|-------------|-------------|------|-------|
+| SpellCostTable | $9D53 | 0x1D63 | 10 bytes | 1 byte per spell (MP cost) |
+| ItemCostTable | $9947 | 0x1957 | 56 bytes | 28 items × 2 bytes (little-endian price) |
+| WeaponsBonusTable | $99CF | 0x19DF | 8 bytes | Attack bonus for each weapon |
+| ArmorBonusTable | $99D7 | 0x19E7 | 8 bytes | Defense bonus for each armor |
+| ShieldBonusTable | $99DF | 0x19EF | 4 bytes | Defense bonus for each shield |
+
+### Address Conversion
+
+For Bank 0 data (CPU $8000-$BFFF):
+```
+file_offset = 0x10 + (cpu_address - $8000)
+```
+
+The 0x10 accounts for the 16-byte iNES header.
+
+### Example: Spell Costs
+
+Extracted spell costs at 0x1D63:
+```
+04 02 02 03 02 06 08 02 0a 05
+```
+
+| Index | Spell | MP Cost |
+|-------|-------|---------|
+| 0 | HEAL | 4 |
+| 1 | HURT | 2 |
+| 2 | SLEEP | 2 |
+| 3 | RADIANT | 3 |
+| 4 | STOPSPELL | 2 |
+| 5 | OUTSIDE | 6 |
+| 6 | RETURN | 8 |
+| 7 | REPEL | 2 |
+| 8 | HEALMORE | 10 |
+| 9 | HURTMORE | 5 |
+
+### Example: Item Costs
+
+First 10 items at 0x1957:
+```
+0a 00 3c 00 b4 00 58 02 98 3a ...
+```
+
+| Index | Item | Price (hex) | Price (decimal) |
+|-------|------|-------------|-----------------|
+| 0 | Bamboo Pole | 0x000a | 10 |
+| 1 | Club | 0x003c | 60 |
+| 2 | Copper Sword | 0x00b4 | 180 |
+| 3 | Hand Axe | 0x0258 | 600 |
+| 4 | Broad Sword | 0x3a98 | 15000 |
 
 ## Build Scripts
 

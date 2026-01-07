@@ -73,6 +73,14 @@ Version: 1.0
 """
 
 import sys
+import io
+
+# Force UTF-8 output encoding for Unicode support (emoji, checkmarks, arrows)
+# This fixes UnicodeEncodeError on Windows when printing to cp1252 console
+if hasattr(sys.stdout, 'buffer'):
+	sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'buffer'):
+	sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 import os
 import struct
 from pathlib import Path

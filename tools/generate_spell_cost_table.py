@@ -3,6 +3,15 @@
 Generate Dragon Warrior Spell Cost Table for Bank00.asm
 This generates the SpellCostTbl in the exact format needed by Bank00.asm
 """
+import sys
+import io
+
+# Force UTF-8 output encoding for Unicode support (emoji, checkmarks, arrows)
+# This fixes UnicodeEncodeError on Windows when printing to cp1252 console
+if hasattr(sys.stdout, 'buffer'):
+	sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'buffer'):
+	sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 import json
 from pathlib import Path
 from typing import Dict

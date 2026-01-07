@@ -1,4 +1,4 @@
-#!/usr/bin/env powershell
+﻿#!/usr/bin/env powershell
 <#
 .SYNOPSIS
 Dragon Warrior Info Project - Main Build Script
@@ -42,6 +42,10 @@ param(
 	[switch]$Symbols,
 	[string]$Output = "dragon_warrior_rebuilt.nes"
 )
+
+# Force UTF-8 output encoding for Unicode support (emoji, arrows, etc.)
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Build configuration
 $BuildRoot = $PSScriptRoot

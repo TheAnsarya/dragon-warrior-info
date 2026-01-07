@@ -11,8 +11,10 @@
 ; Format: HP (2), STR, AGI, MaxDmg, Dodge, SleepRes, HurtRes, XP (2), Gold (2)
 ;----------------------------------------------------------------------------------------------------
 
+MonsterStatsTable:
 
 ; Monster 00: Slime
+Monster00_Stats:
 	.byte $03, $00		; HP: 3
 	.byte $05			; Strength: 5
 	.byte $0F			; Agility: 15
@@ -24,6 +26,7 @@
 	.byte $02, $00		; Gold: 2
 
 ; Monster 01: Red Slime
+Monster01_Stats:
 	.byte $04, $00		; HP: 4
 	.byte $07			; Strength: 7
 	.byte $0F			; Agility: 15
@@ -35,6 +38,7 @@
 	.byte $03, $00		; Gold: 3
 
 ; Monster 02: Drakee
+Monster02_Stats:
 	.byte $06, $00		; HP: 6
 	.byte $09			; Strength: 9
 	.byte $0F			; Agility: 15
@@ -46,6 +50,7 @@
 	.byte $03, $00		; Gold: 3
 
 ; Monster 03: Ghost
+Monster03_Stats:
 	.byte $07, $00		; HP: 7
 	.byte $0B			; Strength: 11
 	.byte $0F			; Agility: 15
@@ -57,6 +62,7 @@
 	.byte $05, $00		; Gold: 5
 
 ; Monster 04: Magician
+Monster04_Stats:
 	.byte $0D, $00		; HP: 13
 	.byte $0B			; Strength: 11
 	.byte $00			; Agility: 0
@@ -68,6 +74,7 @@
 	.byte $0C, $00		; Gold: 12
 
 ; Monster 05: Magidrakee
+Monster05_Stats:
 	.byte $0F, $00		; HP: 15
 	.byte $0E			; Strength: 14
 	.byte $00			; Agility: 0
@@ -79,6 +86,7 @@
 	.byte $0C, $00		; Gold: 12
 
 ; Monster 06: Scorpion
+Monster06_Stats:
 	.byte $14, $00		; HP: 20
 	.byte $12			; Strength: 18
 	.byte $0F			; Agility: 15
@@ -90,6 +98,7 @@
 	.byte $10, $00		; Gold: 16
 
 ; Monster 07: Druin
+Monster07_Stats:
 	.byte $16, $00		; HP: 22
 	.byte $14			; Strength: 20
 	.byte $0F			; Agility: 15
@@ -101,6 +110,7 @@
 	.byte $10, $00		; Gold: 16
 
 ; Monster 08: Poltergeist
+Monster08_Stats:
 	.byte $17, $00		; HP: 23
 	.byte $12			; Strength: 18
 	.byte $00			; Agility: 0
@@ -112,6 +122,7 @@
 	.byte $12, $00		; Gold: 18
 
 ; Monster 09: Droll
+Monster09_Stats:
 	.byte $19, $00		; HP: 25
 	.byte $18			; Strength: 24
 	.byte $0E			; Agility: 14
@@ -123,6 +134,7 @@
 	.byte $19, $00		; Gold: 25
 
 ; Monster 10: Drakeema
+Monster10_Stats:
 	.byte $14, $00		; HP: 20
 	.byte $16			; Strength: 22
 	.byte $20			; Agility: 32
@@ -134,6 +146,7 @@
 	.byte $14, $00		; Gold: 20
 
 ; Monster 11: Skeleton
+Monster11_Stats:
 	.byte $1E, $00		; HP: 30
 	.byte $1C			; Strength: 28
 	.byte $0F			; Agility: 15
@@ -145,6 +158,7 @@
 	.byte $1E, $00		; Gold: 30
 
 ; Monster 12: Warlock
+Monster12_Stats:
 	.byte $1E, $00		; HP: 30
 	.byte $1C			; Strength: 28
 	.byte $31			; Agility: 49
@@ -156,6 +170,7 @@
 	.byte $23, $00		; Gold: 35
 
 ; Monster 13: Metal Slime
+Monster13_Stats:
 	.byte $16, $00		; HP: 22
 	.byte $24			; Strength: 36
 	.byte $0F			; Agility: 15
@@ -167,6 +182,7 @@
 	.byte $28, $00		; Gold: 40
 
 ; Monster 14: Wolf
+Monster14_Stats:
 	.byte $22, $00		; HP: 34
 	.byte $28			; Strength: 40
 	.byte $1F			; Agility: 31
@@ -178,6 +194,7 @@
 	.byte $32, $00		; Gold: 50
 
 ; Monster 15: Wraith
+Monster15_Stats:
 	.byte $24, $00		; HP: 36
 	.byte $2C			; Strength: 44
 	.byte $70			; Agility: 112
@@ -189,6 +206,7 @@
 	.byte $3C, $00		; Gold: 60
 
 ; Monster 16: Metal Scorpion
+Monster16_Stats:
 	.byte $04, $00		; HP: 4
 	.byte $0A			; Strength: 10
 	.byte $FF			; Agility: 255
@@ -200,6 +218,7 @@
 	.byte $06, $00		; Gold: 6
 
 ; Monster 17: Orc
+Monster17_Stats:
 	.byte $24, $00		; HP: 36
 	.byte $28			; Strength: 40
 	.byte $31			; Agility: 49
@@ -211,6 +230,7 @@
 	.byte $46, $00		; Gold: 70
 
 ; Monster 18: Specter
+Monster18_Stats:
 	.byte $26, $00		; HP: 38
 	.byte $32			; Strength: 50
 	.byte $47			; Agility: 71
@@ -222,6 +242,7 @@
 	.byte $50, $00		; Gold: 80
 
 ; Monster 19: Wolflord
+Monster19_Stats:
 	.byte $23, $00		; HP: 35
 	.byte $2F			; Strength: 47
 	.byte $F0			; Agility: 240
@@ -233,6 +254,7 @@
 	.byte $55, $00		; Gold: 85
 
 ; Monster 20: Druinlord
+Monster20_Stats:
 	.byte $26, $00		; HP: 38
 	.byte $34			; Strength: 52
 	.byte $22			; Agility: 34
@@ -244,6 +266,7 @@
 	.byte $5A, $00		; Gold: 90
 
 ; Monster 21: Drollmagi
+Monster21_Stats:
 	.byte $2A, $00		; HP: 42
 	.byte $38			; Strength: 56
 	.byte $4F			; Agility: 79
@@ -255,6 +278,7 @@
 	.byte $64, $00		; Gold: 100
 
 ; Monster 22: Wyvern
+Monster22_Stats:
 	.byte $23, $00		; HP: 35
 	.byte $3C			; Strength: 60
 	.byte $7F			; Agility: 127
@@ -266,6 +290,7 @@
 	.byte $6E, $00		; Gold: 110
 
 ; Monster 23: Rogue Scorpion
+Monster23_Stats:
 	.byte $2E, $00		; HP: 46
 	.byte $44			; Strength: 68
 	.byte $50			; Agility: 80
@@ -277,6 +302,7 @@
 	.byte $78, $00		; Gold: 120
 
 ; Monster 24: Wraith Knight
+Monster24_Stats:
 	.byte $46, $00		; HP: 70
 	.byte $78			; Strength: 120
 	.byte $FF			; Agility: 255
@@ -288,6 +314,7 @@
 	.byte $0A, $00		; Gold: 10
 
 ; Monster 25: Golem
+Monster25_Stats:
 	.byte $32, $00		; HP: 50
 	.byte $30			; Strength: 48
 	.byte $DF			; Agility: 223
@@ -299,6 +326,7 @@
 	.byte $C8, $00		; Gold: 200
 
 ; Monster 26: Goldman
+Monster26_Stats:
 	.byte $37, $00		; HP: 55
 	.byte $4C			; Strength: 76
 	.byte $67			; Agility: 103
@@ -310,6 +338,7 @@
 	.byte $82, $00		; Gold: 130
 
 ; Monster 27: Knight
+Monster27_Stats:
 	.byte $3A, $00		; HP: 58
 	.byte $4E			; Strength: 78
 	.byte $20			; Agility: 32
@@ -321,6 +350,7 @@
 	.byte $8C, $00		; Gold: 140
 
 ; Monster 28: Magiwyvern
+Monster28_Stats:
 	.byte $32, $00		; HP: 50
 	.byte $4F			; Strength: 79
 	.byte $FF			; Agility: 255
@@ -332,6 +362,7 @@
 	.byte $96, $00		; Gold: 150
 
 ; Monster 29: Demon Knight
+Monster29_Stats:
 	.byte $3C, $00		; HP: 60
 	.byte $56			; Strength: 86
 	.byte $7F			; Agility: 127
@@ -343,6 +374,7 @@
 	.byte $9B, $00		; Gold: 155
 
 ; Monster 30: Werewolf
+Monster30_Stats:
 	.byte $41, $00		; HP: 65
 	.byte $58			; Strength: 88
 	.byte $7F			; Agility: 127
@@ -354,6 +386,7 @@
 	.byte $A0, $00		; Gold: 160
 
 ; Monster 31: Green Dragon
+Monster31_Stats:
 	.byte $41, $00		; HP: 65
 	.byte $56			; Strength: 86
 	.byte $80			; Agility: 128
@@ -365,6 +398,7 @@
 	.byte $A0, $00		; Gold: 160
 
 ; Monster 32: Starwyvern
+Monster32_Stats:
 	.byte $41, $00		; HP: 65
 	.byte $50			; Strength: 80
 	.byte $F7			; Agility: 247
@@ -376,6 +410,7 @@
 	.byte $A5, $00		; Gold: 165
 
 ; Monster 33: Wizard
+Monster33_Stats:
 	.byte $46, $00		; HP: 70
 	.byte $5E			; Strength: 94
 	.byte $F3			; Agility: 243
@@ -387,6 +422,7 @@
 	.byte $A5, $00		; Gold: 165
 
 ; Monster 34: Axe Knight
+Monster34_Stats:
 	.byte $46, $00		; HP: 70
 	.byte $62			; Strength: 98
 	.byte $FF			; Agility: 255
@@ -398,6 +434,7 @@
 	.byte $96, $00		; Gold: 150
 
 ; Monster 35: Blue Dragon
+Monster35_Stats:
 	.byte $A0, $00		; HP: 160
 	.byte $64			; Strength: 100
 	.byte $2F			; Agility: 47
@@ -409,6 +446,7 @@
 	.byte $8C, $00		; Gold: 140
 
 ; Monster 36: Stone Man
+Monster36_Stats:
 	.byte $5A, $00		; HP: 90
 	.byte $69			; Strength: 105
 	.byte $F7			; Agility: 247
@@ -420,6 +458,7 @@
 	.byte $8C, $00		; Gold: 140
 
 ; Monster 37: Armored Knight
+Monster37_Stats:
 	.byte $64, $00		; HP: 100
 	.byte $78			; Strength: 120
 	.byte $F7			; Agility: 247
@@ -431,6 +470,7 @@
 	.byte $8C, $00		; Gold: 140
 
 ; Monster 38: Red Dragon
+Monster38_Stats:
 	.byte $64, $00		; HP: 100
 	.byte $5A			; Strength: 90
 	.byte $FF			; Agility: 255
@@ -442,6 +482,7 @@
 	.byte $00, $00		; Gold: 0
 
 ; Monster 39: Dragonlord
+Monster39_Stats:
 	.byte $82, $00		; HP: 130
 	.byte $8C			; Strength: 140
 	.byte $FF			; Agility: 255
@@ -456,6 +497,7 @@
 ; Monster Names Table
 ;----------------------------------------------------------------------------------------------------
 
+MonsterNamesTable:
 	.word MonsterName00
 	.word MonsterName01
 	.word MonsterName02

@@ -5,7 +5,7 @@ Extract ROM Data to Binary Intermediate Format (.dwdata)
 This script extracts data from Dragon Warrior (NES) ROM and converts it to
 .dwdata binary intermediate format for the build pipeline.
 
-Pipeline: ROM → .dwdata (this script) → JSON/PNG → .dwdata → ROM
+Pipeline: ROM -> .dwdata (this script) -> JSON/PNG -> .dwdata -> ROM
 
 Usage:
 	python extract_to_binary.py
@@ -21,9 +21,15 @@ import os
 import struct
 import zlib
 import time
+import io
 from pathlib import Path
 from typing import Dict, Tuple
 import argparse
+
+# Fix Unicode output on Windows
+if sys.platform == 'win32':
+	sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+	sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # Constants
 MAGIC = b'DWDT'
@@ -39,16 +45,45 @@ TYPE_TEXT = 0x05
 TYPE_GRAPHICS = 0x06
 TYPE_MUSIC = 0x07
 TYPE_SFX = 0x08
+TYPE_SPELL_COST = 0x09
+TYPE_ITEM_COST = 0x0A
+TYPE_EQUIPMENT = 0x0B
 
 # ROM offsets (Dragon Warrior U PRG1)
+# All file offsets include 16-byte iNES header
+# Formula: file_offset = 0x10 + (cpu_address - $8000)
+
+# Enemy Stats Table at CPU $9E4B (see Bank01.asm EnemyStatsTablePointer)
+# Note: This offset was verified to contain enemy data
 MONSTER_OFFSET = 0x5e5b
 MONSTER_SIZE = 39 * 16  # 39 monsters, 16 bytes each
 
-SPELL_OFFSET = 0x5f3b
-SPELL_SIZE = 10 * 8  # 10 spells, 8 bytes each
+# Spell Cost Table at CPU $9D53 (see Bank03.asm SpellCostTable alias)
+# 10 spells, 1 byte MP cost each
+# Order: HEAL(4), HURT(2), SLEEP(2), RADIANT(3), STOPSPELL(2),
+#        OUTSIDE(6), RETURN(8), REPEL(2), HEALMORE(10), HURTMORE(5)
+SPELL_COST_OFFSET = 0x1D63  # 0x10 + ($9D53 - $8000)
+SPELL_COST_SIZE = 10  # 10 spells, 1 byte each
 
-ITEM_OFFSET = 0x5f83
-ITEM_SIZE = 32 * 8  # 32 items, 8 bytes each
+# Item Cost Table at CPU $9947 (see Bank03.asm ItemCostTable alias)
+# 28 items (weapons, armor, shields, accessories), 2 bytes each (little-endian price)
+ITEM_COST_OFFSET = 0x1957  # 0x10 + ($9947 - $8000)
+ITEM_COST_SIZE = 28 * 2  # 28 items, 2 bytes each
+
+# Equipment Bonus Tables
+WEAPONS_BONUS_OFFSET = 0x19DF  # CPU $99CF: 8 weapons, 1 byte attack bonus each
+WEAPONS_BONUS_SIZE = 8
+ARMOR_BONUS_OFFSET = 0x19E7   # CPU $99D7: 8 armors, 1 byte defense bonus each
+ARMOR_BONUS_SIZE = 8
+SHIELD_BONUS_OFFSET = 0x19EF  # CPU $99DF: 4 shields, 1 byte defense bonus each
+SHIELD_BONUS_SIZE = 4
+
+# Legacy offsets (kept for backward compatibility but may not be meaningful data)
+SPELL_OFFSET = 0x5f3b  # DEPRECATED: Use SPELL_COST_OFFSET instead
+SPELL_SIZE = 10 * 8  # 10 spells, 8 bytes each (legacy format)
+
+ITEM_OFFSET = 0x5f83  # DEPRECATED: Use ITEM_COST_OFFSET instead
+ITEM_SIZE = 32 * 8  # 32 items, 8 bytes each (legacy format)
 
 CHR_OFFSET = 0x10010
 CHR_SIZE = 0x4000  # 16KB CHR-ROM (1024 tiles)
@@ -422,6 +457,113 @@ class ROMExtractor:
 
 		return True
 
+	def extract_spell_costs(self, output_path: str) -> bool:
+		"""
+		Extract verified spell cost table to spell_costs.dwdata
+
+		The spell cost table at CPU $9D53 contains 10 bytes, one MP cost per spell:
+		HEAL(4), HURT(2), SLEEP(2), RADIANT(3), STOPSPELL(2),
+		OUTSIDE(6), RETURN(8), REPEL(2), HEALMORE(10), HURTMORE(5)
+
+		Args:
+			output_path: Path for spell_costs.dwdata
+
+		Returns:
+			True if successful
+		"""
+		print("\n--- Extracting Verified Spell Cost Table ---")
+
+		data = self.rom_data[SPELL_COST_OFFSET:SPELL_COST_OFFSET + SPELL_COST_SIZE]
+
+		print(f"  ROM Offset: 0x{SPELL_COST_OFFSET:04X} (CPU $9D53)")
+		print(f"  Data Size: {len(data)} bytes ({len(data)} spells)")
+		print(f"  MP costs: {', '.join(str(b) for b in data)}")
+
+		crc, crc_hex = self.builder.write_dwdata_file(
+			output_path,
+			TYPE_SPELL_COST,
+			SPELL_COST_OFFSET,
+			data
+		)
+
+		print(f"  CRC32: {crc_hex}")
+		print(f"✓ Wrote: {output_path}")
+
+		return True
+
+	def extract_item_costs(self, output_path: str) -> bool:
+		"""
+		Extract verified item cost table to item_costs.dwdata
+
+		The item cost table at CPU $9947 contains 28 items, 2 bytes each (little-endian price).
+
+		Args:
+			output_path: Path for item_costs.dwdata
+
+		Returns:
+			True if successful
+		"""
+		print("\n--- Extracting Verified Item Cost Table ---")
+
+		data = self.rom_data[ITEM_COST_OFFSET:ITEM_COST_OFFSET + ITEM_COST_SIZE]
+
+		print(f"  ROM Offset: 0x{ITEM_COST_OFFSET:04X} (CPU $9947)")
+		print(f"  Data Size: {len(data)} bytes ({len(data)//2} items)")
+
+		crc, crc_hex = self.builder.write_dwdata_file(
+			output_path,
+			TYPE_ITEM_COST,
+			ITEM_COST_OFFSET,
+			data
+		)
+
+		print(f"  CRC32: {crc_hex}")
+		print(f"✓ Wrote: {output_path}")
+
+		return True
+
+	def extract_equipment_bonuses(self, output_path: str) -> bool:
+		"""
+		Extract verified equipment bonus tables to equipment_bonuses.dwdata
+
+		Contains three tables:
+		- Weapons bonus (8 bytes at CPU $99CF): attack bonus per weapon
+		- Armor bonus (8 bytes at CPU $99D7): defense bonus per armor
+		- Shield bonus (4 bytes at CPU $99DF): defense bonus per shield
+
+		Args:
+			output_path: Path for equipment_bonuses.dwdata
+
+		Returns:
+			True if successful
+		"""
+		print("\n--- Extracting Verified Equipment Bonus Tables ---")
+
+		# Extract all three tables
+		weapons = self.rom_data[WEAPONS_BONUS_OFFSET:WEAPONS_BONUS_OFFSET + WEAPONS_BONUS_SIZE]
+		armor = self.rom_data[ARMOR_BONUS_OFFSET:ARMOR_BONUS_OFFSET + ARMOR_BONUS_SIZE]
+		shields = self.rom_data[SHIELD_BONUS_OFFSET:SHIELD_BONUS_OFFSET + SHIELD_BONUS_SIZE]
+
+		# Combine into single data block with header info
+		data = weapons + armor + shields
+
+		print(f"  Weapons Bonus at 0x{WEAPONS_BONUS_OFFSET:04X}: {' '.join(f'{b:02x}' for b in weapons)}")
+		print(f"  Armor Bonus at 0x{ARMOR_BONUS_OFFSET:04X}: {' '.join(f'{b:02x}' for b in armor)}")
+		print(f"  Shield Bonus at 0x{SHIELD_BONUS_OFFSET:04X}: {' '.join(f'{b:02x}' for b in shields)}")
+		print(f"  Total Size: {len(data)} bytes")
+
+		crc, crc_hex = self.builder.write_dwdata_file(
+			output_path,
+			TYPE_EQUIPMENT,
+			WEAPONS_BONUS_OFFSET,  # Use first table as reference offset
+			data
+		)
+
+		print(f"  CRC32: {crc_hex}")
+		print(f"✓ Wrote: {output_path}")
+
+		return True
+
 	def extract_all(self, output_dir: str) -> Dict[str, bool]:
 		"""
 		Extract all data types to output directory
@@ -465,6 +607,19 @@ class ROMExtractor:
 
 		results['note_table.dwdata'] = self.extract_note_table(
 			os.path.join(output_dir, 'note_table.dwdata')
+		)
+
+		# Extract verified game data tables
+		results['spell_costs.dwdata'] = self.extract_spell_costs(
+			os.path.join(output_dir, 'spell_costs.dwdata')
+		)
+
+		results['item_costs.dwdata'] = self.extract_item_costs(
+			os.path.join(output_dir, 'item_costs.dwdata')
+		)
+
+		results['equipment_bonuses.dwdata'] = self.extract_equipment_bonuses(
+			os.path.join(output_dir, 'equipment_bonuses.dwdata')
 		)
 
 		return results

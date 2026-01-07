@@ -1,6 +1,14 @@
 """Replace marked sections in assembly files with generated content."""
 import re
 import sys
+import io
+
+# Force UTF-8 output encoding for Unicode support (emoji, checkmarks, arrows)
+# This fixes UnicodeEncodeError on Windows when printing to cp1252 console
+if hasattr(sys.stdout, 'buffer'):
+	sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'buffer'):
+	sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 from pathlib import Path
 
 def replace_marked_section(bank_file, generated_file, start_marker, end_marker):
