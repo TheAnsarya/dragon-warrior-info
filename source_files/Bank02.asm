@@ -4,38 +4,38 @@
 
 ;--------------------------------------[ Forward declarations ]--------------------------------------
 
-.alias  GetJoypadStatus         $C608
-.alias  PrepSPPalLoad           $C632
-.alias  PrepBGPalLoad           $C63D
-.alias  AddPPUBufferEntry          $C690
-.alias  WaitForNMI              $FF74
-.alias  _DoReset                $FF8E
+.alias  GetJoypadStatus		 $C608
+.alias  PrepSPPalLoad		   $C632
+.alias  PrepBGPalLoad		   $C63D
+.alias  AddPPUBufferEntry		  $C690
+.alias  WaitForNMI			  $FF74
+.alias  _DoReset				$FF8E
 
 ;-----------------------------------------[ Start of code ]------------------------------------------
 
 ;The following table contains functions called from bank 3 through the IRQ interrupt.
 
 BankPointers:
-BankPtr_Word_8000:  .word DoIntroRoutine    ;($BCB0)
-BankPtr_Word_8002:  .word TextBlock1        ;($8028)
-BankPtr_Word_8004:  .word TextBlock2        ;($8286)
-BankPtr_Word_8006:  .word TextBlock3        ;($8519)
-BankPtr_Word_8008:  .word TextBlock4        ;($8713)
-BankPtr_Word_800A:  .word TextBlock5        ;($894C)
-BankPtr_Word_800C:  .word TextBlock6        ;($8D12)
-BankPtr_Word_800E:  .word TextBlock7        ;($906E)
-BankPtr_Word_8010:  .word TextBlock8        ;($9442)
-BankPtr_Word_8012:  .word TextBlock9        ;($981E)
-BankPtr_Word_8014:  .word TextBlock10       ;($9C88)
-BankPtr_Word_8016:  .word TextBlock11       ;($9F3F)
-BankPtr_Word_8018:  .word TextBlock12       ;($A28A)
-BankPtr_Word_801A:  .word TextBlock13       ;($A6DC)
-BankPtr_Word_801C:  .word TextBlock14       ;($AA2E)
-BankPtr_Word_801E:  .word TextBlock15       ;($AC61)
-BankPtr_Word_8020:  .word TextBlock16       ;($AE28)
-BankPtr_Word_8022:  .word TextBlock17       ;($AFEE)
-BankPtr_Word_8024:  .word TextBlock18       ;($B68B)
-BankPtr_Word_8026:  .word TextBlock19       ;($BA65)
+BankPtr_Word_8000:  .word DoIntroRoutine	;($BCB0)
+BankPtr_Word_8002:  .word TextBlock1		;($8028)
+BankPtr_Word_8004:  .word TextBlock2		;($8286)
+BankPtr_Word_8006:  .word TextBlock3		;($8519)
+BankPtr_Word_8008:  .word TextBlock4		;($8713)
+BankPtr_Word_800A:  .word TextBlock5		;($894C)
+BankPtr_Word_800C:  .word TextBlock6		;($8D12)
+BankPtr_Word_800E:  .word TextBlock7		;($906E)
+BankPtr_Word_8010:  .word TextBlock8		;($9442)
+BankPtr_Word_8012:  .word TextBlock9		;($981E)
+BankPtr_Word_8014:  .word TextBlock10	   ;($9C88)
+BankPtr_Word_8016:  .word TextBlock11	   ;($9F3F)
+BankPtr_Word_8018:  .word TextBlock12	   ;($A28A)
+BankPtr_Word_801A:  .word TextBlock13	   ;($A6DC)
+BankPtr_Word_801C:  .word TextBlock14	   ;($AA2E)
+BankPtr_Word_801E:  .word TextBlock15	   ;($AC61)
+BankPtr_Word_8020:  .word TextBlock16	   ;($AE28)
+BankPtr_Word_8022:  .word TextBlock17	   ;($AFEE)
+BankPtr_Word_8024:  .word TextBlock18	   ;($B68B)
+BankPtr_Word_8026:  .word TextBlock19	   ;($BA65)
 
 ;-------------------------------------------[Game Dialog]--------------------------------------------
 
@@ -58,2781 +58,2781 @@ BankPtr_Word_8026:  .word TextBlock19       ;($BA65)
 
 TextBlock1:
 TB1E0:
-;             ENMY  _    h    a    t    h    _    w    o    k    e    n    _    u    p    .
+;			 ENMY  _	h	a	t	h	_	w	o	k	e	n	_	u	p	.
 TB1E0_Byte_8028:  .byte $F4, $5F, $11, $0A, $1D, $11, $5F, $20, $18, $14, $0E, $17, $5F, $1E, $19, $47
-;             END
+;			 END
 TB1E0_Byte_8038:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E1:
-;              _    \n   T    h    o    u    _    a    r    t    _    d    e    a    d    .
-        .byte $60, $FD, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0D, $0E, $0A, $0D, $47;($8039)
-;             END
+;			  _	\n   T	h	o	u	_	a	r	t	_	d	e	a	d	.
+		.byte $60, $FD, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0D, $0E, $0A, $0D, $47;($8039)
+;			 END
 TB1E1_Byte_8049:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E2:
-;              '    T    h    o    u    _    a    r    t    _    s    t    r    o    n    g
+;			  '	T	h	o	u	_	a	r	t	_	s	t	r	o	n	g
 TB1E2_Byte_804A:  .byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $1C, $1D, $1B, $18, $17, $10
-;              _    e    n    o    u    g    h    !    \n   W    h    y    _    c    a    n
+;			  _	e	n	o	u	g	h	!	\n   W	h	y	_	c	a	n
 TB1E2_Byte_805A:  .byte $5F, $0E, $17, $18, $1E, $10, $11, $4C, $FD, $3A, $11, $22, $5F, $0C, $0A, $17
-;              _    t    h    o    u    _    n    o    t    _    d    e    f    e    a    t
+;			  _	t	h	o	u	_	n	o	t	_	d	e	f	e	a	t
 TB1E2_Byte_806A:  .byte $5F, $1D, $11, $18, $1E, $5F, $17, $18, $1D, $5F, $0D, $0E, $0F, $0E, $0A, $1D
-;              _    t    h    e    _    D    r    a    g    o    n    l    o    r    d    ?
-        .byte $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $4B;($807A)
-;              '   WAIT END
+;			  _	t	h	e	_	D	r	a	g	o	n	l	o	r	d	?
+		.byte $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $4B;($807A)
+;			  '   WAIT END
 TB1E2_Byte_808A:  .byte $40, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E3:
-;              '    I    f    _    t    h    o    u    _    a    r    t    _    p    l    a
+;			  '	I	f	_	t	h	o	u	_	a	r	t	_	p	l	a
 TB1E3_Byte_808D:  .byte $50, $2C, $0F, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $19, $15, $0A
-;              n    n    i    n    g    _    t    o    _    t    a    k    e    _    a    _
-        .byte $17, $17, $12, $17, $10, $5F, $1D, $18, $5F, $1D, $0A, $14, $0E, $5F, $0A, $5F;($809D)
-;              r    e    s    t    ,    _    f    i    r    s    t    _    s    e    e    _
+;			  n	n	i	n	g	_	t	o	_	t	a	k	e	_	a	_
+		.byte $17, $17, $12, $17, $10, $5F, $1D, $18, $5F, $1D, $0A, $14, $0E, $5F, $0A, $5F;($809D)
+;			  r	e	s	t	,	_	f	i	r	s	t	_	s	e	e	_
 TB1E3_Byte_80AD:  .byte $1B, $0E, $1C, $1D, $48, $5F, $0F, $12, $1B, $1C, $1D, $5F, $1C, $0E, $0E, $5F
-;              K    i    n    g    _    L    o    r    i    k    .'  END
+;			  K	i	n	g	_	L	o	r	i	k	.'  END
 TB1E3_Byte_80BD:  .byte $2E, $12, $17, $10, $5F, $2F, $18, $1B, $12, $14, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E4:
-;             NAME  _    h    e    l    d    _    t    h    e    _    R    a    i    n    b
+;			 NAME  _	h	e	l	d	_	t	h	e	_	R	a	i	n	b
 TB1E4_Byte_80C9:  .byte $F8, $5F, $11, $0E, $15, $0D, $5F, $1D, $11, $0E, $5F, $35, $0A, $12, $17, $0B
-;              o    w    _    D    r    o    p    _    t    o    w    a    r    d    _    t
-        .byte $18, $20, $5F, $27, $1B, $18, $19, $5F, $1D, $18, $20, $0A, $1B, $0D, $5F, $1D;($80D9)
-;              h    e    _    s    k    y    .    \n   _   WAIT END
-        .byte $11, $0E, $5F, $1C, $14, $22, $47, $FD, $60, $FB, $FC;($80E9)
+;			  o	w	_	D	r	o	p	_	t	o	w	a	r	d	_	t
+		.byte $18, $20, $5F, $27, $1B, $18, $19, $5F, $1D, $18, $20, $0A, $1B, $0D, $5F, $1D;($80D9)
+;			  h	e	_	s	k	y	.	\n   _   WAIT END
+		.byte $11, $0E, $5F, $1C, $14, $22, $47, $FD, $60, $FB, $FC;($80E9)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E5:
-;              B    u    t    _    n    o    _    r    a    i    n    b    o    w    _    a
+;			  B	u	t	_	n	o	_	r	a	i	n	b	o	w	_	a
 TB1E5_Byte_80F4:  .byte $25, $1E, $1D, $5F, $17, $18, $5F, $1B, $0A, $12, $17, $0B, $18, $20, $5F, $0A
-;              p    p    e    a    r    e    d    _    h    e    r    e    .   END
+;			  p	p	e	a	r	e	d	_	h	e	r	e	.   END
 TB1E5_Byte_8104:  .byte $19, $19, $0E, $0A, $1B, $0E, $0D, $5F, $11, $0E, $1B, $0E, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E6:
-;              '    G    o    o    d    _    m    o    r    n    i    n    g    .    \n   T
-        .byte $50, $2A, $18, $18, $0D, $5F, $16, $18, $1B, $17, $12, $17, $10, $47, $FD, $37;($8112)
-;              h    o    u    _    h    a    s    t    _    h    a    d    _    a    _    g
-        .byte $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $11, $0A, $0D, $5F, $0A, $5F, $10;($8122)
-;              o    o    d    _    n    i    g    h    t    '    s    _    s    l    e    e
+;			  '	G	o	o	d	_	m	o	r	n	i	n	g	.	\n   T
+		.byte $50, $2A, $18, $18, $0D, $5F, $16, $18, $1B, $17, $12, $17, $10, $47, $FD, $37;($8112)
+;			  h	o	u	_	h	a	s	t	_	h	a	d	_	a	_	g
+		.byte $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $11, $0A, $0D, $5F, $0A, $5F, $10;($8122)
+;			  o	o	d	_	n	i	g	h	t	'	s	_	s	l	e	e
 TB1E6_Byte_8132:  .byte $18, $18, $0D, $5F, $17, $12, $10, $11, $1D, $53, $1C, $5F, $1C, $15, $0E, $0E
-;              p    _    I    _    h    o    p    e    .'  WAIT END
+;			  p	_	I	_	h	o	p	e	.'  WAIT END
 TB1E6_Byte_8142:  .byte $19, $5F, $2C, $5F, $11, $18, $19, $0E, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E7:
-;              '    I    _    s    h    a    l    l    _    s    e    e    _    t    h    e
-        .byte $50, $2C, $5F, $1C, $11, $0A, $15, $15, $5F, $1C, $0E, $0E, $5F, $1D, $11, $0E;($814D)
-;              e    _    a    g    a    i    n    .'  END
+;			  '	I	_	s	h	a	l	l	_	s	e	e	_	t	h	e
+		.byte $50, $2C, $5F, $1C, $11, $0A, $15, $15, $5F, $1C, $0E, $0E, $5F, $1D, $11, $0E;($814D)
+;			  e	_	a	g	a	i	n	.'  END
 TB1E7_Byte_815D:  .byte $0E, $5F, $0A, $10, $0A, $12, $17, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E8:
-;              '    G    o    o    d    _    m    o    r    n    i    n    g    .    \n   T
-        .byte $50, $2A, $18, $18, $0D, $5F, $16, $18, $1B, $17, $12, $17, $10, $47, $FD, $37;($8166)
-;              h    o    u    _    s    e    e    m    s    _    t    o    _    h    a    v
-        .byte $11, $18, $1E, $5F, $1C, $0E, $0E, $16, $1C, $5F, $1D, $18, $5F, $11, $0A, $1F;($8176)
-;              e    _    s    p    e    n    t    _    a    _    g    o    o    d    _    n
+;			  '	G	o	o	d	_	m	o	r	n	i	n	g	.	\n   T
+		.byte $50, $2A, $18, $18, $0D, $5F, $16, $18, $1B, $17, $12, $17, $10, $47, $FD, $37;($8166)
+;			  h	o	u	_	s	e	e	m	s	_	t	o	_	h	a	v
+		.byte $11, $18, $1E, $5F, $1C, $0E, $0E, $16, $1C, $5F, $1D, $18, $5F, $11, $0A, $1F;($8176)
+;			  e	_	s	p	e	n	t	_	a	_	g	o	o	d	_	n
 TB1E8_Byte_8186:  .byte $0E, $5F, $1C, $19, $0E, $17, $1D, $5F, $0A, $5F, $10, $18, $18, $0D, $5F, $17
-;              i    g    h    t    .'  WAIT END
+;			  i	g	h	t	.'  WAIT END
 TB1E8_Byte_8196:  .byte $12, $10, $11, $1D, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E9:
-;              '    G    o    o    d    _    n    i    g    h    t    .'   \n  END
-        .byte $50, $2A, $18, $18, $0D, $5F, $17, $12, $10, $11, $1D, $52, $FD, $FC;($819D)
+;			  '	G	o	o	d	_	n	i	g	h	t	.'   \n  END
+		.byte $50, $2A, $18, $18, $0D, $5F, $17, $12, $10, $11, $1D, $52, $FD, $FC;($819D)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E10:
-;              '    O    k    a    y    .    \n   G    o    o    d    -    b    y    e    ,
+;			  '	O	k	a	y	.	\n   G	o	o	d	-	b	y	e	,
 TB1E10_Byte_81AB:  .byte $50, $32, $14, $0A, $22, $47, $FD, $2A, $18, $18, $0D, $49, $0B, $22, $0E, $48
-;              _    t    r    a    v    e    l    e    r    .'  END
+;			  _	t	r	a	v	e	l	e	r	.'  END
 TB1E10_Byte_81BB:  .byte $5F, $1D, $1B, $0A, $1F, $0E, $15, $0E, $1B, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E11:
-;              '    W    e    l    c    o    m    e    _    t    o    _    t    h    e    _
-        .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F;($81C6)
-;              t    r    a    v    e    l    e    r    '    s    _    I    n    n    .    \n
+;			  '	W	e	l	c	o	m	e	_	t	o	_	t	h	e	_
+		.byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F;($81C6)
+;			  t	r	a	v	e	l	e	r	'	s	_	I	n	n	.	\n
 TB1E11_Byte_81D6:  .byte $1D, $1B, $0A, $1F, $0E, $15, $0E, $1B, $53, $1C, $5F, $2C, $17, $17, $47, $FD
-;              R    o    o    m    _    a    n    d    _    b    o    a    r    d    _    i
+;			  R	o	o	m	_	a	n	d	_	b	o	a	r	d	_	i
 TB1E11_Byte_81E6:  .byte $35, $18, $18, $16, $5F, $0A, $17, $0D, $5F, $0B, $18, $0A, $1B, $0D, $5F, $12
-;              s    _   AMNT  _    G    O    L    D    _    p    e    r    _    n    i    g
-        .byte $1C, $5F, $F5, $5F, $2A, $32, $2F, $27, $5F, $19, $0E, $1B, $5F, $17, $12, $10;($81F6)
-;              h    t    .    \n   D    o    s    t    _    t    h    o    u    _    w    a
-        .byte $11, $1D, $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $0A;($8206)
-;              n    t    _    a    _    r    o    o    m    ?    '    \n  END
-        .byte $17, $1D, $5F, $0A, $5F, $1B, $18, $18, $16, $4B, $40, $FD, $FC;($8216)
+;			  s	_   AMNT  _	G	O	L	D	_	p	e	r	_	n	i	g
+		.byte $1C, $5F, $F5, $5F, $2A, $32, $2F, $27, $5F, $19, $0E, $1B, $5F, $17, $12, $10;($81F6)
+;			  h	t	.	\n   D	o	s	t	_	t	h	o	u	_	w	a
+		.byte $11, $1D, $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $0A;($8206)
+;			  n	t	_	a	_	r	o	o	m	?	'	\n  END
+		.byte $17, $1D, $5F, $0A, $5F, $1B, $18, $18, $16, $4B, $40, $FD, $FC;($8216)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E12:
-;              '    A    l    l    _    t    h    e    _    b    e    s    t    _    t    o
+;			  '	A	l	l	_	t	h	e	_	b	e	s	t	_	t	o
 TB1E12_Byte_8223:  .byte $50, $24, $15, $15, $5F, $1D, $11, $0E, $5F, $0B, $0E, $1C, $1D, $5F, $1D, $18
-;              _    t    h    e    e    .'  END
+;			  _	t	h	e	e	.'  END
 TB1E12_Byte_8233:  .byte $5F, $1D, $11, $0E, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E13:
-;              '    T    h    e    r    e    _    a    r    e    _    n    o    _    s    t
-        .byte $50, $37, $11, $0E, $1B, $0E, $5F, $0A, $1B, $0E, $5F, $17, $18, $5F, $1C, $1D;($823A)
-;              a    i    r    s    _    h    e    r    e    .'  END
-        .byte $0A, $12, $1B, $1C, $5F, $11, $0E, $1B, $0E, $52, $FC;($824A)
+;			  '	T	h	e	r	e	_	a	r	e	_	n	o	_	s	t
+		.byte $50, $37, $11, $0E, $1B, $0E, $5F, $0A, $1B, $0E, $5F, $17, $18, $5F, $1C, $1D;($823A)
+;			  a	i	r	s	_	h	e	r	e	.'  END
+		.byte $0A, $12, $1B, $1C, $5F, $11, $0E, $1B, $0E, $52, $FC;($824A)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E14:
-;              '    T    h    o    u    _    c    a    n    n    o    t    _    e    n    t
+;			  '	T	h	o	u	_	c	a	n	n	o	t	_	e	n	t
 TB1E14_Byte_8255:  .byte $50, $37, $11, $18, $1E, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0E, $17, $1D
-;              e    r    _    h    e    r    e    .'  END
+;			  e	r	_	h	e	r	e	.'  END
 TB1E14_Byte_8265:  .byte $0E, $1B, $5F, $11, $0E, $1B, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB1E15:
-;              '    T    h    e    r    e    _    i    s    _    n    o    _    o    n    e
-        .byte $50, $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $17, $18, $5F, $18, $17, $0E;($826E)
-;              _    t    h    e    r    e    .'  END
-        .byte $5F, $1D, $11, $0E, $1B, $0E, $52, $FC;($827E)
+;			  '	T	h	e	r	e	_	i	s	_	n	o	_	o	n	e
+		.byte $50, $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $17, $18, $5F, $18, $17, $0E;($826E)
+;			  _	t	h	e	r	e	.'  END
+		.byte $5F, $1D, $11, $0E, $1B, $0E, $52, $FC;($827E)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock2:
 TB2E0:
-;              '    I    _    t    h    a    n    k    _    t    h    e    e    .    \n   W
-        .byte $50, $2C, $5F, $1D, $11, $0A, $17, $14, $5F, $1D, $11, $0E, $0E, $47, $FD, $3A;($8286)
-;              o    n    '    t    _    t    h    o    u    _    b    u    y    _    o    n
-        .byte $18, $17, $53, $1D, $5F, $1D, $11, $18, $1E, $5F, $0B, $1E, $22, $5F, $18, $17;($8296)
-;              e    _    m    o    r    e    _    b    o    t    t    l    e    ?    '    \n
-        .byte $0E, $5F, $16, $18, $1B, $0E, $5F, $0B, $18, $1D, $1D, $15, $0E, $4B, $40, $FD;($82A6)
-;             END
-        .byte $FC               ;($82B6)
+;			  '	I	_	t	h	a	n	k	_	t	h	e	e	.	\n   W
+		.byte $50, $2C, $5F, $1D, $11, $0A, $17, $14, $5F, $1D, $11, $0E, $0E, $47, $FD, $3A;($8286)
+;			  o	n	'	t	_	t	h	o	u	_	b	u	y	_	o	n
+		.byte $18, $17, $53, $1D, $5F, $1D, $11, $18, $1E, $5F, $0B, $1E, $22, $5F, $18, $17;($8296)
+;			  e	_	m	o	r	e	_	b	o	t	t	l	e	?	'	\n
+		.byte $0E, $5F, $16, $18, $1B, $0E, $5F, $0B, $18, $1D, $1D, $15, $0E, $4B, $40, $FD;($82A6)
+;			 END
+		.byte $FC			   ;($82B6)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E1:
-;              '    W    i    l    l    _    t    h    o    u    _    b    u    y    _    s
-        .byte $50, $3A, $12, $15, $15, $5F, $1D, $11, $18, $1E, $5F, $0B, $1E, $22, $5F, $1C;($82B7)
-;              o    m    e    _    F    a    i    r    y    _    W    a    t    e    r    _
+;			  '	W	i	l	l	_	t	h	o	u	_	b	u	y	_	s
+		.byte $50, $3A, $12, $15, $15, $5F, $1D, $11, $18, $1E, $5F, $0B, $1E, $22, $5F, $1C;($82B7)
+;			  o	m	e	_	F	a	i	r	y	_	W	a	t	e	r	_
 TB2E1_Byte_82C7:  .byte $18, $16, $0E, $5F, $29, $0A, $12, $1B, $22, $5F, $3A, $0A, $1D, $0E, $1B, $5F
-;              f    o    r    _    3    8    _    G    O    L    D    _    t    o    _    k
-        .byte $0F, $18, $1B, $5F, $03, $08, $5F, $2A, $32, $2F, $27, $5F, $1D, $18, $5F, $14;($82D7)
-;              e    e    p    _    t    h    e    _    D    r    a    g    o    n    l    o
-        .byte $0E, $0E, $19, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18;($82E7)
-;              r    d    '    s    _    m    i    n    i    o    n    s    _    a    w    a
+;			  f	o	r	_	3	8	_	G	O	L	D	_	t	o	_	k
+		.byte $0F, $18, $1B, $5F, $03, $08, $5F, $2A, $32, $2F, $27, $5F, $1D, $18, $5F, $14;($82D7)
+;			  e	e	p	_	t	h	e	_	D	r	a	g	o	n	l	o
+		.byte $0E, $0E, $19, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18;($82E7)
+;			  r	d	'	s	_	m	i	n	i	o	n	s	_	a	w	a
 TB2E1_Byte_82F7:  .byte $1B, $0D, $53, $1C, $5F, $16, $12, $17, $12, $18, $17, $1C, $5F, $0A, $20, $0A
-;              y    ?    '    \n  END
-        .byte $22, $4B, $40, $FD, $FC;($8307)
+;			  y	?	'	\n  END
+		.byte $22, $4B, $40, $FD, $FC;($8307)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E2:
-;              '    I    _    w    i    l    l    _    s    e    e    _    t    h    e    e
-        .byte $50, $2C, $5F, $20, $12, $15, $15, $5F, $1C, $0E, $0E, $5F, $1D, $11, $0E, $0E;($830C)
-;              _    l    a    t    e    r    .'  END
-        .byte $5F, $15, $0A, $1D, $0E, $1B, $52, $FC;($831C)
+;			  '	I	_	w	i	l	l	_	s	e	e	_	t	h	e	e
+		.byte $50, $2C, $5F, $20, $12, $15, $15, $5F, $1C, $0E, $0E, $5F, $1D, $11, $0E, $0E;($830C)
+;			  _	l	a	t	e	r	.'  END
+		.byte $5F, $15, $0A, $1D, $0E, $1B, $52, $FC;($831C)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E3:
-;              '    T    h    o    u    _    h    a    s    t    _    n    o    t    _    e
-        .byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $17, $18, $1D, $5F, $0E;($8324)
-;              n    o    u    g    h    _    m    o    n    e    y    .'  WAIT END
-        .byte $17, $18, $1E, $10, $11, $5F, $16, $18, $17, $0E, $22, $52, $FB, $FC;($8334)
+;			  '	T	h	o	u	_	h	a	s	t	_	n	o	t	_	e
+		.byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $17, $18, $1D, $5F, $0E;($8324)
+;			  n	o	u	g	h	_	m	o	n	e	y	.'  WAIT END
+		.byte $17, $18, $1E, $10, $11, $5F, $16, $18, $17, $0E, $22, $52, $FB, $FC;($8334)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E4:
-;              '    I    _    a    m    _    s    o    r    r    y    ,    _    b    u    t
-        .byte $50, $2C, $5F, $0A, $16, $5F, $1C, $18, $1B, $1B, $22, $48, $5F, $0B, $1E, $1D;($8342)
-;              _    I    _    c    a    n    n    o    t    _    s    e    l    l    _    t
-        .byte $5F, $2C, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $1C, $0E, $15, $15, $5F, $1D;($8352)
-;              h    e    e    _    a    n    y    m    o    r    e    .'  END
-        .byte $11, $0E, $0E, $5F, $0A, $17, $22, $16, $18, $1B, $0E, $52, $FC;($8362)
+;			  '	I	_	a	m	_	s	o	r	r	y	,	_	b	u	t
+		.byte $50, $2C, $5F, $0A, $16, $5F, $1C, $18, $1B, $1B, $22, $48, $5F, $0B, $1E, $1D;($8342)
+;			  _	I	_	c	a	n	n	o	t	_	s	e	l	l	_	t
+		.byte $5F, $2C, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $1C, $0E, $15, $15, $5F, $1D;($8352)
+;			  h	e	e	_	a	n	y	m	o	r	e	.'  END
+		.byte $11, $0E, $0E, $5F, $0A, $17, $22, $16, $18, $1B, $0E, $52, $FC;($8362)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E5:
-;              '    H    e    r    e    ,    t    a    k    e    _    t    h    i    s    _
-        .byte $50, $2B, $0E, $1B, $0E, $48, $1D, $0A, $14, $0E, $5F, $1D, $11, $12, $1C, $5F;($836F)
-;              k    e    y    .    \n   D    o    s    t    _    t    h    o    u    _    w
-        .byte $14, $0E, $22, $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20;($837F)
-;              i    s    h    _    t    o    _    p    u    r    c    h    a    s    e    _
+;			  '	H	e	r	e	,	t	a	k	e	_	t	h	i	s	_
+		.byte $50, $2B, $0E, $1B, $0E, $48, $1D, $0A, $14, $0E, $5F, $1D, $11, $12, $1C, $5F;($836F)
+;			  k	e	y	.	\n   D	o	s	t	_	t	h	o	u	_	w
+		.byte $14, $0E, $22, $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20;($837F)
+;			  i	s	h	_	t	o	_	p	u	r	c	h	a	s	e	_
 TB2E5_Byte_838F:  .byte $12, $1C, $11, $5F, $1D, $18, $5F, $19, $1E, $1B, $0C, $11, $0A, $1C, $0E, $5F
-;              m    o    r    e    ?    '    \n  END
-        .byte $16, $18, $1B, $0E, $4B, $40, $FD, $FC;($839F)
+;			  m	o	r	e	?	'	\n  END
+		.byte $16, $18, $1B, $0E, $4B, $40, $FD, $FC;($839F)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E6:
-;              '    M    a    g    i    c    _    k    e    y    s    !    \n   T    h    e
+;			  '	M	a	g	i	c	_	k	e	y	s	!	\n   T	h	e
 TB2E6_Byte_83A7:  .byte $50, $30, $0A, $10, $12, $0C, $5F, $14, $0E, $22, $1C, $4C, $FD, $37, $11, $0E
-;              y    _    w    i    l    l    _    u    n    l    o    c    k    _    a    n
+;			  y	_	w	i	l	l	_	u	n	l	o	c	k	_	a	n
 TB2E6_Byte_83B7:  .byte $22, $5F, $20, $12, $15, $15, $5F, $1E, $17, $15, $18, $0C, $14, $5F, $0A, $17
-;              y    _    d    o    o    r    .    \n   D    o    s    t    _    t    h    o
-        .byte $22, $5F, $0D, $18, $18, $1B, $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18;($83C7)
-;              u    _    w    i    s    h    _    t    o    _    p    u    r    c    h    a
-        .byte $1E, $5F, $20, $12, $1C, $11, $5F, $1D, $18, $5F, $19, $1E, $1B, $0C, $11, $0A;($83D7)
-;              s    e    _    o    n    e    _    f    o    r    _   AMNT  _    G    O    L
-        .byte $1C, $0E, $5F, $18, $17, $0E, $5F, $0F, $18, $1B, $5F, $F5, $5F, $2A, $32, $2F;($83E7)
-;              D    ?    '    \n  END
+;			  y	_	d	o	o	r	.	\n   D	o	s	t	_	t	h	o
+		.byte $22, $5F, $0D, $18, $18, $1B, $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18;($83C7)
+;			  u	_	w	i	s	h	_	t	o	_	p	u	r	c	h	a
+		.byte $1E, $5F, $20, $12, $1C, $11, $5F, $1D, $18, $5F, $19, $1E, $1B, $0C, $11, $0A;($83D7)
+;			  s	e	_	o	n	e	_	f	o	r	_   AMNT  _	G	O	L
+		.byte $1C, $0E, $5F, $18, $17, $0E, $5F, $0F, $18, $1B, $5F, $F5, $5F, $2A, $32, $2F;($83E7)
+;			  D	?	'	\n  END
 TB2E6_Byte_83F7:  .byte $27, $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E7:
-;              '    I    _    a    m    _    s    o    r    r    y    .'  WAIT END
+;			  '	I	_	a	m	_	s	o	r	r	y	.'  WAIT END
 TB2E7_Byte_83FC:  .byte $50, $2C, $5F, $0A, $16, $5F, $1C, $18, $1B, $1B, $22, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E8:
-;              A    _    c    u    r    s    e    _    i    s    _    u    p    o    n    _
+;			  A	_	c	u	r	s	e	_	i	s	_	u	p	o	n	_
 TB2E8_Byte_840A:  .byte $24, $5F, $0C, $1E, $1B, $1C, $0E, $5F, $12, $1C, $5F, $1E, $19, $18, $17, $5F
-;              t    h    y    _    b    o    d    y    .   WAIT END
-        .byte $1D, $11, $22, $5F, $0B, $18, $0D, $22, $47, $FB, $FC;($841A)
+;			  t	h	y	_	b	o	d	y	.   WAIT END
+		.byte $1D, $11, $22, $5F, $0B, $18, $0D, $22, $47, $FB, $FC;($841A)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E9:
-;              '    T    h    o    u    _    h    a    s    t    _    n    o    _    p    o
+;			  '	T	h	o	u	_	h	a	s	t	_	n	o	_	p	o
 TB2E9_Byte_8425:  .byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $17, $18, $5F, $19, $18
-;              s    s    e    s    s    i    o    n    s    .'  END
-        .byte $1C, $1C, $0E, $1C, $1C, $12, $18, $17, $1C, $52, $FC;($8435)
+;			  s	s	e	s	s	i	o	n	s	.'  END
+		.byte $1C, $1C, $0E, $1C, $1C, $12, $18, $17, $1C, $52, $FC;($8435)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E10:
-;              '    W    i    l    t    _    t    h    o    u    _    s    e    l    l    _
-        .byte $50, $3A, $12, $15, $1D, $5F, $1D, $11, $18, $1E, $5F, $1C, $0E, $15, $15, $5F;($8440)
-;              a    n    y    t    h    i    n    g    _    e    l    s    e    ?    '    \n
+;			  '	W	i	l	t	_	t	h	o	u	_	s	e	l	l	_
+		.byte $50, $3A, $12, $15, $1D, $5F, $1D, $11, $18, $1E, $5F, $1C, $0E, $15, $15, $5F;($8440)
+;			  a	n	y	t	h	i	n	g	_	e	l	s	e	?	'	\n
 TB2E10_Byte_8450:  .byte $0A, $17, $22, $1D, $11, $12, $17, $10, $5F, $0E, $15, $1C, $0E, $4B, $40, $FD
-;             END
-        .byte $FC               ;($8460)
+;			 END
+		.byte $FC			   ;($8460)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E11:
-;              '    I    _    c    a    n    n    o    t    _    b    u    y    _    i    t
+;			  '	I	_	c	a	n	n	o	t	_	b	u	y	_	i	t
 TB2E11_Byte_8461:  .byte $50, $2C, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0B, $1E, $22, $5F, $12, $1D
-;              .'  END
+;			  .'  END
 TB2E11_Byte_8471:  .byte $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E12:
-;              '    T    h    o    u    _    s    a    i    d    _    t    h    e    _   ITEM
+;			  '	T	h	o	u	_	s	a	i	d	_	t	h	e	_   ITEM
 TB2E12_Byte_8473:  .byte $50, $37, $11, $18, $1E, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0E, $5F, $F7
-;              .    \n   I    _    w    i    l    l    _    b    u    y    _    t    h    y
+;			  .	\n   I	_	w	i	l	l	_	b	u	y	_	t	h	y
 TB2E12_Byte_8483:  .byte $47, $FD, $2C, $5F, $20, $12, $15, $15, $5F, $0B, $1E, $22, $5F, $1D, $11, $22
-;              _   ITEM  _    f    o    r    _   AMNT  _    G    O    L    D    .    \n   I
-        .byte $5F, $F7, $5F, $0F, $18, $1B, $5F, $F5, $5F, $2A, $32, $2F, $27, $47, $FD, $2C;($8493)
-;              s    _    t    h    a    t    _    a    l    l    _    r    i    g    h    t
-        .byte $1C, $5F, $1D, $11, $0A, $1D, $5F, $0A, $15, $15, $5F, $1B, $12, $10, $11, $1D;($84A3)
-;              ?    '    \n  END
+;			  _   ITEM  _	f	o	r	_   AMNT  _	G	O	L	D	.	\n   I
+		.byte $5F, $F7, $5F, $0F, $18, $1B, $5F, $F5, $5F, $2A, $32, $2F, $27, $47, $FD, $2C;($8493)
+;			  s	_	t	h	a	t	_	a	l	l	_	r	i	g	h	t
+		.byte $1C, $5F, $1D, $11, $0A, $1D, $5F, $0A, $15, $15, $5F, $1B, $12, $10, $11, $1D;($84A3)
+;			  ?	'	\n  END
 TB2E12_Byte_84B3:  .byte $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E13:
-;              '    W    h    a    t    _    a    r    t    _    t    h    o    u    _    s
-        .byte $50, $3A, $11, $0A, $1D, $5F, $0A, $1B, $1D, $5F, $1D, $11, $18, $1E, $5F, $1C;($84B7)
-;              e    l    l    i    n    g    ?    '    \n  END
-        .byte $0E, $15, $15, $12, $17, $10, $4B, $40, $FD, $FC;($84C7)
+;			  '	W	h	a	t	_	a	r	t	_	t	h	o	u	_	s
+		.byte $50, $3A, $11, $0A, $1D, $5F, $0A, $1B, $1D, $5F, $1D, $11, $18, $1E, $5F, $1C;($84B7)
+;			  e	l	l	i	n	g	?	'	\n  END
+		.byte $0E, $15, $15, $12, $17, $10, $4B, $40, $FD, $FC;($84C7)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E14:
-;              '    I    _    w    i    l    l    _    b    e    _    w    a    i    t    i
-        .byte $50, $2C, $5F, $20, $12, $15, $15, $5F, $0B, $0E, $5F, $20, $0A, $12, $1D, $12;($84D1)
-;              n    g    _    f    o    r    _    t    h    y    _    n    e    x    t    _
-        .byte $17, $10, $5F, $0F, $18, $1B, $5F, $1D, $11, $22, $5F, $17, $0E, $21, $1D, $5F;($84E1)
-;              v    i    s    i    t    .'  END
-        .byte $1F, $12, $1C, $12, $1D, $52, $FC;($84F1)
+;			  '	I	_	w	i	l	l	_	b	e	_	w	a	i	t	i
+		.byte $50, $2C, $5F, $20, $12, $15, $15, $5F, $0B, $0E, $5F, $20, $0A, $12, $1D, $12;($84D1)
+;			  n	g	_	f	o	r	_	t	h	y	_	n	e	x	t	_
+		.byte $17, $10, $5F, $0F, $18, $1B, $5F, $1D, $11, $22, $5F, $17, $0E, $21, $1D, $5F;($84E1)
+;			  v	i	s	i	t	.'  END
+		.byte $1F, $12, $1C, $12, $1D, $52, $FC;($84F1)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB2E15:
-;              '    D    o    s    t    _    t    h    o    u    _    w    a    n    t    _
-        .byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $0A, $17, $1D, $5F;($84F8)
-;              a    n    y    t    h    i    n    g    _    e    l    s    e    ?    '    \n
+;			  '	D	o	s	t	_	t	h	o	u	_	w	a	n	t	_
+		.byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $0A, $17, $1D, $5F;($84F8)
+;			  a	n	y	t	h	i	n	g	_	e	l	s	e	?	'	\n
 TB2E15_Byte_8508:  .byte $0A, $17, $22, $1D, $11, $12, $17, $10, $5F, $0E, $15, $1C, $0E, $4B, $40, $FD
-;             END
-        .byte $FC               ;($8518)
+;			 END
+		.byte $FC			   ;($8518)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock3:
 TB3E0:
-;              '    T    h    o    u    _    c    a    n    n    o    t    _    h    o    l
-        .byte $50, $37, $11, $18, $1E, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $11, $18, $15;($8519)
-;              d    _    m    o    r    e    _    H    e    r    b    s    .'  WAIT END
+;			  '	T	h	o	u	_	c	a	n	n	o	t	_	h	o	l
+		.byte $50, $37, $11, $18, $1E, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $11, $18, $15;($8519)
+;			  d	_	m	o	r	e	_	H	e	r	b	s	.'  WAIT END
 TB3E0_Byte_8529:  .byte $0D, $5F, $16, $18, $1B, $0E, $5F, $2B, $0E, $1B, $0B, $1C, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E1:
-;              '    T    h    o    u    _    c    a    n    n    o    t    _    c    a    r
-        .byte $50, $37, $11, $18, $1E, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0C, $0A, $1B;($8538)
-;              r    y    _    a    n    y    m    o    r    e    .'  WAIT END
-        .byte $1B, $22, $5F, $0A, $17, $22, $16, $18, $1B, $0E, $52, $FB, $FC;($8548)
+;			  '	T	h	o	u	_	c	a	n	n	o	t	_	c	a	r
+		.byte $50, $37, $11, $18, $1E, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0C, $0A, $1B;($8538)
+;			  r	y	_	a	n	y	m	o	r	e	.'  WAIT END
+		.byte $1B, $22, $5F, $0A, $17, $22, $16, $18, $1B, $0E, $52, $FB, $FC;($8548)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E2:
-;              '    T    h    o    u    _    h    a    s    t    _    n    o    t    _    e
+;			  '	T	h	o	u	_	h	a	s	t	_	n	o	t	_	e
 TB3E2_Byte_8555:  .byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $17, $18, $1D, $5F, $0E
-;              n    o    u    g    h    _    m    o    n    e    y    .'  WAIT END
+;			  n	o	u	g	h	_	m	o	n	e	y	.'  WAIT END
 TB3E2_Byte_8565:  .byte $17, $18, $1E, $10, $11, $5F, $16, $18, $17, $0E, $22, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E3:
-;              '    T    h    e    _   ITEM  ?    \n   T    h    a    n    k    _    y    o
+;			  '	T	h	e	_   ITEM  ?	\n   T	h	a	n	k	_	y	o
 TB3E3_Byte_8573:  .byte $50, $37, $11, $0E, $5F, $F7, $4B, $FD, $37, $11, $0A, $17, $14, $5F, $22, $18
-;              u    _    v    e    r    y    _    m    u    c    h    .'  WAIT END
+;			  u	_	v	e	r	y	_	m	u	c	h	.'  WAIT END
 TB3E3_Byte_8583:  .byte $1E, $5F, $1F, $0E, $1B, $22, $5F, $16, $1E, $0C, $11, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E4:
-;              '    W    h    a    t    _    d    o    s    t    _    t    h    o    u    _
-        .byte $50, $3A, $11, $0A, $1D, $5F, $0D, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F;($8591)
-;              w    a    n    t    ?    '    \n  END
-        .byte $20, $0A, $17, $1D, $4B, $40, $FD, $FC;($85A1)
+;			  '	W	h	a	t	_	d	o	s	t	_	t	h	o	u	_
+		.byte $50, $3A, $11, $0A, $1D, $5F, $0D, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F;($8591)
+;			  w	a	n	t	?	'	\n  END
+		.byte $20, $0A, $17, $1D, $4B, $40, $FD, $FC;($85A1)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E5:
-;              '    W    e    l    c    o    m    e    .    \n   W    e    _    d    e    a
-        .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $47, $FD, $3A, $0E, $5F, $0D, $0E, $0A;($85A9)
-;              l    _    i    n    _    t    o    o    l    s    .    \n   W    h    a    t
-        .byte $15, $5F, $12, $17, $5F, $1D, $18, $18, $15, $1C, $47, $FD, $3A, $11, $0A, $1D;($85B9)
-;              _    c    a    n    _    I    _    d    o    _    f    o    r    _    t    h
+;			  '	W	e	l	c	o	m	e	.	\n   W	e	_	d	e	a
+		.byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $47, $FD, $3A, $0E, $5F, $0D, $0E, $0A;($85A9)
+;			  l	_	i	n	_	t	o	o	l	s	.	\n   W	h	a	t
+		.byte $15, $5F, $12, $17, $5F, $1D, $18, $18, $15, $1C, $47, $FD, $3A, $11, $0A, $1D;($85B9)
+;			  _	c	a	n	_	I	_	d	o	_	f	o	r	_	t	h
 TB3E5_Byte_85C9:  .byte $5F, $0C, $0A, $17, $5F, $2C, $5F, $0D, $18, $5F, $0F, $18, $1B, $5F, $1D, $11
-;              e    e    ?    '    \n  END
+;			  e	e	?	'	\n  END
 TB3E5_Byte_85D9:  .byte $0E, $0E, $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E6:
-;              '    O    h    ,    _    y    e    s    ?    \n   T    h    a    t    '    s
-        .byte $50, $32, $11, $48, $5F, $22, $0E, $1C, $4B, $FD, $37, $11, $0A, $1D, $53, $1C;($85DF)
-;              _    t    o    o    _    b    a    d    .'  WAIT END
+;			  '	O	h	,	_	y	e	s	?	\n   T	h	a	t	'	s
+		.byte $50, $32, $11, $48, $5F, $22, $0E, $1C, $4B, $FD, $37, $11, $0A, $1D, $53, $1C;($85DF)
+;			  _	t	o	o	_	b	a	d	.'  WAIT END
 TB3E6_Byte_85EF:  .byte $5F, $1D, $18, $18, $5F, $0B, $0A, $0D, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E7:
-;              '    I    s    _    t    h    a    t    _    O    k    a    y    .    ?    '
-        .byte $50, $2C, $1C, $5F, $1D, $11, $0A, $1D, $5F, $32, $14, $0A, $22, $47, $4B, $40;($85FA)
-;              \n  INDT END
-        .byte $FD, $57, $FC     ;($860A)
+;			  '	I	s	_	t	h	a	t	_	O	k	a	y	.	?	'
+		.byte $50, $2C, $1C, $5F, $1D, $11, $0A, $1D, $5F, $32, $14, $0A, $22, $47, $4B, $40;($85FA)
+;			  \n  INDT END
+		.byte $FD, $57, $FC	 ;($860A)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E8:
-;              '    W    e    _    d    e    a    l    _    i    n    _    w    e    a    p
+;			  '	W	e	_	d	e	a	l	_	i	n	_	w	e	a	p
 TB3E8_Byte_860D:  .byte $50, $3A, $0E, $5F, $0D, $0E, $0A, $15, $5F, $12, $17, $5F, $20, $0E, $0A, $19
-;              o    n    s    _    a    n    d    _    a    r    m    o    r    .    \n   D
+;			  o	n	s	_	a	n	d	_	a	r	m	o	r	.	\n   D
 TB3E8_Byte_861D:  .byte $18, $17, $1C, $5F, $0A, $17, $0D, $5F, $0A, $1B, $16, $18, $1B, $47, $FD, $27
-;              o    s    t    _    t    h    o    u    _    w    i    s    h    _    t    o
-        .byte $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $1C, $11, $5F, $1D, $18;($862D)
-;              _    b    u    y    _    a    n    y    t    h    i    n    g    _    t    o
-        .byte $5F, $0B, $1E, $22, $5F, $0A, $17, $22, $1D, $11, $12, $17, $10, $5F, $1D, $18;($863D)
-;              d    a    y    ?    '    \n  END
-        .byte $0D, $0A, $22, $4B, $40, $FD, $FC;($864D)
+;			  o	s	t	_	t	h	o	u	_	w	i	s	h	_	t	o
+		.byte $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $1C, $11, $5F, $1D, $18;($862D)
+;			  _	b	u	y	_	a	n	y	t	h	i	n	g	_	t	o
+		.byte $5F, $0B, $1E, $22, $5F, $0A, $17, $22, $1D, $11, $12, $17, $10, $5F, $1D, $18;($863D)
+;			  d	a	y	?	'	\n  END
+		.byte $0D, $0A, $22, $4B, $40, $FD, $FC;($864D)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E9:
-;              '    T    h    e    _   ITEM  ?    '   WAIT END
-        .byte $50, $37, $11, $0E, $5F, $F7, $4B, $40, $FB, $FC;($8654)
+;			  '	T	h	e	_   ITEM  ?	'   WAIT END
+		.byte $50, $37, $11, $0E, $5F, $F7, $4B, $40, $FB, $FC;($8654)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E10:
-;              '    T    h    e    n    _    I    _    w    i    l    l    _    b    u    y
+;			  '	T	h	e	n	_	I	_	w	i	l	l	_	b	u	y
 TB3E10_Byte_865E:  .byte $50, $37, $11, $0E, $17, $5F, $2C, $5F, $20, $12, $15, $15, $5F, $0B, $1E, $22
-;              _    t    h    y    _   ITEM  _    f    o    r    _   AMNT  _    G    O    L
+;			  _	t	h	y	_   ITEM  _	f	o	r	_   AMNT  _	G	O	L
 TB3E10_Byte_866E:  .byte $5F, $1D, $11, $22, $5F, $F7, $5F, $0F, $18, $1B, $5F, $F5, $5F, $2A, $32, $2F
-;              D    .'  WAIT END
+;			  D	.'  WAIT END
 TB3E10_Byte_867E:  .byte $27, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E11:
-;              '    S    o    r    r    y    .    \n   T    h    o    u    _    h    a    s
+;			  '	S	o	r	r	y	.	\n   T	h	o	u	_	h	a	s
 TB3E11_Byte_8682:  .byte $50, $36, $18, $1B, $1B, $22, $47, $FD, $37, $11, $18, $1E, $5F, $11, $0A, $1C
-;              t    _    n    o    t    _    e    n    o    u    g    h    _    m    o    n
+;			  t	_	n	o	t	_	e	n	o	u	g	h	_	m	o	n
 TB3E11_Byte_8692:  .byte $1D, $5F, $17, $18, $1D, $5F, $0E, $17, $18, $1E, $10, $11, $5F, $16, $18, $17
-;              e    y    .'  WAIT END
-        .byte $0E, $22, $52, $FB, $FC;($86A2)
+;			  e	y	.'  WAIT END
+		.byte $0E, $22, $52, $FB, $FC;($86A2)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E12:
-;              '    D    o    s    t    _    t    h    o    u    _    w    i    s    h    _
-        .byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $1C, $11, $5F;($86A7)
-;              t    o    _    b    u    y    _    a    n    y    t    h    i    n    g    _
+;			  '	D	o	s	t	_	t	h	o	u	_	w	i	s	h	_
+		.byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $1C, $11, $5F;($86A7)
+;			  t	o	_	b	u	y	_	a	n	y	t	h	i	n	g	_
 TB3E12_Byte_86B7:  .byte $1D, $18, $5F, $0B, $1E, $22, $5F, $0A, $17, $22, $1D, $11, $12, $17, $10, $5F
-;              m    o    r    e    ?    '    \n  END
-        .byte $16, $18, $1B, $0E, $4B, $40, $FD, $FC;($86C7)
+;			  m	o	r	e	?	'	\n  END
+		.byte $16, $18, $1B, $0E, $4B, $40, $FD, $FC;($86C7)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E13:
-;              '    W    h    a    t    _    d    o    s    t    _    t    h    o    u    _
-        .byte $50, $3A, $11, $0A, $1D, $5F, $0D, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F;($86CF)
-;              w    i    s    h    _    t    o    _    b    u    y    ?    '    \n  END
+;			  '	W	h	a	t	_	d	o	s	t	_	t	h	o	u	_
+		.byte $50, $3A, $11, $0A, $1D, $5F, $0D, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F;($86CF)
+;			  w	i	s	h	_	t	o	_	b	u	y	?	'	\n  END
 TB3E13_Byte_86DF:  .byte $20, $12, $1C, $11, $5F, $1D, $18, $5F, $0B, $1E, $22, $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E14:
-;              '    I    _    t    h    a    n    k    _    t    h    e    e    .'   \n  END
+;			  '	I	_	t	h	a	n	k	_	t	h	e	e	.'   \n  END
 TB3E14_Byte_86EE:  .byte $50, $2C, $5F, $1D, $11, $0A, $17, $14, $5F, $1D, $11, $0E, $0E, $52, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB3E15:
-;              '    P    l    e    a    s    e    ,    _    c    o    m    e    _    a    g
+;			  '	P	l	e	a	s	e	,	_	c	o	m	e	_	a	g
 TB3E15_Byte_86FE:  .byte $50, $33, $15, $0E, $0A, $1C, $0E, $48, $5F, $0C, $18, $16, $0E, $5F, $0A, $10
-;              a    i    n    .'  END
+;			  a	i	n	.'  END
 TB3E15_Byte_870E:  .byte $0A, $12, $17, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock4:
 TB4E0:
-;             NAME  _    c    h    a    n    t    e    d    _    t    h    e    _    s    p
+;			 NAME  _	c	h	a	n	t	e	d	_	t	h	e	_	s	p
 TB4E0_Byte_8713:  .byte $F8, $5F, $0C, $11, $0A, $17, $1D, $0E, $0D, $5F, $1D, $11, $0E, $5F, $1C, $19
-;              e    l    l    _    o    f    _   SPEL  .   END
-        .byte $0E, $15, $15, $5F, $18, $0F, $5F, $F6, $47, $FC;($8723)
+;			  e	l	l	_	o	f	_   SPEL  .   END
+		.byte $0E, $15, $15, $5F, $18, $0F, $5F, $F6, $47, $FC;($8723)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E1:
-;             NAME  _    c    a    n    n    o    t    _    y    e    t    _    u    s    e
+;			 NAME  _	c	a	n	n	o	t	_	y	e	t	_	u	s	e
 TB4E1_Byte_872D:  .byte $F8, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $22, $0E, $1D, $5F, $1E, $1C, $0E
-;              _    t    h    e    _    s    p    e    l    l    .   END
+;			  _	t	h	e	_	s	p	e	l	l	.   END
 TB4E1_Byte_873D:  .byte $5F, $1D, $11, $0E, $5F, $1C, $19, $0E, $15, $15, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E2:
-;              T    h    y    _    M    P    _    i    s    _    t    o    o    _    l    o
+;			  T	h	y	_	M	P	_	i	s	_	t	o	o	_	l	o
 TB4E2_Byte_8749:  .byte $37, $11, $22, $5F, $30, $33, $5F, $12, $1C, $5F, $1D, $18, $18, $5F, $15, $18
-;              w    .   END
+;			  w	.   END
 TB4E2_Byte_8759:  .byte $20, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E3:
-;              _    \n   B    u    t    _    n    o    t    h    i    n    g    _    h    a
-        .byte $60, $FD, $25, $1E, $1D, $5F, $17, $18, $1D, $11, $12, $17, $10, $5F, $11, $0A;($875C)
-;              p    p    e    n    e    d    .   END
+;			  _	\n   B	u	t	_	n	o	t	h	i	n	g	_	h	a
+		.byte $60, $FD, $25, $1E, $1D, $5F, $17, $18, $1D, $11, $12, $17, $10, $5F, $11, $0A;($875C)
+;			  p	p	e	n	e	d	.   END
 TB4E3_Byte_876C:  .byte $19, $19, $0E, $17, $0E, $0D, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E4:
-;              R    E    P    E    L    _    h    a    s    _    l    o    s    t    _    i
+;			  R	E	P	E	L	_	h	a	s	_	l	o	s	t	_	i
 TB4E4_Byte_8774:  .byte $35, $28, $33, $28, $2F, $5F, $11, $0A, $1C, $5F, $15, $18, $1C, $1D, $5F, $12
-;              t    s    _    e    f    f    e    c    t    .   END
+;			  t	s	_	e	f	f	e	c	t	.   END
 TB4E4_Byte_8784:  .byte $1D, $1C, $5F, $0E, $0F, $0F, $0E, $0C, $1D, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E5:
-;              A    _    t    o    r    c    h    _    c    a    n    _    b    e    _    u
-        .byte $24, $5F, $1D, $18, $1B, $0C, $11, $5F, $0C, $0A, $17, $5F, $0B, $0E, $5F, $1E;($878F)
-;              s    e    d    _    o    n    l    y    _    i    n    _    d    a    r    k
-        .byte $1C, $0E, $0D, $5F, $18, $17, $15, $22, $5F, $12, $17, $5F, $0D, $0A, $1B, $14;($879F)
-;              _    p    l    a    c    e    s    .   END
-        .byte $5F, $19, $15, $0A, $0C, $0E, $1C, $47, $FC;($87AF)
+;			  A	_	t	o	r	c	h	_	c	a	n	_	b	e	_	u
+		.byte $24, $5F, $1D, $18, $1B, $0C, $11, $5F, $0C, $0A, $17, $5F, $0B, $0E, $5F, $1E;($878F)
+;			  s	e	d	_	o	n	l	y	_	i	n	_	d	a	r	k
+		.byte $1C, $0E, $0D, $5F, $18, $17, $15, $22, $5F, $12, $17, $5F, $0D, $0A, $1B, $14;($879F)
+;			  _	p	l	a	c	e	s	.   END
+		.byte $5F, $19, $15, $0A, $0C, $0E, $1C, $47, $FC;($87AF)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E6:
-;             NAME  _    s    p    r    i    n    k    l    e    d    _    t    h    e    _
-        .byte $F8, $5F, $1C, $19, $1B, $12, $17, $14, $15, $0E, $0D, $5F, $1D, $11, $0E, $5F;($87B8)
-;              F    a    i    r    y    _    W    a    t    e    r    _    o    v    e    r
+;			 NAME  _	s	p	r	i	n	k	l	e	d	_	t	h	e	_
+		.byte $F8, $5F, $1C, $19, $1B, $12, $17, $14, $15, $0E, $0D, $5F, $1D, $11, $0E, $5F;($87B8)
+;			  F	a	i	r	y	_	W	a	t	e	r	_	o	v	e	r
 TB4E6_Byte_87C8:  .byte $29, $0A, $12, $1B, $22, $5F, $3A, $0A, $1D, $0E, $1B, $5F, $18, $1F, $0E, $1B
-;              _    h    i    s    _    b    o    d    y    .   END
+;			  _	h	i	s	_	b	o	d	y	.   END
 TB4E6_Byte_87D8:  .byte $5F, $11, $12, $1C, $5F, $0B, $18, $0D, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E7:
-;              T    h    e    _    F    a    i    r    y    _    W    a    t    e    r    _
+;			  T	h	e	_	F	a	i	r	y	_	W	a	t	e	r	_
 TB4E7_Byte_87E3:  .byte $37, $11, $0E, $5F, $29, $0A, $12, $1B, $22, $5F, $3A, $0A, $1D, $0E, $1B, $5F
-;              h    a    s    _    l    o    s    t    _    i    t    s    _    e    f    f
+;			  h	a	s	_	l	o	s	t	_	i	t	s	_	e	f	f
 TB4E7_Byte_87F3:  .byte $11, $0A, $1C, $5F, $15, $18, $1C, $1D, $5F, $12, $1D, $1C, $5F, $0E, $0F, $0F
-;              e    c    t    .   END
-        .byte $0E, $0C, $1D, $47, $FC;($8803)
+;			  e	c	t	.   END
+		.byte $0E, $0C, $1D, $47, $FC;($8803)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E8:
-;              T    h    e    _    W    i    n    g    s    _    o    f    _    t    h    e
+;			  T	h	e	_	W	i	n	g	s	_	o	f	_	t	h	e
 TB4E8_Byte_8808:  .byte $37, $11, $0E, $5F, $3A, $12, $17, $10, $1C, $5F, $18, $0F, $5F, $1D, $11, $0E
-;              _    W    y    v    e    r    n    _    c    a    n    n    o    t    _    b
-        .byte $5F, $3A, $22, $1F, $0E, $1B, $17, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0B;($8818)
-;              e    _    u    s    e    d    _    h    e    r    e    .   END
-        .byte $0E, $5F, $1E, $1C, $0E, $0D, $5F, $11, $0E, $1B, $0E, $47, $FC;($8828)
+;			  _	W	y	v	e	r	n	_	c	a	n	n	o	t	_	b
+		.byte $5F, $3A, $22, $1F, $0E, $1B, $17, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0B;($8818)
+;			  e	_	u	s	e	d	_	h	e	r	e	.   END
+		.byte $0E, $5F, $1E, $1C, $0E, $0D, $5F, $11, $0E, $1B, $0E, $47, $FC;($8828)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E9:
-;             NAME  _    t    h    r    e    w    _    T    h    e    _    W    i    n    g
+;			 NAME  _	t	h	r	e	w	_	T	h	e	_	W	i	n	g
 TB4E9_Byte_8835:  .byte $F8, $5F, $1D, $11, $1B, $0E, $20, $5F, $37, $11, $0E, $5F, $3A, $12, $17, $10
-;              s    _    o    f    _    t    h    e    _    W    y    v    e    r    n    _
-        .byte $1C, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $3A, $22, $1F, $0E, $1B, $17, $5F;($8845)
-;              u    p    _    i    n    t    o    _    t    h    e    _    s    k    y    .
-        .byte $1E, $19, $5F, $12, $17, $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $14, $22, $47;($8855)
-;             END
-        .byte $FC               ;($8865)
+;			  s	_	o	f	_	t	h	e	_	W	y	v	e	r	n	_
+		.byte $1C, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $3A, $22, $1F, $0E, $1B, $17, $5F;($8845)
+;			  u	p	_	i	n	t	o	_	t	h	e	_	s	k	y	.
+		.byte $1E, $19, $5F, $12, $17, $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $14, $22, $47;($8855)
+;			 END
+		.byte $FC			   ;($8865)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E10:
-;             NAME  _    d    o    n    n    e    d    _    t    h    e    _    s    c    a
-        .byte $F8, $5F, $0D, $18, $17, $17, $0E, $0D, $5F, $1D, $11, $0E, $5F, $1C, $0C, $0A;($8866)
-;              l    e    _    o    f    _    t    h    e    _    d    r    a    g    o    n
-        .byte $15, $0E, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $0D, $1B, $0A, $10, $18, $17;($8876)
-;              .   END
-        .byte $47, $FC          ;($8886)
+;			 NAME  _	d	o	n	n	e	d	_	t	h	e	_	s	c	a
+		.byte $F8, $5F, $0D, $18, $17, $17, $0E, $0D, $5F, $1D, $11, $0E, $5F, $1C, $0C, $0A;($8866)
+;			  l	e	_	o	f	_	t	h	e	_	d	r	a	g	o	n
+		.byte $15, $0E, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $0D, $1B, $0A, $10, $18, $17;($8876)
+;			  .   END
+		.byte $47, $FC		  ;($8886)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E11:
-;              T    h    o    u    _    a    r    t    _    a    l    r    e    a    d    y
+;			  T	h	o	u	_	a	r	t	_	a	l	r	e	a	d	y
 TB4E11_Byte_8888:  .byte $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0A, $15, $1B, $0E, $0A, $0D, $22
-;              _    w    e    a    r    i    n    g    _    t    h    e    _    s    c    a
+;			  _	w	e	a	r	i	n	g	_	t	h	e	_	s	c	a
 TB4E11_Byte_8898:  .byte $5F, $20, $0E, $0A, $1B, $12, $17, $10, $5F, $1D, $11, $0E, $5F, $1C, $0C, $0A
-;              l    e    _    o    f    _    t    h    e    _    d    r    a    g    o    n
-        .byte $15, $0E, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $0D, $1B, $0A, $10, $18, $17;($88A8)
-;              .   END
-        .byte $47, $FC          ;($88B8)
+;			  l	e	_	o	f	_	t	h	e	_	d	r	a	g	o	n
+		.byte $15, $0E, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $0D, $1B, $0A, $10, $18, $17;($88A8)
+;			  .   END
+		.byte $47, $FC		  ;($88B8)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E12:
-;             NAME  _    b    l    e    w    _    t    h    e    _    F    a    i    r    i
+;			 NAME  _	b	l	e	w	_	t	h	e	_	F	a	i	r	i
 TB4E12_Byte_88BA:  .byte $F8, $5F, $0B, $15, $0E, $20, $5F, $1D, $11, $0E, $5F, $29, $0A, $12, $1B, $12
-;              e    s    '    _    F    l    u    t    e    .   END
+;			  e	s	'	_	F	l	u	t	e	.   END
 TB4E12_Byte_88CA:  .byte $0E, $1C, $53, $5F, $29, $15, $1E, $1D, $0E, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E13:
-;              N    o    t    h    i    n    g    _    o    f    _    u    s    e    _    h
+;			  N	o	t	h	i	n	g	_	o	f	_	u	s	e	_	h
 TB4E13_Byte_88D5:  .byte $31, $18, $1D, $11, $12, $17, $10, $5F, $18, $0F, $5F, $1E, $1C, $0E, $5F, $11
-;              a    s    _    y    e    t    _    b    e    e    n    _    g    i    v    e
-        .byte $0A, $1C, $5F, $22, $0E, $1D, $5F, $0B, $0E, $0E, $17, $5F, $10, $12, $1F, $0E;($88E5)
-;              n    _    t    o    _    t    h    e    e    .   END
-        .byte $17, $5F, $1D, $18, $5F, $1D, $11, $0E, $0E, $47, $FC;($88F5)
+;			  a	s	_	y	e	t	_	b	e	e	n	_	g	i	v	e
+		.byte $0A, $1C, $5F, $22, $0E, $1D, $5F, $0B, $0E, $0E, $17, $5F, $10, $12, $1F, $0E;($88E5)
+;			  n	_	t	o	_	t	h	e	e	.   END
+		.byte $17, $5F, $1D, $18, $5F, $1D, $11, $0E, $0E, $47, $FC;($88F5)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E14:
-;             NAME  _    p    u    t    _    o    n    _    t    h    e    _    F    i    g
+;			 NAME  _	p	u	t	_	o	n	_	t	h	e	_	F	i	g
 TB4E14_Byte_8900:  .byte $F8, $5F, $19, $1E, $1D, $5F, $18, $17, $5F, $1D, $11, $0E, $5F, $29, $12, $10
-;              h    t    e    r    '    s    _    R    i    n    g    .   END
+;			  h	t	e	r	'	s	_	R	i	n	g	.   END
 TB4E14_Byte_8910:  .byte $11, $1D, $0E, $1B, $53, $1C, $5F, $35, $12, $17, $10, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB4E15:
-;             NAME  _    a    d    j    u    s    t    e    d    _    t    h    e    _    p
+;			 NAME  _	a	d	j	u	s	t	e	d	_	t	h	e	_	p
 TB4E15_Byte_891D:  .byte $F8, $5F, $0A, $0D, $13, $1E, $1C, $1D, $0E, $0D, $5F, $1D, $11, $0E, $5F, $19
-;              o    s    i    t    i    o    n    _    o    f    _    t    h    e    _    F
+;			  o	s	i	t	i	o	n	_	o	f	_	t	h	e	_	F
 TB4E15_Byte_892D:  .byte $18, $1C, $12, $1D, $12, $18, $17, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $29
-;              i    g    h    t    e    r    '    s    _    R    i    n    g    .   END
-        .byte $12, $10, $11, $1D, $0E, $1B, $53, $1C, $5F, $35, $12, $17, $10, $47, $FC;($893D)
+;			  i	g	h	t	e	r	'	s	_	R	i	n	g	.   END
+		.byte $12, $10, $11, $1D, $0E, $1B, $53, $1C, $5F, $35, $12, $17, $10, $47, $FC;($893D)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock5:
 TB5E0:
-;             NAME  _    h    e    l    d    _    t    h    e    _   ITEM  _    t    i    g
+;			 NAME  _	h	e	l	d	_	t	h	e	_   ITEM  _	t	i	g
 TB5E0_Byte_894C:  .byte $F8, $5F, $11, $0E, $15, $0D, $5F, $1D, $11, $0E, $5F, $F7, $5F, $1D, $12, $10
-;              h    t    l    y    .   END
+;			  h	t	l	y	.   END
 TB5E0_Byte_895C:  .byte $11, $1D, $15, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E1:
-;             NAME  _    p    l    a    y    e    d    _    a    _    s    w    e    e    t
+;			 NAME  _	p	l	a	y	e	d	_	a	_	s	w	e	e	t
 TB5E1_Byte_8962:  .byte $F8, $5F, $19, $15, $0A, $22, $0E, $0D, $5F, $0A, $5F, $1C, $20, $0E, $0E, $1D
-;              _    m    e    l    o    d    y    _    o    n    _    t    h    e    _    h
+;			  _	m	e	l	o	d	y	_	o	n	_	t	h	e	_	h
 TB5E1_Byte_8972:  .byte $5F, $16, $0E, $15, $18, $0D, $22, $5F, $18, $17, $5F, $1D, $11, $0E, $5F, $11
-;              a    r    p    .   END
+;			  a	r	p	.   END
 TB5E1_Byte_8982:  .byte $0A, $1B, $19, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E2:
-;             NAME  _    p    u    t    _    o    n    _    t    h    e    _   ITEM  _    a
+;			 NAME  _	p	u	t	_	o	n	_	t	h	e	_   ITEM  _	a
 TB5E2_Byte_8987:  .byte $F8, $5F, $19, $1E, $1D, $5F, $18, $17, $5F, $1D, $11, $0E, $5F, $F7, $5F, $0A
-;              n    d    _    w    a    s    _    c    u    r    s    e    d    !    .   WAIT
+;			  n	d	_	w	a	s	_	c	u	r	s	e	d	!	.   WAIT
 TB5E2_Byte_8997:  .byte $17, $0D, $5F, $20, $0A, $1C, $5F, $0C, $1E, $1B, $1C, $0E, $0D, $4C, $47, $FB
-;              \n   T    h    y    _    b    o    d    y    _    i    s    _    b    e    i
+;			  \n   T	h	y	_	b	o	d	y	_	i	s	_	b	e	i
 TB5E2_Byte_89A7:  .byte $FD, $37, $11, $22, $5F, $0B, $18, $0D, $22, $5F, $12, $1C, $5F, $0B, $0E, $12
-;              n    g    _    s    q    u    e    e    z    e    d    .   END
+;			  n	g	_	s	q	u	e	e	z	e	d	.   END
 TB5E2_Byte_89B7:  .byte $17, $10, $5F, $1C, $1A, $1E, $0E, $0E, $23, $0E, $0D, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E3:
-;              T    h    e    _   ITEM  _    i    s    _    s    q    u    e    e    z    i
-        .byte $37, $11, $0E, $5F, $F7, $5F, $12, $1C, $5F, $1C, $1A, $1E, $0E, $0E, $23, $12;($89C4)
-;              n    g    _    t    h    y    _    b    o    d    y    .   END
+;			  T	h	e	_   ITEM  _	i	s	_	s	q	u	e	e	z	i
+		.byte $37, $11, $0E, $5F, $F7, $5F, $12, $1C, $5F, $1C, $1A, $1E, $0E, $0E, $23, $12;($89C4)
+;			  n	g	_	t	h	y	_	b	o	d	y	.   END
 TB5E3_Byte_89D4:  .byte $17, $10, $5F, $1D, $11, $22, $5F, $0B, $18, $0D, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E4:
-;              '    C    u    r    s    e    d    _    o    n    e    ,    b    e    _    g
-        .byte $50, $26, $1E, $1B, $1C, $0E, $0D, $5F, $18, $17, $0E, $48, $0B, $0E, $5F, $10;($89E1)
-;              o    n    e    !    '   END
+;			  '	C	u	r	s	e	d	_	o	n	e	,	b	e	_	g
+		.byte $50, $26, $1E, $1B, $1C, $0E, $0D, $5F, $18, $17, $0E, $48, $0B, $0E, $5F, $10;($89E1)
+;			  o	n	e	!	'   END
 TB5E4_Byte_89F1:  .byte $18, $17, $0E, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E5:
-;              '    I    _    a    m    _    l    o    o    k    i    n    g    _    f    o
+;			  '	I	_	a	m	_	l	o	o	k	i	n	g	_	f	o
 TB5E5_Byte_89F7:  .byte $50, $2C, $5F, $0A, $16, $5F, $15, $18, $18, $14, $12, $17, $10, $5F, $0F, $18
-;              r    _    t    h    e    _    c    a    s    t    l    e    _    c    e    l
-        .byte $1B, $5F, $1D, $11, $0E, $5F, $0C, $0A, $1C, $1D, $15, $0E, $5F, $0C, $0E, $15;($8A07)
-;              l    a    r    .    \n   I    _    h    e    a    r    d    _    i    t    _
+;			  r	_	t	h	e	_	c	a	s	t	l	e	_	c	e	l
+		.byte $1B, $5F, $1D, $11, $0E, $5F, $0C, $0A, $1C, $1D, $15, $0E, $5F, $0C, $0E, $15;($8A07)
+;			  l	a	r	.	\n   I	_	h	e	a	r	d	_	i	t	_
 TB5E5_Byte_8A17:  .byte $15, $0A, $1B, $47, $FD, $2C, $5F, $11, $0E, $0A, $1B, $0D, $5F, $12, $1D, $5F
-;              i    s    _    n    o    t    _    e    a    s    i    l    y    _    f    o
-        .byte $12, $1C, $5F, $17, $18, $1D, $5F, $0E, $0A, $1C, $12, $15, $22, $5F, $0F, $18;($8A27)
-;              u    n    d    .'  END
+;			  i	s	_	n	o	t	_	e	a	s	i	l	y	_	f	o
+		.byte $12, $1C, $5F, $17, $18, $1D, $5F, $0E, $0A, $1C, $12, $15, $22, $5F, $0F, $18;($8A27)
+;			  u	n	d	.'  END
 TB5E5_Byte_8A37:  .byte $1E, $17, $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E6:
-;              '    T    h    o    u    _    m    u    s    t    _    h    a    v    e    _
+;			  '	T	h	o	u	_	m	u	s	t	_	h	a	v	e	_
 TB5E6_Byte_8A3C:  .byte $50, $37, $11, $18, $1E, $5F, $16, $1E, $1C, $1D, $5F, $11, $0A, $1F, $0E, $5F
-;              a    _    k    e    y    _    t    o    _    o    p    e    n    _    a    _
-        .byte $0A, $5F, $14, $0E, $22, $5F, $1D, $18, $5F, $18, $19, $0E, $17, $5F, $0A, $5F;($8A4C)
-;              d    o    o    r    .'  END
+;			  a	_	k	e	y	_	t	o	_	o	p	e	n	_	a	_
+		.byte $0A, $5F, $14, $0E, $22, $5F, $1D, $18, $5F, $18, $19, $0E, $17, $5F, $0A, $5F;($8A4C)
+;			  d	o	o	r	.'  END
 TB5E6_Byte_8A5C:  .byte $0D, $18, $18, $1B, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E7:
-;              '    T    o    _    b    e    c    o    m    e    _    s    t    r    o    n
+;			  '	T	o	_	b	e	c	o	m	e	_	s	t	r	o	n
 TB5E7_Byte_8A62:  .byte $50, $37, $18, $5F, $0B, $0E, $0C, $18, $16, $0E, $5F, $1C, $1D, $1B, $18, $17
-;              g    _    e    n    o    u    g    h    _    t    o    _    f    a    c    e
-        .byte $10, $5F, $0E, $17, $18, $1E, $10, $11, $5F, $1D, $18, $5F, $0F, $0A, $0C, $0E;($8A72)
-;              _    f    u    t    u    r    e    _    t    r    i    a    l    s    _    t
+;			  g	_	e	n	o	u	g	h	_	t	o	_	f	a	c	e
+		.byte $10, $5F, $0E, $17, $18, $1E, $10, $11, $5F, $1D, $18, $5F, $0F, $0A, $0C, $0E;($8A72)
+;			  _	f	u	t	u	r	e	_	t	r	i	a	l	s	_	t
 TB5E7_Byte_8A82:  .byte $5F, $0F, $1E, $1D, $1E, $1B, $0E, $5F, $1D, $1B, $12, $0A, $15, $1C, $5F, $1D
-;              h    o    u    _    m    u    s    t    _    f    i    r    s    t    _    b
-        .byte $11, $18, $1E, $5F, $16, $1E, $1C, $1D, $5F, $0F, $12, $1B, $1C, $1D, $5F, $0B;($8A92)
-;              a    t    t    l    e    _    m    a    n    y    _    f    o    e    s    .'
-        .byte $0A, $1D, $1D, $15, $0E, $5F, $16, $0A, $17, $22, $5F, $0F, $18, $0E, $1C, $52;($8AA2)
-;             END
-        .byte $FC               ;($8AB2)
+;			  h	o	u	_	m	u	s	t	_	f	i	r	s	t	_	b
+		.byte $11, $18, $1E, $5F, $16, $1E, $1C, $1D, $5F, $0F, $12, $1B, $1C, $1D, $5F, $0B;($8A92)
+;			  a	t	t	l	e	_	m	a	n	y	_	f	o	e	s	.'
+		.byte $0A, $1D, $1D, $15, $0E, $5F, $16, $0A, $17, $22, $5F, $0F, $18, $0E, $1C, $52;($8AA2)
+;			 END
+		.byte $FC			   ;($8AB2)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E8:
-;              '    K    i    n    g    _    L    o    r    i    k    _    w    i    l    l
-        .byte $50, $2E, $12, $17, $10, $5F, $2F, $18, $1B, $12, $14, $5F, $20, $12, $15, $15;($8AB3)
-;              _    r    e    c    o    r    d    _    t    h    y    _    d    e    e    d
+;			  '	K	i	n	g	_	L	o	r	i	k	_	w	i	l	l
+		.byte $50, $2E, $12, $17, $10, $5F, $2F, $18, $1B, $12, $14, $5F, $20, $12, $15, $15;($8AB3)
+;			  _	r	e	c	o	r	d	_	t	h	y	_	d	e	e	d
 TB5E8_Byte_8AC3:  .byte $5F, $1B, $0E, $0C, $18, $1B, $0D, $5F, $1D, $11, $22, $5F, $0D, $0E, $0E, $0D
-;              s    _    i    n    _    h    i    s    _    I    m    p    e    r    i    a
-        .byte $1C, $5F, $12, $17, $5F, $11, $12, $1C, $5F, $2C, $16, $19, $0E, $1B, $12, $0A;($8AD3)
-;              l    _    S    c    r    o    l    l    _    s    o    _    t    h    o    u
+;			  s	_	i	n	_	h	i	s	_	I	m	p	e	r	i	a
+		.byte $1C, $5F, $12, $17, $5F, $11, $12, $1C, $5F, $2C, $16, $19, $0E, $1B, $12, $0A;($8AD3)
+;			  l	_	S	c	r	o	l	l	_	s	o	_	t	h	o	u
 TB5E8_Byte_8AE3:  .byte $15, $5F, $36, $0C, $1B, $18, $15, $15, $5F, $1C, $18, $5F, $1D, $11, $18, $1E
-;              _    m    a    y    _    r    e    t    u    r    n    _    t    o    _    t
-        .byte $5F, $16, $0A, $22, $5F, $1B, $0E, $1D, $1E, $1B, $17, $5F, $1D, $18, $5F, $1D;($8AF3)
-;              h    y    _    q    u    e    s    t    _    l    a    t    e    r    .'  END
+;			  _	m	a	y	_	r	e	t	u	r	n	_	t	o	_	t
+		.byte $5F, $16, $0A, $22, $5F, $1B, $0E, $1D, $1E, $1B, $17, $5F, $1D, $18, $5F, $1D;($8AF3)
+;			  h	y	_	q	u	e	s	t	_	l	a	t	e	r	.'  END
 TB5E8_Byte_8B03:  .byte $11, $22, $5F, $1A, $1E, $0E, $1C, $1D, $5F, $15, $0A, $1D, $0E, $1B, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E9:
-;              '    W    h    e    n    _    t    h    e    _    s    u    n    _    a    n
+;			  '	W	h	e	n	_	t	h	e	_	s	u	n	_	a	n
 TB5E9_Byte_8B13:  .byte $50, $3A, $11, $0E, $17, $5F, $1D, $11, $0E, $5F, $1C, $1E, $17, $5F, $0A, $17
-;              d    _    r    a    i    n    _    m    e    e    t    ,    _    a    _    R
-        .byte $0D, $5F, $1B, $0A, $12, $17, $5F, $16, $0E, $0E, $1D, $48, $5F, $0A, $5F, $35;($8B23)
-;              a    i    n    b    o    w    _    B    r    i    d    g    e    _    s    h
+;			  d	_	r	a	i	n	_	m	e	e	t	,	_	a	_	R
+		.byte $0D, $5F, $1B, $0A, $12, $17, $5F, $16, $0E, $0E, $1D, $48, $5F, $0A, $5F, $35;($8B23)
+;			  a	i	n	b	o	w	_	B	r	i	d	g	e	_	s	h
 TB5E9_Byte_8B33:  .byte $0A, $12, $17, $0B, $18, $20, $5F, $25, $1B, $12, $0D, $10, $0E, $5F, $1C, $11
-;              a    l    l    _    a    p    p    e    a    r    .'  END
+;			  a	l	l	_	a	p	p	e	a	r	.'  END
 TB5E9_Byte_8B43:  .byte $0A, $15, $15, $5F, $0A, $19, $19, $0E, $0A, $1B, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E10:
-;              '    N    e    v    e    r    _    d    o    e    s    _    a    _    b    r
+;			  '	N	e	v	e	r	_	d	o	e	s	_	a	_	b	r
 TB5E10_Byte_8B4F:  .byte $50, $31, $0E, $1F, $0E, $1B, $5F, $0D, $18, $0E, $1C, $5F, $0A, $5F, $0B, $1B
-;              a    v    e    _    p    e    r    s    o    n    _    s    t    e    a    l
+;			  a	v	e	_	p	e	r	s	o	n	_	s	t	e	a	l
 TB5E10_Byte_8B5F:  .byte $0A, $1F, $0E, $5F, $19, $0E, $1B, $1C, $18, $17, $5F, $1C, $1D, $0E, $0A, $15
-;              .'  END
+;			  .'  END
 TB5E10_Byte_8B6F:  .byte $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E11:
-;              '    T    h    e    r    e    _    w    a    s    _    a    _    t    i    m
+;			  '	T	h	e	r	e	_	w	a	s	_	a	_	t	i	m
 TB5E11_Byte_8B71:  .byte $50, $37, $11, $0E, $1B, $0E, $5F, $20, $0A, $1C, $5F, $0A, $5F, $1D, $12, $16
-;              e    _    w    h    e    n    _    B    r    e    c    c    o    n    a    r
+;			  e	_	w	h	e	n	_	B	r	e	c	c	o	n	a	r
 TB5E11_Byte_8B81:  .byte $0E, $5F, $20, $11, $0E, $17, $5F, $25, $1B, $0E, $0C, $0C, $18, $17, $0A, $1B
-;              y    _    w    a    s    _    a    _    p    a    r    a    d    i    s    e
+;			  y	_	w	a	s	_	a	_	p	a	r	a	d	i	s	e
 TB5E11_Byte_8B91:  .byte $22, $5F, $20, $0A, $1C, $5F, $0A, $5F, $19, $0A, $1B, $0A, $0D, $12, $1C, $0E
-;              .    \n   T    h    e    n    _    t    h    e    _    D    r    a    g    o
+;			  .	\n   T	h	e	n	_	t	h	e	_	D	r	a	g	o
 TB5E11_Byte_8BA1:  .byte $47, $FD, $37, $11, $0E, $17, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18
-;              n    l    o    r    d    '    s    _    m    i    n    i    o    n    s    _
+;			  n	l	o	r	d	'	s	_	m	i	n	i	o	n	s	_
 TB5E11_Byte_8BB1:  .byte $17, $15, $18, $1B, $0D, $53, $1C, $5F, $16, $12, $17, $12, $18, $17, $1C, $5F
-;              c    a    m    e    .'  END
+;			  c	a	m	e	.'  END
 TB5E11_Byte_8BC1:  .byte $0C, $0A, $16, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E12:
-;              '    L    e    t    _    u    s    _    w    i    s    h    _    t    h    e
+;			  '	L	e	t	_	u	s	_	w	i	s	h	_	t	h	e
 TB5E12_Byte_8BC7:  .byte $50, $2F, $0E, $1D, $5F, $1E, $1C, $5F, $20, $12, $1C, $11, $5F, $1D, $11, $0E
-;              _    w    a    r    r    i    o    r    _    w    e    l    l    !    '   WAIT
+;			  _	w	a	r	r	i	o	r	_	w	e	l	l	!	'   WAIT
 TB5E12_Byte_8BD7:  .byte $5F, $20, $0A, $1B, $1B, $12, $18, $1B, $5F, $20, $0E, $15, $15, $4C, $40, $FB
-;              \n   '    M    a    y    _    t    h    e    _    l    i    g    h    t    _
-        .byte $FD, $50, $30, $0A, $22, $5F, $1D, $11, $0E, $5F, $15, $12, $10, $11, $1D, $5F;($8BE7)
-;              b    e    _    t    h    y    _    s    t    r    e    n    g    t    h    !
+;			  \n   '	M	a	y	_	t	h	e	_	l	i	g	h	t	_
+		.byte $FD, $50, $30, $0A, $22, $5F, $1D, $11, $0E, $5F, $15, $12, $10, $11, $1D, $5F;($8BE7)
+;			  b	e	_	t	h	y	_	s	t	r	e	n	g	t	h	!
 TB5E12_Byte_8BF7:  .byte $0B, $0E, $5F, $1D, $11, $22, $5F, $1C, $1D, $1B, $0E, $17, $10, $1D, $11, $4C
-;              '   END
+;			  '   END
 TB5E12_Byte_8C07:  .byte $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E13:
-;              '    I    f    _    t    h    y    _    H    i    t    _    P    o    i    n
-        .byte $50, $2C, $0F, $5F, $1D, $11, $22, $5F, $2B, $12, $1D, $5F, $33, $18, $12, $17;($8C09)
-;              t    s    _    a    r    e    _    h    i    g    h    _    e    n    o    u
+;			  '	I	f	_	t	h	y	_	H	i	t	_	P	o	i	n
+		.byte $50, $2C, $0F, $5F, $1D, $11, $22, $5F, $2B, $12, $1D, $5F, $33, $18, $12, $17;($8C09)
+;			  t	s	_	a	r	e	_	h	i	g	h	_	e	n	o	u
 TB5E13_Byte_8C19:  .byte $1D, $1C, $5F, $0A, $1B, $0E, $5F, $11, $12, $10, $11, $5F, $0E, $17, $18, $1E
-;              g    h    ,    _    b    y    _    a    l    l    _    m    e    a    n    s
+;			  g	h	,	_	b	y	_	a	l	l	_	m	e	a	n	s
 TB5E13_Byte_8C29:  .byte $10, $11, $48, $5F, $0B, $22, $5F, $0A, $15, $15, $5F, $16, $0E, $0A, $17, $1C
-;              ,    _    e    n    t    e    r    .'  END
+;			  ,	_	e	n	t	e	r	.'  END
 TB5E13_Byte_8C39:  .byte $48, $5F, $0E, $17, $1D, $0E, $1B, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E14:
-;              '    W    e    _    a    r    e    _    m    e    r    c    h    a    n    t
+;			  '	W	e	_	a	r	e	_	m	e	r	c	h	a	n	t
 TB5E14_Byte_8C42:  .byte $50, $3A, $0E, $5F, $0A, $1B, $0E, $5F, $16, $0E, $1B, $0C, $11, $0A, $17, $1D
-;              s    _    w    h    o    _    h    a    v    e    _    t    r    a    v    e
+;			  s	_	w	h	o	_	h	a	v	e	_	t	r	a	v	e
 TB5E14_Byte_8C52:  .byte $1C, $5F, $20, $11, $18, $5F, $11, $0A, $1F, $0E, $5F, $1D, $1B, $0A, $1F, $0E
-;              l    e    d    _    m    u    c    h    _    i    n    _    t    h    i    s
-        .byte $15, $0E, $0D, $5F, $16, $1E, $0C, $11, $5F, $12, $17, $5F, $1D, $11, $12, $1C;($8C62)
-;              _    l    a    n    d    .    \n   M    a    n    y    _    o    f    _    o
-        .byte $5F, $15, $0A, $17, $0D, $47, $FD, $30, $0A, $17, $22, $5F, $18, $0F, $5F, $18;($8C72)
-;              u    r    _    c    o    l    l    e    a    g    u    e    s    _    h    a
-        .byte $1E, $1B, $5F, $0C, $18, $15, $15, $0E, $0A, $10, $1E, $0E, $1C, $5F, $11, $0A;($8C82)
-;              v    e    _    b    e    e    n    _    k    i    l    l    e    d    _    b
-        .byte $1F, $0E, $5F, $0B, $0E, $0E, $17, $5F, $14, $12, $15, $15, $0E, $0D, $5F, $0B;($8C92)
-;              y    _    s    e    r    v    a    n    t    s    _    o    f    _    t    h
+;			  l	e	d	_	m	u	c	h	_	i	n	_	t	h	i	s
+		.byte $15, $0E, $0D, $5F, $16, $1E, $0C, $11, $5F, $12, $17, $5F, $1D, $11, $12, $1C;($8C62)
+;			  _	l	a	n	d	.	\n   M	a	n	y	_	o	f	_	o
+		.byte $5F, $15, $0A, $17, $0D, $47, $FD, $30, $0A, $17, $22, $5F, $18, $0F, $5F, $18;($8C72)
+;			  u	r	_	c	o	l	l	e	a	g	u	e	s	_	h	a
+		.byte $1E, $1B, $5F, $0C, $18, $15, $15, $0E, $0A, $10, $1E, $0E, $1C, $5F, $11, $0A;($8C82)
+;			  v	e	_	b	e	e	n	_	k	i	l	l	e	d	_	b
+		.byte $1F, $0E, $5F, $0B, $0E, $0E, $17, $5F, $14, $12, $15, $15, $0E, $0D, $5F, $0B;($8C92)
+;			  y	_	s	e	r	v	a	n	t	s	_	o	f	_	t	h
 TB5E14_Byte_8CA2:  .byte $22, $5F, $1C, $0E, $1B, $1F, $0A, $17, $1D, $1C, $5F, $18, $0F, $5F, $1D, $11
-;              e    _    D    r    a    g    o    n    l    o    r    d    .'  END
+;			  e	_	D	r	a	g	o	n	l	o	r	d	.'  END
 TB5E14_Byte_8CB2:  .byte $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB5E15:
-;              '    R    u    m    o    r    _    h    a    s    _    i    t    _    t    h
-        .byte $50, $35, $1E, $16, $18, $1B, $5F, $11, $0A, $1C, $5F, $12, $1D, $5F, $1D, $11;($8CC0)
-;              a    t    _    e    n    t    i    r    e    _    t    o    w    n    s    _
+;			  '	R	u	m	o	r	_	h	a	s	_	i	t	_	t	h
+		.byte $50, $35, $1E, $16, $18, $1B, $5F, $11, $0A, $1C, $5F, $12, $1D, $5F, $1D, $11;($8CC0)
+;			  a	t	_	e	n	t	i	r	e	_	t	o	w	n	s	_
 TB5E15_Byte_8CD0:  .byte $0A, $1D, $5F, $0E, $17, $1D, $12, $1B, $0E, $5F, $1D, $18, $20, $17, $1C, $5F
-;              h    a    v    e    _    b    e    e    n    _    d    e    s    t    r    o
+;			  h	a	v	e	_	b	e	e	n	_	d	e	s	t	r	o
 TB5E15_Byte_8CE0:  .byte $11, $0A, $1F, $0E, $5F, $0B, $0E, $0E, $17, $5F, $0D, $0E, $1C, $1D, $1B, $18
-;              y    e    d    _    b    y    _    t    h    e    _    D    r    a    g    o
+;			  y	e	d	_	b	y	_	t	h	e	_	D	r	a	g	o
 TB5E15_Byte_8CF0:  .byte $22, $0E, $0D, $5F, $0B, $22, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18
-;              n    l    o    r    d    '    s    _    s    e    r    v    a    n    t    s
-        .byte $17, $15, $18, $1B, $0D, $53, $1C, $5F, $1C, $0E, $1B, $1F, $0A, $17, $1D, $1C;($8D00)
-;              .'  END
-        .byte $52, $FC          ;($8D10)
+;			  n	l	o	r	d	'	s	_	s	e	r	v	a	n	t	s
+		.byte $17, $15, $18, $1B, $0D, $53, $1C, $5F, $1C, $0E, $1B, $1F, $0A, $17, $1D, $1C;($8D00)
+;			  .'  END
+		.byte $52, $FC		  ;($8D10)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock6:
 TB6E0:
-;              '    W    e    l    c    o    m    e    _    t    o    _    T    a    n    t
+;			  '	W	e	l	c	o	m	e	_	t	o	_	T	a	n	t
 TB6E0_Byte_8D12:  .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $5F, $1D, $18, $5F, $37, $0A, $17, $1D
-;              e    g    e    l    _    C    a    s    t    l    e    .'  END
+;			  e	g	e	l	_	C	a	s	t	l	e	.'  END
 TB6E0_Byte_8D22:  .byte $0E, $10, $0E, $15, $5F, $26, $0A, $1C, $1D, $15, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E1:
-;              '    I    n    _    G    a    r    i    n    h    a    m    ,    l    o    o
-        .byte $50, $2C, $17, $5F, $2A, $0A, $1B, $12, $17, $11, $0A, $16, $48, $15, $18, $18;($8D2F)
-;              k    _    f    o    r    _    t    h    e    _    g    r    a    v    e    _
-        .byte $14, $5F, $0F, $18, $1B, $5F, $1D, $11, $0E, $5F, $10, $1B, $0A, $1F, $0E, $5F;($8D3F)
-;              o    f    _    G    a    r    i    n    .    \n   T    h    o    u    _    m
+;			  '	I	n	_	G	a	r	i	n	h	a	m	,	l	o	o
+		.byte $50, $2C, $17, $5F, $2A, $0A, $1B, $12, $17, $11, $0A, $16, $48, $15, $18, $18;($8D2F)
+;			  k	_	f	o	r	_	t	h	e	_	g	r	a	v	e	_
+		.byte $14, $5F, $0F, $18, $1B, $5F, $1D, $11, $0E, $5F, $10, $1B, $0A, $1F, $0E, $5F;($8D3F)
+;			  o	f	_	G	a	r	i	n	.	\n   T	h	o	u	_	m
 TB6E1_Byte_8D4F:  .byte $18, $0F, $5F, $2A, $0A, $1B, $12, $17, $47, $FD, $37, $11, $18, $1E, $5F, $16
-;              u    s    t    _    p    u    s    h    _    o    n    _    a    _    w    a
-        .byte $1E, $1C, $1D, $5F, $19, $1E, $1C, $11, $5F, $18, $17, $5F, $0A, $5F, $20, $0A;($8D5F)
-;              l    l    _    o    f    _    d    a    r    k    n    e    s    s    _    t
+;			  u	s	t	_	p	u	s	h	_	o	n	_	a	_	w	a
+		.byte $1E, $1C, $1D, $5F, $19, $1E, $1C, $11, $5F, $18, $17, $5F, $0A, $5F, $20, $0A;($8D5F)
+;			  l	l	_	o	f	_	d	a	r	k	n	e	s	s	_	t
 TB6E1_Byte_8D6F:  .byte $15, $15, $5F, $18, $0F, $5F, $0D, $0A, $1B, $14, $17, $0E, $1C, $1C, $5F, $1D
-;              h    e    r    e    .'  END
+;			  h	e	r	e	.'  END
 TB6E1_Byte_8D7F:  .byte $11, $0E, $1B, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E2:
-;              '    A    _    w    o    r    d    _    o    f    _    a    d    v    i    c
-        .byte $50, $24, $5F, $20, $18, $1B, $0D, $5F, $18, $0F, $5F, $0A, $0D, $1F, $12, $0C;($8D85)
-;              e    .'  WAIT  \n   '    S    a    v    e    _    t    h    y    _    m    o
+;			  '	A	_	w	o	r	d	_	o	f	_	a	d	v	i	c
+		.byte $50, $24, $5F, $20, $18, $1B, $0D, $5F, $18, $0F, $5F, $0A, $0D, $1F, $12, $0C;($8D85)
+;			  e	.'  WAIT  \n   '	S	a	v	e	_	t	h	y	_	m	o
 TB6E2_Byte_8D95:  .byte $0E, $52, $FB, $FD, $50, $36, $0A, $1F, $0E, $5F, $1D, $11, $22, $5F, $16, $18
-;              n    e    y    _    f    o    r    _    m    o    r    e    _    e    x    p
-        .byte $17, $0E, $22, $5F, $0F, $18, $1B, $5F, $16, $18, $1B, $0E, $5F, $0E, $21, $19;($8DA5)
-;              e    n    s    i    v    e    _    a    r    m    o    r    .'  END
+;			  n	e	y	_	f	o	r	_	m	o	r	e	_	e	x	p
+		.byte $17, $0E, $22, $5F, $0F, $18, $1B, $5F, $16, $18, $1B, $0E, $5F, $0E, $21, $19;($8DA5)
+;			  e	n	s	i	v	e	_	a	r	m	o	r	.'  END
 TB6E2_Byte_8DB5:  .byte $0E, $17, $1C, $12, $1F, $0E, $5F, $0A, $1B, $16, $18, $1B, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E3:
-;              '    L    i    s    t    e    n    _    t    o    _    w    h    a    t    _
+;			  '	L	i	s	t	e	n	_	t	o	_	w	h	a	t	_
 TB6E3_Byte_8DC3:  .byte $50, $2F, $12, $1C, $1D, $0E, $17, $5F, $1D, $18, $5F, $20, $11, $0A, $1D, $5F
-;              p    e    o    p    l    e    _    s    a    y    .    \n   I    t    _    c
-        .byte $19, $0E, $18, $19, $15, $0E, $5F, $1C, $0A, $22, $47, $FD, $2C, $1D, $5F, $0C;($8DD3)
-;              a    n    _    b    e    _    o    f    _    g    r    e    a    t    _    h
-        .byte $0A, $17, $5F, $0B, $0E, $5F, $18, $0F, $5F, $10, $1B, $0E, $0A, $1D, $5F, $11;($8DE3)
-;              e    l    p    .'  END
+;			  p	e	o	p	l	e	_	s	a	y	.	\n   I	t	_	c
+		.byte $19, $0E, $18, $19, $15, $0E, $5F, $1C, $0A, $22, $47, $FD, $2C, $1D, $5F, $0C;($8DD3)
+;			  a	n	_	b	e	_	o	f	_	g	r	e	a	t	_	h
+		.byte $0A, $17, $5F, $0B, $0E, $5F, $18, $0F, $5F, $10, $1B, $0E, $0A, $1D, $5F, $11;($8DE3)
+;			  e	l	p	.'  END
 TB6E3_Byte_8DF3:  .byte $0E, $15, $19, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E4:
-;              '    B    e    w    a    r    e    _    t    h    e    _    b    r    i    d
+;			  '	B	e	w	a	r	e	_	t	h	e	_	b	r	i	d
 TB6E4_Byte_8DF8:  .byte $50, $25, $0E, $20, $0A, $1B, $0E, $5F, $1D, $11, $0E, $5F, $0B, $1B, $12, $0D
-;              g    e    s    !    '   WAIT  \n   '    D    a    n    g    e    r    _    g
-        .byte $10, $0E, $1C, $4C, $40, $FB, $FD, $50, $27, $0A, $17, $10, $0E, $1B, $5F, $10;($8E08)
-;              r    o    w    s    _    w    h    e    n    _    t    h    o    u    _    c
+;			  g	e	s	!	'   WAIT  \n   '	D	a	n	g	e	r	_	g
+		.byte $10, $0E, $1C, $4C, $40, $FB, $FD, $50, $27, $0A, $17, $10, $0E, $1B, $5F, $10;($8E08)
+;			  r	o	w	s	_	w	h	e	n	_	t	h	o	u	_	c
 TB6E4_Byte_8E18:  .byte $1B, $18, $20, $1C, $5F, $20, $11, $0E, $17, $5F, $1D, $11, $18, $1E, $5F, $0C
-;              r    o    s    s    e    s    .'  END
+;			  r	o	s	s	e	s	.'  END
 TB6E4_Byte_8E28:  .byte $1B, $18, $1C, $1C, $0E, $1C, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E5:
-;              '    T    h    e    r    e    _    i    s    _    a    _    t    o    w    n
-        .byte $50, $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $0A, $5F, $1D, $18, $20, $17;($8E30)
-;              _    w    h    e    r    e    _    m    a    g    i    c    _    k    e    y
-        .byte $5F, $20, $11, $0E, $1B, $0E, $5F, $16, $0A, $10, $12, $0C, $5F, $14, $0E, $22;($8E40)
-;              s    _    c    a    n    _    b    e    _    p    u    r    c    h    a    s
+;			  '	T	h	e	r	e	_	i	s	_	a	_	t	o	w	n
+		.byte $50, $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $0A, $5F, $1D, $18, $20, $17;($8E30)
+;			  _	w	h	e	r	e	_	m	a	g	i	c	_	k	e	y
+		.byte $5F, $20, $11, $0E, $1B, $0E, $5F, $16, $0A, $10, $12, $0C, $5F, $14, $0E, $22;($8E40)
+;			  s	_	c	a	n	_	b	e	_	p	u	r	c	h	a	s
 TB6E5_Byte_8E50:  .byte $1C, $5F, $0C, $0A, $17, $5F, $0B, $0E, $5F, $19, $1E, $1B, $0C, $11, $0A, $1C
-;              e    d    .'  END
-        .byte $0E, $0D, $52, $FC;($8E60)
+;			  e	d	.'  END
+		.byte $0E, $0D, $52, $FC;($8E60)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E6:
-;              '    S    o    m    e    _    s    a    y    _    t    h    a    t    _    G
+;			  '	S	o	m	e	_	s	a	y	_	t	h	a	t	_	G
 TB6E6_Byte_8E64:  .byte $50, $36, $18, $16, $0E, $5F, $1C, $0A, $22, $5F, $1D, $11, $0A, $1D, $5F, $2A
-;              a    r    i    n    '    s    _    g    r    a    v    e    _    i    s    _
+;			  a	r	i	n	'	s	_	g	r	a	v	e	_	i	s	_
 TB6E6_Byte_8E74:  .byte $0A, $1B, $12, $17, $53, $1C, $5F, $10, $1B, $0A, $1F, $0E, $5F, $12, $1C, $5F
-;              h    o    m    e    _    t    o    _    a    _    S    i    l    v    e    r
+;			  h	o	m	e	_	t	o	_	a	_	S	i	l	v	e	r
 TB6E6_Byte_8E84:  .byte $11, $18, $16, $0E, $5F, $1D, $18, $5F, $0A, $5F, $36, $12, $15, $1F, $0E, $1B
-;              _    H    a    r    p    .'  END
-        .byte $5F, $2B, $0A, $1B, $19, $52, $FC;($8E94)
+;			  _	H	a	r	p	.'  END
+		.byte $5F, $2B, $0A, $1B, $19, $52, $FC;($8E94)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E7:
-;              '    E    n    t    e    r    _    w    h    e    r    e    _    t    h    o
+;			  '	E	n	t	e	r	_	w	h	e	r	e	_	t	h	o
 TB6E7_Byte_8E9B:  .byte $50, $28, $17, $1D, $0E, $1B, $5F, $20, $11, $0E, $1B, $0E, $5F, $1D, $11, $18
-;              u    _    c    a    n    .'  END
+;			  u	_	c	a	n	.'  END
 TB6E7_Byte_8EAB:  .byte $1E, $5F, $0C, $0A, $17, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E8:
-;              '    W    e    l    c    o    m    e    !    \n   E    n    t    e    r    _
+;			  '	W	e	l	c	o	m	e	!	\n   E	n	t	e	r	_
 TB6E8_Byte_8EB2:  .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $4C, $FD, $28, $17, $1D, $0E, $1B, $5F
-;              t    h    e    _    s    h    o    p    _    a    n    d    _    s    p    e
+;			  t	h	e	_	s	h	o	p	_	a	n	d	_	s	p	e
 TB6E8_Byte_8EC2:  .byte $1D, $11, $0E, $5F, $1C, $11, $18, $19, $5F, $0A, $17, $0D, $5F, $1C, $19, $0E
-;              a    k    _    t    o    _    i    t    s    _    k    e    e    p    e    r
+;			  a	k	_	t	o	_	i	t	s	_	k	e	e	p	e	r
 TB6E8_Byte_8ED2:  .byte $0A, $14, $5F, $1D, $18, $5F, $12, $1D, $1C, $5F, $14, $0E, $0E, $19, $0E, $1B
-;              _    a    c    r    o    s    s    _    t    h    e    _    d    e    s    k
+;			  _	a	c	r	o	s	s	_	t	h	e	_	d	e	s	k
 TB6E8_Byte_8EE2:  .byte $5F, $0A, $0C, $1B, $18, $1C, $1C, $5F, $1D, $11, $0E, $5F, $0D, $0E, $1C, $14
-;              .'  END
+;			  .'  END
 TB6E8_Byte_8EF2:  .byte $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E9:
-;              '    T    h    o    u    _    a    r    t    _    m    o    s    t    _    w
+;			  '	T	h	o	u	_	a	r	t	_	m	o	s	t	_	w
 TB6E9_Byte_8EF4:  .byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $16, $18, $1C, $1D, $5F, $20
-;              e    l    c    o    m    e    _    i    n    _    B    r    e    c    c    o
+;			  e	l	c	o	m	e	_	i	n	_	B	r	e	c	c	o
 TB6E9_Byte_8F04:  .byte $0E, $15, $0C, $18, $16, $0E, $5F, $12, $17, $5F, $25, $1B, $0E, $0C, $0C, $18
-;              n    a    r    y    .'  END
-        .byte $17, $0A, $1B, $22, $52, $FC;($8F14)
+;			  n	a	r	y	.'  END
+		.byte $17, $0A, $1B, $22, $52, $FC;($8F14)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E10:
-;              '    W    a    t    c    h    _    t    h    y    _    H    i    t    _    P
+;			  '	W	a	t	c	h	_	t	h	y	_	H	i	t	_	P
 TB6E10_Byte_8F1A:  .byte $50, $3A, $0A, $1D, $0C, $11, $5F, $1D, $11, $22, $5F, $2B, $12, $1D, $5F, $33
-;              o    i    n    t    s    _    w    h    e    n    _    i    n    _    t    h
+;			  o	i	n	t	s	_	w	h	e	n	_	i	n	_	t	h
 TB6E10_Byte_8F2A:  .byte $18, $12, $17, $1D, $1C, $5F, $20, $11, $0E, $17, $5F, $12, $17, $5F, $1D, $11
-;              e    _    P    o    i    s    o    n    o    u    s    _    M    a    r    s
+;			  e	_	P	o	i	s	o	n	o	u	s	_	M	a	r	s
 TB6E10_Byte_8F3A:  .byte $0E, $5F, $33, $18, $12, $1C, $18, $17, $18, $1E, $1C, $5F, $30, $0A, $1B, $1C
-;              h    .'  END
+;			  h	.'  END
 TB6E10_Byte_8F4A:  .byte $11, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E11:
-;              '    G    o    _    n    o    r    t    h    _    t    o    _    t    h    e
+;			  '	G	o	_	n	o	r	t	h	_	t	o	_	t	h	e
 TB6E11_Byte_8F4D:  .byte $50, $2A, $18, $5F, $17, $18, $1B, $1D, $11, $5F, $1D, $18, $5F, $1D, $11, $0E
-;              _    s    e    a    s    h    o    r    e    ,    _    t    h    e    n    _
+;			  _	s	e	a	s	h	o	r	e	,	_	t	h	e	n	_
 TB6E11_Byte_8F5D:  .byte $5F, $1C, $0E, $0A, $1C, $11, $18, $1B, $0E, $48, $5F, $1D, $11, $0E, $17, $5F
-;              f    o    l    l    o    w    _    t    h    e    _    c    o    a    s    t
+;			  f	o	l	l	o	w	_	t	h	e	_	c	o	a	s	t
 TB6E11_Byte_8F6D:  .byte $0F, $18, $15, $15, $18, $20, $5F, $1D, $11, $0E, $5F, $0C, $18, $0A, $1C, $1D
-;              l    i    n    e    _    w    e    s    t    _    u    n    t    i    l    _
-        .byte $15, $12, $17, $0E, $5F, $20, $0E, $1C, $1D, $5F, $1E, $17, $1D, $12, $15, $5F;($8F7D)
-;              t    h    o    u    _    h    a    t    h    _    r    e    a    c    h    e
-        .byte $1D, $11, $18, $1E, $5F, $11, $0A, $1D, $11, $5F, $1B, $0E, $0A, $0C, $11, $0E;($8F8D)
-;              d    _    G    a    r    i    n    h    a    m    .'  END
+;			  l	i	n	e	_	w	e	s	t	_	u	n	t	i	l	_
+		.byte $15, $12, $17, $0E, $5F, $20, $0E, $1C, $1D, $5F, $1E, $17, $1D, $12, $15, $5F;($8F7D)
+;			  t	h	o	u	_	h	a	t	h	_	r	e	a	c	h	e
+		.byte $1D, $11, $18, $1E, $5F, $11, $0A, $1D, $11, $5F, $1B, $0E, $0A, $0C, $11, $0E;($8F8D)
+;			  d	_	G	a	r	i	n	h	a	m	.'  END
 TB6E11_Byte_8F9D:  .byte $0D, $5F, $2A, $0A, $1B, $12, $17, $11, $0A, $16, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E12:
-;              '    N    o    ,    I    _    a    m    _    n    o    t    _    P    r    i
+;			  '	N	o	,	I	_	a	m	_	n	o	t	_	P	r	i
 TB6E12_Byte_8FA9:  .byte $50, $31, $18, $48, $2C, $5F, $0A, $16, $5F, $17, $18, $1D, $5F, $33, $1B, $12
-;              n    c    e    s    s    _    G    w    a    e    l    i    n    .'  END
+;			  n	c	e	s	s	_	G	w	a	e	l	i	n	.'  END
 TB6E12_Byte_8FB9:  .byte $17, $0C, $0E, $1C, $1C, $5F, $2A, $20, $0A, $0E, $15, $12, $17, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E13:
-;              '    P    l    e    a    s    e    ,    s    a    v    e    _    u    s    _
-        .byte $50, $33, $15, $0E, $0A, $1C, $0E, $48, $1C, $0A, $1F, $0E, $5F, $1E, $1C, $5F;($8FC8)
-;              f    r    o    m    _    t    h    e    _    m    i    n    i    o    n    s
-        .byte $0F, $1B, $18, $16, $5F, $1D, $11, $0E, $5F, $16, $12, $17, $12, $18, $17, $1C;($8FD8)
-;              _    o    f    _    t    h    e    _    D    r    a    g    o    n    l    o
+;			  '	P	l	e	a	s	e	,	s	a	v	e	_	u	s	_
+		.byte $50, $33, $15, $0E, $0A, $1C, $0E, $48, $1C, $0A, $1F, $0E, $5F, $1E, $1C, $5F;($8FC8)
+;			  f	r	o	m	_	t	h	e	_	m	i	n	i	o	n	s
+		.byte $0F, $1B, $18, $16, $5F, $1D, $11, $0E, $5F, $16, $12, $17, $12, $18, $17, $1C;($8FD8)
+;			  _	o	f	_	t	h	e	_	D	r	a	g	o	n	l	o
 TB6E13_Byte_8FE8:  .byte $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18
-;              r    d    .'  END
-        .byte $1B, $0D, $52, $FC;($8FF8)
+;			  r	d	.'  END
+		.byte $1B, $0D, $52, $FC;($8FF8)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E14:
-;              '    S    e    e    _    K    i    n    g    _    L    o    r    i    k    _
+;			  '	S	e	e	_	K	i	n	g	_	L	o	r	i	k	_
 TB6E14_Byte_8FFC:  .byte $50, $36, $0E, $0E, $5F, $2E, $12, $17, $10, $5F, $2F, $18, $1B, $12, $14, $5F
-;              w    h    e    n    _    t    h    y    _    e    x    p    e    r    i    e
-        .byte $20, $11, $0E, $17, $5F, $1D, $11, $22, $5F, $0E, $21, $19, $0E, $1B, $12, $0E;($900C)
-;              n    c    e    _    l    e    v    e    l    s    _    a    r    e    _    r
+;			  w	h	e	n	_	t	h	y	_	e	x	p	e	r	i	e
+		.byte $20, $11, $0E, $17, $5F, $1D, $11, $22, $5F, $0E, $21, $19, $0E, $1B, $12, $0E;($900C)
+;			  n	c	e	_	l	e	v	e	l	s	_	a	r	e	_	r
 TB6E14_Byte_901C:  .byte $17, $0C, $0E, $5F, $15, $0E, $1F, $0E, $15, $1C, $5F, $0A, $1B, $0E, $5F, $1B
-;              a    i    s    e    d    .'  END
-        .byte $0A, $12, $1C, $0E, $0D, $52, $FC;($902C)
+;			  a	i	s	e	d	.'  END
+		.byte $0A, $12, $1C, $0E, $0D, $52, $FC;($902C)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB6E15:
-;              '    A    r    t    _    t    h    o    u    _    t    h    e    _    d    e
-        .byte $50, $24, $1B, $1D, $5F, $1D, $11, $18, $1E, $5F, $1D, $11, $0E, $5F, $0D, $0E;($9033)
-;              s    c    e    n    d    a    n    t    _    o    f    _    E    r    d    r
-        .byte $1C, $0C, $0E, $17, $0D, $0A, $17, $1D, $5F, $18, $0F, $5F, $28, $1B, $0D, $1B;($9043)
-;              i    c    k    ?    \n   H    a    s    t    _    t    h    o    u    _    a
+;			  '	A	r	t	_	t	h	o	u	_	t	h	e	_	d	e
+		.byte $50, $24, $1B, $1D, $5F, $1D, $11, $18, $1E, $5F, $1D, $11, $0E, $5F, $0D, $0E;($9033)
+;			  s	c	e	n	d	a	n	t	_	o	f	_	E	r	d	r
+		.byte $1C, $0C, $0E, $17, $0D, $0A, $17, $1D, $5F, $18, $0F, $5F, $28, $1B, $0D, $1B;($9043)
+;			  i	c	k	?	\n   H	a	s	t	_	t	h	o	u	_	a
 TB6E15_Byte_9053:  .byte $12, $0C, $14, $4B, $FD, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $0A
-;              n    y    _    p    r    o    o    f    ?    '   END
+;			  n	y	_	p	r	o	o	f	?	'   END
 TB6E15_Byte_9063:  .byte $17, $22, $5F, $19, $1B, $18, $18, $0F, $4B, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock7:
 TB7E0:
-;              '    W    i    t    h    i    n    _    s    i    g    h    t    _    o    f
+;			  '	W	i	t	h	i	n	_	s	i	g	h	t	_	o	f
 TB7E0_Byte_906E:  .byte $50, $3A, $12, $1D, $11, $12, $17, $5F, $1C, $12, $10, $11, $1D, $5F, $18, $0F
-;              _    T    a    n    t    e    g    e    l    _    C    a    s    t    l    e
+;			  _	T	a	n	t	e	g	e	l	_	C	a	s	t	l	e
 TB7E0_Byte_907E:  .byte $5F, $37, $0A, $17, $1D, $0E, $10, $0E, $15, $5F, $26, $0A, $1C, $1D, $15, $0E
-;              _    t    o    _    t    h    e    _    s    o    u    t    h    _    i    s
+;			  _	t	o	_	t	h	e	_	s	o	u	t	h	_	i	s
 TB7E0_Byte_908E:  .byte $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $5F, $12, $1C
-;              _    C    h    a    r    l    o    c    k    ,    '   WAIT  \n   '    T    h
-        .byte $5F, $26, $11, $0A, $1B, $15, $18, $0C, $14, $48, $40, $FB, $FD, $50, $37, $11;($909E)
-;              e    _    f    o    r    t    r    e    s    s    _    o    f    _    t    h
+;			  _	C	h	a	r	l	o	c	k	,	'   WAIT  \n   '	T	h
+		.byte $5F, $26, $11, $0A, $1B, $15, $18, $0C, $14, $48, $40, $FB, $FD, $50, $37, $11;($909E)
+;			  e	_	f	o	r	t	r	e	s	s	_	o	f	_	t	h
 TB7E0_Byte_90AE:  .byte $0E, $5F, $0F, $18, $1B, $1D, $1B, $0E, $1C, $1C, $5F, $18, $0F, $5F, $1D, $11
-;              e    _    D    r    a    g    o    n    l    o    r    d    .'  END
-        .byte $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $52, $FC;($90BE)
+;			  e	_	D	r	a	g	o	n	l	o	r	d	.'  END
+		.byte $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $52, $FC;($90BE)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E1:
-;              '    T    h    i    s    _    b    a    t    h    _    c    u    r    e    s
+;			  '	T	h	i	s	_	b	a	t	h	_	c	u	r	e	s
 TB7E1_Byte_90CC:  .byte $50, $37, $11, $12, $1C, $5F, $0B, $0A, $1D, $11, $5F, $0C, $1E, $1B, $0E, $1C
-;              _    r    h    e    u    m    a    t    i    s    m    .'  END
-        .byte $5F, $1B, $11, $0E, $1E, $16, $0A, $1D, $12, $1C, $16, $52, $FC;($90DC)
+;			  _	r	h	e	u	m	a	t	i	s	m	.'  END
+		.byte $5F, $1B, $11, $0E, $1E, $16, $0A, $1D, $12, $1C, $16, $52, $FC;($90DC)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E2:
-;              '    E    a    s    t    _    o    f    _    H    a    u    k    s    n    e
+;			  '	E	a	s	t	_	o	f	_	H	a	u	k	s	n	e
 TB7E2_Byte_90E9:  .byte $50, $28, $0A, $1C, $1D, $5F, $18, $0F, $5F, $2B, $0A, $1E, $14, $1C, $17, $0E
-;              s    s    _    t    h    e    r    e    _    i    s    _    a    _    t    o
+;			  s	s	_	t	h	e	r	e	_	i	s	_	a	_	t	o
 TB7E2_Byte_90F9:  .byte $1C, $1C, $5F, $1D, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $0A, $5F, $1D, $18
-;              w    n    ,    _    ,    t    i    s    _    s    a    i    d    ,    _    w
-        .byte $20, $17, $48, $5F, $54, $1D, $12, $1C, $5F, $1C, $0A, $12, $0D, $48, $5F, $20;($9109)
-;              h    e    r    e    _    o    n    e    _    m    a    y    _    p    u    r
-        .byte $11, $0E, $1B, $0E, $5F, $18, $17, $0E, $5F, $16, $0A, $22, $5F, $19, $1E, $1B;($9119)
-;              c    h    a    s    e    _    w    e    a    p    o    n    s    _    o    f
-        .byte $0C, $11, $0A, $1C, $0E, $5F, $20, $0E, $0A, $19, $18, $17, $1C, $5F, $18, $0F;($9129)
-;              _    e    x    t    r    a    o    r    d    i    n    a    r    y    _    q
+;			  w	n	,	_	,	t	i	s	_	s	a	i	d	,	_	w
+		.byte $20, $17, $48, $5F, $54, $1D, $12, $1C, $5F, $1C, $0A, $12, $0D, $48, $5F, $20;($9109)
+;			  h	e	r	e	_	o	n	e	_	m	a	y	_	p	u	r
+		.byte $11, $0E, $1B, $0E, $5F, $18, $17, $0E, $5F, $16, $0A, $22, $5F, $19, $1E, $1B;($9119)
+;			  c	h	a	s	e	_	w	e	a	p	o	n	s	_	o	f
+		.byte $0C, $11, $0A, $1C, $0E, $5F, $20, $0E, $0A, $19, $18, $17, $1C, $5F, $18, $0F;($9129)
+;			  _	e	x	t	r	a	o	r	d	i	n	a	r	y	_	q
 TB7E2_Byte_9139:  .byte $5F, $0E, $21, $1D, $1B, $0A, $18, $1B, $0D, $12, $17, $0A, $1B, $22, $5F, $1A
-;              u    a    l    i    t    y    .'  END
-        .byte $1E, $0A, $15, $12, $1D, $22, $52, $FC;($9149)
+;			  u	a	l	i	t	y	.'  END
+		.byte $1E, $0A, $15, $12, $1D, $22, $52, $FC;($9149)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E3:
-;              '    R    i    m    u    l    d    a    r    _    i    s    _    t    h    e
-        .byte $50, $35, $12, $16, $1E, $15, $0D, $0A, $1B, $5F, $12, $1C, $5F, $1D, $11, $0E;($9151)
-;              _    p    l    a    c    e    _    t    o    _    b    u    y    _    k    e
-        .byte $5F, $19, $15, $0A, $0C, $0E, $5F, $1D, $18, $5F, $0B, $1E, $22, $5F, $14, $0E;($9161)
-;              y    s    .'  END
-        .byte $22, $1C, $52, $FC;($9171)
+;			  '	R	i	m	u	l	d	a	r	_	i	s	_	t	h	e
+		.byte $50, $35, $12, $16, $1E, $15, $0D, $0A, $1B, $5F, $12, $1C, $5F, $1D, $11, $0E;($9151)
+;			  _	p	l	a	c	e	_	t	o	_	b	u	y	_	k	e
+		.byte $5F, $19, $15, $0A, $0C, $0E, $5F, $1D, $18, $5F, $0B, $1E, $22, $5F, $14, $0E;($9161)
+;			  y	s	.'  END
+		.byte $22, $1C, $52, $FC;($9171)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E4:
-;              '    H    a    s    t    _    t    h    o    u    _    s    e    e    n    _
-        .byte $50, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $1C, $0E, $0E, $17, $5F;($9175)
-;              N    e    s    t    e    r    ?    \n   I    _    t    h    i    n    k    _
-        .byte $31, $0E, $1C, $1D, $0E, $1B, $4B, $FD, $2C, $5F, $1D, $11, $12, $17, $14, $5F;($9185)
-;              h    e    _    m    a    y    _    n    e    e    d    _    h    e    l    p
-        .byte $11, $0E, $5F, $16, $0A, $22, $5F, $17, $0E, $0E, $0D, $5F, $11, $0E, $15, $19;($9195)
-;              .'  END
-        .byte $52, $FC          ;($91A5)
+;			  '	H	a	s	t	_	t	h	o	u	_	s	e	e	n	_
+		.byte $50, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $1C, $0E, $0E, $17, $5F;($9175)
+;			  N	e	s	t	e	r	?	\n   I	_	t	h	i	n	k	_
+		.byte $31, $0E, $1C, $1D, $0E, $1B, $4B, $FD, $2C, $5F, $1D, $11, $12, $17, $14, $5F;($9185)
+;			  h	e	_	m	a	y	_	n	e	e	d	_	h	e	l	p
+		.byte $11, $0E, $5F, $16, $0A, $22, $5F, $17, $0E, $0E, $0D, $5F, $11, $0E, $15, $19;($9195)
+;			  .'  END
+		.byte $52, $FC		  ;($91A5)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E5:
-;              '    D    r    e    a    d    f    u    l    _    i    s    _    t    h    e
-        .byte $50, $27, $1B, $0E, $0A, $0D, $0F, $1E, $15, $5F, $12, $1C, $5F, $1D, $11, $0E;($91A7)
-;              _    S    o    u    t    h    _    I    s    l    a    n    d    .'  WAIT  \n
-        .byte $5F, $36, $18, $1E, $1D, $11, $5F, $2C, $1C, $15, $0A, $17, $0D, $52, $FB, $FD;($91B7)
-;              '    G    r    e    a    t    _    s    t    r    e    n    g    t    h    _
-        .byte $50, $2A, $1B, $0E, $0A, $1D, $5F, $1C, $1D, $1B, $0E, $17, $10, $1D, $11, $5F;($91C7)
-;              a    n    d    _    s    k    i    l    l    _    a    n    d    _    w    i
-        .byte $0A, $17, $0D, $5F, $1C, $14, $12, $15, $15, $5F, $0A, $17, $0D, $5F, $20, $12;($91D7)
-;              t    _    o    n    l    y    _    w    i    l    l    _    b    r    i    n
-        .byte $1D, $5F, $18, $17, $15, $22, $5F, $20, $12, $15, $15, $5F, $0B, $1B, $12, $17;($91E7)
-;              g    _    t    h    e    e    _    b    a    c    k    _    f    r    o    m
-        .byte $10, $5F, $1D, $11, $0E, $0E, $5F, $0B, $0A, $0C, $14, $5F, $0F, $1B, $18, $16;($91F7)
-;              _    t    h    a    t    _    p    l    a    c    e    .'  END
-        .byte $5F, $1D, $11, $0A, $1D, $5F, $19, $15, $0A, $0C, $0E, $52, $FC;($9207)
+;			  '	D	r	e	a	d	f	u	l	_	i	s	_	t	h	e
+		.byte $50, $27, $1B, $0E, $0A, $0D, $0F, $1E, $15, $5F, $12, $1C, $5F, $1D, $11, $0E;($91A7)
+;			  _	S	o	u	t	h	_	I	s	l	a	n	d	.'  WAIT  \n
+		.byte $5F, $36, $18, $1E, $1D, $11, $5F, $2C, $1C, $15, $0A, $17, $0D, $52, $FB, $FD;($91B7)
+;			  '	G	r	e	a	t	_	s	t	r	e	n	g	t	h	_
+		.byte $50, $2A, $1B, $0E, $0A, $1D, $5F, $1C, $1D, $1B, $0E, $17, $10, $1D, $11, $5F;($91C7)
+;			  a	n	d	_	s	k	i	l	l	_	a	n	d	_	w	i
+		.byte $0A, $17, $0D, $5F, $1C, $14, $12, $15, $15, $5F, $0A, $17, $0D, $5F, $20, $12;($91D7)
+;			  t	_	o	n	l	y	_	w	i	l	l	_	b	r	i	n
+		.byte $1D, $5F, $18, $17, $15, $22, $5F, $20, $12, $15, $15, $5F, $0B, $1B, $12, $17;($91E7)
+;			  g	_	t	h	e	e	_	b	a	c	k	_	f	r	o	m
+		.byte $10, $5F, $1D, $11, $0E, $0E, $5F, $0B, $0A, $0C, $14, $5F, $0F, $1B, $18, $16;($91F7)
+;			  _	t	h	a	t	_	p	l	a	c	e	.'  END
+		.byte $5F, $1D, $11, $0A, $1D, $5F, $19, $15, $0A, $0C, $0E, $52, $FC;($9207)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E6:
-;              '    G    o    l    e    m    _    i    s    _    a    f    r    a    i    d
-        .byte $50, $2A, $18, $15, $0E, $16, $5F, $12, $1C, $5F, $0A, $0F, $1B, $0A, $12, $0D;($9214)
-;              _    o    f    _    t    h    e    _    m    u    s    i    c    _    o    f
+;			  '	G	o	l	e	m	_	i	s	_	a	f	r	a	i	d
+		.byte $50, $2A, $18, $15, $0E, $16, $5F, $12, $1C, $5F, $0A, $0F, $1B, $0A, $12, $0D;($9214)
+;			  _	o	f	_	t	h	e	_	m	u	s	i	c	_	o	f
 TB7E6_Byte_9224:  .byte $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $16, $1E, $1C, $12, $0C, $5F, $18, $0F
-;              _    t    h    e    _    f    l    u    t    e    ,    _    s    o    _    ,
+;			  _	t	h	e	_	f	l	u	t	e	,	_	s	o	_	,
 TB7E6_Byte_9234:  .byte $5F, $1D, $11, $0E, $5F, $0F, $15, $1E, $1D, $0E, $48, $5F, $1C, $18, $5F, $54
-;              t    i    s    _    s    a    i    d    .'  END
-        .byte $1D, $12, $1C, $5F, $1C, $0A, $12, $0D, $52, $FC;($9244)
+;			  t	i	s	_	s	a	i	d	.'  END
+		.byte $1D, $12, $1C, $5F, $1C, $0A, $12, $0D, $52, $FC;($9244)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E7:
-;              '    T    h    i    s    _    i    s    _    t    h    e    _    v    i    l
-        .byte $50, $37, $11, $12, $1C, $5F, $12, $1C, $5F, $1D, $11, $0E, $5F, $1F, $12, $15;($924E)
-;              l    a    g    e    _    o    f    _    K    o    l    .'  END
+;			  '	T	h	i	s	_	i	s	_	t	h	e	_	v	i	l
+		.byte $50, $37, $11, $12, $1C, $5F, $12, $1C, $5F, $1D, $11, $0E, $5F, $1F, $12, $15;($924E)
+;			  l	a	g	e	_	o	f	_	K	o	l	.'  END
 TB7E7_Byte_925E:  .byte $15, $0A, $10, $0E, $5F, $18, $0F, $5F, $2E, $18, $15, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E8:
-;              '    I    n    _    l    e    g    e    n    d    s    _    i    t    _    i
-        .byte $50, $2C, $17, $5F, $15, $0E, $10, $0E, $17, $0D, $1C, $5F, $12, $1D, $5F, $12;($926B)
-;              s    _    s    a    i    d    _    t    h    a    t    _    f    a    i    r
-        .byte $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D, $5F, $0F, $0A, $12, $1B;($927B)
-;              i    e    s    _    k    n    o    w    _    h    o    w    _    t    o    _
-        .byte $12, $0E, $1C, $5F, $14, $17, $18, $20, $5F, $11, $18, $20, $5F, $1D, $18, $5F;($928B)
-;              p    u    t    _    G    o    l    e    m    _    t    o    _    s    l    e
+;			  '	I	n	_	l	e	g	e	n	d	s	_	i	t	_	i
+		.byte $50, $2C, $17, $5F, $15, $0E, $10, $0E, $17, $0D, $1C, $5F, $12, $1D, $5F, $12;($926B)
+;			  s	_	s	a	i	d	_	t	h	a	t	_	f	a	i	r
+		.byte $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D, $5F, $0F, $0A, $12, $1B;($927B)
+;			  i	e	s	_	k	n	o	w	_	h	o	w	_	t	o	_
+		.byte $12, $0E, $1C, $5F, $14, $17, $18, $20, $5F, $11, $18, $20, $5F, $1D, $18, $5F;($928B)
+;			  p	u	t	_	G	o	l	e	m	_	t	o	_	s	l	e
 TB7E8_Byte_929B:  .byte $19, $1E, $1D, $5F, $2A, $18, $15, $0E, $16, $5F, $1D, $18, $5F, $1C, $15, $0E
-;              e    p    .'  END
+;			  e	p	.'  END
 TB7E8_Byte_92AB:  .byte $0E, $19, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E9:
-;              '    T    h    e    _    h    a    r    p    _    a    t    t    r    a    c
-        .byte $50, $37, $11, $0E, $5F, $11, $0A, $1B, $19, $5F, $0A, $1D, $1D, $1B, $0A, $0C;($92AF)
-;              t    s    _    e    n    e    m    i    e    s    .    \n   S    t    a    y
+;			  '	T	h	e	_	h	a	r	p	_	a	t	t	r	a	c
+		.byte $50, $37, $11, $0E, $5F, $11, $0A, $1B, $19, $5F, $0A, $1D, $1D, $1B, $0A, $0C;($92AF)
+;			  t	s	_	e	n	e	m	i	e	s	.	\n   S	t	a	y
 TB7E9_Byte_92BF:  .byte $1D, $1C, $5F, $0E, $17, $0E, $16, $12, $0E, $1C, $47, $FD, $36, $1D, $0A, $22
-;              _    a    w    a    y    _    f    r    o    m    _    t    h    e    _    g
-        .byte $5F, $0A, $20, $0A, $22, $5F, $0F, $1B, $18, $16, $5F, $1D, $11, $0E, $5F, $10;($92CF)
-;              r    a    v    e    _    i    n    _    G    a    r    i    n    h    a    m
+;			  _	a	w	a	y	_	f	r	o	m	_	t	h	e	_	g
+		.byte $5F, $0A, $20, $0A, $22, $5F, $0F, $1B, $18, $16, $5F, $1D, $11, $0E, $5F, $10;($92CF)
+;			  r	a	v	e	_	i	n	_	G	a	r	i	n	h	a	m
 TB7E9_Byte_92DF:  .byte $1B, $0A, $1F, $0E, $5F, $12, $17, $5F, $2A, $0A, $1B, $12, $17, $11, $0A, $16
-;              .'  END
-        .byte $52, $FC          ;($92EF)
+;			  .'  END
+		.byte $52, $FC		  ;($92EF)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E10:
-;              '    I    '    m    _    t    o    o    _    b    u    s    y    .    \n   A
+;			  '	I	'	m	_	t	o	o	_	b	u	s	y	.	\n   A
 TB7E10_Byte_92F1:  .byte $50, $2C, $53, $16, $5F, $1D, $18, $18, $5F, $0B, $1E, $1C, $22, $47, $FD, $24
-;              s    k    _    t    h    e    _    o    t    h    e    r    _    g    u    a
-        .byte $1C, $14, $5F, $1D, $11, $0E, $5F, $18, $1D, $11, $0E, $1B, $5F, $10, $1E, $0A;($9301)
-;              r    d    .'  END
+;			  s	k	_	t	h	e	_	o	t	h	e	r	_	g	u	a
+		.byte $1C, $14, $5F, $1D, $11, $0E, $5F, $18, $1D, $11, $0E, $1B, $5F, $10, $1E, $0A;($9301)
+;			  r	d	.'  END
 TB7E10_Byte_9311:  .byte $1B, $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E11:
-;              '    I    _    s    u    g    g    e    s    t    _    m    a    k    i    n
+;			  '	I	_	s	u	g	g	e	s	t	_	m	a	k	i	n
 TB7E11_Byte_9315:  .byte $50, $2C, $5F, $1C, $1E, $10, $10, $0E, $1C, $1D, $5F, $16, $0A, $14, $12, $17
-;              g    _    a    _    m    a    p    _    i    f    _    t    h    y    _    p
+;			  g	_	a	_	m	a	p	_	i	f	_	t	h	y	_	p
 TB7E11_Byte_9325:  .byte $10, $5F, $0A, $5F, $16, $0A, $19, $5F, $12, $0F, $5F, $1D, $11, $22, $5F, $19
-;              a    t    h    _    l    e    a    d    s    _    i    n    t    o    _    t
+;			  a	t	h	_	l	e	a	d	s	_	i	n	t	o	_	t
 TB7E11_Byte_9335:  .byte $0A, $1D, $11, $5F, $15, $0E, $0A, $0D, $1C, $5F, $12, $17, $1D, $18, $5F, $1D
-;              h    e    _    d    a    r    k    n    e    s    s    .'  END
+;			  h	e	_	d	a	r	k	n	e	s	s	.'  END
 TB7E11_Byte_9345:  .byte $11, $0E, $5F, $0D, $0A, $1B, $14, $17, $0E, $1C, $1C, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E12:
-;              '    O    n    c    e    _    t    h    e    r    e    _    w    a    s    _
+;			  '	O	n	c	e	_	t	h	e	r	e	_	w	a	s	_
 TB7E12_Byte_9352:  .byte $50, $32, $17, $0C, $0E, $5F, $1D, $11, $0E, $1B, $0E, $5F, $20, $0A, $1C, $5F
-;              a    _    t    o    w    n    _    c    a    l    l    e    d    _    H    a
+;			  a	_	t	o	w	n	_	c	a	l	l	e	d	_	H	a
 TB7E12_Byte_9362:  .byte $0A, $5F, $1D, $18, $20, $17, $5F, $0C, $0A, $15, $15, $0E, $0D, $5F, $2B, $0A
-;              u    k    s    n    e    s    s    _    f    a    r    _    t    o    _    t
+;			  u	k	s	n	e	s	s	_	f	a	r	_	t	o	_	t
 TB7E12_Byte_9372:  .byte $1E, $14, $1C, $17, $0E, $1C, $1C, $5F, $0F, $0A, $1B, $5F, $1D, $18, $5F, $1D
-;              h    e    _    s    o    u    t    h    ,    b    u    t    _    I    _    d
+;			  h	e	_	s	o	u	t	h	,	b	u	t	_	I	_	d
 TB7E12_Byte_9382:  .byte $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $48, $0B, $1E, $1D, $5F, $2C, $5F, $0D
-;              o    _    n    o    t    _    k    n    o    w    _    i    f    _    i    t
+;			  o	_	n	o	t	_	k	n	o	w	_	i	f	_	i	t
 TB7E12_Byte_9392:  .byte $18, $5F, $17, $18, $1D, $5F, $14, $17, $18, $20, $5F, $12, $0F, $5F, $12, $1D
-;              _    s    t    i    l    l    _    e    x    i    s    t    s    .'  END
+;			  _	s	t	i	l	l	_	e	x	i	s	t	s	.'  END
 TB7E12_Byte_93A2:  .byte $5F, $1C, $1D, $12, $15, $15, $5F, $0E, $21, $12, $1C, $1D, $1C, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E13:
-;              '    I    _    h    a    t    e    _    p    e    o    p    l    e    !    \n
-        .byte $50, $2C, $5F, $11, $0A, $1D, $0E, $5F, $19, $0E, $18, $19, $15, $0E, $4C, $FD;($93B1)
-;              G    o    !    _    L    e    a    v    e    _    m    e    !    '   END
+;			  '	I	_	h	a	t	e	_	p	e	o	p	l	e	!	\n
+		.byte $50, $2C, $5F, $11, $0A, $1D, $0E, $5F, $19, $0E, $18, $19, $15, $0E, $4C, $FD;($93B1)
+;			  G	o	!	_	L	e	a	v	e	_	m	e	!	'   END
 TB7E13_Byte_93C1:  .byte $2A, $18, $4C, $5F, $2F, $0E, $0A, $1F, $0E, $5F, $16, $0E, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E14:
-;              '    T    h    e    y    _    s    a    y    _    t    h    a    t    _    E
+;			  '	T	h	e	y	_	s	a	y	_	t	h	a	t	_	E
 TB7E14_Byte_93D0:  .byte $50, $37, $11, $0E, $22, $5F, $1C, $0A, $22, $5F, $1D, $11, $0A, $1D, $5F, $28
-;              r    d    r    i    c    k    '    s    _    a    r    m    o    r    _    w
+;			  r	d	r	i	c	k	'	s	_	a	r	m	o	r	_	w
 TB7E14_Byte_93E0:  .byte $1B, $0D, $1B, $12, $0C, $14, $53, $1C, $5F, $0A, $1B, $16, $18, $1B, $5F, $20
-;              a    s    _    h    i    d    d    e    n    _    l    o    n    g    _    a
+;			  a	s	_	h	i	d	d	e	n	_	l	o	n	g	_	a
 TB7E14_Byte_93F0:  .byte $0A, $1C, $5F, $11, $12, $0D, $0D, $0E, $17, $5F, $15, $18, $17, $10, $5F, $0A
-;              g    o    .'  END
+;			  g	o	.'  END
 TB7E14_Byte_9400:  .byte $10, $18, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB7E15:
-;              '    M    a    n    y    _    b    e    l    i    e    v    e    _    t    h
+;			  '	M	a	n	y	_	b	e	l	i	e	v	e	_	t	h
 TB7E15_Byte_9404:  .byte $50, $30, $0A, $17, $22, $5F, $0B, $0E, $15, $12, $0E, $1F, $0E, $5F, $1D, $11
-;              a    t    _    P    r    i    n    c    e    s    s    _    G    w    a    e
+;			  a	t	_	P	r	i	n	c	e	s	s	_	G	w	a	e
 TB7E15_Byte_9414:  .byte $0A, $1D, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $5F, $2A, $20, $0A, $0E
-;              l    i    n    _    i    s    _    h    i    d    d    e    n    _    a    w
+;			  l	i	n	_	i	s	_	h	i	d	d	e	n	_	a	w
 TB7E15_Byte_9424:  .byte $15, $12, $17, $5F, $12, $1C, $5F, $11, $12, $0D, $0D, $0E, $17, $5F, $0A, $20
-;              a    y    _    i    n    _    a    _    c    a    v    e    .'  END
+;			  a	y	_	i	n	_	a	_	c	a	v	e	.'  END
 TB7E15_Byte_9434:  .byte $0A, $22, $5F, $12, $17, $5F, $0A, $5F, $0C, $0A, $1F, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock8:
 TB8E0:
-;              '    I    _    h    a    v    e    _    h    e    a    r    d    _    o    f
+;			  '	I	_	h	a	v	e	_	h	e	a	r	d	_	o	f
 TB8E0_Byte_9442:  .byte $50, $2C, $5F, $11, $0A, $1F, $0E, $5F, $11, $0E, $0A, $1B, $0D, $5F, $18, $0F
-;              _    o    n    e    _    n    a    m    e    d    _    N    e    s    t    e
+;			  _	o	n	e	_	n	a	m	e	d	_	N	e	s	t	e
 TB8E0_Byte_9452:  .byte $5F, $18, $17, $0E, $5F, $17, $0A, $16, $0E, $0D, $5F, $31, $0E, $1C, $1D, $0E
-;              r    .    \n   D    o    s    t    _    t    h    o    u    _    k    n    o
+;			  r	.	\n   D	o	s	t	_	t	h	o	u	_	k	n	o
 TB8E0_Byte_9462:  .byte $1B, $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $14, $17, $18
-;              w    _    s    u    c    h    _    a    _    o    n    e    ?    '   END
+;			  w	_	s	u	c	h	_	a	_	o	n	e	?	'   END
 TB8E0_Byte_9472:  .byte $20, $5F, $1C, $1E, $0C, $11, $5F, $0A, $5F, $18, $17, $0E, $4B, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E1:
-;              '    G    a    r    i    n    ,    _    a    _    w    a    n    d    e    r
+;			  '	G	a	r	i	n	,	_	a	_	w	a	n	d	e	r
 TB8E1_Byte_9481:  .byte $50, $2A, $0A, $1B, $12, $17, $48, $5F, $0A, $5F, $20, $0A, $17, $0D, $0E, $1B
-;              i    n    g    _    m    i    n    s    t    r    e    l    _    o    f    _
-        .byte $12, $17, $10, $5F, $16, $12, $17, $1C, $1D, $1B, $0E, $15, $5F, $18, $0F, $5F;($9491)
-;              l    e    g    e    n    d    a    r    y    _    f    a    m    e    ,    _
-        .byte $15, $0E, $10, $0E, $17, $0D, $0A, $1B, $22, $5F, $0F, $0A, $16, $0E, $48, $5F;($94A1)
-;              i    s    _    s    a    i    d    _    t    o    _    h    a    v    e    _
-        .byte $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $18, $5F, $11, $0A, $1F, $0E, $5F;($94B1)
-;              b    u    i    l    t    _    t    h    i    s    _    t    o    w    n    .'
-        .byte $0B, $1E, $12, $15, $1D, $5F, $1D, $11, $12, $1C, $5F, $1D, $18, $20, $17, $52;($94C1)
-;             END
-        .byte $FC               ;($94D1)
+;			  i	n	g	_	m	i	n	s	t	r	e	l	_	o	f	_
+		.byte $12, $17, $10, $5F, $16, $12, $17, $1C, $1D, $1B, $0E, $15, $5F, $18, $0F, $5F;($9491)
+;			  l	e	g	e	n	d	a	r	y	_	f	a	m	e	,	_
+		.byte $15, $0E, $10, $0E, $17, $0D, $0A, $1B, $22, $5F, $0F, $0A, $16, $0E, $48, $5F;($94A1)
+;			  i	s	_	s	a	i	d	_	t	o	_	h	a	v	e	_
+		.byte $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $18, $5F, $11, $0A, $1F, $0E, $5F;($94B1)
+;			  b	u	i	l	t	_	t	h	i	s	_	t	o	w	n	.'
+		.byte $0B, $1E, $12, $15, $1D, $5F, $1D, $11, $12, $1C, $5F, $1D, $18, $20, $17, $52;($94C1)
+;			 END
+		.byte $FC			   ;($94D1)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E2:
-;              '    W    e    l    c    o    m    e    _    t    o    _    G    a    r    i
+;			  '	W	e	l	c	o	m	e	_	t	o	_	G	a	r	i
 TB8E2_Byte_94D2:  .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $5F, $1D, $18, $5F, $2A, $0A, $1B, $12
-;              n    h    a    m    .    \n   M    a    y    _    t    h    y    _    s    t
+;			  n	h	a	m	.	\n   M	a	y	_	t	h	y	_	s	t
 TB8E2_Byte_94E2:  .byte $17, $11, $0A, $16, $47, $FD, $30, $0A, $22, $5F, $1D, $11, $22, $5F, $1C, $1D
-;              a    y    _    b    e    _    a    _    p    e    a    c    e    f    u    l
+;			  a	y	_	b	e	_	a	_	p	e	a	c	e	f	u	l
 TB8E2_Byte_94F2:  .byte $0A, $22, $5F, $0B, $0E, $5F, $0A, $5F, $19, $0E, $0A, $0C, $0E, $0F, $1E, $15
-;              _    o    n    e    .'  END
+;			  _	o	n	e	.'  END
 TB8E2_Byte_9502:  .byte $5F, $18, $17, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E3:
-;              '    I    t    _    i    s    _    s    a    i    d    _    t    h    a    t
+;			  '	I	t	_	i	s	_	s	a	i	d	_	t	h	a	t
 TB8E3_Byte_9508:  .byte $50, $2C, $1D, $5F, $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D
-;              _    t    h    e    _    P    r    i    n    c    e    s    s    _    w    a
+;			  _	t	h	e	_	P	r	i	n	c	e	s	s	_	w	a
 TB8E3_Byte_9518:  .byte $5F, $1D, $11, $0E, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $5F, $20, $0A
-;              s    _    k    i    d    n    a    p    p    e    d    _    a    n    d    _
+;			  s	_	k	i	d	n	a	p	p	e	d	_	a	n	d	_
 TB8E3_Byte_9528:  .byte $1C, $5F, $14, $12, $0D, $17, $0A, $19, $19, $0E, $0D, $5F, $0A, $17, $0D, $5F
-;              t    a    k    e    n    _    e    a    s    t    w    a    r    d    .'  END
+;			  t	a	k	e	n	_	e	a	s	t	w	a	r	d	.'  END
 TB8E3_Byte_9538:  .byte $1D, $0A, $14, $0E, $17, $5F, $0E, $0A, $1C, $1D, $20, $0A, $1B, $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E4:
-;              '    C    o    m    e    _    b    u    y    _    m    y    _    r    a    d
+;			  '	C	o	m	e	_	b	u	y	_	m	y	_	r	a	d
 TB8E4_Byte_9548:  .byte $50, $26, $18, $16, $0E, $5F, $0B, $1E, $22, $5F, $16, $22, $5F, $1B, $0A, $0D
-;              i    s    h    e    s    !    _    T    h    e    y    _    a    r    e    _
+;			  i	s	h	e	s	!	_	T	h	e	y	_	a	r	e	_
 TB8E4_Byte_9558:  .byte $12, $1C, $11, $0E, $1C, $4C, $5F, $37, $11, $0E, $22, $5F, $0A, $1B, $0E, $5F
-;              f    r    e    s    h    _    a    n    d    _    c    h    e    a    p    .
+;			  f	r	e	s	h	_	a	n	d	_	c	h	e	a	p	.
 TB8E4_Byte_9568:  .byte $0F, $1B, $0E, $1C, $11, $5F, $0A, $17, $0D, $5F, $0C, $11, $0E, $0A, $19, $47
-;              \n   B    u    y    _    t    h    y    _    r    a    d    i    s    h    e
+;			  \n   B	u	y	_	t	h	y	_	r	a	d	i	s	h	e
 TB8E4_Byte_9578:  .byte $FD, $25, $1E, $22, $5F, $1D, $11, $22, $5F, $1B, $0A, $0D, $12, $1C, $11, $0E
-;              s    _    t    o    d    a    y    !    '   END
+;			  s	_	t	o	d	a	y	!	'   END
 TB8E4_Byte_9588:  .byte $1C, $5F, $1D, $18, $0D, $0A, $22, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E5:
-;              '    T    o    _    l    e    a    r    n    _    h    o    w    _    p    r
+;			  '	T	o	_	l	e	a	r	n	_	h	o	w	_	p	r
 TB8E5_Byte_9592:  .byte $50, $37, $18, $5F, $15, $0E, $0A, $1B, $17, $5F, $11, $18, $20, $5F, $19, $1B
-;              o    o    f    _    m    a    y    _    b    e    _    o    b    t    a    i
+;			  o	o	f	_	m	a	y	_	b	e	_	o	b	t	a	i
 TB8E5_Byte_95A2:  .byte $18, $18, $0F, $5F, $16, $0A, $22, $5F, $0B, $0E, $5F, $18, $0B, $1D, $0A, $12
-;              n    e    d    _    t    h    a    t    _    t    h    y    _    a    n    c
+;			  n	e	d	_	t	h	a	t	_	t	h	y	_	a	n	c
 TB8E5_Byte_95B2:  .byte $17, $0E, $0D, $5F, $1D, $11, $0A, $1D, $5F, $1D, $11, $22, $5F, $0A, $17, $0C
-;              e    s    t    o    r    _    w    a    s    _    t    h    e    _    g    r
+;			  e	s	t	o	r	_	w	a	s	_	t	h	e	_	g	r
 TB8E5_Byte_95C2:  .byte $0E, $1C, $1D, $18, $1B, $5F, $20, $0A, $1C, $5F, $1D, $11, $0E, $5F, $10, $1B
-;              e    a    t    _    E    r    d    r    i    c    k    ,    _    s    e    e
+;			  e	a	t	_	E	r	d	r	i	c	k	,	_	s	e	e
 TB8E5_Byte_95D2:  .byte $0E, $0A, $1D, $5F, $28, $1B, $0D, $1B, $12, $0C, $14, $48, $5F, $1C, $0E, $0E
-;              _    a    _    m    a    n    _    i    n    _    t    h    i    s    _    v
+;			  _	a	_	m	a	n	_	i	n	_	t	h	i	s	_	v
 TB8E5_Byte_95E2:  .byte $5F, $0A, $5F, $16, $0A, $17, $5F, $12, $17, $5F, $1D, $11, $12, $1C, $5F, $1F
-;              e    r    y    _    t    o    w    n    .'  END
+;			  e	r	y	_	t	o	w	n	.'  END
 TB8E5_Byte_95F2:  .byte $0E, $1B, $22, $5F, $1D, $18, $20, $17, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E6:
-;              '    ,    T    i    s    _    s    a    i    d    _    t    h    a    t    _
+;			  '	,	T	i	s	_	s	a	i	d	_	t	h	a	t	_
 TB8E6_Byte_95FC:  .byte $50, $54, $37, $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D, $5F
-;              E    r    d    r    i    c    k    '    s    _    s    w    o    r    d    _
+;			  E	r	d	r	i	c	k	'	s	_	s	w	o	r	d	_
 TB8E6_Byte_960C:  .byte $28, $1B, $0D, $1B, $12, $0C, $14, $53, $1C, $5F, $1C, $20, $18, $1B, $0D, $5F
-;              c    o    u    l    d    _    c    l    e    a    v    e    _    s    t    e
+;			  c	o	u	l	d	_	c	l	e	a	v	e	_	s	t	e
 TB8E6_Byte_961C:  .byte $0C, $18, $1E, $15, $0D, $5F, $0C, $15, $0E, $0A, $1F, $0E, $5F, $1C, $1D, $0E
-;              e    l    .'  END
+;			  e	l	.'  END
 TB8E6_Byte_962C:  .byte $0E, $15, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E7:
-;              '    W    e    l    c    o    m    e    _    t    o    _    C    a    n    t
+;			  '	W	e	l	c	o	m	e	_	t	o	_	C	a	n	t
 TB8E7_Byte_9630:  .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $5F, $1D, $18, $5F, $26, $0A, $17, $1D
-;              l    i    n    ,    _    t    h    e    _    c    a    s    t    l    e    _
+;			  l	i	n	,	_	t	h	e	_	c	a	s	t	l	e	_
 TB8E7_Byte_9640:  .byte $15, $12, $17, $48, $5F, $1D, $11, $0E, $5F, $0C, $0A, $1C, $1D, $15, $0E, $5F
-;              t    o    w    n    .'  END
+;			  t	o	w	n	.'  END
 TB8E7_Byte_9650:  .byte $1D, $18, $20, $17, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E8:
-;              '    W    h    a    t    _    s    h    a    l    l    _    I    _    g    e
+;			  '	W	h	a	t	_	s	h	a	l	l	_	I	_	g	e
 TB8E8_Byte_9656:  .byte $50, $3A, $11, $0A, $1D, $5F, $1C, $11, $0A, $15, $15, $5F, $2C, $5F, $10, $0E
-;              t    _    f    o    r    _    t    h    y    _    d    i    n    n    e    r
+;			  t	_	f	o	r	_	t	h	y	_	d	i	n	n	e	r
 TB8E8_Byte_9666:  .byte $1D, $5F, $0F, $18, $1B, $5F, $1D, $11, $22, $5F, $0D, $12, $17, $17, $0E, $1B
-;              ?    '   END
+;			  ?	'   END
 TB8E8_Byte_9676:  .byte $4B, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E9:
-;              '    I    _    k    n    o    w    _    n    o    t    h    i    n    g    .'
-        .byte $50, $2C, $5F, $14, $17, $18, $20, $5F, $17, $18, $1D, $11, $12, $17, $10, $52;($9679)
-;             END
-        .byte $FC               ;($9689)
+;			  '	I	_	k	n	o	w	_	n	o	t	h	i	n	g	.'
+		.byte $50, $2C, $5F, $14, $17, $18, $20, $5F, $17, $18, $1D, $11, $12, $17, $10, $52;($9679)
+;			 END
+		.byte $FC			   ;($9689)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E10:
-;              '    I    '    m    _    N    e    s    t    e    r    .    \n   H    e    y
+;			  '	I	'	m	_	N	e	s	t	e	r	.	\n   H	e	y
 TB8E10_Byte_968A:  .byte $50, $2C, $53, $16, $5F, $31, $0E, $1C, $1D, $0E, $1B, $47, $FD, $2B, $0E, $22
-;              ,    _    w    h    e    r    e    _    a    m    _    I    ?    _    N    o
+;			  ,	_	w	h	e	r	e	_	a	m	_	I	?	_	N	o
 TB8E10_Byte_969A:  .byte $48, $5F, $20, $11, $0E, $1B, $0E, $5F, $0A, $16, $5F, $2C, $4B, $5F, $31, $18
-;              ,    _    d    o    n    '    t    _    t    e    l    l    _    m    e    !
+;			  ,	_	d	o	n	'	t	_	t	e	l	l	_	m	e	!
 TB8E10_Byte_96AA:  .byte $48, $5F, $0D, $18, $17, $53, $1D, $5F, $1D, $0E, $15, $15, $5F, $16, $0E, $4C
-;              '   END
+;			  '   END
 TB8E10_Byte_96BA:  .byte $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E11:
-;              '    G    r    a    n    d    f    a    t    h    e    r    _    u    s    e
+;			  '	G	r	a	n	d	f	a	t	h	e	r	_	u	s	e
 TB8E11_Byte_96BC:  .byte $50, $2A, $1B, $0A, $17, $0D, $0F, $0A, $1D, $11, $0E, $1B, $5F, $1E, $1C, $0E
-;              d    _    t    o    _    s    a    y    _    t    h    a    t    _    h    i
+;			  d	_	t	o	_	s	a	y	_	t	h	a	t	_	h	i
 TB8E11_Byte_96CC:  .byte $0D, $5F, $1D, $18, $5F, $1C, $0A, $22, $5F, $1D, $11, $0A, $1D, $5F, $11, $12
-;              s    _    f    r    i    e    n    d    ,    _    W    y    n    n    ,    _
+;			  s	_	f	r	i	e	n	d	,	_	W	y	n	n	,	_
 TB8E11_Byte_96DC:  .byte $1C, $5F, $0F, $1B, $12, $0E, $17, $0D, $48, $5F, $3A, $22, $17, $17, $48, $5F
-;              h    a    d    _    b    u    r    i    e    d    _    s    o    m    e    t
+;			  h	a	d	_	b	u	r	i	e	d	_	s	o	m	e	t
 TB8E11_Byte_96EC:  .byte $11, $0A, $0D, $5F, $0B, $1E, $1B, $12, $0E, $0D, $5F, $1C, $18, $16, $0E, $1D
-;              h    i    n    g    _    o    f    _    g    r    e    a    t    _    v    a
+;			  h	i	n	g	_	o	f	_	g	r	e	a	t	_	v	a
 TB8E11_Byte_96FC:  .byte $11, $12, $17, $10, $5F, $18, $0F, $5F, $10, $1B, $0E, $0A, $1D, $5F, $1F, $0A
-;              l    u    e    _    a    t    _    t    h    e    _    f    o    o    t    _
+;			  l	u	e	_	a	t	_	t	h	e	_	f	o	o	t	_
 TB8E11_Byte_970C:  .byte $15, $1E, $0E, $5F, $0A, $1D, $5F, $1D, $11, $0E, $5F, $0F, $18, $18, $1D, $5F
-;              o    f    _    a    _    t    r    e    e    _    b    e    h    i    n    d
+;			  o	f	_	a	_	t	r	e	e	_	b	e	h	i	n	d
 TB8E11_Byte_971C:  .byte $18, $0F, $5F, $0A, $5F, $1D, $1B, $0E, $0E, $5F, $0B, $0E, $11, $12, $17, $0D
-;              _    h    i    s    _    s    h    o    p    .'  END
+;			  _	h	i	s	_	s	h	o	p	.'  END
 TB8E11_Byte_972C:  .byte $5F, $11, $12, $1C, $5F, $1C, $11, $18, $19, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E12:
-;              '    I    t    _    i    s    _    s    a    i    d    _    t    h    a    t
-        .byte $50, $2C, $1D, $5F, $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D;($9737)
-;              _    m    a    n    y    _    h    a    v    e    _    h    e    l    d    _
-        .byte $5F, $16, $0A, $17, $22, $5F, $11, $0A, $1F, $0E, $5F, $11, $0E, $15, $0D, $5F;($9747)
-;              E    r    d    r    i    c    k    '    s    _    a    r    m    o    r    .'
-        .byte $28, $1B, $0D, $1B, $12, $0C, $14, $53, $1C, $5F, $0A, $1B, $16, $18, $1B, $52;($9757)
-;             WAIT  \n   '    T    h    e    _    l    a    s    t    _    t    o    _    h
+;			  '	I	t	_	i	s	_	s	a	i	d	_	t	h	a	t
+		.byte $50, $2C, $1D, $5F, $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D;($9737)
+;			  _	m	a	n	y	_	h	a	v	e	_	h	e	l	d	_
+		.byte $5F, $16, $0A, $17, $22, $5F, $11, $0A, $1F, $0E, $5F, $11, $0E, $15, $0D, $5F;($9747)
+;			  E	r	d	r	i	c	k	'	s	_	a	r	m	o	r	.'
+		.byte $28, $1B, $0D, $1B, $12, $0C, $14, $53, $1C, $5F, $0A, $1B, $16, $18, $1B, $52;($9757)
+;			 WAIT  \n   '	T	h	e	_	l	a	s	t	_	t	o	_	h
 TB8E12_Byte_9767:  .byte $FB, $FD, $50, $37, $11, $0E, $5F, $15, $0A, $1C, $1D, $5F, $1D, $18, $5F, $11
-;              a    v    e    _    i    t    _    w    a    s    _    a    _    f    e    l
-        .byte $0A, $1F, $0E, $5F, $12, $1D, $5F, $20, $0A, $1C, $5F, $0A, $5F, $0F, $0E, $15;($9777)
-;              l    o    w    _    n    a    m    e    d    _    W    y    n    n    .'  END
-        .byte $15, $18, $20, $5F, $17, $0A, $16, $0E, $0D, $5F, $3A, $22, $17, $17, $52, $FC;($9787)
+;			  a	v	e	_	i	t	_	w	a	s	_	a	_	f	e	l
+		.byte $0A, $1F, $0E, $5F, $12, $1D, $5F, $20, $0A, $1C, $5F, $0A, $5F, $0F, $0E, $15;($9777)
+;			  l	o	w	_	n	a	m	e	d	_	W	y	n	n	.'  END
+		.byte $15, $18, $20, $5F, $17, $0A, $16, $0E, $0D, $5F, $3A, $22, $17, $17, $52, $FC;($9787)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E13:
-;              '    M    y    _    G    r    a    n    d    f    a    t    h    e    r    _
+;			  '	M	y	_	G	r	a	n	d	f	a	t	h	e	r	_
 TB8E13_Byte_9797:  .byte $50, $30, $22, $5F, $2A, $1B, $0A, $17, $0D, $0F, $0A, $1D, $11, $0E, $1B, $5F
-;              W    y    n    n    _    o    n    c    e    _    h    a    d    _    a    _
-        .byte $3A, $22, $17, $17, $5F, $18, $17, $0C, $0E, $5F, $11, $0A, $0D, $5F, $0A, $5F;($97A7)
-;              s    h    o    p    _    o    n    _    t    h    e    _    e    a    s    t
+;			  W	y	n	n	_	o	n	c	e	_	h	a	d	_	a	_
+		.byte $3A, $22, $17, $17, $5F, $18, $17, $0C, $0E, $5F, $11, $0A, $0D, $5F, $0A, $5F;($97A7)
+;			  s	h	o	p	_	o	n	_	t	h	e	_	e	a	s	t
 TB8E13_Byte_97B7:  .byte $1C, $11, $18, $19, $5F, $18, $17, $5F, $1D, $11, $0E, $5F, $0E, $0A, $1C, $1D
-;              _    s    i    d    e    _    o    f    _    H    a    u    k    s    n    e
+;			  _	s	i	d	e	_	o	f	_	H	a	u	k	s	n	e
 TB8E13_Byte_97C7:  .byte $5F, $1C, $12, $0D, $0E, $5F, $18, $0F, $5F, $2B, $0A, $1E, $14, $1C, $17, $0E
-;              s    s    .'  END
+;			  s	s	.'  END
 TB8E13_Byte_97D7:  .byte $1C, $1C, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E14:
-;              '    W    e    l    c    o    m    e    !    '   END
-        .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $4C, $40, $FC;($97DB)
+;			  '	W	e	l	c	o	m	e	!	'   END
+		.byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $4C, $40, $FC;($97DB)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB8E15:
-;              '    W    h    o    _    a    r    t    _    t    h    o    u    ?    \n   L
+;			  '	W	h	o	_	a	r	t	_	t	h	o	u	?	\n   L
 TB8E15_Byte_97E6:  .byte $50, $3A, $11, $18, $5F, $0A, $1B, $1D, $5F, $1D, $11, $18, $1E, $4B, $FD, $2F
-;              e    a    v    e    _    a    t    _    o    n    c    e    _    o    r    _
-        .byte $0E, $0A, $1F, $0E, $5F, $0A, $1D, $5F, $18, $17, $0C, $0E, $5F, $18, $1B, $5F;($97F6)
-;              I    _    w    i    l    l    _    c    a    l    l    _    m    y    _    f
-        .byte $2C, $5F, $20, $12, $15, $15, $5F, $0C, $0A, $15, $15, $5F, $16, $22, $5F, $0F;($9806)
-;              r    i    e    n    d    s    .'  END
-        .byte $1B, $12, $0E, $17, $0D, $1C, $52, $FC;($9816)
+;			  e	a	v	e	_	a	t	_	o	n	c	e	_	o	r	_
+		.byte $0E, $0A, $1F, $0E, $5F, $0A, $1D, $5F, $18, $17, $0C, $0E, $5F, $18, $1B, $5F;($97F6)
+;			  I	_	w	i	l	l	_	c	a	l	l	_	m	y	_	f
+		.byte $2C, $5F, $20, $12, $15, $15, $5F, $0C, $0A, $15, $15, $5F, $16, $22, $5F, $0F;($9806)
+;			  r	i	e	n	d	s	.'  END
+		.byte $1B, $12, $0E, $17, $0D, $1C, $52, $FC;($9816)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock9:
 TB9E0:
-;              '    I    _    a    m    _    O    r    w    i    c    k    ,    _    a    n
+;			  '	I	_	a	m	_	O	r	w	i	c	k	,	_	a	n
 TB9E0_Byte_981E:  .byte $50, $2C, $5F, $0A, $16, $5F, $32, $1B, $20, $12, $0C, $14, $48, $5F, $0A, $17
-;              d    _    I    _    a    m    _    w    a    i    t    i    n    g    _    f
+;			  d	_	I	_	a	m	_	w	a	i	t	i	n	g	_	f
 TB9E0_Byte_982E:  .byte $0D, $5F, $2C, $5F, $0A, $16, $5F, $20, $0A, $12, $1D, $12, $17, $10, $5F, $0F
-;              o    r    _    m    y    _    g    i    r    l    _    f    r    i    e    n
-        .byte $18, $1B, $5F, $16, $22, $5F, $10, $12, $1B, $15, $5F, $0F, $1B, $12, $0E, $17;($983E)
-;              d    .'  END
+;			  o	r	_	m	y	_	g	i	r	l	_	f	r	i	e	n
+		.byte $18, $1B, $5F, $16, $22, $5F, $10, $12, $1B, $15, $5F, $0F, $1B, $12, $0E, $17;($983E)
+;			  d	.'  END
 TB9E0_Byte_984E:  .byte $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E1:
-;              '    T    h    e    _    s    c    a    l    e    s    _    o    f    _    t
-        .byte $50, $37, $11, $0E, $5F, $1C, $0C, $0A, $15, $0E, $1C, $5F, $18, $0F, $5F, $1D;($9851)
-;              h    e    _    D    r    a    g    o    n    l    o    r    d    _    a    r
-        .byte $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $5F, $0A, $1B;($9861)
-;              e    _    a    s    _    h    a    r    d    _    a    s    _    s    t    e
+;			  '	T	h	e	_	s	c	a	l	e	s	_	o	f	_	t
+		.byte $50, $37, $11, $0E, $5F, $1C, $0C, $0A, $15, $0E, $1C, $5F, $18, $0F, $5F, $1D;($9851)
+;			  h	e	_	D	r	a	g	o	n	l	o	r	d	_	a	r
+		.byte $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $5F, $0A, $1B;($9861)
+;			  e	_	a	s	_	h	a	r	d	_	a	s	_	s	t	e
 TB9E1_Byte_9871:  .byte $0E, $5F, $0A, $1C, $5F, $11, $0A, $1B, $0D, $5F, $0A, $1C, $5F, $1C, $1D, $0E
-;              e    l    .'  END
+;			  e	l	.'  END
 TB9E1_Byte_9881:  .byte $0E, $15, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E2:
-;              '    O    v    e    r    _    t    h    e    _    w    e    s    t    e    r
-        .byte $50, $32, $1F, $0E, $1B, $5F, $1D, $11, $0E, $5F, $20, $0E, $1C, $1D, $0E, $1B;($9885)
-;              n    _    p    a    r    t    _    o    f    _    t    h    i    s    _    i
-        .byte $17, $5F, $19, $0A, $1B, $1D, $5F, $18, $0F, $5F, $1D, $11, $12, $1C, $5F, $12;($9895)
-;              s    l    a    n    d    _    E    r    d    r    i    c    k    _    c    r
-        .byte $1C, $15, $0A, $17, $0D, $5F, $28, $1B, $0D, $1B, $12, $0C, $14, $5F, $0C, $1B;($98A5)
-;              e    a    t    e    d    _    a    _    r    a    i    n    b    o    w    .'
-        .byte $0E, $0A, $1D, $0E, $0D, $5F, $0A, $5F, $1B, $0A, $12, $17, $0B, $18, $20, $52;($98B5)
-;             WAIT  \n   '    ,    T    i    s    _    a    l    s    o    _    s    a    i
+;			  '	O	v	e	r	_	t	h	e	_	w	e	s	t	e	r
+		.byte $50, $32, $1F, $0E, $1B, $5F, $1D, $11, $0E, $5F, $20, $0E, $1C, $1D, $0E, $1B;($9885)
+;			  n	_	p	a	r	t	_	o	f	_	t	h	i	s	_	i
+		.byte $17, $5F, $19, $0A, $1B, $1D, $5F, $18, $0F, $5F, $1D, $11, $12, $1C, $5F, $12;($9895)
+;			  s	l	a	n	d	_	E	r	d	r	i	c	k	_	c	r
+		.byte $1C, $15, $0A, $17, $0D, $5F, $28, $1B, $0D, $1B, $12, $0C, $14, $5F, $0C, $1B;($98A5)
+;			  e	a	t	e	d	_	a	_	r	a	i	n	b	o	w	.'
+		.byte $0E, $0A, $1D, $0E, $0D, $5F, $0A, $5F, $1B, $0A, $12, $17, $0B, $18, $20, $52;($98B5)
+;			 WAIT  \n   '	,	T	i	s	_	a	l	s	o	_	s	a	i
 TB9E2_Byte_98C5:  .byte $FB, $FD, $50, $54, $37, $12, $1C, $5F, $0A, $15, $1C, $18, $5F, $1C, $0A, $12
-;              d    _    t    h    a    t    _    h    e    _    e    n    t    e    r    e
+;			  d	_	t	h	a	t	_	h	e	_	e	n	t	e	r	e
 TB9E2_Byte_98D5:  .byte $0D, $5F, $1D, $11, $0A, $1D, $5F, $11, $0E, $5F, $0E, $17, $1D, $0E, $1B, $0E
-;              d    _    t    h    e    _    d    a    r    k    n    e    s    s    _    f
+;			  d	_	t	h	e	_	d	a	r	k	n	e	s	s	_	f
 TB9E2_Byte_98E5:  .byte $0D, $5F, $1D, $11, $0E, $5F, $0D, $0A, $1B, $14, $17, $0E, $1C, $1C, $5F, $0F
-;              r    o    m    _    a    _    h    i    d    d    e    n    _    e    n    t
-        .byte $1B, $18, $16, $5F, $0A, $5F, $11, $12, $0D, $0D, $0E, $17, $5F, $0E, $17, $1D;($98F5)
-;              r    a    n    c    e    _    i    n    _    t    h    e    _    r    o    o
+;			  r	o	m	_	a	_	h	i	d	d	e	n	_	e	n	t
+		.byte $1B, $18, $16, $5F, $0A, $5F, $11, $12, $0D, $0D, $0E, $17, $5F, $0E, $17, $1D;($98F5)
+;			  r	a	n	c	e	_	i	n	_	t	h	e	_	r	o	o
 TB9E2_Byte_9905:  .byte $1B, $0A, $17, $0C, $0E, $5F, $12, $17, $5F, $1D, $11, $0E, $5F, $1B, $18, $18
-;              m    _    o    f    _    t    h    e    _    D    r    a    g    o    n    l
-        .byte $16, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15;($9915)
-;              o    r    d    .'  END
+;			  m	_	o	f	_	t	h	e	_	D	r	a	g	o	n	l
+		.byte $16, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15;($9915)
+;			  o	r	d	.'  END
 TB9E2_Byte_9925:  .byte $18, $1B, $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E3:
-;              '    T    h    o    u    _    s    h    a    l    t    _    f    i    n    d
-        .byte $50, $37, $11, $18, $1E, $5F, $1C, $11, $0A, $15, $1D, $5F, $0F, $12, $17, $0D;($992A)
-;              _    t    h    e    _    S    t    o    n    e    s    _    o    f    _    S
+;			  '	T	h	o	u	_	s	h	a	l	t	_	f	i	n	d
+		.byte $50, $37, $11, $18, $1E, $5F, $1C, $11, $0A, $15, $1D, $5F, $0F, $12, $17, $0D;($992A)
+;			  _	t	h	e	_	S	t	o	n	e	s	_	o	f	_	S
 TB9E3_Byte_993A:  .byte $5F, $1D, $11, $0E, $5F, $36, $1D, $18, $17, $0E, $1C, $5F, $18, $0F, $5F, $36
-;              u    n    l    i    g    h    t    _    i    n    _    T    a    n    t    e
-        .byte $1E, $17, $15, $12, $10, $11, $1D, $5F, $12, $17, $5F, $37, $0A, $17, $1D, $0E;($994A)
-;              g    e    l    _    C    a    s    t    l    e    ,    \n   i    f    _    t
+;			  u	n	l	i	g	h	t	_	i	n	_	T	a	n	t	e
+		.byte $1E, $17, $15, $12, $10, $11, $1D, $5F, $12, $17, $5F, $37, $0A, $17, $1D, $0E;($994A)
+;			  g	e	l	_	C	a	s	t	l	e	,	\n   i	f	_	t
 TB9E3_Byte_995A:  .byte $10, $0E, $15, $5F, $26, $0A, $1C, $1D, $15, $0E, $48, $FD, $12, $0F, $5F, $1D
-;              h    o    u    _    h    a    s    _    n    o    t    _    f    o    u    n
-        .byte $11, $18, $1E, $5F, $11, $0A, $1C, $5F, $17, $18, $1D, $5F, $0F, $18, $1E, $17;($996A)
-;              d    _    t    h    e    m    _    y    e    t    .'  END
+;			  h	o	u	_	h	a	s	_	n	o	t	_	f	o	u	n
+		.byte $11, $18, $1E, $5F, $11, $0A, $1C, $5F, $17, $18, $1D, $5F, $0F, $18, $1E, $17;($996A)
+;			  d	_	t	h	e	m	_	y	e	t	.'  END
 TB9E3_Byte_997A:  .byte $0D, $5F, $1D, $11, $0E, $16, $5F, $22, $0E, $1D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E4:
-;              '    W    e    l    c    o    m    e    _    t    o    _    t    h    e    _
+;			  '	W	e	l	c	o	m	e	_	t	o	_	t	h	e	_
 TB9E4_Byte_9986:  .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F
-;              t    o    w    n    _    o    f    _    R    i    m    u    l    d    a    r
-        .byte $1D, $18, $20, $17, $5F, $18, $0F, $5F, $35, $12, $16, $1E, $15, $0D, $0A, $1B;($9996)
-;              .'  END
+;			  t	o	w	n	_	o	f	_	R	i	m	u	l	d	a	r
+		.byte $1D, $18, $20, $17, $5F, $18, $0F, $5F, $35, $12, $16, $1E, $15, $0D, $0A, $1B;($9996)
+;			  .'  END
 TB9E4_Byte_99A6:  .byte $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E5:
-;              '    N    o    ,    _    I    _    h    a    v    e    _    n    o    _    t
-        .byte $50, $31, $18, $48, $5F, $2C, $5F, $11, $0A, $1F, $0E, $5F, $17, $18, $5F, $1D;($99A8)
-;              o    m    a    t    o    e    s    .    \n   I    _    h    a    v    e    _
-        .byte $18, $16, $0A, $1D, $18, $0E, $1C, $47, $FD, $2C, $5F, $11, $0A, $1F, $0E, $5F;($99B8)
-;              n    o    _    t    o    m    a    t    o    e    s    _    t    o    d    a
-        .byte $17, $18, $5F, $1D, $18, $16, $0A, $1D, $18, $0E, $1C, $5F, $1D, $18, $0D, $0A;($99C8)
-;              y    .'  END
+;			  '	N	o	,	_	I	_	h	a	v	e	_	n	o	_	t
+		.byte $50, $31, $18, $48, $5F, $2C, $5F, $11, $0A, $1F, $0E, $5F, $17, $18, $5F, $1D;($99A8)
+;			  o	m	a	t	o	e	s	.	\n   I	_	h	a	v	e	_
+		.byte $18, $16, $0A, $1D, $18, $0E, $1C, $47, $FD, $2C, $5F, $11, $0A, $1F, $0E, $5F;($99B8)
+;			  n	o	_	t	o	m	a	t	o	e	s	_	t	o	d	a
+		.byte $17, $18, $5F, $1D, $18, $16, $0A, $1D, $18, $0E, $1C, $5F, $1D, $18, $0D, $0A;($99C8)
+;			  y	.'  END
 TB9E5_Byte_99D8:  .byte $22, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E6:
-;              '    Y    o    u    _    a    r    e    _   NAME  ?    \n   I    t    _    h
+;			  '	Y	o	u	_	a	r	e	_   NAME  ?	\n   I	t	_	h
 TB9E6_Byte_99DB:  .byte $50, $3C, $18, $1E, $5F, $0A, $1B, $0E, $5F, $F8, $4B, $FD, $2C, $1D, $5F, $11
-;              a    s    _    b    e    e    n    _    l    o    n    g    _    s    i    n
+;			  a	s	_	b	e	e	n	_	l	o	n	g	_	s	i	n
 TB9E6_Byte_99EB:  .byte $0A, $1C, $5F, $0B, $0E, $0E, $17, $5F, $15, $18, $17, $10, $5F, $1C, $12, $17
-;              c    e    _    l    a    s    t    _    w    e    _    m    e    t    .'  END
+;			  c	e	_	l	a	s	t	_	w	e	_	m	e	t	.'  END
 TB9E6_Byte_99FB:  .byte $0C, $0E, $5F, $15, $0A, $1C, $1D, $5F, $20, $0E, $5F, $16, $0E, $1D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E7:
-;              '    G    o    o    d    _    d    a    y    ,    I    _    a    m    _    H
+;			  '	G	o	o	d	_	d	a	y	,	I	_	a	m	_	H
 TB9E7_Byte_9A0B:  .byte $50, $2A, $18, $18, $0D, $5F, $0D, $0A, $22, $48, $2C, $5F, $0A, $16, $5F, $2B
-;              o    w    a    r    d    .    _    F    o    u    r    _    s    t    e    p
-        .byte $18, $20, $0A, $1B, $0D, $47, $5F, $29, $18, $1E, $1B, $5F, $1C, $1D, $0E, $19;($9A1B)
-;              s    _    s    o    u    t    h    _    o    f    _    t    h    e    _    b
-        .byte $1C, $5F, $1C, $18, $1E, $1D, $11, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $0B;($9A2B)
-;              a    t    h    _    i    n    _    K    o    l    _    t    h    o    u    _
+;			  o	w	a	r	d	.	_	F	o	u	r	_	s	t	e	p
+		.byte $18, $20, $0A, $1B, $0D, $47, $5F, $29, $18, $1E, $1B, $5F, $1C, $1D, $0E, $19;($9A1B)
+;			  s	_	s	o	u	t	h	_	o	f	_	t	h	e	_	b
+		.byte $1C, $5F, $1C, $18, $1E, $1D, $11, $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $0B;($9A2B)
+;			  a	t	h	_	i	n	_	K	o	l	_	t	h	o	u	_
 TB9E7_Byte_9A3B:  .byte $0A, $1D, $11, $5F, $12, $17, $5F, $2E, $18, $15, $5F, $1D, $11, $18, $1E, $5F
-;              s    h    a    l    t    _    f    i    n    d    _    a    _    m    a    g
-        .byte $1C, $11, $0A, $15, $1D, $5F, $0F, $12, $17, $0D, $5F, $0A, $5F, $16, $0A, $10;($9A4B)
-;              i    c    _    i    t    e    m    .'  END
-        .byte $12, $0C, $5F, $12, $1D, $0E, $16, $52, $FC;($9A5B)
+;			  s	h	a	l	t	_	f	i	n	d	_	a	_	m	a	g
+		.byte $1C, $11, $0A, $15, $1D, $5F, $0F, $12, $17, $0D, $5F, $0A, $5F, $16, $0A, $10;($9A4B)
+;			  i	c	_	i	t	e	m	.'  END
+		.byte $12, $0C, $5F, $12, $1D, $0E, $16, $52, $FC;($9A5B)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E8:
-;              '    B    e    f    o    r    e    _    l    o    n    g    _    t    h    e
-        .byte $50, $25, $0E, $0F, $18, $1B, $0E, $5F, $15, $18, $17, $10, $5F, $1D, $11, $0E;($9A64)
-;              _    e    n    e    m    y    _    w    i    l    l    _    a    r    r    i
+;			  '	B	e	f	o	r	e	_	l	o	n	g	_	t	h	e
+		.byte $50, $25, $0E, $0F, $18, $1B, $0E, $5F, $15, $18, $17, $10, $5F, $1D, $11, $0E;($9A64)
+;			  _	e	n	e	m	y	_	w	i	l	l	_	a	r	r	i
 TB9E8_Byte_9A74:  .byte $5F, $0E, $17, $0E, $16, $22, $5F, $20, $12, $15, $15, $5F, $0A, $1B, $1B, $12
-;              v    e    .'  END
-        .byte $1F, $0E, $52, $FC;($9A84)
+;			  v	e	.'  END
+		.byte $1F, $0E, $52, $FC;($9A84)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E9:
-;              '    H    e    e    d    _    m    y    _    w    a    r    n    i    n    g
-        .byte $50, $2B, $0E, $0E, $0D, $5F, $16, $22, $5F, $20, $0A, $1B, $17, $12, $17, $10;($9A88)
-;              !    _    T    r    a    v    e    l    _    n    o    t    _    t    o    _
-        .byte $4C, $5F, $37, $1B, $0A, $1F, $0E, $15, $5F, $17, $18, $1D, $5F, $1D, $18, $5F;($9A98)
-;              t    h    e    _    s    o    u    t    h    _    f    o    r    _    t    h
+;			  '	H	e	e	d	_	m	y	_	w	a	r	n	i	n	g
+		.byte $50, $2B, $0E, $0E, $0D, $5F, $16, $22, $5F, $20, $0A, $1B, $17, $12, $17, $10;($9A88)
+;			  !	_	T	r	a	v	e	l	_	n	o	t	_	t	o	_
+		.byte $4C, $5F, $37, $1B, $0A, $1F, $0E, $15, $5F, $17, $18, $1D, $5F, $1D, $18, $5F;($9A98)
+;			  t	h	e	_	s	o	u	t	h	_	f	o	r	_	t	h
 TB9E9_Byte_9AA8:  .byte $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $5F, $0F, $18, $1B, $5F, $1D, $11
-;              e    r    e    _    t    h    e    _    m    o    n    s    t    e    r    s
-        .byte $0E, $1B, $0E, $5F, $1D, $11, $0E, $5F, $16, $18, $17, $1C, $1D, $0E, $1B, $1C;($9AB8)
-;              _    a    r    e    _    f    i    e    r    c    e    _    a    n    d    _
-        .byte $5F, $0A, $1B, $0E, $5F, $0F, $12, $0E, $1B, $0C, $0E, $5F, $0A, $17, $0D, $5F;($9AC8)
-;              t    e    r    r    i    b    l    e    .'  END
-        .byte $1D, $0E, $1B, $1B, $12, $0B, $15, $0E, $52, $FC;($9AD8)
+;			  e	r	e	_	t	h	e	_	m	o	n	s	t	e	r	s
+		.byte $0E, $1B, $0E, $5F, $1D, $11, $0E, $5F, $16, $18, $17, $1C, $1D, $0E, $1B, $1C;($9AB8)
+;			  _	a	r	e	_	f	i	e	r	c	e	_	a	n	d	_
+		.byte $5F, $0A, $1B, $0E, $5F, $0F, $12, $0E, $1B, $0C, $0E, $5F, $0A, $17, $0D, $5F;($9AC8)
+;			  t	e	r	r	i	b	l	e	.'  END
+		.byte $1D, $0E, $1B, $1B, $12, $0B, $15, $0E, $52, $FC;($9AD8)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E10:
-;              '    I    n    _    t    h    i    s    _    w    o    r    l    d    _    i
-        .byte $50, $2C, $17, $5F, $1D, $11, $12, $1C, $5F, $20, $18, $1B, $15, $0D, $5F, $12;($9AE2)
-;              s    _    t    h    e    r    e    _    a    n    y    _    s    w    o    r
+;			  '	I	n	_	t	h	i	s	_	w	o	r	l	d	_	i
+		.byte $50, $2C, $17, $5F, $1D, $11, $12, $1C, $5F, $20, $18, $1B, $15, $0D, $5F, $12;($9AE2)
+;			  s	_	t	h	e	r	e	_	a	n	y	_	s	w	o	r
 TB9E10_Byte_9AF2:  .byte $1C, $5F, $1D, $11, $0E, $1B, $0E, $5F, $0A, $17, $22, $5F, $1C, $20, $18, $1B
-;              d    _    t    h    a    t    _    c    a    n    _    p    i    e    r    c
-        .byte $0D, $5F, $1D, $11, $0A, $1D, $5F, $0C, $0A, $17, $5F, $19, $12, $0E, $1B, $0C;($9B02)
-;              e    _    t    h    e    _    s    c    a    l    e    s    _    o    f    _
-        .byte $0E, $5F, $1D, $11, $0E, $5F, $1C, $0C, $0A, $15, $0E, $1C, $5F, $18, $0F, $5F;($9B12)
-;              t    h    e    _    D    r    a    g    o    n    l    o    r    d    ?    '
-        .byte $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $4B, $40;($9B22)
-;             END
-        .byte $FC               ;($9B32)
+;			  d	_	t	h	a	t	_	c	a	n	_	p	i	e	r	c
+		.byte $0D, $5F, $1D, $11, $0A, $1D, $5F, $0C, $0A, $17, $5F, $19, $12, $0E, $1B, $0C;($9B02)
+;			  e	_	t	h	e	_	s	c	a	l	e	s	_	o	f	_
+		.byte $0E, $5F, $1D, $11, $0E, $5F, $1C, $0C, $0A, $15, $0E, $1C, $5F, $18, $0F, $5F;($9B12)
+;			  t	h	e	_	D	r	a	g	o	n	l	o	r	d	?	'
+		.byte $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $4B, $40;($9B22)
+;			 END
+		.byte $FC			   ;($9B32)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E11:
-;              '    O    r    w    i    c    k    _    i    s    _    l    a    t    e    _
+;			  '	O	r	w	i	c	k	_	i	s	_	l	a	t	e	_
 TB9E11_Byte_9B33:  .byte $50, $32, $1B, $20, $12, $0C, $14, $5F, $12, $1C, $5F, $15, $0A, $1D, $0E, $5F
-;              a    g    a    i    n    .    _    I    '    m    _    s    t    a    r    v
-        .byte $0A, $10, $0A, $12, $17, $47, $5F, $2C, $53, $16, $5F, $1C, $1D, $0A, $1B, $1F;($9B43)
-;              i    n    g    .'  END
-        .byte $12, $17, $10, $52, $FC;($9B53)
+;			  a	g	a	i	n	.	_	I	'	m	_	s	t	a	r	v
+		.byte $0A, $10, $0A, $12, $17, $47, $5F, $2C, $53, $16, $5F, $1C, $1D, $0A, $1B, $1F;($9B43)
+;			  i	n	g	.'  END
+		.byte $12, $17, $10, $52, $FC;($9B53)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E12:
-;              '    M    a    n    y    _    h    a    v    e    _    b    e    e    n    _
-        .byte $50, $30, $0A, $17, $22, $5F, $11, $0A, $1F, $0E, $5F, $0B, $0E, $0E, $17, $5F;($9B58)
-;              t    h    e    _    w    a    r    r    i    o    r    s    _    w    h    o
-        .byte $1D, $11, $0E, $5F, $20, $0A, $1B, $1B, $12, $18, $1B, $1C, $5F, $20, $11, $18;($9B68)
-;              _    h    a    v    e    _    p    e    r    i    s    h    e    d    _    o
-        .byte $5F, $11, $0A, $1F, $0E, $5F, $19, $0E, $1B, $12, $1C, $11, $0E, $0D, $5F, $18;($9B78)
-;              n    _    t    h    i    s    _    q    u    e    s    t    .'  WAIT  \n   '
+;			  '	M	a	n	y	_	h	a	v	e	_	b	e	e	n	_
+		.byte $50, $30, $0A, $17, $22, $5F, $11, $0A, $1F, $0E, $5F, $0B, $0E, $0E, $17, $5F;($9B58)
+;			  t	h	e	_	w	a	r	r	i	o	r	s	_	w	h	o
+		.byte $1D, $11, $0E, $5F, $20, $0A, $1B, $1B, $12, $18, $1B, $1C, $5F, $20, $11, $18;($9B68)
+;			  _	h	a	v	e	_	p	e	r	i	s	h	e	d	_	o
+		.byte $5F, $11, $0A, $1F, $0E, $5F, $19, $0E, $1B, $12, $1C, $11, $0E, $0D, $5F, $18;($9B78)
+;			  n	_	t	h	i	s	_	q	u	e	s	t	.'  WAIT  \n   '
 TB9E12_Byte_9B88:  .byte $17, $5F, $1D, $11, $12, $1C, $5F, $1A, $1E, $0E, $1C, $1D, $52, $FB, $FD, $50
-;              B    u    t    _    f    o    r    _    t    h    e    e    _    I    _    w
-        .byte $25, $1E, $1D, $5F, $0F, $18, $1B, $5F, $1D, $11, $0E, $0E, $5F, $2C, $5F, $20;($9B98)
-;              i    s    h    _    s    u    c    c    e    s    s    ,    _   NAME  .'  END
-        .byte $12, $1C, $11, $5F, $1C, $1E, $0C, $0C, $0E, $1C, $1C, $48, $5F, $F8, $52, $FC;($9BA8)
+;			  B	u	t	_	f	o	r	_	t	h	e	e	_	I	_	w
+		.byte $25, $1E, $1D, $5F, $0F, $18, $1B, $5F, $1D, $11, $0E, $0E, $5F, $2C, $5F, $20;($9B98)
+;			  i	s	h	_	s	u	c	c	e	s	s	,	_   NAME  .'  END
+		.byte $12, $1C, $11, $5F, $1C, $1E, $0C, $0C, $0E, $1C, $1C, $48, $5F, $F8, $52, $FC;($9BA8)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E13:
-;              '    H    a    s    t    _    t    h    o    u    _    f    o    u    n    d
-        .byte $50, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $0F, $18, $1E, $17, $0D;($9BB8)
-;              _    t    h    e    _    f    l    u    t    e    ?    '    \n  END
+;			  '	H	a	s	t	_	t	h	o	u	_	f	o	u	n	d
+		.byte $50, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $0F, $18, $1E, $17, $0D;($9BB8)
+;			  _	t	h	e	_	f	l	u	t	e	?	'	\n  END
 TB9E13_Byte_9BC8:  .byte $5F, $1D, $11, $0E, $5F, $0F, $15, $1E, $1D, $0E, $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E14:
-;              '    H    a    s    t    _    t    h    o    u    _    b    e    e    n    _
-        .byte $50, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $0B, $0E, $0E, $17, $5F;($9BD6)
-;              t    o    _    t    h    e    _    s    o    u    t    h    e    r    n    _
-        .byte $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $0E, $1B, $17, $5F;($9BE6)
-;              i    s    l    a    n    d    ?    '    \n  END
+;			  '	H	a	s	t	_	t	h	o	u	_	b	e	e	n	_
+		.byte $50, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $0B, $0E, $0E, $17, $5F;($9BD6)
+;			  t	o	_	t	h	e	_	s	o	u	t	h	e	r	n	_
+		.byte $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $0E, $1B, $17, $5F;($9BE6)
+;			  i	s	l	a	n	d	?	'	\n  END
 TB9E14_Byte_9BF6:  .byte $12, $1C, $15, $0A, $17, $0D, $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB9E15:
-;              '    ,    T    i    s    _    s    a    i    d    _    t    h    a    t    _
-        .byte $50, $54, $37, $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D, $5F;($9C00)
-;              t    h    e    _    D    r    a    g    o    n    l    o    r    d    _    h
-        .byte $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $5F, $11;($9C10)
-;              a    t    h    _    c    l    a    w    s    _    t    h    a    t    _    c
-        .byte $0A, $1D, $11, $5F, $0C, $15, $0A, $20, $1C, $5F, $1D, $11, $0A, $1D, $5F, $0C;($9C20)
-;              a    n    _    c    l    e    a    v    e    _    i    r    o    n    _    a
+;			  '	,	T	i	s	_	s	a	i	d	_	t	h	a	t	_
+		.byte $50, $54, $37, $12, $1C, $5F, $1C, $0A, $12, $0D, $5F, $1D, $11, $0A, $1D, $5F;($9C00)
+;			  t	h	e	_	D	r	a	g	o	n	l	o	r	d	_	h
+		.byte $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $5F, $11;($9C10)
+;			  a	t	h	_	c	l	a	w	s	_	t	h	a	t	_	c
+		.byte $0A, $1D, $11, $5F, $0C, $15, $0A, $20, $1C, $5F, $1D, $11, $0A, $1D, $5F, $0C;($9C20)
+;			  a	n	_	c	l	e	a	v	e	_	i	r	o	n	_	a
 TB9E15_Byte_9C30:  .byte $0A, $17, $5F, $0C, $15, $0E, $0A, $1F, $0E, $5F, $12, $1B, $18, $17, $5F, $0A
-;              n    d    _    f    i    e    r    y    _    b    r    e    a    t    h    _
-        .byte $17, $0D, $5F, $0F, $12, $0E, $1B, $22, $5F, $0B, $1B, $0E, $0A, $1D, $11, $5F;($9C40)
-;              t    h    a    t    _    c    a    n    _    m    e    l    t    _    s    t
-        .byte $1D, $11, $0A, $1D, $5F, $0C, $0A, $17, $5F, $16, $0E, $15, $1D, $5F, $1C, $1D;($9C50)
-;              o    n    e    .'  WAIT  \n   '    D    o    s    t    _    t    h    o    u
+;			  n	d	_	f	i	e	r	y	_	b	r	e	a	t	h	_
+		.byte $17, $0D, $5F, $0F, $12, $0E, $1B, $22, $5F, $0B, $1B, $0E, $0A, $1D, $11, $5F;($9C40)
+;			  t	h	a	t	_	c	a	n	_	m	e	l	t	_	s	t
+		.byte $1D, $11, $0A, $1D, $5F, $0C, $0A, $17, $5F, $16, $0E, $15, $1D, $5F, $1C, $1D;($9C50)
+;			  o	n	e	.'  WAIT  \n   '	D	o	s	t	_	t	h	o	u
 TB9E15_Byte_9C60:  .byte $18, $17, $0E, $52, $FB, $FD, $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E
-;              _    s    t    i    l    l    _    w    i    s    h    _    t    o    _    g
+;			  _	s	t	i	l	l	_	w	i	s	h	_	t	o	_	g
 TB9E15_Byte_9C70:  .byte $5F, $1C, $1D, $12, $15, $15, $5F, $20, $12, $1C, $11, $5F, $1D, $18, $5F, $10
-;              o    _    o    n    ?    '    \n  END
-        .byte $18, $5F, $18, $17, $4B, $40, $FD, $FC;($9C80)
+;			  o	_	o	n	?	'	\n  END
+		.byte $18, $5F, $18, $17, $4B, $40, $FD, $FC;($9C80)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock10:
 TB10E0:
-;              '    T    h    i    s    _    i    s    _    a    _    m    a    g    i    c
+;			  '	T	h	i	s	_	i	s	_	a	_	m	a	g	i	c
 TB10E0_Byte_9C88:  .byte $50, $37, $11, $12, $1C, $5F, $12, $1C, $5F, $0A, $5F, $16, $0A, $10, $12, $0C
-;              _    p    l    a    c    e    .    \n   H    a    s    t    _    t    h    o
-        .byte $5F, $19, $15, $0A, $0C, $0E, $47, $FD, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18;($9C98)
-;              u    _    f    o    u    n    d    _    a    _    m    a    g    i    c    _
-        .byte $1E, $5F, $0F, $18, $1E, $17, $0D, $5F, $0A, $5F, $16, $0A, $10, $12, $0C, $5F;($9CA8)
-;              t    e    m    p    l    e    ?    '    \n  END
+;			  _	p	l	a	c	e	.	\n   H	a	s	t	_	t	h	o
+		.byte $5F, $19, $15, $0A, $0C, $0E, $47, $FD, $2B, $0A, $1C, $1D, $5F, $1D, $11, $18;($9C98)
+;			  u	_	f	o	u	n	d	_	a	_	m	a	g	i	c	_
+		.byte $1E, $5F, $0F, $18, $1E, $17, $0D, $5F, $0A, $5F, $16, $0A, $10, $12, $0C, $5F;($9CA8)
+;			  t	e	m	p	l	e	?	'	\n  END
 TB10E0_Byte_9CB8:  .byte $1D, $0E, $16, $19, $15, $0E, $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E1:
-;              '    W    h    e    n    _    e    n    t    e    r    i    n    g    _    t
-        .byte $50, $3A, $11, $0E, $17, $5F, $0E, $17, $1D, $0E, $1B, $12, $17, $10, $5F, $1D;($9CC2)
-;              h    e    _    c    a    v    e    ,    _    t    a    k    e    _    w    i
-        .byte $11, $0E, $5F, $0C, $0A, $1F, $0E, $48, $5F, $1D, $0A, $14, $0E, $5F, $20, $12;($9CD2)
-;              t    h    _    t    h    e    e    _    a    _    t    o    r    c    h    .'
-        .byte $1D, $11, $5F, $1D, $11, $0E, $0E, $5F, $0A, $5F, $1D, $18, $1B, $0C, $11, $52;($9CE2)
-;             END
+;			  '	W	h	e	n	_	e	n	t	e	r	i	n	g	_	t
+		.byte $50, $3A, $11, $0E, $17, $5F, $0E, $17, $1D, $0E, $1B, $12, $17, $10, $5F, $1D;($9CC2)
+;			  h	e	_	c	a	v	e	,	_	t	a	k	e	_	w	i
+		.byte $11, $0E, $5F, $0C, $0A, $1F, $0E, $48, $5F, $1D, $0A, $14, $0E, $5F, $20, $12;($9CD2)
+;			  t	h	_	t	h	e	e	_	a	_	t	o	r	c	h	.'
+		.byte $1D, $11, $5F, $1D, $11, $0E, $0E, $5F, $0A, $5F, $1D, $18, $1B, $0C, $11, $52;($9CE2)
+;			 END
 TB10E1_Byte_9CF2:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E2:
-;              '    G    o    _    t    o    _    t    h    e    _    t    o    w    n    _
-        .byte $50, $2A, $18, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $1D, $18, $20, $17, $5F;($9CF3)
-;              o    f    _    C    a    n    t    l    i    n    .'  END
-        .byte $18, $0F, $5F, $26, $0A, $17, $1D, $15, $12, $17, $52, $FC;($9D03)
+;			  '	G	o	_	t	o	_	t	h	e	_	t	o	w	n	_
+		.byte $50, $2A, $18, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $1D, $18, $20, $17, $5F;($9CF3)
+;			  o	f	_	C	a	n	t	l	i	n	.'  END
+		.byte $18, $0F, $5F, $26, $0A, $17, $1D, $15, $12, $17, $52, $FC;($9D03)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E3:
-;              '    I    _    h    a    v    e    _    h    e    a    r    d    _    t    h
-        .byte $50, $2C, $5F, $11, $0A, $1F, $0E, $5F, $11, $0E, $0A, $1B, $0D, $5F, $1D, $11;($9D0F)
-;              a    t    _    p    o    w    e    r    f    u    l    _    e    n    e    m
-        .byte $0A, $1D, $5F, $19, $18, $20, $0E, $1B, $0F, $1E, $15, $5F, $0E, $17, $0E, $16;($9D1F)
-;              i    e    s    _    l    i    v    e    _    t    h    e    r    e    .'  END
+;			  '	I	_	h	a	v	e	_	h	e	a	r	d	_	t	h
+		.byte $50, $2C, $5F, $11, $0A, $1F, $0E, $5F, $11, $0E, $0A, $1B, $0D, $5F, $1D, $11;($9D0F)
+;			  a	t	_	p	o	w	e	r	f	u	l	_	e	n	e	m
+		.byte $0A, $1D, $5F, $19, $18, $20, $0E, $1B, $0F, $1E, $15, $5F, $0E, $17, $0E, $16;($9D1F)
+;			  i	e	s	_	l	i	v	e	_	t	h	e	r	e	.'  END
 TB10E3_Byte_9D2F:  .byte $12, $0E, $1C, $5F, $15, $12, $1F, $0E, $5F, $1D, $11, $0E, $1B, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E4:
-;              '    T    h    o    u    _    a    r    t    _    t    r    u    l    y    _
-        .byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $1D, $1B, $1E, $15, $22, $5F;($9D3F)
-;              b    r    a    v    e    .'  END
-        .byte $0B, $1B, $0A, $1F, $0E, $52, $FC;($9D4F)
+;			  '	T	h	o	u	_	a	r	t	_	t	r	u	l	y	_
+		.byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $1D, $1B, $1E, $15, $22, $5F;($9D3F)
+;			  b	r	a	v	e	.'  END
+		.byte $0B, $1B, $0A, $1F, $0E, $52, $FC;($9D4F)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E5:
-;              '    I    n    _    t    h    i    s    _    t    e    m    p    l    e    _
+;			  '	I	n	_	t	h	i	s	_	t	e	m	p	l	e	_
 TB10E5_Byte_9D56:  .byte $50, $2C, $17, $5F, $1D, $11, $12, $1C, $5F, $1D, $0E, $16, $19, $15, $0E, $5F
-;              d    o    _    t    h    e    _    s    u    n    _    a    n    d    _    r
-        .byte $0D, $18, $5F, $1D, $11, $0E, $5F, $1C, $1E, $17, $5F, $0A, $17, $0D, $5F, $1B;($9D66)
-;              a    i    n    _    m    e    e    t    .'  END
-        .byte $0A, $12, $17, $5F, $16, $0E, $0E, $1D, $52, $FC;($9D76)
+;			  d	o	_	t	h	e	_	s	u	n	_	a	n	d	_	r
+		.byte $0D, $18, $5F, $1D, $11, $0E, $5F, $1C, $1E, $17, $5F, $0A, $17, $0D, $5F, $1B;($9D66)
+;			  a	i	n	_	m	e	e	t	.'  END
+		.byte $0A, $12, $17, $5F, $16, $0E, $0E, $1D, $52, $FC;($9D76)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E6:
-;             END
-        .byte $FC               ;($9D80)
+;			 END
+		.byte $FC			   ;($9D80)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E7:
-;              '    H    o    w    a    r    d    _    h    a    d    _    i    t    ,    _
+;			  '	H	o	w	a	r	d	_	h	a	d	_	i	t	,	_
 TB10E7_Byte_9D81:  .byte $50, $2B, $18, $20, $0A, $1B, $0D, $5F, $11, $0A, $0D, $5F, $12, $1D, $48, $5F
-;              b    u    t    _    h    e    _    w    e    n    t    _    t    o    _    R
-        .byte $0B, $1E, $1D, $5F, $11, $0E, $5F, $20, $0E, $17, $1D, $5F, $1D, $18, $5F, $35;($9D91)
-;              i    m    u    l    d    a    r    _    a    n    d    _    n    e    v    e
-        .byte $12, $16, $1E, $15, $0D, $0A, $1B, $5F, $0A, $17, $0D, $5F, $17, $0E, $1F, $0E;($9DA1)
-;              r    _    r    e    t    u    r    n    e    d    .'  END
+;			  b	u	t	_	h	e	_	w	e	n	t	_	t	o	_	R
+		.byte $0B, $1E, $1D, $5F, $11, $0E, $5F, $20, $0E, $17, $1D, $5F, $1D, $18, $5F, $35;($9D91)
+;			  i	m	u	l	d	a	r	_	a	n	d	_	n	e	v	e
+		.byte $12, $16, $1E, $15, $0D, $0A, $1B, $5F, $0A, $17, $0D, $5F, $17, $0E, $1F, $0E;($9DA1)
+;			  r	_	r	e	t	u	r	n	e	d	.'  END
 TB10E7_Byte_9DB1:  .byte $1B, $5F, $1B, $0E, $1D, $1E, $1B, $17, $0E, $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E8:
-;              '    T    o    _    t    h    e    _    s    o    u    t    h    ,    _    I
+;			  '	T	o	_	t	h	e	_	s	o	u	t	h	,	_	I
 TB10E8_Byte_9DBD:  .byte $50, $37, $18, $5F, $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $48, $5F, $2C
-;              _    b    e    l    i    e    v    e    ,    _    t    h    e    r    e    _
+;			  _	b	e	l	i	e	v	e	,	_	t	h	e	r	e	_
 TB10E8_Byte_9DCD:  .byte $5F, $0B, $0E, $15, $12, $0E, $1F, $0E, $48, $5F, $1D, $11, $0E, $1B, $0E, $5F
-;              i    s    _    a    _    t    o    w    n    _    c    a    l    l    e    d
+;			  i	s	_	a	_	t	o	w	n	_	c	a	l	l	e	d
 TB10E8_Byte_9DDD:  .byte $12, $1C, $5F, $0A, $5F, $1D, $18, $20, $17, $5F, $0C, $0A, $15, $15, $0E, $0D
-;              _    R    i    m    u    l    d    a    r    .'  END
+;			  _	R	i	m	u	l	d	a	r	.'  END
 TB10E8_Byte_9DED:  .byte $5F, $35, $12, $16, $1E, $15, $0D, $0A, $1B, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E9:
-;              '    T    h    a    t    _    i    s    _    g    o    o    d    .'   \n   '
-        .byte $50, $37, $11, $0A, $1D, $5F, $12, $1C, $5F, $10, $18, $18, $0D, $52, $FD, $50;($9DF8)
-;              N    o    _    o    n    e    _    w    i    l    l    _    s    a    y    _
+;			  '	T	h	a	t	_	i	s	_	g	o	o	d	.'   \n   '
+		.byte $50, $37, $11, $0A, $1D, $5F, $12, $1C, $5F, $10, $18, $18, $0D, $52, $FD, $50;($9DF8)
+;			  N	o	_	o	n	e	_	w	i	l	l	_	s	a	y	_
 TB10E9_Byte_9E08:  .byte $31, $18, $5F, $18, $17, $0E, $5F, $20, $12, $15, $15, $5F, $1C, $0A, $22, $5F
-;              t    h    o    u    _    a    r    t    _    a    f    r    a    i    d    .'
+;			  t	h	o	u	_	a	r	t	_	a	f	r	a	i	d	.'
 TB10E9_Byte_9E18:  .byte $1D, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0A, $0F, $1B, $0A, $12, $0D, $52
-;             END
-        .byte $FC               ;($9E28)
+;			 END
+		.byte $FC			   ;($9E28)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E10:
-;              '    G    o    _    t    o    _    t    h    e    _    s    o    u    t    h
+;			  '	G	o	_	t	o	_	t	h	e	_	s	o	u	t	h
 TB10E10_Byte_9E29:  .byte $50, $2A, $18, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11
-;              .'  END
+;			  .'  END
 TB10E10_Byte_9E39:  .byte $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E11:
-;              '    W    h    e    r    e    _    o    h    _    w    h    e    r    e    _
-        .byte $50, $3A, $11, $0E, $1B, $0E, $5F, $18, $11, $5F, $20, $11, $0E, $1B, $0E, $5F;($9E3B)
-;              c    a    n    _    I    _    f    i    n    d    _    P    r    i    n    c
-        .byte $0C, $0A, $17, $5F, $2C, $5F, $0F, $12, $17, $0D, $5F, $33, $1B, $12, $17, $0C;($9E4B)
-;              e    s    s    _    G    w    a    e    l    i    n    ?    '   END
-        .byte $0E, $1C, $1C, $5F, $2A, $20, $0A, $0E, $15, $12, $17, $4B, $40, $FC;($9E5B)
+;			  '	W	h	e	r	e	_	o	h	_	w	h	e	r	e	_
+		.byte $50, $3A, $11, $0E, $1B, $0E, $5F, $18, $11, $5F, $20, $11, $0E, $1B, $0E, $5F;($9E3B)
+;			  c	a	n	_	I	_	f	i	n	d	_	P	r	i	n	c
+		.byte $0C, $0A, $17, $5F, $2C, $5F, $0F, $12, $17, $0D, $5F, $33, $1B, $12, $17, $0C;($9E4B)
+;			  e	s	s	_	G	w	a	e	l	i	n	?	'   END
+		.byte $0E, $1C, $1C, $5F, $2A, $20, $0A, $0E, $15, $12, $17, $4B, $40, $FC;($9E5B)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E12:
-;              '    T    h    a    n    k    _    y    o    u    _    f    o    r    _    s
-        .byte $50, $37, $11, $0A, $17, $14, $5F, $22, $18, $1E, $5F, $0F, $18, $1B, $5F, $1C;($9E69)
-;              a    v    i    n    g    _    t    h    e    _    P    r    i    n    c    e
-        .byte $0A, $1F, $12, $17, $10, $5F, $1D, $11, $0E, $5F, $33, $1B, $12, $17, $0C, $0E;($9E79)
-;              s    s    .'  END
-        .byte $1C, $1C, $52, $FC;($9E89)
+;			  '	T	h	a	n	k	_	y	o	u	_	f	o	r	_	s
+		.byte $50, $37, $11, $0A, $17, $14, $5F, $22, $18, $1E, $5F, $0F, $18, $1B, $5F, $1C;($9E69)
+;			  a	v	i	n	g	_	t	h	e	_	P	r	i	n	c	e
+		.byte $0A, $1F, $12, $17, $10, $5F, $1D, $11, $0E, $5F, $33, $1B, $12, $17, $0C, $0E;($9E79)
+;			  s	s	.'  END
+		.byte $1C, $1C, $52, $FC;($9E89)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E13:
-;              '    O    h    ,    _    m    y    _    d    e    a    r    e    s    t    _
-        .byte $50, $32, $11, $48, $5F, $16, $22, $5F, $0D, $0E, $0A, $1B, $0E, $1C, $1D, $5F;($9E8D)
-;              G    w    a    e    l    i    n    !    '    \n   '    I    _    h    a    t
-        .byte $2A, $20, $0A, $0E, $15, $12, $17, $4C, $40, $FD, $50, $2C, $5F, $11, $0A, $1D;($9E9D)
-;              e    _    t    h    e    e    ,    _   NAME  .'  END
-        .byte $0E, $5F, $1D, $11, $0E, $0E, $48, $5F, $F8, $52, $FC;($9EAD)
+;			  '	O	h	,	_	m	y	_	d	e	a	r	e	s	t	_
+		.byte $50, $32, $11, $48, $5F, $16, $22, $5F, $0D, $0E, $0A, $1B, $0E, $1C, $1D, $5F;($9E8D)
+;			  G	w	a	e	l	i	n	!	'	\n   '	I	_	h	a	t
+		.byte $2A, $20, $0A, $0E, $15, $12, $17, $4C, $40, $FD, $50, $2C, $5F, $11, $0A, $1D;($9E9D)
+;			  e	_	t	h	e	e	,	_   NAME  .'  END
+		.byte $0E, $5F, $1D, $11, $0E, $0E, $48, $5F, $F8, $52, $FC;($9EAD)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E14:
-;              '    T    e    l    l    _    K    i    n    g    _    L    o    r    i    k
-        .byte $50, $37, $0E, $15, $15, $5F, $2E, $12, $17, $10, $5F, $2F, $18, $1B, $12, $14;($9EB8)
-;              _    t    h    a    t    _    t    h    e    _    s    e    a    r    c    h
-        .byte $5F, $1D, $11, $0A, $1D, $5F, $1D, $11, $0E, $5F, $1C, $0E, $0A, $1B, $0C, $11;($9EC8)
-;              _    f    o    r    _    h    i    s    _    d    a    u    g    h    t    e
-        .byte $5F, $0F, $18, $1B, $5F, $11, $12, $1C, $5F, $0D, $0A, $1E, $10, $11, $1D, $0E;($9ED8)
-;              r    _    h    a    t    h    _    f    a    i    l    e    d    .'  WAIT  \n
-        .byte $1B, $5F, $11, $0A, $1D, $11, $5F, $0F, $0A, $12, $15, $0E, $0D, $52, $FB, $FD;($9EE8)
-;              '    I    _    a    m    _    a    l    m    o    s    t    _    g    o    n
-        .byte $50, $2C, $5F, $0A, $16, $5F, $0A, $15, $16, $18, $1C, $1D, $5F, $10, $18, $17;($9EF8)
-;              e    ..   ..   '   END
-        .byte $0E, $45, $45, $40, $FC;($9F08)
+;			  '	T	e	l	l	_	K	i	n	g	_	L	o	r	i	k
+		.byte $50, $37, $0E, $15, $15, $5F, $2E, $12, $17, $10, $5F, $2F, $18, $1B, $12, $14;($9EB8)
+;			  _	t	h	a	t	_	t	h	e	_	s	e	a	r	c	h
+		.byte $5F, $1D, $11, $0A, $1D, $5F, $1D, $11, $0E, $5F, $1C, $0E, $0A, $1B, $0C, $11;($9EC8)
+;			  _	f	o	r	_	h	i	s	_	d	a	u	g	h	t	e
+		.byte $5F, $0F, $18, $1B, $5F, $11, $12, $1C, $5F, $0D, $0A, $1E, $10, $11, $1D, $0E;($9ED8)
+;			  r	_	h	a	t	h	_	f	a	i	l	e	d	.'  WAIT  \n
+		.byte $1B, $5F, $11, $0A, $1D, $11, $5F, $0F, $0A, $12, $15, $0E, $0D, $52, $FB, $FD;($9EE8)
+;			  '	I	_	a	m	_	a	l	m	o	s	t	_	g	o	n
+		.byte $50, $2C, $5F, $0A, $16, $5F, $0A, $15, $16, $18, $1C, $1D, $5F, $10, $18, $17;($9EF8)
+;			  e	..   ..   '   END
+		.byte $0E, $45, $45, $40, $FC;($9F08)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB10E15:
-;              '    W    h    o    _    t    o    u    c    h    e    s    _    m    e    ?
-        .byte $50, $3A, $11, $18, $5F, $1D, $18, $1E, $0C, $11, $0E, $1C, $5F, $16, $0E, $4B;($9F0D)
-;              '    \n   '    I    _    s    e    e    _    n    o    t    h    i    n    g
-        .byte $40, $FD, $50, $2C, $5F, $1C, $0E, $0E, $5F, $17, $18, $1D, $11, $12, $17, $10;($9F1D)
-;              ,    _    n    o    r    _    c    a    n    _    I    _    h    e    a    r
-        .byte $48, $5F, $17, $18, $1B, $5F, $0C, $0A, $17, $5F, $2C, $5F, $11, $0E, $0A, $1B;($9F2D)
-;              .'  END
-        .byte $52, $FC          ;($9F3D)
+;			  '	W	h	o	_	t	o	u	c	h	e	s	_	m	e	?
+		.byte $50, $3A, $11, $18, $5F, $1D, $18, $1E, $0C, $11, $0E, $1C, $5F, $16, $0E, $4B;($9F0D)
+;			  '	\n   '	I	_	s	e	e	_	n	o	t	h	i	n	g
+		.byte $40, $FD, $50, $2C, $5F, $1C, $0E, $0E, $5F, $17, $18, $1D, $11, $12, $17, $10;($9F1D)
+;			  ,	_	n	o	r	_	c	a	n	_	I	_	h	e	a	r
+		.byte $48, $5F, $17, $18, $1B, $5F, $0C, $0A, $17, $5F, $2C, $5F, $11, $0E, $0A, $1B;($9F2D)
+;			  .'  END
+		.byte $52, $FC		  ;($9F3D)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock11:
 TB11E0:
-;              '    D    o    s    t    _    t    h    o    u    _    k    n    o    w    _
-        .byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $14, $17, $18, $20, $5F;($9F3F)
-;              a    b    o    u    t    _    P    r    i    n    c    e    s    s    _    G
-        .byte $0A, $0B, $18, $1E, $1D, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $5F, $2A;($9F4F)
-;              w    a    e    l    i    n    ?    '    \n  END
-        .byte $20, $0A, $0E, $15, $12, $17, $4B, $40, $FD, $FC;($9F5F)
+;			  '	D	o	s	t	_	t	h	o	u	_	k	n	o	w	_
+		.byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $14, $17, $18, $20, $5F;($9F3F)
+;			  a	b	o	u	t	_	P	r	i	n	c	e	s	s	_	G
+		.byte $0A, $0B, $18, $1E, $1D, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $5F, $2A;($9F4F)
+;			  w	a	e	l	i	n	?	'	\n  END
+		.byte $20, $0A, $0E, $15, $12, $17, $4B, $40, $FD, $FC;($9F5F)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E1:
-;              '    H    a    l    f    _    a    _    y    e    a    r    _    n    o    w
-        .byte $50, $2B, $0A, $15, $0F, $5F, $0A, $5F, $22, $0E, $0A, $1B, $5F, $17, $18, $20;($9F69)
-;              _    h    a    t    h    _    p    a    s    s    e    d    _    s    i    n
-        .byte $5F, $11, $0A, $1D, $11, $5F, $19, $0A, $1C, $1C, $0E, $0D, $5F, $1C, $12, $17;($9F79)
-;              c    e    _    t    h    e    _    P    r    i    n    c    e    s    s    _
-        .byte $0C, $0E, $5F, $1D, $11, $0E, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $5F;($9F89)
-;              w    a    s    _    k    i    d    n    a    p    p    e    d    _    b    y
-        .byte $20, $0A, $1C, $5F, $14, $12, $0D, $17, $0A, $19, $19, $0E, $0D, $5F, $0B, $22;($9F99)
-;              _    t    h    e    _    e    n    e    m    y    .'  WAIT  \n   '    N    e
-        .byte $5F, $1D, $11, $0E, $5F, $0E, $17, $0E, $16, $22, $52, $FB, $FD, $50, $31, $0E;($9FA9)
-;              v    e    r    _    d    o    e    s    _    t    h    e    _    K    i    n
-        .byte $1F, $0E, $1B, $5F, $0D, $18, $0E, $1C, $5F, $1D, $11, $0E, $5F, $2E, $12, $17;($9FB9)
-;              g    _    s    p    e    a    k    _    o    f    _    i    t    ,    _    b
-        .byte $10, $5F, $1C, $19, $0E, $0A, $14, $5F, $18, $0F, $5F, $12, $1D, $48, $5F, $0B;($9FC9)
-;              u    t    _    h    e    _    m    u    s    t    _    b    e    _    s    u
+;			  '	H	a	l	f	_	a	_	y	e	a	r	_	n	o	w
+		.byte $50, $2B, $0A, $15, $0F, $5F, $0A, $5F, $22, $0E, $0A, $1B, $5F, $17, $18, $20;($9F69)
+;			  _	h	a	t	h	_	p	a	s	s	e	d	_	s	i	n
+		.byte $5F, $11, $0A, $1D, $11, $5F, $19, $0A, $1C, $1C, $0E, $0D, $5F, $1C, $12, $17;($9F79)
+;			  c	e	_	t	h	e	_	P	r	i	n	c	e	s	s	_
+		.byte $0C, $0E, $5F, $1D, $11, $0E, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $5F;($9F89)
+;			  w	a	s	_	k	i	d	n	a	p	p	e	d	_	b	y
+		.byte $20, $0A, $1C, $5F, $14, $12, $0D, $17, $0A, $19, $19, $0E, $0D, $5F, $0B, $22;($9F99)
+;			  _	t	h	e	_	e	n	e	m	y	.'  WAIT  \n   '	N	e
+		.byte $5F, $1D, $11, $0E, $5F, $0E, $17, $0E, $16, $22, $52, $FB, $FD, $50, $31, $0E;($9FA9)
+;			  v	e	r	_	d	o	e	s	_	t	h	e	_	K	i	n
+		.byte $1F, $0E, $1B, $5F, $0D, $18, $0E, $1C, $5F, $1D, $11, $0E, $5F, $2E, $12, $17;($9FB9)
+;			  g	_	s	p	e	a	k	_	o	f	_	i	t	,	_	b
+		.byte $10, $5F, $1C, $19, $0E, $0A, $14, $5F, $18, $0F, $5F, $12, $1D, $48, $5F, $0B;($9FC9)
+;			  u	t	_	h	e	_	m	u	s	t	_	b	e	_	s	u
 TB11E1_Byte_9FD9:  .byte $1E, $1D, $5F, $11, $0E, $5F, $16, $1E, $1C, $1D, $5F, $0B, $0E, $5F, $1C, $1E
-;              f    f    e    r    i    n    g    _    m    u    c    h    .'  WAIT END
+;			  f	f	e	r	i	n	g	_	m	u	c	h	.'  WAIT END
 TB11E1_Byte_9FE9:  .byte $0F, $0F, $0E, $1B, $12, $17, $10, $5F, $16, $1E, $0C, $11, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E2:
-;              '   NAME  ,    _    p    l    e    a    s    e    _    s    a    v    e    _
-        .byte $50, $F8, $48, $5F, $19, $15, $0E, $0A, $1C, $0E, $5F, $1C, $0A, $1F, $0E, $5F;($9FF8)
-;              t    h    e    _    P    r    i    n    c    e    s    s    .'  END
-        .byte $1D, $11, $0E, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $52, $FC;($A008)
+;			  '   NAME  ,	_	p	l	e	a	s	e	_	s	a	v	e	_
+		.byte $50, $F8, $48, $5F, $19, $15, $0E, $0A, $1C, $0E, $5F, $1C, $0A, $1F, $0E, $5F;($9FF8)
+;			  t	h	e	_	P	r	i	n	c	e	s	s	.'  END
+		.byte $1D, $11, $0E, $5F, $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $52, $FC;($A008)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E3:
-;              '    O    h    ,    _    b    r    a    v    e    _   NAME  .'  END
-        .byte $50, $32, $11, $48, $5F, $0B, $1B, $0A, $1F, $0E, $5F, $F8, $52, $FC;($A016)
+;			  '	O	h	,	_	b	r	a	v	e	_   NAME  .'  END
+		.byte $50, $32, $11, $48, $5F, $0B, $1B, $0A, $1F, $0E, $5F, $F8, $52, $FC;($A016)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E4:
-;              '    I    _    h    a    v    e    _    b    e    e    n    _    w    a    i
-        .byte $50, $2C, $5F, $11, $0A, $1F, $0E, $5F, $0B, $0E, $0E, $17, $5F, $20, $0A, $12;($A024)
-;              t    i    n    g    _    l    o    n    g    _    f    o    r    _    o    n
+;			  '	I	_	h	a	v	e	_	b	e	e	n	_	w	a	i
+		.byte $50, $2C, $5F, $11, $0A, $1F, $0E, $5F, $0B, $0E, $0E, $17, $5F, $20, $0A, $12;($A024)
+;			  t	i	n	g	_	l	o	n	g	_	f	o	r	_	o	n
 TB11E4_Byte_A034:  .byte $1D, $12, $17, $10, $5F, $15, $18, $17, $10, $5F, $0F, $18, $1B, $5F, $18, $17
-;              e    _    s    u    c    h    _    a    s    _    t    h    e    e    .'  WAIT
+;			  e	_	s	u	c	h	_	a	s	_	t	h	e	e	.'  WAIT
 TB11E4_Byte_A044:  .byte $0E, $5F, $1C, $1E, $0C, $11, $5F, $0A, $1C, $5F, $1D, $11, $0E, $0E, $52, $FB
-;             END
-        .byte $FC               ;($A054)
+;			 END
+		.byte $FC			   ;($A054)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E5:
-;              '    T    h    o    u    _    h    a    s    t    _    n    o    _    b    u
-        .byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $17, $18, $5F, $0B, $1E;($A055)
-;              s    i    n    e    s    s    _    h    e    r    e    .    \n   G    o    _
-        .byte $1C, $12, $17, $0E, $1C, $1C, $5F, $11, $0E, $1B, $0E, $47, $FD, $2A, $18, $5F;($A065)
-;              a    w    a    y    .'  END
-        .byte $0A, $20, $0A, $22, $52, $FC;($A075)
+;			  '	T	h	o	u	_	h	a	s	t	_	n	o	_	b	u
+		.byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $17, $18, $5F, $0B, $1E;($A055)
+;			  s	i	n	e	s	s	_	h	e	r	e	.	\n   G	o	_
+		.byte $1C, $12, $17, $0E, $1C, $1C, $5F, $11, $0E, $1B, $0E, $47, $FD, $2A, $18, $5F;($A065)
+;			  a	w	a	y	.'  END
+		.byte $0A, $20, $0A, $22, $52, $FC;($A075)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E6:
-;              '    I    f    _    t    h    o    u    _    a    r    t    _    c    u    r
+;			  '	I	f	_	t	h	o	u	_	a	r	t	_	c	u	r
 TB11E6_Byte_A07B:  .byte $50, $2C, $0F, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0C, $1E, $1B
-;              s    e    d    ,    _    c    o    m    e    _    a    g    a    i    n    .'
-        .byte $1C, $0E, $0D, $48, $5F, $0C, $18, $16, $0E, $5F, $0A, $10, $0A, $12, $17, $52;($A08B)
-;             END
-        .byte $FC               ;($A09B)
+;			  s	e	d	,	_	c	o	m	e	_	a	g	a	i	n	.'
+		.byte $1C, $0E, $0D, $48, $5F, $0C, $18, $16, $0E, $5F, $0A, $10, $0A, $12, $17, $52;($A08B)
+;			 END
+		.byte $FC			   ;($A09B)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E7:
-;              '    I    _    w    i    l    l    _    f    r    e    e    _    t    h    e
-        .byte $50, $2C, $5F, $20, $12, $15, $15, $5F, $0F, $1B, $0E, $0E, $5F, $1D, $11, $0E;($A09C)
-;              e    _    f    r    o    m    _    t    h    y    _    c    u    r    s    e
-        .byte $0E, $5F, $0F, $1B, $18, $16, $5F, $1D, $11, $22, $5F, $0C, $1E, $1B, $1C, $0E;($A0AC)
-;              .'  WAIT END
-        .byte $52, $FB, $FC     ;($A0BC)
+;			  '	I	_	w	i	l	l	_	f	r	e	e	_	t	h	e
+		.byte $50, $2C, $5F, $20, $12, $15, $15, $5F, $0F, $1B, $0E, $0E, $5F, $1D, $11, $0E;($A09C)
+;			  e	_	f	r	o	m	_	t	h	y	_	c	u	r	s	e
+		.byte $0E, $5F, $0F, $1B, $18, $16, $5F, $1D, $11, $22, $5F, $0C, $1E, $1B, $1C, $0E;($A0AC)
+;			  .'  WAIT END
+		.byte $52, $FB, $FC	 ;($A0BC)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E8:
-;              '    N    o    w    ,    _    g    o    .'  END
-        .byte $50, $31, $18, $20, $48, $5F, $10, $18, $52, $FC;($A0BF)
+;			  '	N	o	w	,	_	g	o	.'  END
+		.byte $50, $31, $18, $20, $48, $5F, $10, $18, $52, $FC;($A0BF)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E9:
-;              '    T    h    o    u    g    h    _    t    h    o    u    _    a    r    t
-        .byte $50, $37, $11, $18, $1E, $10, $11, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D;($A0C9)
-;              _    a    s    _    b    r    a    v    e    _    a    s    _    t    h    y
+;			  '	T	h	o	u	g	h	_	t	h	o	u	_	a	r	t
+		.byte $50, $37, $11, $18, $1E, $10, $11, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D;($A0C9)
+;			  _	a	s	_	b	r	a	v	e	_	a	s	_	t	h	y
 TB11E9_Byte_A0D9:  .byte $5F, $0A, $1C, $5F, $0B, $1B, $0A, $1F, $0E, $5F, $0A, $1C, $5F, $1D, $11, $22
-;              _    a    n    c    e    s    t    o    r    ,    _   NAME  ,    _    t    h
-        .byte $5F, $0A, $17, $0C, $0E, $1C, $1D, $18, $1B, $48, $5F, $F8, $48, $5F, $1D, $11;($A0E9)
-;              o    u    _    c    a    n    n    o    t    _    d    e    f    e    a    t
+;			  _	a	n	c	e	s	t	o	r	,	_   NAME  ,	_	t	h
+		.byte $5F, $0A, $17, $0C, $0E, $1C, $1D, $18, $1B, $48, $5F, $F8, $48, $5F, $1D, $11;($A0E9)
+;			  o	u	_	c	a	n	n	o	t	_	d	e	f	e	a	t
 TB11E9_Byte_A0F9:  .byte $18, $1E, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0D, $0E, $0F, $0E, $0A, $1D
-;              _    t    h    e    _    g    r    e    a    t    _    D    r    a    g    o
+;			  _	t	h	e	_	g	r	e	a	t	_	D	r	a	g	o
 TB11E9_Byte_A109:  .byte $5F, $1D, $11, $0E, $5F, $10, $1B, $0E, $0A, $1D, $5F, $27, $1B, $0A, $10, $18
-;              n    l    o    r    d    _    w    i    t    h    _    s    u    c    h    _
-        .byte $17, $15, $18, $1B, $0D, $5F, $20, $12, $1D, $11, $5F, $1C, $1E, $0C, $11, $5F;($A119)
-;              w    e    a    p    o    n    s    .'  WAIT  \n   '    T    h    o    u    _
-        .byte $20, $0E, $0A, $19, $18, $17, $1C, $52, $FB, $FD, $50, $37, $11, $18, $1E, $5F;($A129)
-;              s    h    o    u    l    d    s    t    _    c    o    m    e    _    h    e
+;			  n	l	o	r	d	_	w	i	t	h	_	s	u	c	h	_
+		.byte $17, $15, $18, $1B, $0D, $5F, $20, $12, $1D, $11, $5F, $1C, $1E, $0C, $11, $5F;($A119)
+;			  w	e	a	p	o	n	s	.'  WAIT  \n   '	T	h	o	u	_
+		.byte $20, $0E, $0A, $19, $18, $17, $1C, $52, $FB, $FD, $50, $37, $11, $18, $1E, $5F;($A129)
+;			  s	h	o	u	l	d	s	t	_	c	o	m	e	_	h	e
 TB11E9_Byte_A139:  .byte $1C, $11, $18, $1E, $15, $0D, $1C, $1D, $5F, $0C, $18, $16, $0E, $5F, $11, $0E
-;              r    e    _    a    g    a    i    n    .'  END
-        .byte $1B, $0E, $5F, $0A, $10, $0A, $12, $17, $52, $FC;($A149)
+;			  r	e	_	a	g	a	i	n	.'  END
+		.byte $1B, $0E, $5F, $0A, $10, $0A, $12, $17, $52, $FC;($A149)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E10:
-;              '    F    i    n    a    l    l    y    _    t    h    o    u    _    h    a
-        .byte $50, $29, $12, $17, $0A, $15, $15, $22, $5F, $1D, $11, $18, $1E, $5F, $11, $0A;($A153)
-;              s    t    _    o    b    t    a    i    n    e    d    _    i    t    ,    _
+;			  '	F	i	n	a	l	l	y	_	t	h	o	u	_	h	a
+		.byte $50, $29, $12, $17, $0A, $15, $15, $22, $5F, $1D, $11, $18, $1E, $5F, $11, $0A;($A153)
+;			  s	t	_	o	b	t	a	i	n	e	d	_	i	t	,	_
 TB11E10_Byte_A163:  .byte $1C, $1D, $5F, $18, $0B, $1D, $0A, $12, $17, $0E, $0D, $5F, $12, $1D, $48, $5F
-;             NAME  .'  END
-        .byte $F8, $52, $FC     ;($A173)
+;			 NAME  .'  END
+		.byte $F8, $52, $FC	 ;($A173)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E11:
-;              '    I    s    _    t    h    a    t    _    a    _    w    e    d    d    i
-        .byte $50, $2C, $1C, $5F, $1D, $11, $0A, $1D, $5F, $0A, $5F, $20, $0E, $0D, $0D, $12;($A176)
-;              n    g    _    r    i    n    g    ?    '    \n   '    T    h    o    u    _
-        .byte $17, $10, $5F, $1B, $12, $17, $10, $4B, $40, $FD, $50, $37, $11, $18, $1E, $5F;($A186)
-;              s    e    e    m    s    _    t    o    o    _    y    o    u    n    g    _
-        .byte $1C, $0E, $0E, $16, $1C, $5F, $1D, $18, $18, $5F, $22, $18, $1E, $17, $10, $5F;($A196)
-;              t    o    _    b    e    _    m    a    r    r    i    e    d    .'  END
+;			  '	I	s	_	t	h	a	t	_	a	_	w	e	d	d	i
+		.byte $50, $2C, $1C, $5F, $1D, $11, $0A, $1D, $5F, $0A, $5F, $20, $0E, $0D, $0D, $12;($A176)
+;			  n	g	_	r	i	n	g	?	'	\n   '	T	h	o	u	_
+		.byte $17, $10, $5F, $1B, $12, $17, $10, $4B, $40, $FD, $50, $37, $11, $18, $1E, $5F;($A186)
+;			  s	e	e	m	s	_	t	o	o	_	y	o	u	n	g	_
+		.byte $1C, $0E, $0E, $16, $1C, $5F, $1D, $18, $18, $5F, $22, $18, $1E, $17, $10, $5F;($A196)
+;			  t	o	_	b	e	_	m	a	r	r	i	e	d	.'  END
 TB11E11_Byte_A1A6:  .byte $1D, $18, $5F, $0B, $0E, $5F, $16, $0A, $1B, $1B, $12, $0E, $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E12:
-;              '    A    l    l    _    t    r    u    e    _    w    a    r    r    i    o
-        .byte $50, $24, $15, $15, $5F, $1D, $1B, $1E, $0E, $5F, $20, $0A, $1B, $1B, $12, $18;($A1B5)
-;              r    s    _    w    e    a    r    _    a    _    r    i    n    g    .'  END
-        .byte $1B, $1C, $5F, $20, $0E, $0A, $1B, $5F, $0A, $5F, $1B, $12, $17, $10, $52, $FC;($A1C5)
+;			  '	A	l	l	_	t	r	u	e	_	w	a	r	r	i	o
+		.byte $50, $24, $15, $15, $5F, $1D, $1B, $1E, $0E, $5F, $20, $0A, $1B, $1B, $12, $18;($A1B5)
+;			  r	s	_	w	e	a	r	_	a	_	r	i	n	g	.'  END
+		.byte $1B, $1C, $5F, $20, $0E, $0A, $1B, $5F, $0A, $5F, $1B, $12, $17, $10, $52, $FC;($A1C5)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E13:
-;              '   NAME  '    s    _    c    o    m    i    n    g    _    w    a    s    _
+;			  '   NAME  '	s	_	c	o	m	i	n	g	_	w	a	s	_
 TB11E13_Byte_A1D5:  .byte $50, $F8, $53, $1C, $5F, $0C, $18, $16, $12, $17, $10, $5F, $20, $0A, $1C, $5F
-;              f    o    r    e    t    o    l    d    _    b    y    _    l    e    g    e
-        .byte $0F, $18, $1B, $0E, $1D, $18, $15, $0D, $5F, $0B, $22, $5F, $15, $0E, $10, $0E;($A1E5)
-;              n    d    .    \n   M    a    y    _    t    h    e    _    l    i    g    h
+;			  f	o	r	e	t	o	l	d	_	b	y	_	l	e	g	e
+		.byte $0F, $18, $1B, $0E, $1D, $18, $15, $0D, $5F, $0B, $22, $5F, $15, $0E, $10, $0E;($A1E5)
+;			  n	d	.	\n   M	a	y	_	t	h	e	_	l	i	g	h
 TB11E13_Byte_A1F5:  .byte $17, $0D, $47, $FD, $30, $0A, $22, $5F, $1D, $11, $0E, $5F, $15, $12, $10, $11
-;              t    _    s    h    i    n    e    _    u    p    o    n    _    t    h    i
+;			  t	_	s	h	i	n	e	_	u	p	o	n	_	t	h	i
 TB11E13_Byte_A205:  .byte $1D, $5F, $1C, $11, $12, $17, $0E, $5F, $1E, $19, $18, $17, $5F, $1D, $11, $12
-;              s    _    b    r    a    v    e    _    w    a    r    r    i    o    r    .'
+;			  s	_	b	r	a	v	e	_	w	a	r	r	i	o	r	.'
 TB11E13_Byte_A215:  .byte $1C, $5F, $0B, $1B, $0A, $1F, $0E, $5F, $20, $0A, $1B, $1B, $12, $18, $1B, $52
-;             END
-        .byte $FC               ;($A225)
+;			 END
+		.byte $FC			   ;($A225)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E14:
-;             WAIT  '    T    h    o    u    _    m    a    y    _    g    o    _    a    n
+;			 WAIT  '	T	h	o	u	_	m	a	y	_	g	o	_	a	n
 TB11E14_Byte_A226:  .byte $FB, $50, $37, $11, $18, $1E, $5F, $16, $0A, $22, $5F, $10, $18, $5F, $0A, $17
-;              d    _    s    e    a    r    c    h    .'  END
+;			  d	_	s	e	a	r	c	h	.'  END
 TB11E14_Byte_A236:  .byte $0D, $5F, $1C, $0E, $0A, $1B, $0C, $11, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB11E15:
-;             WAIT  '    F    r    o    m    _    T    a    n    t    e    g    e    l    _
-        .byte $FB, $50, $29, $1B, $18, $16, $5F, $37, $0A, $17, $1D, $0E, $10, $0E, $15, $5F;($A240)
-;              C    a    s    t    l    e    _    t    r    a    v    e    l    _    7    0
+;			 WAIT  '	F	r	o	m	_	T	a	n	t	e	g	e	l	_
+		.byte $FB, $50, $29, $1B, $18, $16, $5F, $37, $0A, $17, $1D, $0E, $10, $0E, $15, $5F;($A240)
+;			  C	a	s	t	l	e	_	t	r	a	v	e	l	_	7	0
 TB11E15_Byte_A250:  .byte $26, $0A, $1C, $1D, $15, $0E, $5F, $1D, $1B, $0A, $1F, $0E, $15, $5F, $07, $00
-;              _    l    e    a    g    u    e    s    _    t    o    _    t    h    e    _
-        .byte $5F, $15, $0E, $0A, $10, $1E, $0E, $1C, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F;($A260)
-;              s    o    u    t    h    _    a    n    d    _    4    0    _    t    o    _
-        .byte $1C, $18, $1E, $1D, $11, $5F, $0A, $17, $0D, $5F, $04, $00, $5F, $1D, $18, $5F;($A270)
-;              t    h    e    _    e    a    s    t    .'  END
+;			  _	l	e	a	g	u	e	s	_	t	o	_	t	h	e	_
+		.byte $5F, $15, $0E, $0A, $10, $1E, $0E, $1C, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F;($A260)
+;			  s	o	u	t	h	_	a	n	d	_	4	0	_	t	o	_
+		.byte $1C, $18, $1E, $1D, $11, $5F, $0A, $17, $0D, $5F, $04, $00, $5F, $1D, $18, $5F;($A270)
+;			  t	h	e	_	e	a	s	t	.'  END
 TB11E15_Byte_A280:  .byte $1D, $11, $0E, $5F, $0E, $0A, $1C, $1D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock12:
 TB12E0:
-;             WAIT  '    I    t    '    s    _    a    _    l    e    g    e    n    d    .'
-        .byte $FB, $50, $2C, $1D, $53, $1C, $5F, $0A, $5F, $15, $0E, $10, $0E, $17, $0D, $52;($A28A)
-;             END
+;			 WAIT  '	I	t	'	s	_	a	_	l	e	g	e	n	d	.'
+		.byte $FB, $50, $2C, $1D, $53, $1C, $5F, $0A, $5F, $15, $0E, $10, $0E, $17, $0D, $52;($A28A)
+;			 END
 TB12E0_Byte_A29A:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E1:
-;              '    T    h    y    _    b    r    a    v    e    r    y    _    m    u    s
-        .byte $50, $37, $11, $22, $5F, $0B, $1B, $0A, $1F, $0E, $1B, $22, $5F, $16, $1E, $1C;($A29B)
-;              t    _    b    e    _    p    r    o    v    e    n    .'  WAIT  \n   '    T
+;			  '	T	h	y	_	b	r	a	v	e	r	y	_	m	u	s
+		.byte $50, $37, $11, $22, $5F, $0B, $1B, $0A, $1F, $0E, $1B, $22, $5F, $16, $1E, $1C;($A29B)
+;			  t	_	b	e	_	p	r	o	v	e	n	.'  WAIT  \n   '	T
 TB12E1_Byte_A2AB:  .byte $1D, $5F, $0B, $0E, $5F, $19, $1B, $18, $1F, $0E, $17, $52, $FB, $FD, $50, $37
-;              h    u    s    ,    _    I    _    p    r    o    p    o    s    e    _    a
-        .byte $11, $1E, $1C, $48, $5F, $2C, $5F, $19, $1B, $18, $19, $18, $1C, $0E, $5F, $0A;($A2BB)
-;              _    t    e    s    t    .'  WAIT  \n   '    T    h    e    r    e    _    i
+;			  h	u	s	,	_	I	_	p	r	o	p	o	s	e	_	a
+		.byte $11, $1E, $1C, $48, $5F, $2C, $5F, $19, $1B, $18, $19, $18, $1C, $0E, $5F, $0A;($A2BB)
+;			  _	t	e	s	t	.'  WAIT  \n   '	T	h	e	r	e	_	i
 TB12E1_Byte_A2CB:  .byte $5F, $1D, $0E, $1C, $1D, $52, $FB, $FD, $50, $37, $11, $0E, $1B, $0E, $5F, $12
-;              s    _    a    _    S    i    l    v    e    r    _    H    a    r    p    _
+;			  s	_	a	_	S	i	l	v	e	r	_	H	a	r	p	_
 TB12E1_Byte_A2DB:  .byte $1C, $5F, $0A, $5F, $36, $12, $15, $1F, $0E, $1B, $5F, $2B, $0A, $1B, $19, $5F
-;              t    h    a    t    _    b    e    c    k    o    n    s    _    t    o    _
-        .byte $1D, $11, $0A, $1D, $5F, $0B, $0E, $0C, $14, $18, $17, $1C, $5F, $1D, $18, $5F;($A2EB)
-;              t    h    e    _    c    r    e    a    t    u    r    e    s    _    o    f
+;			  t	h	a	t	_	b	e	c	k	o	n	s	_	t	o	_
+		.byte $1D, $11, $0A, $1D, $5F, $0B, $0E, $0C, $14, $18, $17, $1C, $5F, $1D, $18, $5F;($A2EB)
+;			  t	h	e	_	c	r	e	a	t	u	r	e	s	_	o	f
 TB12E1_Byte_A2FB:  .byte $1D, $11, $0E, $5F, $0C, $1B, $0E, $0A, $1D, $1E, $1B, $0E, $1C, $5F, $18, $0F
-;              _    t    h    e    _    D    r    a    g    o    n    l    o    r    d    .'
-        .byte $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $52;($A30B)
-;             WAIT  \n   '    B    r    i    n    g    _    t    h    i    s    _    t    o
-        .byte $FB, $FD, $50, $25, $1B, $12, $17, $10, $5F, $1D, $11, $12, $1C, $5F, $1D, $18;($A31B)
-;              _    m    e    _    a    n    d    _    I    _    w    i    l    l    _    r
-        .byte $5F, $16, $0E, $5F, $0A, $17, $0D, $5F, $2C, $5F, $20, $12, $15, $15, $5F, $1B;($A32B)
-;              e    w    a    r    d    _    t    h    e    e    _    w    i    t    h    _
+;			  _	t	h	e	_	D	r	a	g	o	n	l	o	r	d	.'
+		.byte $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $52;($A30B)
+;			 WAIT  \n   '	B	r	i	n	g	_	t	h	i	s	_	t	o
+		.byte $FB, $FD, $50, $25, $1B, $12, $17, $10, $5F, $1D, $11, $12, $1C, $5F, $1D, $18;($A31B)
+;			  _	m	e	_	a	n	d	_	I	_	w	i	l	l	_	r
+		.byte $5F, $16, $0E, $5F, $0A, $17, $0D, $5F, $2C, $5F, $20, $12, $15, $15, $5F, $1B;($A32B)
+;			  e	w	a	r	d	_	t	h	e	e	_	w	i	t	h	_
 TB12E1_Byte_A33B:  .byte $0E, $20, $0A, $1B, $0D, $5F, $1D, $11, $0E, $0E, $5F, $20, $12, $1D, $11, $5F
-;              t    h    e    _    S    t    a    f    f    _    o    f    _    R    a    i
-        .byte $1D, $11, $0E, $5F, $36, $1D, $0A, $0F, $0F, $5F, $18, $0F, $5F, $35, $0A, $12;($A34B)
-;              n    .'  END
+;			  t	h	e	_	S	t	a	f	f	_	o	f	_	R	a	i
+		.byte $1D, $11, $0E, $5F, $36, $1D, $0A, $0F, $0F, $5F, $18, $0F, $5F, $35, $0A, $12;($A34B)
+;			  n	.'  END
 TB12E1_Byte_A35B:  .byte $17, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E2:
-;              '    T    h    o    u    _    h    a    s    t    _    b    r    o    u    g
+;			  '	T	h	o	u	_	h	a	s	t	_	b	r	o	u	g
 TB12E2_Byte_A35E:  .byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0B, $1B, $18, $1E, $10
-;              h    t    _    t    h    e    _    h    a    r    p    .    _    G    o    o
+;			  h	t	_	t	h	e	_	h	a	r	p	.	_	G	o	o
 TB12E2_Byte_A36E:  .byte $11, $1D, $5F, $1D, $11, $0E, $5F, $11, $0A, $1B, $19, $47, $5F, $2A, $18, $18
-;              d    .'  WAIT END
+;			  d	.'  WAIT END
 TB12E2_Byte_A37E:  .byte $0D, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E3:
-;              '    I    n    _    t    h    y    _    t    a    s    k    _    t    h    o
-        .byte $50, $2C, $17, $5F, $1D, $11, $22, $5F, $1D, $0A, $1C, $14, $5F, $1D, $11, $18;($A382)
-;              u    _    h    a    s    t    _    f    a    i    l    e    d    .    _    A
+;			  '	I	n	_	t	h	y	_	t	a	s	k	_	t	h	o
+		.byte $50, $2C, $17, $5F, $1D, $11, $22, $5F, $1D, $0A, $1C, $14, $5F, $1D, $11, $18;($A382)
+;			  u	_	h	a	s	t	_	f	a	i	l	e	d	.	_	A
 TB12E3_Byte_A392:  .byte $1E, $5F, $11, $0A, $1C, $1D, $5F, $0F, $0A, $12, $15, $0E, $0D, $47, $5F, $24
-;              l    a    s    ,    _    I    _    f    e    a    r    _    t    h    o    u
-        .byte $15, $0A, $1C, $48, $5F, $2C, $5F, $0F, $0E, $0A, $1B, $5F, $1D, $11, $18, $1E;($A3A2)
-;              _    a    r    t    _    n    o    t    _    t    h    e    _    o    n    e
+;			  l	a	s	,	_	I	_	f	e	a	r	_	t	h	o	u
+		.byte $15, $0A, $1C, $48, $5F, $2C, $5F, $0F, $0E, $0A, $1B, $5F, $1D, $11, $18, $1E;($A3A2)
+;			  _	a	r	t	_	n	o	t	_	t	h	e	_	o	n	e
 TB12E3_Byte_A3B2:  .byte $5F, $0A, $1B, $1D, $5F, $17, $18, $1D, $5F, $1D, $11, $0E, $5F, $18, $17, $0E
-;              _    E    r    d    r    i    c    k    _    p    r    e    d    i    c    t
-        .byte $5F, $28, $1B, $0D, $1B, $12, $0C, $14, $5F, $19, $1B, $0E, $0D, $12, $0C, $1D;($A3C2)
-;              e    d    _    w    o    u    l    d    _    s    a    v    e    _    u    s
-        .byte $0E, $0D, $5F, $20, $18, $1E, $15, $0D, $5F, $1C, $0A, $1F, $0E, $5F, $1E, $1C;($A3D2)
-;              .'  WAIT  \n   '    G    o    _    n    o    w    !    '   END
+;			  _	E	r	d	r	i	c	k	_	p	r	e	d	i	c	t
+		.byte $5F, $28, $1B, $0D, $1B, $12, $0C, $14, $5F, $19, $1B, $0E, $0D, $12, $0C, $1D;($A3C2)
+;			  e	d	_	w	o	u	l	d	_	s	a	v	e	_	u	s
+		.byte $0E, $0D, $5F, $20, $18, $1E, $15, $0D, $5F, $1C, $0A, $1F, $0E, $5F, $1E, $1C;($A3D2)
+;			  .'  WAIT  \n   '	G	o	_	n	o	w	!	'   END
 TB12E3_Byte_A3E2:  .byte $52, $FB, $FD, $50, $2A, $18, $5F, $17, $18, $20, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E4:
-;              '    N    o    w    _    t    h    e    _    s    u    n    _    a    n    d
-        .byte $50, $31, $18, $20, $5F, $1D, $11, $0E, $5F, $1C, $1E, $17, $5F, $0A, $17, $0D;($A3EF)
-;              _    r    a    i    n    _    s    h    a    l    l    _    m    e    e    t
+;			  '	N	o	w	_	t	h	e	_	s	u	n	_	a	n	d
+		.byte $50, $31, $18, $20, $5F, $1D, $11, $0E, $5F, $1C, $1E, $17, $5F, $0A, $17, $0D;($A3EF)
+;			  _	r	a	i	n	_	s	h	a	l	l	_	m	e	e	t
 TB12E4_Byte_A3FF:  .byte $5F, $1B, $0A, $12, $17, $5F, $1C, $11, $0A, $15, $15, $5F, $16, $0E, $0E, $1D
-;              _    a    n    d    _    t    h    e    _    R    a    i    n    b    o    w
-        .byte $5F, $0A, $17, $0D, $5F, $1D, $11, $0E, $5F, $35, $0A, $12, $17, $0B, $18, $20;($A40F)
-;              _    D    r    o    p    _    p    a    s    s    e    s    _    t    o    _
+;			  _	a	n	d	_	t	h	e	_	R	a	i	n	b	o	w
+		.byte $5F, $0A, $17, $0D, $5F, $1D, $11, $0E, $5F, $35, $0A, $12, $17, $0B, $18, $20;($A40F)
+;			  _	D	r	o	p	_	p	a	s	s	e	s	_	t	o	_
 TB12E4_Byte_A41F:  .byte $5F, $27, $1B, $18, $19, $5F, $19, $0A, $1C, $1C, $0E, $1C, $5F, $1D, $18, $5F
-;              t    h    y    _    k    e    e    p    i    n    g    .'  END
+;			  t	h	y	_	k	e	e	p	i	n	g	.'  END
 TB12E4_Byte_A42F:  .byte $1D, $11, $22, $5F, $14, $0E, $0E, $19, $12, $17, $10, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E5:
-;              '    T    h    o    u    _    a    r    t    _    b    r    a    v    e    _
+;			  '	T	h	o	u	_	a	r	t	_	b	r	a	v	e	_
 TB12E5_Byte_A43C:  .byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0B, $1B, $0A, $1F, $0E, $5F
-;              i    n    d    e    e    d    _    t    o    _    r    e    s    c    u    e
+;			  i	n	d	e	e	d	_	t	o	_	r	e	s	c	u	e
 TB12E5_Byte_A44C:  .byte $12, $17, $0D, $0E, $0E, $0D, $5F, $1D, $18, $5F, $1B, $0E, $1C, $0C, $1E, $0E
-;              _    m    e    ,    _   NAME  .'  WAIT  \n   '    I    _    a    m    _    G
-        .byte $5F, $16, $0E, $48, $5F, $F8, $52, $FB, $FD, $50, $2C, $5F, $0A, $16, $5F, $2A;($A45C)
-;              w    a    e    l    i    n    ,    _    d    a    u    g    h    t    e    r
+;			  _	m	e	,	_   NAME  .'  WAIT  \n   '	I	_	a	m	_	G
+		.byte $5F, $16, $0E, $48, $5F, $F8, $52, $FB, $FD, $50, $2C, $5F, $0A, $16, $5F, $2A;($A45C)
+;			  w	a	e	l	i	n	,	_	d	a	u	g	h	t	e	r
 TB12E5_Byte_A46C:  .byte $20, $0A, $0E, $15, $12, $17, $48, $5F, $0D, $0A, $1E, $10, $11, $1D, $0E, $1B
-;              _    o    f    _    L    o    r    i    k    .'  WAIT END
+;			  _	o	f	_	L	o	r	i	k	.'  WAIT END
 TB12E5_Byte_A47C:  .byte $5F, $18, $0F, $5F, $2F, $18, $1B, $12, $14, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E6:
-;              '    B    u    t    _    t    h    o    u    _    m    u    s    t    .'  WAIT
+;			  '	B	u	t	_	t	h	o	u	_	m	u	s	t	.'  WAIT
 TB12E6_Byte_A488:  .byte $50, $25, $1E, $1D, $5F, $1D, $11, $18, $1E, $5F, $16, $1E, $1C, $1D, $52, $FB
-;             END
-        .byte $FC               ;($A498)
+;			 END
+		.byte $FC			   ;($A498)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E7:
-;              P    r    i    n    c    e    s    s    _    G    w    a    e    l    i    n
+;			  P	r	i	n	c	e	s	s	_	G	w	a	e	l	i	n
 TB12E7_Byte_A499:  .byte $33, $1B, $12, $17, $0C, $0E, $1C, $1C, $5F, $2A, $20, $0A, $0E, $15, $12, $17
-;              _    e    m    b    r    a    c    e    s    _    t    h    e    e    .    \n
-        .byte $5F, $0E, $16, $0B, $1B, $0A, $0C, $0E, $1C, $5F, $1D, $11, $0E, $0E, $47, $FD;($A4A9)
-;              _   END
-        .byte $60, $FC          ;($A4B9)
+;			  _	e	m	b	r	a	c	e	s	_	t	h	e	e	.	\n
+		.byte $5F, $0E, $16, $0B, $1B, $0A, $0C, $0E, $1C, $5F, $1D, $11, $0E, $0E, $47, $FD;($A4A9)
+;			  _   END
+		.byte $60, $FC		  ;($A4B9)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E8:
-;              '    I    '    m    _    s    o    _    h    a    p    p    y    !    '   END
+;			  '	I	'	m	_	s	o	_	h	a	p	p	y	!	'   END
 TB12E8_Byte_A4BB:  .byte $50, $2C, $53, $16, $5F, $1C, $18, $5F, $11, $0A, $19, $19, $22, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E9:
-;              '    F    o    r    e    v    e    r    _    s    h    a    l    l    _    I
-        .byte $50, $29, $18, $1B, $0E, $1F, $0E, $1B, $5F, $1C, $11, $0A, $15, $15, $5F, $2C;($A4CB)
-;              _    b    e    _    g    r    a    t    e    f    u    l    _    f    o    r
+;			  '	F	o	r	e	v	e	r	_	s	h	a	l	l	_	I
+		.byte $50, $29, $18, $1B, $0E, $1F, $0E, $1B, $5F, $1C, $11, $0A, $15, $15, $5F, $2C;($A4CB)
+;			  _	b	e	_	g	r	a	t	e	f	u	l	_	f	o	r
 TB12E9_Byte_A4DB:  .byte $5F, $0B, $0E, $5F, $10, $1B, $0A, $1D, $0E, $0F, $1E, $15, $5F, $0F, $18, $1B
-;              _    t    h    e    _    g    i    f    t    _    o    f    _    m    y    _
-        .byte $5F, $1D, $11, $0E, $5F, $10, $12, $0F, $1D, $5F, $18, $0F, $5F, $16, $22, $5F;($A4EB)
-;              d    a    u    g    h    t    e    r    _    r    e    t    u    r    n    e
-        .byte $0D, $0A, $1E, $10, $11, $1D, $0E, $1B, $5F, $1B, $0E, $1D, $1E, $1B, $17, $0E;($A4FB)
-;              d    _    t    o    _    h    e    r    _    h    o    m    e    ,    _   NAME
+;			  _	t	h	e	_	g	i	f	t	_	o	f	_	m	y	_
+		.byte $5F, $1D, $11, $0E, $5F, $10, $12, $0F, $1D, $5F, $18, $0F, $5F, $16, $22, $5F;($A4EB)
+;			  d	a	u	g	h	t	e	r	_	r	e	t	u	r	n	e
+		.byte $0D, $0A, $1E, $10, $11, $1D, $0E, $1B, $5F, $1B, $0E, $1D, $1E, $1B, $17, $0E;($A4FB)
+;			  d	_	t	o	_	h	e	r	_	h	o	m	e	,	_   NAME
 TB12E9_Byte_A50B:  .byte $0D, $5F, $1D, $18, $5F, $11, $0E, $1B, $5F, $11, $18, $16, $0E, $48, $5F, $F8
-;              .    \n   A    c    c    e    p    t    _    m    y    _    t    h    a    n
+;			  .	\n   A	c	c	e	p	t	_	m	y	_	t	h	a	n
 TB12E9_Byte_A51B:  .byte $47, $FD, $24, $0C, $0C, $0E, $19, $1D, $5F, $16, $22, $5F, $1D, $11, $0A, $17
-;              k    s    .'  WAIT  \n   '    N    o    w    ,    _    G    w    a    e    l
+;			  k	s	.'  WAIT  \n   '	N	o	w	,	_	G	w	a	e	l
 TB12E9_Byte_A52B:  .byte $14, $1C, $52, $FB, $FD, $50, $31, $18, $20, $48, $5F, $2A, $20, $0A, $0E, $15
-;              i    n    ,    _    c    o    m    e    _    t    o    _    m    y    _    s
+;			  i	n	,	_	c	o	m	e	_	t	o	_	m	y	_	s
 TB12E9_Byte_A53B:  .byte $12, $17, $48, $5F, $0C, $18, $16, $0E, $5F, $1D, $18, $5F, $16, $22, $5F, $1C
-;              i    d    e    .'  WAIT  \n   G    w    a    e    l    i    n    _    t    h
+;			  i	d	e	.'  WAIT  \n   G	w	a	e	l	i	n	_	t	h
 TB12E9_Byte_A54B:  .byte $12, $0D, $0E, $52, $FB, $FD, $2A, $20, $0A, $0E, $15, $12, $17, $5F, $1D, $11
-;              e    n    _    w    h    i    s    p    e    r    s    :    \n   '    W    a
+;			  e	n	_	w	h	i	s	p	e	r	s	:	\n   '	W	a
 TB12E9_Byte_A55B:  .byte $0E, $17, $5F, $20, $11, $12, $1C, $19, $0E, $1B, $1C, $44, $FD, $50, $3A, $0A
-;              i    t    _    a    _    m    o    m    e    n    t    ,    p    l    e    a
-        .byte $12, $1D, $5F, $0A, $5F, $16, $18, $16, $0E, $17, $1D, $48, $19, $15, $0E, $0A;($A56B)
-;              s    e    .    \n   I    _    w    o    u    l    d    _    g    i    v    e
-        .byte $1C, $0E, $47, $FD, $2C, $5F, $20, $18, $1E, $15, $0D, $5F, $10, $12, $1F, $0E;($A57B)
-;              _    a    _    p    r    e    s    e    n    t    _    t    o    _   NAME  .'
+;			  i	t	_	a	_	m	o	m	e	n	t	,	p	l	e	a
+		.byte $12, $1D, $5F, $0A, $5F, $16, $18, $16, $0E, $17, $1D, $48, $19, $15, $0E, $0A;($A56B)
+;			  s	e	.	\n   I	_	w	o	u	l	d	_	g	i	v	e
+		.byte $1C, $0E, $47, $FD, $2C, $5F, $20, $18, $1E, $15, $0D, $5F, $10, $12, $1F, $0E;($A57B)
+;			  _	a	_	p	r	e	s	e	n	t	_	t	o	_   NAME  .'
 TB12E9_Byte_A58B:  .byte $5F, $0A, $5F, $19, $1B, $0E, $1C, $0E, $17, $1D, $5F, $1D, $18, $5F, $F8, $52
-;             WAIT  \n   '    P    l    e    a    s    e    _    a    c    c    e    p    t
-        .byte $FB, $FD, $50, $33, $15, $0E, $0A, $1C, $0E, $5F, $0A, $0C, $0C, $0E, $19, $1D;($A59B)
-;              _    m    y    _    l    o    v    e    ,    _   NAME  .'  WAIT END
+;			 WAIT  \n   '	P	l	e	a	s	e	_	a	c	c	e	p	t
+		.byte $FB, $FD, $50, $33, $15, $0E, $0A, $1C, $0E, $5F, $0A, $0C, $0C, $0E, $19, $1D;($A59B)
+;			  _	m	y	_	l	o	v	e	,	_   NAME  .'  WAIT END
 TB12E9_Byte_A5AB:  .byte $5F, $16, $22, $5F, $15, $18, $1F, $0E, $48, $5F, $F8, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E10:
-;              '    A    n    d    _    I    _    w    o    u    l    d    _    l    i    k
+;			  '	A	n	d	_	I	_	w	o	u	l	d	_	l	i	k
 TB12E10_Byte_A5B9:  .byte $50, $24, $17, $0D, $5F, $2C, $5F, $20, $18, $1E, $15, $0D, $5F, $15, $12, $14
-;              e    _    t    o    _    h    a    v    e    _    s    o    m    e    t    h
+;			  e	_	t	o	_	h	a	v	e	_	s	o	m	e	t	h
 TB12E10_Byte_A5C9:  .byte $0E, $5F, $1D, $18, $5F, $11, $0A, $1F, $0E, $5F, $1C, $18, $16, $0E, $1D, $11
-;              i    n    g    _    o    f    _    t    h    i    n    e    -    -    a    _
-        .byte $12, $17, $10, $5F, $18, $0F, $5F, $1D, $11, $12, $17, $0E, $49, $49, $0A, $5F;($A5D9)
-;              t    o    k    e    n    .'  WAIT  \n   '    P    l    e    a    s    e    _
+;			  i	n	g	_	o	f	_	t	h	i	n	e	-	-	a	_
+		.byte $12, $17, $10, $5F, $18, $0F, $5F, $1D, $11, $12, $17, $0E, $49, $49, $0A, $5F;($A5D9)
+;			  t	o	k	e	n	.'  WAIT  \n   '	P	l	e	a	s	e	_
 TB12E10_Byte_A5E9:  .byte $1D, $18, $14, $0E, $17, $52, $FB, $FD, $50, $33, $15, $0E, $0A, $1C, $0E, $5F
-;              g    i    v    e    _    m    e    _    t    h    y    _   ITEM  .'  END
+;			  g	i	v	e	_	m	e	_	t	h	y	_   ITEM  .'  END
 TB12E10_Byte_A5F9:  .byte $10, $12, $1F, $0E, $5F, $16, $0E, $5F, $1D, $11, $22, $5F, $F7, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E11:
-;              '    E    v    e    n    _    w    h    e    n    _    w    e    _    t    w
-        .byte $50, $28, $1F, $0E, $17, $5F, $20, $11, $0E, $17, $5F, $20, $0E, $5F, $1D, $20;($A608)
-;              o    _    a    r    e    _    p    a    r    t    e    d    _    b    y    _
+;			  '	E	v	e	n	_	w	h	e	n	_	w	e	_	t	w
+		.byte $50, $28, $1F, $0E, $17, $5F, $20, $11, $0E, $17, $5F, $20, $0E, $5F, $1D, $20;($A608)
+;			  o	_	a	r	e	_	p	a	r	t	e	d	_	b	y	_
 TB12E11_Byte_A618:  .byte $18, $5F, $0A, $1B, $0E, $5F, $19, $0A, $1B, $1D, $0E, $0D, $5F, $0B, $22, $5F
-;              g    r    e    a    t    _    d    i    s    t    a    n    c    e    s    ,
+;			  g	r	e	a	t	_	d	i	s	t	a	n	c	e	s	,
 TB12E11_Byte_A628:  .byte $10, $1B, $0E, $0A, $1D, $5F, $0D, $12, $1C, $1D, $0A, $17, $0C, $0E, $1C, $48
-;              _    I    _    s    h    a    l    l    _    b    e    _    w    i    t    h
-        .byte $5F, $2C, $5F, $1C, $11, $0A, $15, $15, $5F, $0B, $0E, $5F, $20, $12, $1D, $11;($A638)
-;              _    t    h    e    e    .'  END
+;			  _	I	_	s	h	a	l	l	_	b	e	_	w	i	t	h
+		.byte $5F, $2C, $5F, $1C, $11, $0A, $15, $15, $5F, $0B, $0E, $5F, $20, $12, $1D, $11;($A638)
+;			  _	t	h	e	e	.'  END
 TB12E11_Byte_A648:  .byte $5F, $1D, $11, $0E, $0E, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E12:
-;             WAIT  '    F    a    r    e    w    e    l    l    ,    _   NAME  .'  WAIT END
-        .byte $FB, $50, $29, $0A, $1B, $0E, $20, $0E, $15, $15, $48, $5F, $F8, $52, $FB, $FC;($A64F)
+;			 WAIT  '	F	a	r	e	w	e	l	l	,	_   NAME  .'  WAIT END
+		.byte $FB, $50, $29, $0A, $1B, $0E, $20, $0E, $15, $15, $48, $5F, $F8, $52, $FB, $FC;($A64F)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E13:
-;              '    I    _    l    o    v    e    _    t    h    e    e    ,    _   NAME  .'
+;			  '	I	_	l	o	v	e	_	t	h	e	e	,	_   NAME  .'
 TB12E13_Byte_A65F:  .byte $50, $2C, $5F, $15, $18, $1F, $0E, $5F, $1D, $11, $0E, $0E, $48, $5F, $F8, $52
-;              \n  END
-        .byte $FD, $FC          ;($A66F)
+;			  \n  END
+		.byte $FD, $FC		  ;($A66F)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E14:
-;              '    D    o    s    t    _    t    h    o    u    _    l    o    v    e    _
+;			  '	D	o	s	t	_	t	h	o	u	_	l	o	v	e	_
 TB12E14_Byte_A671:  .byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $15, $18, $1F, $0E, $5F
-;              m    e    ,    _   NAME  ?    '    \n  END
+;			  m	e	,	_   NAME  ?	'	\n  END
 TB12E14_Byte_A681:  .byte $16, $0E, $48, $5F, $F8, $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB12E15:
-;              '    W    h    e    n    _    t    h    o    u    _    a    r    t    _    f
+;			  '	W	h	e	n	_	t	h	o	u	_	a	r	t	_	f
 TB12E15_Byte_A68A:  .byte $50, $3A, $11, $0E, $17, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0F
-;              i    n    i    s    h    e    d    _    p    r    e    p    a    r    i    n
+;			  i	n	i	s	h	e	d	_	p	r	e	p	a	r	i	n
 TB12E15_Byte_A69A:  .byte $12, $17, $12, $1C, $11, $0E, $0D, $5F, $19, $1B, $0E, $19, $0A, $1B, $12, $17
-;              g    _    f    o    r    _    t    h    y    _    d    e    p    a    r    t
+;			  g	_	f	o	r	_	t	h	y	_	d	e	p	a	r	t
 TB12E15_Byte_A6AA:  .byte $10, $5F, $0F, $18, $1B, $5F, $1D, $11, $22, $5F, $0D, $0E, $19, $0A, $1B, $1D
-;              u    r    e    ,    _    p    l    e    a    s    e    _    s    e    e    _
-        .byte $1E, $1B, $0E, $48, $5F, $19, $15, $0E, $0A, $1C, $0E, $5F, $1C, $0E, $0E, $5F;($A6BA)
-;              m    e    .    \n   I    _    s    h    a    l    l    _    w    a    i    t
-        .byte $16, $0E, $47, $FD, $2C, $5F, $1C, $11, $0A, $15, $15, $5F, $20, $0A, $12, $1D;($A6CA)
-;              .'  END
-        .byte $52, $FC          ;($A6DA)
+;			  u	r	e	,	_	p	l	e	a	s	e	_	s	e	e	_
+		.byte $1E, $1B, $0E, $48, $5F, $19, $15, $0E, $0A, $1C, $0E, $5F, $1C, $0E, $0E, $5F;($A6BA)
+;			  m	e	.	\n   I	_	s	h	a	l	l	_	w	a	i	t
+		.byte $16, $0E, $47, $FD, $2C, $5F, $1C, $11, $0A, $15, $15, $5F, $20, $0A, $12, $1D;($A6CA)
+;			  .'  END
+		.byte $52, $FC		  ;($A6DA)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock13:
 TB13E0:
-;              '    I    _    a    m    _    g    r    e    a    t    l    y    _    p    l
-        .byte $50, $2C, $5F, $0A, $16, $5F, $10, $1B, $0E, $0A, $1D, $15, $22, $5F, $19, $15;($A6DC)
-;              e    a    s    e    d    _    t    h    a    t    _    t    h    o    u    _
-        .byte $0E, $0A, $1C, $0E, $0D, $5F, $1D, $11, $0A, $1D, $5F, $1D, $11, $18, $1E, $5F;($A6EC)
-;              h    a    s    t    _    r    e    t    u    r    n    e    d    ,    _   NAME
-        .byte $11, $0A, $1C, $1D, $5F, $1B, $0E, $1D, $1E, $1B, $17, $0E, $0D, $48, $5F, $F8;($A6FC)
-;              .'  WAIT END
+;			  '	I	_	a	m	_	g	r	e	a	t	l	y	_	p	l
+		.byte $50, $2C, $5F, $0A, $16, $5F, $10, $1B, $0E, $0A, $1D, $15, $22, $5F, $19, $15;($A6DC)
+;			  e	a	s	e	d	_	t	h	a	t	_	t	h	o	u	_
+		.byte $0E, $0A, $1C, $0E, $0D, $5F, $1D, $11, $0A, $1D, $5F, $1D, $11, $18, $1E, $5F;($A6EC)
+;			  h	a	s	t	_	r	e	t	u	r	n	e	d	,	_   NAME
+		.byte $11, $0A, $1C, $1D, $5F, $1B, $0E, $1D, $1E, $1B, $17, $0E, $0D, $48, $5F, $F8;($A6FC)
+;			  .'  WAIT END
 TB13E0_Byte_A70C:  .byte $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E1:
-;              '    B    e    f    o    r    e    _    r    e    a    c    h    i    n    g
-        .byte $50, $25, $0E, $0F, $18, $1B, $0E, $5F, $1B, $0E, $0A, $0C, $11, $12, $17, $10;($A70F)
-;              _    t    h    y    _    n    e    x    t    _    l    e    v    e    l    _
+;			  '	B	e	f	o	r	e	_	r	e	a	c	h	i	n	g
+		.byte $50, $25, $0E, $0F, $18, $1B, $0E, $5F, $1B, $0E, $0A, $0C, $11, $12, $17, $10;($A70F)
+;			  _	t	h	y	_	n	e	x	t	_	l	e	v	e	l	_
 TB13E1_Byte_A71F:  .byte $5F, $1D, $11, $22, $5F, $17, $0E, $21, $1D, $5F, $15, $0E, $1F, $0E, $15, $5F
-;              o    f    _    e    x    p    e    r    i    e    n    c    e    _    t    h
-        .byte $18, $0F, $5F, $0E, $21, $19, $0E, $1B, $12, $0E, $17, $0C, $0E, $5F, $1D, $11;($A72F)
-;              o    u    _    m    u    s    t    _    g    a    i    n    _   AMTP  .'  WAIT
+;			  o	f	_	e	x	p	e	r	i	e	n	c	e	_	t	h
+		.byte $18, $0F, $5F, $0E, $21, $19, $0E, $1B, $12, $0E, $17, $0C, $0E, $5F, $1D, $11;($A72F)
+;			  o	u	_	m	u	s	t	_	g	a	i	n	_   AMTP  .'  WAIT
 TB13E1_Byte_A73F:  .byte $18, $1E, $5F, $16, $1E, $1C, $1D, $5F, $10, $0A, $12, $17, $5F, $F3, $52, $FB
-;             END
-        .byte $FC               ;($A74F)
+;			 END
+		.byte $FC			   ;($A74F)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E2:
-;              '    I    f    _    t    h    o    u    _    d    i    e    s    _    I    _
+;			  '	I	f	_	t	h	o	u	_	d	i	e	s	_	I	_
 TB13E2_Byte_A750:  .byte $50, $2C, $0F, $5F, $1D, $11, $18, $1E, $5F, $0D, $12, $0E, $1C, $5F, $2C, $5F
-;              c    a    n    _    b    r    i    n    g    _    t    h    e    e    _    b
+;			  c	a	n	_	b	r	i	n	g	_	t	h	e	e	_	b
 TB13E2_Byte_A760:  .byte $0C, $0A, $17, $5F, $0B, $1B, $12, $17, $10, $5F, $1D, $11, $0E, $0E, $5F, $0B
-;              a    c    k    _    f    o    r    _    a    n    o    t    h    e    r    _
-        .byte $0A, $0C, $14, $5F, $0F, $18, $1B, $5F, $0A, $17, $18, $1D, $11, $0E, $1B, $5F;($A770)
-;              a    t    t    e    m    p    t    _    w    i    t    h    o    u    t    _
+;			  a	c	k	_	f	o	r	_	a	n	o	t	h	e	r	_
+		.byte $0A, $0C, $14, $5F, $0F, $18, $1B, $5F, $0A, $17, $18, $1D, $11, $0E, $1B, $5F;($A770)
+;			  a	t	t	e	m	p	t	_	w	i	t	h	o	u	t	_
 TB13E2_Byte_A780:  .byte $0A, $1D, $1D, $0E, $16, $19, $1D, $5F, $20, $12, $1D, $11, $18, $1E, $1D, $5F
-;              l    o    s    s    _    o    f    _    t    h    y    _    d    e    e    d
+;			  l	o	s	s	_	o	f	_	t	h	y	_	d	e	e	d
 TB13E2_Byte_A790:  .byte $15, $18, $1C, $1C, $5F, $18, $0F, $5F, $1D, $11, $22, $5F, $0D, $0E, $0E, $0D
-;              s    _    t    o    _    d    a    t    e    .'  WAIT END
+;			  s	_	t	o	_	d	a	t	e	.'  WAIT END
 TB13E2_Byte_A7A0:  .byte $1C, $5F, $1D, $18, $5F, $0D, $0A, $1D, $0E, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E3:
-;             END
-        .byte $FC               ;($A7AC)
+;			 END
+		.byte $FC			   ;($A7AC)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E4:
-;              '    G    o    o    d    b    y    e    _    n    o    w    ,    _   NAME  .
+;			  '	G	o	o	d	b	y	e	_	n	o	w	,	_   NAME  .
 TB13E4_Byte_A7AD:  .byte $50, $2A, $18, $18, $0D, $0B, $22, $0E, $5F, $17, $18, $20, $48, $5F, $F8, $47
-;              \n   T    a    k    e    _    c    a    r    e    _    a    n    d    _    t
+;			  \n   T	a	k	e	_	c	a	r	e	_	a	n	d	_	t
 TB13E4_Byte_A7BD:  .byte $FD, $37, $0A, $14, $0E, $5F, $0C, $0A, $1B, $0E, $5F, $0A, $17, $0D, $5F, $1D
-;              e    m    p    t    _    n    o    t    _    t    h    e    _    F    a    t
+;			  e	m	p	t	_	n	o	t	_	t	h	e	_	F	a	t
 TB13E4_Byte_A7CD:  .byte $0E, $16, $19, $1D, $5F, $17, $18, $1D, $5F, $1D, $11, $0E, $5F, $29, $0A, $1D
-;              e    s    .'  END
+;			  e	s	.'  END
 TB13E4_Byte_A7DD:  .byte $0E, $1C, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E5:
-;              '    W    i    l    l    _    t    h    o    u    _    t    a    k    e    _
+;			  '	W	i	l	l	_	t	h	o	u	_	t	a	k	e	_
 TB13E5_Byte_A7E1:  .byte $50, $3A, $12, $15, $15, $5F, $1D, $11, $18, $1E, $5F, $1D, $0A, $14, $0E, $5F
-;              m    e    _    t    o    _    t    h    e    _    c    a    s    t    l    e
+;			  m	e	_	t	o	_	t	h	e	_	c	a	s	t	l	e
 TB13E5_Byte_A7F1:  .byte $16, $0E, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $0C, $0A, $1C, $1D, $15, $0E
-;              ?    '    \n  END
+;			  ?	'	\n  END
 TB13E5_Byte_A801:  .byte $4B, $40, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E6:
-;              '    T    a    k    e    _    t    h    e    _    T    r    e    a    s    u
+;			  '	T	a	k	e	_	t	h	e	_	T	r	e	a	s	u
 TB13E6_Byte_A805:  .byte $50, $37, $0A, $14, $0E, $5F, $1D, $11, $0E, $5F, $37, $1B, $0E, $0A, $1C, $1E
-;              r    e    _    C    h    e    s    t    .'  END
-        .byte $1B, $0E, $5F, $26, $11, $0E, $1C, $1D, $52, $FC;($A815)
+;			  r	e	_	C	h	e	s	t	.'  END
+		.byte $1B, $0E, $5F, $26, $11, $0E, $1C, $1D, $52, $FC;($A815)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E7:
-;              '    W    e    l    c    o    m    e    ,    _   NAME  .    \n   I    _    a
+;			  '	W	e	l	c	o	m	e	,	_   NAME  .	\n   I	_	a
 TB13E7_Byte_A81F:  .byte $50, $3A, $0E, $15, $0C, $18, $16, $0E, $48, $5F, $F8, $47, $FD, $2C, $5F, $0A
-;              m    _    t    h    e    _    D    r    a    g    o    n    l    o    r    d
+;			  m	_	t	h	e	_	D	r	a	g	o	n	l	o	r	d
 TB13E7_Byte_A82F:  .byte $16, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D
-;              -    -    K    i    n    g    _    o    f    _    K    i    n    g    s    .'
-        .byte $49, $49, $2E, $12, $17, $10, $5F, $18, $0F, $5F, $2E, $12, $17, $10, $1C, $52;($A83F)
-;             WAIT END
+;			  -	-	K	i	n	g	_	o	f	_	K	i	n	g	s	.'
+		.byte $49, $49, $2E, $12, $17, $10, $5F, $18, $0F, $5F, $2E, $12, $17, $10, $1C, $52;($A83F)
+;			 WAIT END
 TB13E7_Byte_A84F:  .byte $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E8:
-;              '    I    _    g    i    v    e    _    t    h    e    e    _    n    o    w
+;			  '	I	_	g	i	v	e	_	t	h	e	e	_	n	o	w
 TB13E8_Byte_A851:  .byte $50, $2C, $5F, $10, $12, $1F, $0E, $5F, $1D, $11, $0E, $0E, $5F, $17, $18, $20
-;              _    a    _    c    h    a    n    c    e    _    t    o    _    s    h    a
-        .byte $5F, $0A, $5F, $0C, $11, $0A, $17, $0C, $0E, $5F, $1D, $18, $5F, $1C, $11, $0A;($A861)
-;              r    e    _    t    h    i    s    _    w    o    r    l    d    _    a    n
+;			  _	a	_	c	h	a	n	c	e	_	t	o	_	s	h	a
+		.byte $5F, $0A, $5F, $0C, $11, $0A, $17, $0C, $0E, $5F, $1D, $18, $5F, $1C, $11, $0A;($A861)
+;			  r	e	_	t	h	i	s	_	w	o	r	l	d	_	a	n
 TB13E8_Byte_A871:  .byte $1B, $0E, $5F, $1D, $11, $12, $1C, $5F, $20, $18, $1B, $15, $0D, $5F, $0A, $17
-;              d    _    t    o    _    r    u    l    e    _    h    a    l    f    _    o
+;			  d	_	t	o	_	r	u	l	e	_	h	a	l	f	_	o
 TB13E8_Byte_A881:  .byte $0D, $5F, $1D, $18, $5F, $1B, $1E, $15, $0E, $5F, $11, $0A, $15, $0F, $5F, $18
-;              f    _    i    t    _    i    f    _    t    h    o    u    _    w    i    l
-        .byte $0F, $5F, $12, $1D, $5F, $12, $0F, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $15;($A891)
-;              l    _    n    o    w    _    s    t    a    n    d    _    b    e    s    i
-        .byte $15, $5F, $17, $18, $20, $5F, $1C, $1D, $0A, $17, $0D, $5F, $0B, $0E, $1C, $12;($A8A1)
-;              d    e    _    m    e    .'  WAIT  \n   '    W    h    a    t    _    s    a
-        .byte $0D, $0E, $5F, $16, $0E, $52, $FB, $FD, $50, $3A, $11, $0A, $1D, $5F, $1C, $0A;($A8B1)
-;              y    e    s    t    _    t    h    o    u    ?    \n   W    i    l    l    _
+;			  f	_	i	t	_	i	f	_	t	h	o	u	_	w	i	l
+		.byte $0F, $5F, $12, $1D, $5F, $12, $0F, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $15;($A891)
+;			  l	_	n	o	w	_	s	t	a	n	d	_	b	e	s	i
+		.byte $15, $5F, $17, $18, $20, $5F, $1C, $1D, $0A, $17, $0D, $5F, $0B, $0E, $1C, $12;($A8A1)
+;			  d	e	_	m	e	.'  WAIT  \n   '	W	h	a	t	_	s	a
+		.byte $0D, $0E, $5F, $16, $0E, $52, $FB, $FD, $50, $3A, $11, $0A, $1D, $5F, $1C, $0A;($A8B1)
+;			  y	e	s	t	_	t	h	o	u	?	\n   W	i	l	l	_
 TB13E8_Byte_A8C1:  .byte $22, $0E, $1C, $1D, $5F, $1D, $11, $18, $1E, $4B, $FD, $3A, $12, $15, $15, $5F
-;              t    h    e    _    g    r    e    a    t    _    w    a    r    r    i    o
+;			  t	h	e	_	g	r	e	a	t	_	w	a	r	r	i	o
 TB13E8_Byte_A8D1:  .byte $1D, $11, $0E, $5F, $10, $1B, $0E, $0A, $1D, $5F, $20, $0A, $1B, $1B, $12, $18
-;              r    _    s    t    a    n    d    _    w    i    t    h    _    m    e    ?
-        .byte $1B, $5F, $1C, $1D, $0A, $17, $0D, $5F, $20, $12, $1D, $11, $5F, $16, $0E, $4B;($A8E1)
-;              '    \n  END
-        .byte $40, $FD, $FC     ;($A8F1)
+;			  r	_	s	t	a	n	d	_	w	i	t	h	_	m	e	?
+		.byte $1B, $5F, $1C, $1D, $0A, $17, $0D, $5F, $20, $12, $1D, $11, $5F, $16, $0E, $4B;($A8E1)
+;			  '	\n  END
+		.byte $40, $FD, $FC	 ;($A8F1)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E9:
-;              '    T    h    o    u    _    a    r    t    _    a    _    f    o    o    l
-        .byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0A, $5F, $0F, $18, $18, $15;($A8F4)
-;              !   END
-        .byte $4C, $FC          ;($A904)
+;			  '	T	h	o	u	_	a	r	t	_	a	_	f	o	o	l
+		.byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0A, $5F, $0F, $18, $18, $15;($A8F4)
+;			  !   END
+		.byte $4C, $FC		  ;($A904)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E10:
-;             INDT  \n   '    T    h    e    n    _    h    a    l    f    _    o    f    _
+;			 INDT  \n   '	T	h	e	n	_	h	a	l	f	_	o	f	_
 TB13E10_Byte_A906:  .byte $57, $FD, $50, $37, $11, $0E, $17, $5F, $11, $0A, $15, $0F, $5F, $18, $0F, $5F
-;              t    h    i    s    _    w    o    r    l    d    _    i    s    _    t    h
-        .byte $1D, $11, $12, $1C, $5F, $20, $18, $1B, $15, $0D, $5F, $12, $1C, $5F, $1D, $11;($A916)
-;              i    n    e    ,    _    h    a    l    f    _    o    f    _    t    h    e
+;			  t	h	i	s	_	w	o	r	l	d	_	i	s	_	t	h
+		.byte $1D, $11, $12, $1C, $5F, $20, $18, $1B, $15, $0D, $5F, $12, $1C, $5F, $1D, $11;($A916)
+;			  i	n	e	,	_	h	a	l	f	_	o	f	_	t	h	e
 TB13E10_Byte_A926:  .byte $12, $17, $0E, $48, $5F, $11, $0A, $15, $0F, $5F, $18, $0F, $5F, $1D, $11, $0E
-;              _    d    a    r    k    n    e    s    s    ,    _    a    n    d    ..   ..
-        .byte $5F, $0D, $0A, $1B, $14, $17, $0E, $1C, $1C, $48, $5F, $0A, $17, $0D, $45, $45;($A936)
-;              '   WAIT END
-        .byte $40, $FB, $FC     ;($A946)
+;			  _	d	a	r	k	n	e	s	s	,	_	a	n	d	..   ..
+		.byte $5F, $0D, $0A, $1B, $14, $17, $0E, $1C, $1C, $48, $5F, $0A, $17, $0D, $45, $45;($A936)
+;			  '   WAIT END
+		.byte $40, $FB, $FC	 ;($A946)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E11:
-;              T    h    y    _    j    o    u    r    n    e    y    _    i    s    _    o
-        .byte $37, $11, $22, $5F, $13, $18, $1E, $1B, $17, $0E, $22, $5F, $12, $1C, $5F, $18;($A949)
-;              v    e    r    .    \n   T    a    k    e    _    n    o    w    _    a    _
+;			  T	h	y	_	j	o	u	r	n	e	y	_	i	s	_	o
+		.byte $37, $11, $22, $5F, $13, $18, $1E, $1B, $17, $0E, $22, $5F, $12, $1C, $5F, $18;($A949)
+;			  v	e	r	.	\n   T	a	k	e	_	n	o	w	_	a	_
 TB13E11_Byte_A959:  .byte $1F, $0E, $1B, $47, $FD, $37, $0A, $14, $0E, $5F, $17, $18, $20, $5F, $0A, $5F
-;              l    o    n    g    ,    _    l    o    n    g    _    r    e    s    t    .
+;			  l	o	n	g	,	_	l	o	n	g	_	r	e	s	t	.
 TB13E11_Byte_A969:  .byte $15, $18, $17, $10, $48, $5F, $15, $18, $17, $10, $5F, $1B, $0E, $1C, $1D, $47
-;              \n   H    a    h    a    h    a    h    a    ..   ..  END
+;			  \n   H	a	h	a	h	a	h	a	..   ..  END
 TB13E11_Byte_A979:  .byte $FD, $2B, $0A, $11, $0A, $11, $0A, $11, $0A, $45, $45, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E12:
-;             WAIT  I    f    _    t    h    o    u    _    w    o    u    l    d    _    t
+;			 WAIT  I	f	_	t	h	o	u	_	w	o	u	l	d	_	t
 TB13E12_Byte_A985:  .byte $FB, $2C, $0F, $5F, $1D, $11, $18, $1E, $5F, $20, $18, $1E, $15, $0D, $5F, $1D
-;              a    k    e    _    t    h    e    _   ITEM  ,    _    t    h    o    u    _
+;			  a	k	e	_	t	h	e	_   ITEM  ,	_	t	h	o	u	_
 TB13E12_Byte_A995:  .byte $0A, $14, $0E, $5F, $1D, $11, $0E, $5F, $F7, $48, $5F, $1D, $11, $18, $1E, $5F
-;              m    u    s    t    _    n    o    w    _    d    i    s    c    a    r    d
-        .byte $16, $1E, $1C, $1D, $5F, $17, $18, $20, $5F, $0D, $12, $1C, $0C, $0A, $1B, $0D;($A9A5)
-;              _    s    o    m    e    _    o    t    h    e    r    _    i    t    e    m
+;			  m	u	s	t	_	n	o	w	_	d	i	s	c	a	r	d
+		.byte $16, $1E, $1C, $1D, $5F, $17, $18, $20, $5F, $0D, $12, $1C, $0C, $0A, $1B, $0D;($A9A5)
+;			  _	s	o	m	e	_	o	t	h	e	r	_	i	t	e	m
 TB13E12_Byte_A9B5:  .byte $5F, $1C, $18, $16, $0E, $5F, $18, $1D, $11, $0E, $1B, $5F, $12, $1D, $0E, $16
-;              .    \n   D    o    s    t    _    t    h    o    u    _    w    i    s    h
+;			  .	\n   D	o	s	t	_	t	h	o	u	_	w	i	s	h
 TB13E12_Byte_A9C5:  .byte $47, $FD, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $1C, $11
-;              _    t    o    _    h    a    v    e    _    t    h    e    _   ITEM  ?   END
+;			  _	t	o	_	h	a	v	e	_	t	h	e	_   ITEM  ?   END
 TB13E12_Byte_A9D5:  .byte $5F, $1D, $18, $5F, $11, $0A, $1F, $0E, $5F, $1D, $11, $0E, $5F, $F7, $4B, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E13:
-;              T    h    o    u    _    h    a    s    t    _    g    i    v    e    n    _
-        .byte $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $10, $12, $1F, $0E, $17, $5F;($A9E5)
-;              u    p    _    t    h    y    _   ITEM  .   END
+;			  T	h	o	u	_	h	a	s	t	_	g	i	v	e	n	_
+		.byte $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $10, $12, $1F, $0E, $17, $5F;($A9E5)
+;			  u	p	_	t	h	y	_   ITEM  .   END
 TB13E13_Byte_A9F5:  .byte $1E, $19, $5F, $1D, $11, $22, $5F, $F7, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E14:
-;              W    h    a    t    _    s    h    a    l    l    _    t    h    o    u    _
+;			  W	h	a	t	_	s	h	a	l	l	_	t	h	o	u	_
 TB13E14_Byte_A9FF:  .byte $3A, $11, $0A, $1D, $5F, $1C, $11, $0A, $15, $15, $5F, $1D, $11, $18, $1E, $5F
-;              d    r    o    p    ?   END
+;			  d	r	o	p	?   END
 TB13E14_Byte_AA0F:  .byte $0D, $1B, $18, $19, $4B, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB13E15:
-;              T    h    o    u    _    h    a    s    t    _    d    r    o    p    p    e
-        .byte $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0D, $1B, $18, $19, $19, $0E;($AA15)
-;              d    _    t    h    y    _   ITEM  .   END
+;			  T	h	o	u	_	h	a	s	t	_	d	r	o	p	p	e
+		.byte $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0D, $1B, $18, $19, $19, $0E;($AA15)
+;			  d	_	t	h	y	_   ITEM  .   END
 TB13E15_Byte_AA25:  .byte $0D, $5F, $1D, $11, $22, $5F, $F7, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock14:
 TB14E0:
-;              A    n    d    _    o    b    t    a    i    n    e    d    _    t    h    e
-        .byte $24, $17, $0D, $5F, $18, $0B, $1D, $0A, $12, $17, $0E, $0D, $5F, $1D, $11, $0E;($AA2E)
-;              _   ITEM  .   END
-        .byte $5F, $F7, $47, $FC;($AA3E)
+;			  A	n	d	_	o	b	t	a	i	n	e	d	_	t	h	e
+		.byte $24, $17, $0D, $5F, $18, $0B, $1D, $0A, $12, $17, $0E, $0D, $5F, $1D, $11, $0E;($AA2E)
+;			  _   ITEM  .   END
+		.byte $5F, $F7, $47, $FC;($AA3E)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E1:
-;              T    h    a    t    _    i    s    _    m    u    c    h    _    t    o    o
+;			  T	h	a	t	_	i	s	_	m	u	c	h	_	t	o	o
 TB14E1_Byte_AA42:  .byte $37, $11, $0A, $1D, $5F, $12, $1C, $5F, $16, $1E, $0C, $11, $5F, $1D, $18, $18
-;              _    i    m    p    o    r    t    a    n    t    _    t    o    _    t    h
-        .byte $5F, $12, $16, $19, $18, $1B, $1D, $0A, $17, $1D, $5F, $1D, $18, $5F, $1D, $11;($AA52)
-;              r    o    w    _    a    w    a    y    .   END
+;			  _	i	m	p	o	r	t	a	n	t	_	t	o	_	t	h
+		.byte $5F, $12, $16, $19, $18, $1B, $1D, $0A, $17, $1D, $5F, $1D, $18, $5F, $1D, $11;($AA52)
+;			  r	o	w	_	a	w	a	y	.   END
 TB14E1_Byte_AA62:  .byte $1B, $18, $20, $5F, $0A, $20, $0A, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E2:
-;             NAME  _    s    e    a    r    c    h    e    d    _    t    h    e    _    g
+;			 NAME  _	s	e	a	r	c	h	e	d	_	t	h	e	_	g
 TB14E2_Byte_AA6C:  .byte $F8, $5F, $1C, $0E, $0A, $1B, $0C, $11, $0E, $0D, $5F, $1D, $11, $0E, $5F, $10
-;              r    o    u    n    d    _    a    l    l    _    a    b    o    u    t    .
+;			  r	o	u	n	d	_	a	l	l	_	a	b	o	u	t	.
 TB14E2_Byte_AA7C:  .byte $1B, $18, $1E, $17, $0D, $5F, $0A, $15, $15, $5F, $0A, $0B, $18, $1E, $1D, $47
-;             WAIT  \n  END
+;			 WAIT  \n  END
 TB14E2_Byte_AA8C:  .byte $FB, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E3:
-;              B    u    t    _    t    h    e    r    e    _    f    o    u    n    d    _
-        .byte $25, $1E, $1D, $5F, $1D, $11, $0E, $1B, $0E, $5F, $0F, $18, $1E, $17, $0D, $5F;($AA8F)
-;              n    o    t    h    i    n    g    .   END
+;			  B	u	t	_	t	h	e	r	e	_	f	o	u	n	d	_
+		.byte $25, $1E, $1D, $5F, $1D, $11, $0E, $1B, $0E, $5F, $0F, $18, $1E, $17, $0D, $5F;($AA8F)
+;			  n	o	t	h	i	n	g	.   END
 TB14E3_Byte_AA9F:  .byte $17, $18, $1D, $11, $12, $17, $10, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E4:
-;              T    h    e    r    e    _    i    s    _    a    _    t    r    e    a    s
-        .byte $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $0A, $5F, $1D, $1B, $0E, $0A, $1C;($AAA8)
-;              u    r    e    _    b    o    x    .   END
-        .byte $1E, $1B, $0E, $5F, $0B, $18, $21, $47, $FC;($AAB8)
+;			  T	h	e	r	e	_	i	s	_	a	_	t	r	e	a	s
+		.byte $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $0A, $5F, $1D, $1B, $0E, $0A, $1C;($AAA8)
+;			  u	r	e	_	b	o	x	.   END
+		.byte $1E, $1B, $0E, $5F, $0B, $18, $21, $47, $FC;($AAB8)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E5:
-;             NAME  _    d    i    s    c    o    v    e    r    s    _    t    h    e    _
+;			 NAME  _	d	i	s	c	o	v	e	r	s	_	t	h	e	_
 TB14E5_Byte_AAC1:  .byte $F8, $5F, $0D, $12, $1C, $0C, $18, $1F, $0E, $1B, $1C, $5F, $1D, $11, $0E, $5F
-;             ITEM  .   END
-        .byte $F7, $47, $FC     ;($AAD1)
+;			 ITEM  .   END
+		.byte $F7, $47, $FC	 ;($AAD1)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E6:
-;              F    e    e    l    _    t    h    e    _    w    i    n    d    _    b    l
+;			  F	e	e	l	_	t	h	e	_	w	i	n	d	_	b	l
 TB14E6_Byte_AAD4:  .byte $29, $0E, $0E, $15, $5F, $1D, $11, $0E, $5F, $20, $12, $17, $0D, $5F, $0B, $15
-;              o    w    i    n    g    _    f    r    o    m    _    b    e    h    i    n
+;			  o	w	i	n	g	_	f	r	o	m	_	b	e	h	i	n
 TB14E6_Byte_AAE4:  .byte $18, $20, $12, $17, $10, $5F, $0F, $1B, $18, $16, $5F, $0B, $0E, $11, $12, $17
-;              d    _    t    h    e    _    t    h    r    o    n    e    .   END
+;			  d	_	t	h	e	_	t	h	r	o	n	e	.   END
 TB14E6_Byte_AAF4:  .byte $0D, $5F, $1D, $11, $0E, $5F, $1D, $11, $1B, $18, $17, $0E, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E7:
-;              T    h    e    r    e    _    i    s    _    n    o    t    h    i    n    g
-        .byte $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $17, $18, $1D, $11, $12, $17, $10;($AB02)
-;              _    t    o    _    t    a    k    e    _    h    e    r    e    ,    _   NAME
+;			  T	h	e	r	e	_	i	s	_	n	o	t	h	i	n	g
+		.byte $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $17, $18, $1D, $11, $12, $17, $10;($AB02)
+;			  _	t	o	_	t	a	k	e	_	h	e	r	e	,	_   NAME
 TB14E7_Byte_AB12:  .byte $5F, $1D, $18, $5F, $1D, $0A, $14, $0E, $5F, $11, $0E, $1B, $0E, $48, $5F, $F8
-;              .   END
-        .byte $47, $FC          ;($AB22)
+;			  .   END
+		.byte $47, $FC		  ;($AB22)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E8:
-;              O    f    _    G    O    L    D    _    t    h    o    u    _    h    a    s
+;			  O	f	_	G	O	L	D	_	t	h	o	u	_	h	a	s
 TB14E8_Byte_AB24:  .byte $32, $0F, $5F, $2A, $32, $2F, $27, $5F, $1D, $11, $18, $1E, $5F, $11, $0A, $1C
-;              t    _    g    a    i    n    e    d    _   AMNT END
-        .byte $1D, $5F, $10, $0A, $12, $17, $0E, $0D, $5F, $F5, $FC;($AB34)
+;			  t	_	g	a	i	n	e	d	_   AMNT END
+		.byte $1D, $5F, $10, $0A, $12, $17, $0E, $0D, $5F, $F5, $FC;($AB34)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E9:
-;              F    o    r    t    u    n    e    _    s    m    i    l    e    s    _    u
+;			  F	o	r	t	u	n	e	_	s	m	i	l	e	s	_	u
 TB14E9_Byte_AB3F:  .byte $29, $18, $1B, $1D, $1E, $17, $0E, $5F, $1C, $16, $12, $15, $0E, $1C, $5F, $1E
-;              p    o    n    _    t    h    e    e    ,    _   NAME  .    \n   T    h    o
+;			  p	o	n	_	t	h	e	e	,	_   NAME  .	\n   T	h	o
 TB14E9_Byte_AB4F:  .byte $19, $18, $17, $5F, $1D, $11, $0E, $0E, $48, $5F, $F8, $47, $FD, $37, $11, $18
-;              u    _    h    a    s    t    _    f    o    u    n    d    _    t    h    e
+;			  u	_	h	a	s	t	_	f	o	u	n	d	_	t	h	e
 TB14E9_Byte_AB5F:  .byte $1E, $5F, $11, $0A, $1C, $1D, $5F, $0F, $18, $1E, $17, $0D, $5F, $1D, $11, $0E
-;              _   ITEM  .   END
+;			  _   ITEM  .   END
 TB14E9_Byte_AB6F:  .byte $5F, $F7, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E10:
-;              U    n    f    o    r    t    u    n    a    t    e    l    y    ,    _    i
+;			  U	n	f	o	r	t	u	n	a	t	e	l	y	,	_	i
 TB14E10_Byte_AB73:  .byte $38, $17, $0F, $18, $1B, $1D, $1E, $17, $0A, $1D, $0E, $15, $22, $48, $5F, $12
-;              t    _    i    s    _    e    m    p    t    y    .   END
+;			  t	_	i	s	_	e	m	p	t	y	.   END
 TB14E10_Byte_AB83:  .byte $1D, $5F, $12, $1C, $5F, $0E, $16, $19, $1D, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E11:
-;              H    e    e    d    _    m    y    _    v    o    i    c    e    ,    \n   '
+;			  H	e	e	d	_	m	y	_	v	o	i	c	e	,	\n   '
 TB14E11_Byte_AB8F:  .byte $2B, $0E, $0E, $0D, $5F, $16, $22, $5F, $1F, $18, $12, $0C, $0E, $48, $FD, $50
-;             NAME  ,    _    f    o    r    _    t    h    i    s    _    i    s    _    G
-        .byte $F8, $48, $5F, $0F, $18, $1B, $5F, $1D, $11, $12, $1C, $5F, $12, $1C, $5F, $2A;($AB9F)
-;              w    a    e    l    i    n    .    \n   T    o    _    r    e    a    c    h
+;			 NAME  ,	_	f	o	r	_	t	h	i	s	_	i	s	_	G
+		.byte $F8, $48, $5F, $0F, $18, $1B, $5F, $1D, $11, $12, $1C, $5F, $12, $1C, $5F, $2A;($AB9F)
+;			  w	a	e	l	i	n	.	\n   T	o	_	r	e	a	c	h
 TB14E11_Byte_ABAF:  .byte $20, $0A, $0E, $15, $12, $17, $47, $FD, $37, $18, $5F, $1B, $0E, $0A, $0C, $11
-;              _    t    h    e    _    n    e    x    t    _    l    e    v    e    l    _
+;			  _	t	h	e	_	n	e	x	t	_	l	e	v	e	l	_
 TB14E11_Byte_ABBF:  .byte $5F, $1D, $11, $0E, $5F, $17, $0E, $21, $1D, $5F, $15, $0E, $1F, $0E, $15, $5F
-;              t    h    o    u    _    m    u    s    t    _    r    a    i    s    e    _
-        .byte $1D, $11, $18, $1E, $5F, $16, $1E, $1C, $1D, $5F, $1B, $0A, $12, $1C, $0E, $5F;($ABCF)
-;              t    h    y    _    E    x    p    e    r    i    e    n    c    e   PNTS  _
+;			  t	h	o	u	_	m	u	s	t	_	r	a	i	s	e	_
+		.byte $1D, $11, $18, $1E, $5F, $16, $1E, $1C, $1D, $5F, $1B, $0A, $12, $1C, $0E, $5F;($ABCF)
+;			  t	h	y	_	E	x	p	e	r	i	e	n	c	e   PNTS  _
 TB14E11_Byte_ABDF:  .byte $1D, $11, $22, $5F, $28, $21, $19, $0E, $1B, $12, $0E, $17, $0C, $0E, $F0, $5F
-;              b    y    _   AMNT  .    \n   M    y    _    h    o    p    e    _    i    s
+;			  b	y	_   AMNT  .	\n   M	y	_	h	o	p	e	_	i	s
 TB14E11_Byte_ABEF:  .byte $0B, $22, $5F, $F5, $47, $FD, $30, $22, $5F, $11, $18, $19, $0E, $5F, $12, $1C
-;              _    w    i    t    h    _    t    h    e    e    .'  WAIT END
+;			  _	w	i	t	h	_	t	h	e	e	.'  WAIT END
 TB14E11_Byte_ABFF:  .byte $5F, $20, $12, $1D, $11, $5F, $1D, $11, $0E, $0E, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E12:
-;              '    F    r    o    m    _    w    h    e    r    e    _    t    h    o    u
-        .byte $50, $29, $1B, $18, $16, $5F, $20, $11, $0E, $1B, $0E, $5F, $1D, $11, $18, $1E;($AC0C)
-;              _    a    r    t    _    n    o    w    ,    _    m    y    _    c    a    s
-        .byte $5F, $0A, $1B, $1D, $5F, $17, $18, $20, $48, $5F, $16, $22, $5F, $0C, $0A, $1C;($AC1C)
-;              t    l    e    _    l    i    e    s    ..  END
+;			  '	F	r	o	m	_	w	h	e	r	e	_	t	h	o	u
+		.byte $50, $29, $1B, $18, $16, $5F, $20, $11, $0E, $1B, $0E, $5F, $1D, $11, $18, $1E;($AC0C)
+;			  _	a	r	t	_	n	o	w	,	_	m	y	_	c	a	s
+		.byte $5F, $0A, $1B, $1D, $5F, $17, $18, $20, $48, $5F, $16, $22, $5F, $0C, $0A, $1C;($AC1C)
+;			  t	l	e	_	l	i	e	s	..  END
 TB14E12_Byte_AC2C:  .byte $1D, $15, $0E, $5F, $15, $12, $0E, $1C, $45, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E13:
-;             END
+;			 END
 TB14E13_Byte_AC36:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E14:
-;             INDT AMNT  _    t    o    _    t    h    e    _    n    o    r    t    h    _
+;			 INDT AMNT  _	t	o	_	t	h	e	_	n	o	r	t	h	_
 TB14E14_Byte_AC37:  .byte $57, $F5, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $17, $18, $1B, $1D, $11, $5F
-;              a    n    d    ..  END
+;			  a	n	d	..  END
 TB14E14_Byte_AC47:  .byte $0A, $17, $0D, $45, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB14E15:
-;             INDT AMNT  _    t    o    _    t    h    e    _    s    o    u    t    h    _
-        .byte $57, $F5, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $5F;($AC4C)
-;              a    n    d    ..  END
+;			 INDT AMNT  _	t	o	_	t	h	e	_	s	o	u	t	h	_
+		.byte $57, $F5, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $1C, $18, $1E, $1D, $11, $5F;($AC4C)
+;			  a	n	d	..  END
 TB14E15_Byte_AC5C:  .byte $0A, $17, $0D, $45, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock15:
 TB15E0:
-;             INDT AMNT  _    t    o    _    t    h    e    _    e    a    s    t    .'  WAIT
+;			 INDT AMNT  _	t	o	_	t	h	e	_	e	a	s	t	.'  WAIT
 TB15E0_Byte_AC61:  .byte $57, $F5, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $0E, $0A, $1C, $1D, $52, $FB
-;             END
+;			 END
 TB15E0_Byte_AC71:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E1:
-;             INDT AMNT  _    t    o    _    t    h    e    _    w    e    s    t    .'  WAIT
+;			 INDT AMNT  _	t	o	_	t	h	e	_	w	e	s	t	.'  WAIT
 TB15E1_Byte_AC72:  .byte $57, $F5, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $20, $0E, $1C, $1D, $52, $FB
-;             END
+;			 END
 TB15E1_Byte_AC82:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E2:
-;              A   ENM2  _    d    r    a    w    s    _    n    e    a    r    !   END
+;			  A   ENM2  _	d	r	a	w	s	_	n	e	a	r	!   END
 TB15E2_Byte_AC83:  .byte $24, $F1, $5F, $0D, $1B, $0A, $20, $1C, $5F, $17, $0E, $0A, $1B, $4C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E3:
-;              _    \n   T    h    e    _   ENMY  _    i    s    _    r    u    n    n    i
-        .byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $12, $1C, $5F, $1B, $1E, $17, $17, $12;($AC92)
-;              n    g    _    a    w    a    y    .   END
-        .byte $17, $10, $5F, $0A, $20, $0A, $22, $47, $FC;($ACA2)
+;			  _	\n   T	h	e	_   ENMY  _	i	s	_	r	u	n	n	i
+		.byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $12, $1C, $5F, $1B, $1E, $17, $17, $12;($AC92)
+;			  n	g	_	a	w	a	y	.   END
+		.byte $17, $10, $5F, $0A, $20, $0A, $22, $47, $FC;($ACA2)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E4:
-;              _    \n   T    h    e    _   ENMY  _    a    t    t    a    c    k    e    d
+;			  _	\n   T	h	e	_   ENMY  _	a	t	t	a	c	k	e	d
 TB15E4_Byte_ACAB:  .byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $0A, $1D, $1D, $0A, $0C, $14, $0E, $0D
-;              _    b    e    f    o    r    e    _   NAME  _    w    a    s    _    r    e
+;			  _	b	e	f	o	r	e	_   NAME  _	w	a	s	_	r	e
 TB15E4_Byte_ACBB:  .byte $5F, $0B, $0E, $0F, $18, $1B, $0E, $5F, $F8, $5F, $20, $0A, $1C, $5F, $1B, $0E
-;              a    d    y    .   END
+;			  a	d	y	.   END
 TB15E4_Byte_ACCB:  .byte $0A, $0D, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E5:
-;             NAME  _    a    t    t    a    c    k    s    !   END
+;			 NAME  _	a	t	t	a	c	k	s	!   END
 TB15E5_Byte_ACD0:  .byte $F8, $5F, $0A, $1D, $1D, $0A, $0C, $14, $1C, $4C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E6:
-;              T    h    e    _   ENMY  '    s    _    H    i    t   PNTS  _    h    a    v
-        .byte $37, $11, $0E, $5F, $F4, $53, $1C, $5F, $2B, $12, $1D, $F0, $5F, $11, $0A, $1F;($ACDB)
-;              e    _    b    e    e    n    _    r    e    d    u    c    e    d    _    b
+;			  T	h	e	_   ENMY  '	s	_	H	i	t   PNTS  _	h	a	v
+		.byte $37, $11, $0E, $5F, $F4, $53, $1C, $5F, $2B, $12, $1D, $F0, $5F, $11, $0A, $1F;($ACDB)
+;			  e	_	b	e	e	n	_	r	e	d	u	c	e	d	_	b
 TB15E6_Byte_ACEB:  .byte $0E, $5F, $0B, $0E, $0E, $17, $5F, $1B, $0E, $0D, $1E, $0C, $0E, $0D, $5F, $0B
-;              y    _   AMNT  .   END
+;			  y	_   AMNT  .   END
 TB15E6_Byte_ACFB:  .byte $22, $5F, $F5, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E7:
-;              T    h    e    _    a    t    t    a    c    k    _    f    a    i    l    e
-        .byte $37, $11, $0E, $5F, $0A, $1D, $1D, $0A, $0C, $14, $5F, $0F, $0A, $12, $15, $0E;($AD00)
-;              d    _    a    n    d    _    t    h    e    r    e    _    w    a    s    _
+;			  T	h	e	_	a	t	t	a	c	k	_	f	a	i	l	e
+		.byte $37, $11, $0E, $5F, $0A, $1D, $1D, $0A, $0C, $14, $5F, $0F, $0A, $12, $15, $0E;($AD00)
+;			  d	_	a	n	d	_	t	h	e	r	e	_	w	a	s	_
 TB15E7_Byte_AD10:  .byte $0D, $5F, $0A, $17, $0D, $5F, $1D, $11, $0E, $1B, $0E, $5F, $20, $0A, $1C, $5F
-;              n    o    _    l    o    s    s    _    o    f    _    H    i    t    _    P
-        .byte $17, $18, $5F, $15, $18, $1C, $1C, $5F, $18, $0F, $5F, $2B, $12, $1D, $5F, $33;($AD20)
-;              o    i    n    t    s    !   END
+;			  n	o	_	l	o	s	s	_	o	f	_	H	i	t	_	P
+		.byte $17, $18, $5F, $15, $18, $1C, $1C, $5F, $18, $0F, $5F, $2B, $12, $1D, $5F, $33;($AD20)
+;			  o	i	n	t	s	!   END
 TB15E7_Byte_AD30:  .byte $18, $12, $17, $1D, $1C, $4C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E8:
-;              _    \n   C    o    m    m    a    n    d    ?   END
-        .byte $60, $FD, $26, $18, $16, $16, $0A, $17, $0D, $4B, $FC;($AD37)
+;			  _	\n   C	o	m	m	a	n	d	?   END
+		.byte $60, $FD, $26, $18, $16, $16, $0A, $17, $0D, $4B, $FC;($AD37)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E9:
-;              T    h    a    t    _    c    a    n    n    o    t    _    b    e    _    u
-        .byte $37, $11, $0A, $1D, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0B, $0E, $5F, $1E;($AD42)
-;              s    e    d    _    i    n    _    b    a    t    t    l    e    .   END
+;			  T	h	a	t	_	c	a	n	n	o	t	_	b	e	_	u
+		.byte $37, $11, $0A, $1D, $5F, $0C, $0A, $17, $17, $18, $1D, $5F, $0B, $0E, $5F, $1E;($AD42)
+;			  s	e	d	_	i	n	_	b	a	t	t	l	e	.   END
 TB15E9_Byte_AD52:  .byte $1C, $0E, $0D, $5F, $12, $17, $5F, $0B, $0A, $1D, $1D, $15, $0E, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E10:
-;              _    \n   B    u    t    _    t    h    a    t    _    s    p    e    l    l
-        .byte $60, $FD, $25, $1E, $1D, $5F, $1D, $11, $0A, $1D, $5F, $1C, $19, $0E, $15, $15;($AD61)
-;              _    h    a    t    h    _    b    e    e    n    _    b    l    o    c    k
+;			  _	\n   B	u	t	_	t	h	a	t	_	s	p	e	l	l
+		.byte $60, $FD, $25, $1E, $1D, $5F, $1D, $11, $0A, $1D, $5F, $1C, $19, $0E, $15, $15;($AD61)
+;			  _	h	a	t	h	_	b	e	e	n	_	b	l	o	c	k
 TB15E10_Byte_AD71:  .byte $5F, $11, $0A, $1D, $11, $5F, $0B, $0E, $0E, $17, $5F, $0B, $15, $18, $0C, $14
-;              e    d    .   END
+;			  e	d	.   END
 TB15E10_Byte_AD81:  .byte $0E, $0D, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E11:
-;              T    h    e    _    s    p    e    l    l    _    w    i    l    l    _    n
+;			  T	h	e	_	s	p	e	l	l	_	w	i	l	l	_	n
 TB15E11_Byte_AD85:  .byte $37, $11, $0E, $5F, $1C, $19, $0E, $15, $15, $5F, $20, $12, $15, $15, $5F, $17
-;              o    t    _    w    o    r    k    .   END
-        .byte $18, $1D, $5F, $20, $18, $1B, $14, $47, $FC;($AD95)
+;			  o	t	_	w	o	r	k	.   END
+		.byte $18, $1D, $5F, $20, $18, $1B, $14, $47, $FC;($AD95)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E12:
-;              T    h    o    u    _    h    a    s    t    _    p    u    t    _    t    h
+;			  T	h	o	u	_	h	a	s	t	_	p	u	t	_	t	h
 TB15E12_Byte_AD9E:  .byte $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $19, $1E, $1D, $5F, $1D, $11
-;              e    _   ENMY  _    t    o    _    s    l    e    e    p    .   END
+;			  e	_   ENMY  _	t	o	_	s	l	e	e	p	.   END
 TB15E12_Byte_ADAE:  .byte $0E, $5F, $F4, $5F, $1D, $18, $5F, $1C, $15, $0E, $0E, $19, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E13:
-;              T    h    e    _   ENMY  '    s    _    s    p    e    l    l    _    h    a
+;			  T	h	e	_   ENMY  '	s	_	s	p	e	l	l	_	h	a
 TB15E13_Byte_ADBC:  .byte $37, $11, $0E, $5F, $F4, $53, $1C, $5F, $1C, $19, $0E, $15, $15, $5F, $11, $0A
-;              t    h    _    b    e    e    n    _    b    l    o    c    k    e    d    .
+;			  t	h	_	b	e	e	n	_	b	l	o	c	k	e	d	.
 TB15E13_Byte_ADCC:  .byte $1D, $11, $5F, $0B, $0E, $0E, $17, $5F, $0B, $15, $18, $0C, $14, $0E, $0D, $47
-;             END
+;			 END
 TB15E13_Byte_ADDC:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E14:
-;              _    \n   T    h    o    u    _    h    a    s    t    _    d    o    n    e
+;			  _	\n   T	h	o	u	_	h	a	s	t	_	d	o	n	e
 TB15E14_Byte_ADDD:  .byte $60, $FD, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0D, $18, $17, $0E
-;              _    w    e    l    l    _    i    n    _    d    e    f    e    a    t    i
+;			  _	w	e	l	l	_	i	n	_	d	e	f	e	a	t	i
 TB15E14_Byte_ADED:  .byte $5F, $20, $0E, $15, $15, $5F, $12, $17, $5F, $0D, $0E, $0F, $0E, $0A, $1D, $12
-;              n    g    _    t    h    e    _   ENMY  .    \n   _   END
-        .byte $17, $10, $5F, $1D, $11, $0E, $5F, $F4, $47, $FD, $60, $FC;($ADFD)
+;			  n	g	_	t	h	e	_   ENMY  .	\n   _   END
+		.byte $17, $10, $5F, $1D, $11, $0E, $5F, $F4, $47, $FD, $60, $FC;($ADFD)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB15E15:
-;              T    h    y    _    E    x    p    e    r    i    e    n    c    e    \n   i
-        .byte $37, $11, $22, $5F, $28, $21, $19, $0E, $1B, $12, $0E, $17, $0C, $0E, $FD, $12;($AE09)
-;              n    c    r    e    a    s    e    s    _    b    y    _   AMNT  .   END
+;			  T	h	y	_	E	x	p	e	r	i	e	n	c	e	\n   i
+		.byte $37, $11, $22, $5F, $28, $21, $19, $0E, $1B, $12, $0E, $17, $0C, $0E, $FD, $12;($AE09)
+;			  n	c	r	e	a	s	e	s	_	b	y	_   AMNT  .   END
 TB15E15_Byte_AE19:  .byte $17, $0C, $1B, $0E, $0A, $1C, $0E, $1C, $5F, $0B, $22, $5F, $F5, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock16:
 TB16E0:
-;              T    h    y    _    G    O    L    D    \n   i    n    c    r    e    a    s
-        .byte $37, $11, $22, $5F, $2A, $32, $2F, $27, $FD, $12, $17, $0C, $1B, $0E, $0A, $1C;($AE28)
-;              e    s    _    b    y    _   AMNT  .   END
-        .byte $0E, $1C, $5F, $0B, $22, $5F, $F5, $47, $FC;($AE38)
+;			  T	h	y	_	G	O	L	D	\n   i	n	c	r	e	a	s
+		.byte $37, $11, $22, $5F, $2A, $32, $2F, $27, $FD, $12, $17, $0C, $1B, $0E, $0A, $1C;($AE28)
+;			  e	s	_	b	y	_   AMNT  .   END
+		.byte $0E, $1C, $5F, $0B, $22, $5F, $F5, $47, $FC;($AE38)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E1:
-;              _   WAIT  \n   C    o    u    r    a    g    e    _    a    n    d    _    w
+;			  _   WAIT  \n   C	o	u	r	a	g	e	_	a	n	d	_	w
 TB16E1_Byte_AE41:  .byte $60, $FB, $FD, $26, $18, $1E, $1B, $0A, $10, $0E, $5F, $0A, $17, $0D, $5F, $20
-;              i    t    _    h    a    v    e    _    s    e    r    v    e    d    _    t
+;			  i	t	_	h	a	v	e	_	s	e	r	v	e	d	_	t
 TB16E1_Byte_AE51:  .byte $12, $1D, $5F, $11, $0A, $1F, $0E, $5F, $1C, $0E, $1B, $1F, $0E, $0D, $5F, $1D
-;              h    e    e    _    w    e    l    l    .    \n   T    h    o    u    _    h
+;			  h	e	e	_	w	e	l	l	.	\n   T	h	o	u	_	h
 TB16E1_Byte_AE61:  .byte $11, $0E, $0E, $5F, $20, $0E, $15, $15, $47, $FD, $37, $11, $18, $1E, $5F, $11
-;              a    s    t    _    b    e    e    n    _    p    r    o    m    o    t    e
+;			  a	s	t	_	b	e	e	n	_	p	r	o	m	o	t	e
 TB16E1_Byte_AE71:  .byte $0A, $1C, $1D, $5F, $0B, $0E, $0E, $17, $5F, $19, $1B, $18, $16, $18, $1D, $0E
-;              d    _    t    o    _    t    h    e    _    n    e    x    t    _    l    e
+;			  d	_	t	o	_	t	h	e	_	n	e	x	t	_	l	e
 TB16E1_Byte_AE81:  .byte $0D, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $17, $0E, $21, $1D, $5F, $15, $0E
-;              v    e    l    .   WAIT END
+;			  v	e	l	.   WAIT END
 TB16E1_Byte_AE91:  .byte $1F, $0E, $15, $47, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E2:
-;              _    \n   T    h    o    u    _    h    a    s    t    _    l    e    a    r
+;			  _	\n   T	h	o	u	_	h	a	s	t	_	l	e	a	r
 TB16E2_Byte_AE97:  .byte $60, $FD, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $15, $0E, $0A, $1B
-;              n    e    d    _    a    _    n    e    w    _    s    p    e    l    l    .
+;			  n	e	d	_	a	_	n	e	w	_	s	p	e	l	l	.
 TB16E2_Byte_AEA7:  .byte $17, $0E, $0D, $5F, $0A, $5F, $17, $0E, $20, $5F, $1C, $19, $0E, $15, $15, $47
-;             END
+;			 END
 TB16E2_Byte_AEB7:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E3:
-;              Q    u    i    e    t    l    y    _    G    o    l    e    m    _    c    l
+;			  Q	u	i	e	t	l	y	_	G	o	l	e	m	_	c	l
 TB16E3_Byte_AEB8:  .byte $34, $1E, $12, $0E, $1D, $15, $22, $5F, $2A, $18, $15, $0E, $16, $5F, $0C, $15
-;              o    s    e    s    _    h    i    s    _    e    y    e    s    _    a    n
+;			  o	s	e	s	_	h	i	s	_	e	y	e	s	_	a	n
 TB16E3_Byte_AEC8:  .byte $18, $1C, $0E, $1C, $5F, $11, $12, $1C, $5F, $0E, $22, $0E, $1C, $5F, $0A, $17
-;              d    _    s    e    t    t    l    e    s    _    i    n    t    o    _    s
+;			  d	_	s	e	t	t	l	e	s	_	i	n	t	o	_	s
 TB16E3_Byte_AED8:  .byte $0D, $5F, $1C, $0E, $1D, $1D, $15, $0E, $1C, $5F, $12, $17, $1D, $18, $5F, $1C
-;              l    e    e    p    .   END
-        .byte $15, $0E, $0E, $19, $47, $FC;($AEE8)
+;			  l	e	e	p	.   END
+		.byte $15, $0E, $0E, $19, $47, $FC;($AEE8)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E4:
-;             ENMY  _    l    o    o    k    s    _    h    a    p    p    y    .   END
+;			 ENMY  _	l	o	o	k	s	_	h	a	p	p	y	.   END
 TB16E4_Byte_AEEE:  .byte $F4, $5F, $15, $18, $18, $14, $1C, $5F, $11, $0A, $19, $19, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E5:
-;              _    \n  NAME  _    s    t    a    r    t    e    d    _    t    o    _    r
-        .byte $60, $FD, $F8, $5F, $1C, $1D, $0A, $1B, $1D, $0E, $0D, $5F, $1D, $18, $5F, $1B;($AEFD)
-;              u    n    _    a    w    a    y    .   END
+;			  _	\n  NAME  _	s	t	a	r	t	e	d	_	t	o	_	r
+		.byte $60, $FD, $F8, $5F, $1C, $1D, $0A, $1B, $1D, $0E, $0D, $5F, $1D, $18, $5F, $1B;($AEFD)
+;			  u	n	_	a	w	a	y	.   END
 TB16E5_Byte_AF0D:  .byte $1E, $17, $5F, $0A, $20, $0A, $22, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E6:
-;              B    u    t    _    w    a    s    _    b    l    o    c    k    e    d    _
+;			  B	u	t	_	w	a	s	_	b	l	o	c	k	e	d	_
 TB16E6_Byte_AF16:  .byte $25, $1E, $1D, $5F, $20, $0A, $1C, $5F, $0B, $15, $18, $0C, $14, $0E, $0D, $5F
-;              i    n    _    f    r    o    n    t    .   END
+;			  i	n	_	f	r	o	n	t	.   END
 TB16E6_Byte_AF26:  .byte $12, $17, $5F, $0F, $1B, $18, $17, $1D, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E7:
-;             NAME  _    u    s    e    d    _    t    h    e    _    H    e    r    b    .
-        .byte $F8, $5F, $1E, $1C, $0E, $0D, $5F, $1D, $11, $0E, $5F, $2B, $0E, $1B, $0B, $47;($AF30)
-;             END
+;			 NAME  _	u	s	e	d	_	t	h	e	_	H	e	r	b	.
+		.byte $F8, $5F, $1E, $1C, $0E, $0D, $5F, $1D, $11, $0E, $5F, $2B, $0E, $1B, $0B, $47;($AF30)
+;			 END
 TB16E7_Byte_AF40:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E8:
-;              _    \n   T    h    e    _   ENMY  _    i    s    _    a    s    l    e    e
-        .byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $12, $1C, $5F, $0A, $1C, $15, $0E, $0E;($AF41)
-;              p    .   END
+;			  _	\n   T	h	e	_   ENMY  _	i	s	_	a	s	l	e	e
+		.byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $12, $1C, $5F, $0A, $1C, $15, $0E, $0E;($AF41)
+;			  p	.   END
 TB16E8_Byte_AF51:  .byte $19, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E9:
-;              _    \n   T    h    e    _   ENMY  _    a    t    t    a    c    k    s    !
-        .byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $0A, $1D, $1D, $0A, $0C, $14, $1C, $4C;($AF54)
-;             END
-        .byte $FC               ;($AF64)
+;			  _	\n   T	h	e	_   ENMY  _	a	t	t	a	c	k	s	!
+		.byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $0A, $1D, $1D, $0A, $0C, $14, $1C, $4C;($AF54)
+;			 END
+		.byte $FC			   ;($AF64)
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -2841,895 +2841,895 @@ TB16E10:
 ; PRG0: $EF (file offset 0xAF7C)
 ; PRG1: $F0 (file offset 0xAF7C)
 ;
-;              T    h    y    _    H    i    t   PLRL  _    d    e    c    r    e    a    s
+;			  T	h	y	_	H	i	t   PLRL  _	d	e	c	r	e	a	s
 TB16E10_Byte_AF65:  .byte $37, $11, $22, $5F, $2B, $12, $1D, $F0, $5F, $0D, $0E, $0C, $1B, $0E, $0A, $1C  ;PRG1 version
 ;TB16E10_Byte_AF65:  .byte $37, $11, $22, $5F, $2B, $12, $1D, $EF, $5F, $0D, $0E, $0C, $1B, $0E, $0A, $1C  ;PRG0 version (comment out for PRG1)
-;              e    d    _    b    y    _   AMNT  .   END
-        .byte $0E, $0D, $5F, $0B, $22, $5F, $F5, $47, $FC;($AF75)
+;			  e	d	_	b	y	_   AMNT  .   END
+		.byte $0E, $0D, $5F, $0B, $22, $5F, $F5, $47, $FC;($AF75)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E11:
-;              A    _    m    i    s    s    !    _    N    o    _    d    a    m    a    g
+;			  A	_	m	i	s	s	!	_	N	o	_	d	a	m	a	g
 TB16E11_Byte_AF7E:  .byte $24, $5F, $16, $12, $1C, $1C, $4C, $5F, $31, $18, $5F, $0D, $0A, $16, $0A, $10
-;              e    _    h    a    t    h    _    b    e    e    n    _    s    c    o    r
+;			  e	_	h	a	t	h	_	b	e	e	n	_	s	c	o	r
 TB16E11_Byte_AF8E:  .byte $0E, $5F, $11, $0A, $1D, $11, $5F, $0B, $0E, $0E, $17, $5F, $1C, $0C, $18, $1B
-;              e    d    !   END
+;			  e	d	!   END
 TB16E11_Byte_AF9E:  .byte $0E, $0D, $4C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E12:
-;              _    \n  ENMY END
+;			  _	\n  ENMY END
 TB16E12_Byte_AFA2:  .byte $60, $FD, $F4, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E13:
-;              c    h    a    n    t    s    _    t    h    e    _    s    p    e    l    l
+;			  c	h	a	n	t	s	_	t	h	e	_	s	p	e	l	l
 TB16E13_Byte_AFA6:  .byte $0C, $11, $0A, $17, $1D, $1C, $5F, $1D, $11, $0E, $5F, $1C, $19, $0E, $15, $15
-;              _    o    f    _   SPEL  .   END
+;			  _	o	f	_   SPEL  .   END
 TB16E13_Byte_AFB6:  .byte $5F, $18, $0F, $5F, $F6, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E14:
-;             NAME  '    s    _    s    p    e    l    l    _    i    s    _    b    l    o
+;			 NAME  '	s	_	s	p	e	l	l	_	i	s	_	b	l	o
 TB16E14_Byte_AFBD:  .byte $F8, $53, $1C, $5F, $1C, $19, $0E, $15, $15, $5F, $12, $1C, $5F, $0B, $15, $18
-;              c    k    e    d    .   END
+;			  c	k	e	d	.   END
 TB16E14_Byte_AFCD:  .byte $0C, $14, $0E, $0D, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB16E15:
-;              _    \n   T    h    e    _   ENMY  _    i    s    _    b    r    e    a    t
+;			  _	\n   T	h	e	_   ENMY  _	i	s	_	b	r	e	a	t
 TB16E15_Byte_AFD3:  .byte $60, $FD, $37, $11, $0E, $5F, $F4, $5F, $12, $1C, $5F, $0B, $1B, $0E, $0A, $1D
-;              h    i    n    g    _    f    i    r    e    .   END
+;			  h	i	n	g	_	f	i	r	e	.   END
 TB16E15_Byte_AFE3:  .byte $11, $12, $17, $10, $5F, $0F, $12, $1B, $0E, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock17:
 TB17E0:
-;              '    I    f    _    t    h    o    u    _    h    a    s    t    _    c    o
+;			  '	I	f	_	t	h	o	u	_	h	a	s	t	_	c	o
 TB17E0_Byte_AFEE:  .byte $50, $2C, $0F, $5F, $1D, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0C, $18
-;              l    l    e    c    t    e    d    _    a    l    l    _    t    h    e    _
+;			  l	l	e	c	t	e	d	_	a	l	l	_	t	h	e	_
 TB17E0_Byte_AFFE:  .byte $15, $15, $0E, $0C, $1D, $0E, $0D, $5F, $0A, $15, $15, $5F, $1D, $11, $0E, $5F
-;              T    r    e    a    s    u    r    e    _    C    h    e    s    t    s    ,
+;			  T	r	e	a	s	u	r	e	_	C	h	e	s	t	s	,
 TB17E0_Byte_B00E:  .byte $37, $1B, $0E, $0A, $1C, $1E, $1B, $0E, $5F, $26, $11, $0E, $1C, $1D, $1C, $48
-;              \n   a    _    k    e    y    _    w    i    l    l    _    b    e    _    f
+;			  \n   a	_	k	e	y	_	w	i	l	l	_	b	e	_	f
 TB17E0_Byte_B01E:  .byte $FD, $0A, $5F, $14, $0E, $22, $5F, $20, $12, $15, $15, $5F, $0B, $0E, $5F, $0F
-;              o    u    n    d    .'  WAIT  \n   '    O    n    c    e    _    u    s    e
+;			  o	u	n	d	.'  WAIT  \n   '	O	n	c	e	_	u	s	e
 TB17E0_Byte_B02E:  .byte $18, $1E, $17, $0D, $52, $FB, $FD, $50, $32, $17, $0C, $0E, $5F, $1E, $1C, $0E
-;              d    ,    _    t    h    e    _    k    e    y    _    w    i    l    l    _
+;			  d	,	_	t	h	e	_	k	e	y	_	w	i	l	l	_
 TB17E0_Byte_B03E:  .byte $0D, $48, $5F, $1D, $11, $0E, $5F, $14, $0E, $22, $5F, $20, $12, $15, $15, $5F
-;              d    i    s    a    p    p    e    a    r    ,    _    b    u    t    _    t
+;			  d	i	s	a	p	p	e	a	r	,	_	b	u	t	_	t
 TB17E0_Byte_B04E:  .byte $0D, $12, $1C, $0A, $19, $19, $0E, $0A, $1B, $48, $5F, $0B, $1E, $1D, $5F, $1D
-;              h    e    _    d    o    o    r    _    w    i    l    l    _    b    e    _
-        .byte $11, $0E, $5F, $0D, $18, $18, $1B, $5F, $20, $12, $15, $15, $5F, $0B, $0E, $5F;($B05E)
-;              o    p    e    n    _    a    n    d    _    t    h    o    u    _    m    a
+;			  h	e	_	d	o	o	r	_	w	i	l	l	_	b	e	_
+		.byte $11, $0E, $5F, $0D, $18, $18, $1B, $5F, $20, $12, $15, $15, $5F, $0B, $0E, $5F;($B05E)
+;			  o	p	e	n	_	a	n	d	_	t	h	o	u	_	m	a
 TB17E0_Byte_B06E:  .byte $18, $19, $0E, $17, $5F, $0A, $17, $0D, $5F, $1D, $11, $18, $1E, $5F, $16, $0A
-;              y    _    p    a    s    s    _    t    h    r    o    u    g    h    .'  END
+;			  y	_	p	a	s	s	_	t	h	r	o	u	g	h	.'  END
 TB17E0_Byte_B07E:  .byte $22, $5F, $19, $0A, $1C, $1C, $5F, $1D, $11, $1B, $18, $1E, $10, $11, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E1:
-;              '    E    a    s    t    _    o    f    _    t    h    i    s    _    c    a
-        .byte $50, $28, $0A, $1C, $1D, $5F, $18, $0F, $5F, $1D, $11, $12, $1C, $5F, $0C, $0A;($B08E)
-;              s    t    l    e    _    i    s    _    a    _    t    o    w    n    _    w
+;			  '	E	a	s	t	_	o	f	_	t	h	i	s	_	c	a
+		.byte $50, $28, $0A, $1C, $1D, $5F, $18, $0F, $5F, $1D, $11, $12, $1C, $5F, $0C, $0A;($B08E)
+;			  s	t	l	e	_	i	s	_	a	_	t	o	w	n	_	w
 TB17E1_Byte_B09E:  .byte $1C, $1D, $15, $0E, $5F, $12, $1C, $5F, $0A, $5F, $1D, $18, $20, $17, $5F, $20
-;              h    e    r    e    _    a    r    m    o    r    ,    _    w    e    a    p
-        .byte $11, $0E, $1B, $0E, $5F, $0A, $1B, $16, $18, $1B, $48, $5F, $20, $0E, $0A, $19;($B0AE)
-;              o    n    s    ,    _    a    n    d    _    m    a    n    y    _    o    t
+;			  h	e	r	e	_	a	r	m	o	r	,	_	w	e	a	p
+		.byte $11, $0E, $1B, $0E, $5F, $0A, $1B, $16, $18, $1B, $48, $5F, $20, $0E, $0A, $19;($B0AE)
+;			  o	n	s	,	_	a	n	d	_	m	a	n	y	_	o	t
 TB17E1_Byte_B0BE:  .byte $18, $17, $1C, $48, $5F, $0A, $17, $0D, $5F, $16, $0A, $17, $22, $5F, $18, $1D
-;              h    e    r    _    i    t    e    m    s    _    m    a    y    _    b    e
+;			  h	e	r	_	i	t	e	m	s	_	m	a	y	_	b	e
 TB17E1_Byte_B0CE:  .byte $11, $0E, $1B, $5F, $12, $1D, $0E, $16, $1C, $5F, $16, $0A, $22, $5F, $0B, $0E
-;              _    p    u    r    c    h    a    s    e    d    .'  WAIT  \n   '    R    e
+;			  _	p	u	r	c	h	a	s	e	d	.'  WAIT  \n   '	R	e
 TB17E1_Byte_B0DE:  .byte $5F, $19, $1E, $1B, $0C, $11, $0A, $1C, $0E, $0D, $52, $FB, $FD, $50, $35, $0E
-;              t    u    r    n    _    t    o    _    t    h    e    _    I    n    n    _
+;			  t	u	r	n	_	t	o	_	t	h	e	_	I	n	n	_
 TB17E1_Byte_B0EE:  .byte $1D, $1E, $1B, $17, $5F, $1D, $18, $5F, $1D, $11, $0E, $5F, $2C, $17, $17, $5F
-;              f    o    r    _    a    _    r    e    s    t    _    i    f    _    t    h
+;			  f	o	r	_	a	_	r	e	s	t	_	i	f	_	t	h
 TB17E1_Byte_B0FE:  .byte $0F, $18, $1B, $5F, $0A, $5F, $1B, $0E, $1C, $1D, $5F, $12, $0F, $5F, $1D, $11
-;              o    u    _    a    r    t    _    w    o    u    n    d    e    d    _    i
+;			  o	u	_	a	r	t	_	w	o	u	n	d	e	d	_	i
 TB17E1_Byte_B10E:  .byte $18, $1E, $5F, $0A, $1B, $1D, $5F, $20, $18, $1E, $17, $0D, $0E, $0D, $5F, $12
-;              n    _    b    a    t    t    l    e    ,    _   NAME  .'  WAIT  \n   '    S
+;			  n	_	b	a	t	t	l	e	,	_   NAME  .'  WAIT  \n   '	S
 TB17E1_Byte_B11E:  .byte $17, $5F, $0B, $0A, $1D, $1D, $15, $0E, $48, $5F, $F8, $52, $FB, $FD, $50, $36
-;              l    e    e    p    _    h    e    a    l    s    _    a    l    l    .'  END
-        .byte $15, $0E, $0E, $19, $5F, $11, $0E, $0A, $15, $1C, $5F, $0A, $15, $15, $52, $FC;($B12E)
+;			  l	e	e	p	_	h	e	a	l	s	_	a	l	l	.'  END
+		.byte $15, $0E, $0E, $19, $5F, $11, $0E, $0A, $15, $1C, $5F, $0A, $15, $15, $52, $FC;($B12E)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E2:
-;              '    D    e    s    c    e    n    d    a    n    t    _    o    f    _    E
+;			  '	D	e	s	c	e	n	d	a	n	t	_	o	f	_	E
 TB17E2_Byte_B13E:  .byte $50, $27, $0E, $1C, $0C, $0E, $17, $0D, $0A, $17, $1D, $5F, $18, $0F, $5F, $28
-;              r    d    r    i    c    k    ,    _    l    i    s    t    e    n    _    n
-        .byte $1B, $0D, $1B, $12, $0C, $14, $48, $5F, $15, $12, $1C, $1D, $0E, $17, $5F, $17;($B14E)
-;              o    w    _    t    o    _    m    y    _    w    o    r    d    s    .'  WAIT
-        .byte $18, $20, $5F, $1D, $18, $5F, $16, $22, $5F, $20, $18, $1B, $0D, $1C, $52, $FB;($B15E)
-;              \n   '    I    t    _    i    s    _    t    o    l    d    _    t    h    a
-        .byte $FD, $50, $2C, $1D, $5F, $12, $1C, $5F, $1D, $18, $15, $0D, $5F, $1D, $11, $0A;($B16E)
-;              t    _    i    n    _    a    g    e    s    _    p    a    s    t    _    E
-        .byte $1D, $5F, $12, $17, $5F, $0A, $10, $0E, $1C, $5F, $19, $0A, $1C, $1D, $5F, $28;($B17E)
-;              r    d    r    i    c    k    _    f    o    u    g    h    t    _    d    e
-        .byte $1B, $0D, $1B, $12, $0C, $14, $5F, $0F, $18, $1E, $10, $11, $1D, $5F, $0D, $0E;($B18E)
-;              m    o    n    s    _    w    i    t    h    _    a    _    B    a    l    l
+;			  r	d	r	i	c	k	,	_	l	i	s	t	e	n	_	n
+		.byte $1B, $0D, $1B, $12, $0C, $14, $48, $5F, $15, $12, $1C, $1D, $0E, $17, $5F, $17;($B14E)
+;			  o	w	_	t	o	_	m	y	_	w	o	r	d	s	.'  WAIT
+		.byte $18, $20, $5F, $1D, $18, $5F, $16, $22, $5F, $20, $18, $1B, $0D, $1C, $52, $FB;($B15E)
+;			  \n   '	I	t	_	i	s	_	t	o	l	d	_	t	h	a
+		.byte $FD, $50, $2C, $1D, $5F, $12, $1C, $5F, $1D, $18, $15, $0D, $5F, $1D, $11, $0A;($B16E)
+;			  t	_	i	n	_	a	g	e	s	_	p	a	s	t	_	E
+		.byte $1D, $5F, $12, $17, $5F, $0A, $10, $0E, $1C, $5F, $19, $0A, $1C, $1D, $5F, $28;($B17E)
+;			  r	d	r	i	c	k	_	f	o	u	g	h	t	_	d	e
+		.byte $1B, $0D, $1B, $12, $0C, $14, $5F, $0F, $18, $1E, $10, $11, $1D, $5F, $0D, $0E;($B18E)
+;			  m	o	n	s	_	w	i	t	h	_	a	_	B	a	l	l
 TB17E2_Byte_B19E:  .byte $16, $18, $17, $1C, $5F, $20, $12, $1D, $11, $5F, $0A, $5F, $25, $0A, $15, $15
-;              _    o    f    _    L    i    g    h    t    .'  WAIT  \n   '    T    h    e
+;			  _	o	f	_	L	i	g	h	t	.'  WAIT  \n   '	T	h	e
 TB17E2_Byte_B1AE:  .byte $5F, $18, $0F, $5F, $2F, $12, $10, $11, $1D, $52, $FB, $FD, $50, $37, $11, $0E
-;              n    _    c    a    m    e    _    t    h    e    _    D    r    a    g    o
+;			  n	_	c	a	m	e	_	t	h	e	_	D	r	a	g	o
 TB17E2_Byte_B1BE:  .byte $17, $5F, $0C, $0A, $16, $0E, $5F, $1D, $11, $0E, $5F, $27, $1B, $0A, $10, $18
-;              n    l    o    r    d    _    w    h    o    _    s    t    o    l    e    _
+;			  n	l	o	r	d	_	w	h	o	_	s	t	o	l	e	_
 TB17E2_Byte_B1CE:  .byte $17, $15, $18, $1B, $0D, $5F, $20, $11, $18, $5F, $1C, $1D, $18, $15, $0E, $5F
-;              t    h    e    _    p    r    e    c    i    o    u    s    _    g    l    o
+;			  t	h	e	_	p	r	e	c	i	o	u	s	_	g	l	o
 TB17E2_Byte_B1DE:  .byte $1D, $11, $0E, $5F, $19, $1B, $0E, $0C, $12, $18, $1E, $1C, $5F, $10, $15, $18
-;              b    e    _    a    n    d    _    h    i    d    _    i    t    _    i    n
+;			  b	e	_	a	n	d	_	h	i	d	_	i	t	_	i	n
 TB17E2_Byte_B1EE:  .byte $0B, $0E, $5F, $0A, $17, $0D, $5F, $11, $12, $0D, $5F, $12, $1D, $5F, $12, $17
-;              _    t    h    e    _    d    a    r    k    n    e    s    s    .'  WAIT  \n
+;			  _	t	h	e	_	d	a	r	k	n	e	s	s	.'  WAIT  \n
 TB17E2_Byte_B1FE:  .byte $5F, $1D, $11, $0E, $5F, $0D, $0A, $1B, $14, $17, $0E, $1C, $1C, $52, $FB, $FD
-;              '    N    o    w    ,    _   NAME  ,    _    t    h    o    u    _    m    u
+;			  '	N	o	w	,	_   NAME  ,	_	t	h	o	u	_	m	u
 TB17E2_Byte_B20E:  .byte $50, $31, $18, $20, $48, $5F, $F8, $48, $5F, $1D, $11, $18, $1E, $5F, $16, $1E
-;              s    t    _    h    e    l    p    _    u    s    _    r    e    c    o    v
-        .byte $1C, $1D, $5F, $11, $0E, $15, $19, $5F, $1E, $1C, $5F, $1B, $0E, $0C, $18, $1F;($B21E)
-;              e    r    _    t    h    e    _    B    a    l    l    _    o    f    _    L
-        .byte $0E, $1B, $5F, $1D, $11, $0E, $5F, $25, $0A, $15, $15, $5F, $18, $0F, $5F, $2F;($B22E)
-;              i    g    h    t    _    a    n    d    _    r    e    s    t    o    r    e
+;			  s	t	_	h	e	l	p	_	u	s	_	r	e	c	o	v
+		.byte $1C, $1D, $5F, $11, $0E, $15, $19, $5F, $1E, $1C, $5F, $1B, $0E, $0C, $18, $1F;($B21E)
+;			  e	r	_	t	h	e	_	B	a	l	l	_	o	f	_	L
+		.byte $0E, $1B, $5F, $1D, $11, $0E, $5F, $25, $0A, $15, $15, $5F, $18, $0F, $5F, $2F;($B22E)
+;			  i	g	h	t	_	a	n	d	_	r	e	s	t	o	r	e
 TB17E2_Byte_B23E:  .byte $12, $10, $11, $1D, $5F, $0A, $17, $0D, $5F, $1B, $0E, $1C, $1D, $18, $1B, $0E
-;              _    p    e    a    c    e    _    t    o    _    o    u    r    _    l    a
+;			  _	p	e	a	c	e	_	t	o	_	o	u	r	_	l	a
 TB17E2_Byte_B24E:  .byte $5F, $19, $0E, $0A, $0C, $0E, $5F, $1D, $18, $5F, $18, $1E, $1B, $5F, $15, $0A
-;              n    d    .'  WAIT  \n   '    T    h    e    _    D    r    a    g    o    n
-        .byte $17, $0D, $52, $FB, $FD, $50, $37, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17;($B25E)
-;              l    o    r    d    _    m    u    s    t    _    b    e    _    d    e    f
-        .byte $15, $18, $1B, $0D, $5F, $16, $1E, $1C, $1D, $5F, $0B, $0E, $5F, $0D, $0E, $0F;($B26E)
-;              e    a    t    e    d    .'  WAIT  \n   '    T    a    k    e    _    n    o
+;			  n	d	.'  WAIT  \n   '	T	h	e	_	D	r	a	g	o	n
+		.byte $17, $0D, $52, $FB, $FD, $50, $37, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17;($B25E)
+;			  l	o	r	d	_	m	u	s	t	_	b	e	_	d	e	f
+		.byte $15, $18, $1B, $0D, $5F, $16, $1E, $1C, $1D, $5F, $0B, $0E, $5F, $0D, $0E, $0F;($B26E)
+;			  e	a	t	e	d	.'  WAIT  \n   '	T	a	k	e	_	n	o
 TB17E2_Byte_B27E:  .byte $0E, $0A, $1D, $0E, $0D, $52, $FB, $FD, $50, $37, $0A, $14, $0E, $5F, $17, $18
-;              w    _    w    h    a    t    e    v    e    r    _    t    h    o    u    _
+;			  w	_	w	h	a	t	e	v	e	r	_	t	h	o	u	_
 TB17E2_Byte_B28E:  .byte $20, $5F, $20, $11, $0A, $1D, $0E, $1F, $0E, $1B, $5F, $1D, $11, $18, $1E, $5F
-;              m    a    y    _    f    i    n    d    _    i    n    _    t    h    e    s
-        .byte $16, $0A, $22, $5F, $0F, $12, $17, $0D, $5F, $12, $17, $5F, $1D, $11, $0E, $1C;($B29E)
-;              e    _    T    r    e    a    s    u    r    e    _    C    h    e    s    t
+;			  m	a	y	_	f	i	n	d	_	i	n	_	t	h	e	s
+		.byte $16, $0A, $22, $5F, $0F, $12, $17, $0D, $5F, $12, $17, $5F, $1D, $11, $0E, $1C;($B29E)
+;			  e	_	T	r	e	a	s	u	r	e	_	C	h	e	s	t
 TB17E2_Byte_B2AE:  .byte $0E, $5F, $37, $1B, $0E, $0A, $1C, $1E, $1B, $0E, $5F, $26, $11, $0E, $1C, $1D
-;              s    _    t    o    _    a    i    d    _    t    h    e    e    _    i    n
+;			  s	_	t	o	_	a	i	d	_	t	h	e	e	_	i	n
 TB17E2_Byte_B2BE:  .byte $1C, $5F, $1D, $18, $5F, $0A, $12, $0D, $5F, $1D, $11, $0E, $0E, $5F, $12, $17
-;              _    t    h    y    _    q    u    e    s    t    .'  WAIT  \n   '    T    h
+;			  _	t	h	y	_	q	u	e	s	t	.'  WAIT  \n   '	T	h
 TB17E2_Byte_B2CE:  .byte $5F, $1D, $11, $22, $5F, $1A, $1E, $0E, $1C, $1D, $52, $FB, $FD, $50, $37, $11
-;              e    n    _    s    p    e    a    k    _    w    i    t    h    _    t    h
+;			  e	n	_	s	p	e	a	k	_	w	i	t	h	_	t	h
 TB17E2_Byte_B2DE:  .byte $0E, $17, $5F, $1C, $19, $0E, $0A, $14, $5F, $20, $12, $1D, $11, $5F, $1D, $11
-;              e    _    g    u    a    r    d    s    ,    _    f    o    r    _    t    h
-        .byte $0E, $5F, $10, $1E, $0A, $1B, $0D, $1C, $48, $5F, $0F, $18, $1B, $5F, $1D, $11;($B2EE)
-;              e    y    _    h    a    v    e    _    m    u    c    h    _    k    n    o
+;			  e	_	g	u	a	r	d	s	,	_	f	o	r	_	t	h
+		.byte $0E, $5F, $10, $1E, $0A, $1B, $0D, $1C, $48, $5F, $0F, $18, $1B, $5F, $1D, $11;($B2EE)
+;			  e	y	_	h	a	v	e	_	m	u	c	h	_	k	n	o
 TB17E2_Byte_B2FE:  .byte $0E, $22, $5F, $11, $0A, $1F, $0E, $5F, $16, $1E, $0C, $11, $5F, $14, $17, $18
-;              w    l    e    d    g    e    _    t    h    a    t    _    m    a    y    _
+;			  w	l	e	d	g	e	_	t	h	a	t	_	m	a	y	_
 TB17E2_Byte_B30E:  .byte $20, $15, $0E, $0D, $10, $0E, $5F, $1D, $11, $0A, $1D, $5F, $16, $0A, $22, $5F
-;              a    i    d    _    t    h    e    e    .'  WAIT  \n   '    M    a    y    _
+;			  a	i	d	_	t	h	e	e	.'  WAIT  \n   '	M	a	y	_
 TB17E2_Byte_B31E:  .byte $0A, $12, $0D, $5F, $1D, $11, $0E, $0E, $52, $FB, $FD, $50, $30, $0A, $22, $5F
-;              t    h    e    _    l    i    g    h    t    _    s    h    i    n    e    _
+;			  t	h	e	_	l	i	g	h	t	_	s	h	i	n	e	_
 TB17E2_Byte_B32E:  .byte $1D, $11, $0E, $5F, $15, $12, $10, $11, $1D, $5F, $1C, $11, $12, $17, $0E, $5F
-;              u    p    o    n    _    t    h    e    e    ,    _   NAME  .'  END
+;			  u	p	o	n	_	t	h	e	e	,	_   NAME  .'  END
 TB17E2_Byte_B33E:  .byte $1E, $19, $18, $17, $5F, $1D, $11, $0E, $0E, $48, $5F, $F8, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E3:
-;             WAIT  T    h    e    _    t    a    b    l    e    t    _    r    e    a    d
+;			 WAIT  T	h	e	_	t	a	b	l	e	t	_	r	e	a	d
 TB17E3_Byte_B34C:  .byte $FB, $37, $11, $0E, $5F, $1D, $0A, $0B, $15, $0E, $1D, $5F, $1B, $0E, $0A, $0D
-;              s    _    a    s    _    f    o    l    l    o    w    s    :   WAIT  \n   _
+;			  s	_	a	s	_	f	o	l	l	o	w	s	:   WAIT  \n   _
 TB17E3_Byte_B35C:  .byte $1C, $5F, $0A, $1C, $5F, $0F, $18, $15, $15, $18, $20, $1C, $44, $FB, $FD, $60
-;              \n   _    '    I    _    a    m    _    E    r    d    r    i    c    k    _
+;			  \n   _	'	I	_	a	m	_	E	r	d	r	i	c	k	_
 TB17E3_Byte_B36C:  .byte $FD, $5F, $50, $2C, $5F, $0A, $16, $5F, $28, $1B, $0D, $1B, $12, $0C, $14, $5F
-;              a    n    d    _    t    h    o    u    _    a    r    t    _    m    y    _
-        .byte $0A, $17, $0D, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $16, $22, $5F;($B37C)
-;              d    e    s    c    e    n    d    a    n    t    .'  WAIT  \n   _    '    T
+;			  a	n	d	_	t	h	o	u	_	a	r	t	_	m	y	_
+		.byte $0A, $17, $0D, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $16, $22, $5F;($B37C)
+;			  d	e	s	c	e	n	d	a	n	t	.'  WAIT  \n   _	'	T
 TB17E3_Byte_B38C:  .byte $0D, $0E, $1C, $0C, $0E, $17, $0D, $0A, $17, $1D, $52, $FB, $FD, $5F, $50, $37
-;              h    r    e    e    _    i    t    e    m    s    _    w    e    r    e    _
+;			  h	r	e	e	_	i	t	e	m	s	_	w	e	r	e	_
 TB17E3_Byte_B39C:  .byte $11, $1B, $0E, $0E, $5F, $12, $1D, $0E, $16, $1C, $5F, $20, $0E, $1B, $0E, $5F
-;              n    e    e    d    e    d    _    t    o    _    r    e    a    c    h    _
-        .byte $17, $0E, $0E, $0D, $0E, $0D, $5F, $1D, $18, $5F, $1B, $0E, $0A, $0C, $11, $5F;($B3AC)
-;              t    h    e    _    I    s    l    e    _    o    f    _    D    r    a    g
-        .byte $1D, $11, $0E, $5F, $2C, $1C, $15, $0E, $5F, $18, $0F, $5F, $27, $1B, $0A, $10;($B3BC)
-;              o    n    s    ,    _    w    h    i    c    h    _    i    s    _    s    o
+;			  n	e	e	d	e	d	_	t	o	_	r	e	a	c	h	_
+		.byte $17, $0E, $0E, $0D, $0E, $0D, $5F, $1D, $18, $5F, $1B, $0E, $0A, $0C, $11, $5F;($B3AC)
+;			  t	h	e	_	I	s	l	e	_	o	f	_	D	r	a	g
+		.byte $1D, $11, $0E, $5F, $2C, $1C, $15, $0E, $5F, $18, $0F, $5F, $27, $1B, $0A, $10;($B3BC)
+;			  o	n	s	,	_	w	h	i	c	h	_	i	s	_	s	o
 TB17E3_Byte_B3CC:  .byte $18, $17, $1C, $48, $5F, $20, $11, $12, $0C, $11, $5F, $12, $1C, $5F, $1C, $18
-;              u    t    h    _    o    f    _    B    r    e    c    c    o    n    a    r
+;			  u	t	h	_	o	f	_	B	r	e	c	c	o	n	a	r
 TB17E3_Byte_B3DC:  .byte $1E, $1D, $11, $5F, $18, $0F, $5F, $25, $1B, $0E, $0C, $0C, $18, $17, $0A, $1B
-;              y    .'  WAIT  \n   _    '    I    _    g    a    t    h    e    r    e    d
-        .byte $22, $52, $FB, $FD, $5F, $50, $2C, $5F, $10, $0A, $1D, $11, $0E, $1B, $0E, $0D;($B3EC)
-;              _    t    h    e    s    e    _    i    t    e    m    s    ,    _    r    e
-        .byte $5F, $1D, $11, $0E, $1C, $0E, $5F, $12, $1D, $0E, $16, $1C, $48, $5F, $1B, $0E;($B3FC)
-;              a    c    h    e    d    _    t    h    e    _    i    s    l    a    n    d
-        .byte $0A, $0C, $11, $0E, $0D, $5F, $1D, $11, $0E, $5F, $12, $1C, $15, $0A, $17, $0D;($B40C)
-;              ,    _    a    n    d    _    t    h    e    r    e    _    d    e    f    e
+;			  y	.'  WAIT  \n   _	'	I	_	g	a	t	h	e	r	e	d
+		.byte $22, $52, $FB, $FD, $5F, $50, $2C, $5F, $10, $0A, $1D, $11, $0E, $1B, $0E, $0D;($B3EC)
+;			  _	t	h	e	s	e	_	i	t	e	m	s	,	_	r	e
+		.byte $5F, $1D, $11, $0E, $1C, $0E, $5F, $12, $1D, $0E, $16, $1C, $48, $5F, $1B, $0E;($B3FC)
+;			  a	c	h	e	d	_	t	h	e	_	i	s	l	a	n	d
+		.byte $0A, $0C, $11, $0E, $0D, $5F, $1D, $11, $0E, $5F, $12, $1C, $15, $0A, $17, $0D;($B40C)
+;			  ,	_	a	n	d	_	t	h	e	r	e	_	d	e	f	e
 TB17E3_Byte_B41C:  .byte $48, $5F, $0A, $17, $0D, $5F, $1D, $11, $0E, $1B, $0E, $5F, $0D, $0E, $0F, $0E
-;              a    t    e    d    _    a    _    c    r    e    a    t    u    r    e    _
-        .byte $0A, $1D, $0E, $0D, $5F, $0A, $5F, $0C, $1B, $0E, $0A, $1D, $1E, $1B, $0E, $5F;($B42C)
-;              o    f    _    g    r    e    a    t    _    e    v    i    l    .'  WAIT  \n
+;			  a	t	e	d	_	a	_	c	r	e	a	t	u	r	e	_
+		.byte $0A, $1D, $0E, $0D, $5F, $0A, $5F, $0C, $1B, $0E, $0A, $1D, $1E, $1B, $0E, $5F;($B42C)
+;			  o	f	_	g	r	e	a	t	_	e	v	i	l	.'  WAIT  \n
 TB17E3_Byte_B43C:  .byte $18, $0F, $5F, $10, $1B, $0E, $0A, $1D, $5F, $0E, $1F, $12, $15, $52, $FB, $FD
-;              _    '    N    o    w    _    I    _    h    a    v    e    _    e    n    t
-        .byte $5F, $50, $31, $18, $20, $5F, $2C, $5F, $11, $0A, $1F, $0E, $5F, $0E, $17, $1D;($B44C)
-;              r    u    s    t    e    d    _    t    h    e    _    t    h    r    e    e
-        .byte $1B, $1E, $1C, $1D, $0E, $0D, $5F, $1D, $11, $0E, $5F, $1D, $11, $1B, $0E, $0E;($B45C)
-;              _    i    t    e    m    s    _    t    o    _    t    h    r    e    e    _
+;			  _	'	N	o	w	_	I	_	h	a	v	e	_	e	n	t
+		.byte $5F, $50, $31, $18, $20, $5F, $2C, $5F, $11, $0A, $1F, $0E, $5F, $0E, $17, $1D;($B44C)
+;			  r	u	s	t	e	d	_	t	h	e	_	t	h	r	e	e
+		.byte $1B, $1E, $1C, $1D, $0E, $0D, $5F, $1D, $11, $0E, $5F, $1D, $11, $1B, $0E, $0E;($B45C)
+;			  _	i	t	e	m	s	_	t	o	_	t	h	r	e	e	_
 TB17E3_Byte_B46C:  .byte $5F, $12, $1D, $0E, $16, $1C, $5F, $1D, $18, $5F, $1D, $11, $1B, $0E, $0E, $5F
-;              w    o    r    t    h    y    _    k    e    e    p    e    r    s    .'  WAIT
-        .byte $20, $18, $1B, $1D, $11, $22, $5F, $14, $0E, $0E, $19, $0E, $1B, $1C, $52, $FB;($B47C)
-;              \n   _    '    T    h    e    i    r    _    d    e    s    c    e    n    d
-        .byte $FD, $5F, $50, $37, $11, $0E, $12, $1B, $5F, $0D, $0E, $1C, $0C, $0E, $17, $0D;($B48C)
-;              a    n    t    s    _    w    i    l    l    _    p    r    o    t    e    c
+;			  w	o	r	t	h	y	_	k	e	e	p	e	r	s	.'  WAIT
+		.byte $20, $18, $1B, $1D, $11, $22, $5F, $14, $0E, $0E, $19, $0E, $1B, $1C, $52, $FB;($B47C)
+;			  \n   _	'	T	h	e	i	r	_	d	e	s	c	e	n	d
+		.byte $FD, $5F, $50, $37, $11, $0E, $12, $1B, $5F, $0D, $0E, $1C, $0C, $0E, $17, $0D;($B48C)
+;			  a	n	t	s	_	w	i	l	l	_	p	r	o	t	e	c
 TB17E3_Byte_B49C:  .byte $0A, $17, $1D, $1C, $5F, $20, $12, $15, $15, $5F, $19, $1B, $18, $1D, $0E, $0C
-;              t    _    t    h    e    _    i    t    e    m    s    _    u    n    t    i
+;			  t	_	t	h	e	_	i	t	e	m	s	_	u	n	t	i
 TB17E3_Byte_B4AC:  .byte $1D, $5F, $1D, $11, $0E, $5F, $12, $1D, $0E, $16, $1C, $5F, $1E, $17, $1D, $12
-;              l    _    t    h    y    _    q    u    e    s    t    _    l    e    a    d
-        .byte $15, $5F, $1D, $11, $22, $5F, $1A, $1E, $0E, $1C, $1D, $5F, $15, $0E, $0A, $0D;($B4BC)
-;              s    _    t    h    e    e    _    t    o    _    s    e    e    k    _    t
+;			  l	_	t	h	y	_	q	u	e	s	t	_	l	e	a	d
+		.byte $15, $5F, $1D, $11, $22, $5F, $1A, $1E, $0E, $1C, $1D, $5F, $15, $0E, $0A, $0D;($B4BC)
+;			  s	_	t	h	e	e	_	t	o	_	s	e	e	k	_	t
 TB17E3_Byte_B4CC:  .byte $1C, $5F, $1D, $11, $0E, $0E, $5F, $1D, $18, $5F, $1C, $0E, $0E, $14, $5F, $1D
-;              h    e    m    _    o    u    t    .'  WAIT  \n   _    '    W    h    e    n
+;			  h	e	m	_	o	u	t	.'  WAIT  \n   _	'	W	h	e	n
 TB17E3_Byte_B4DC:  .byte $11, $0E, $16, $5F, $18, $1E, $1D, $52, $FB, $FD, $5F, $50, $3A, $11, $0E, $17
-;              _    a    _    n    e    w    _    e    v    i    l    _    a    r    i    s
+;			  _	a	_	n	e	w	_	e	v	i	l	_	a	r	i	s
 TB17E3_Byte_B4EC:  .byte $5F, $0A, $5F, $17, $0E, $20, $5F, $0E, $1F, $12, $15, $5F, $0A, $1B, $12, $1C
-;              e    s    ,    _    f    i    n    d    _    t    h    e    _    t    h    r
-        .byte $0E, $1C, $48, $5F, $0F, $12, $17, $0D, $5F, $1D, $11, $0E, $5F, $1D, $11, $1B;($B4FC)
-;              e    e    _    i    t    e    m    s    ,    _    t    h    e    n    _    f
+;			  e	s	,	_	f	i	n	d	_	t	h	e	_	t	h	r
+		.byte $0E, $1C, $48, $5F, $0F, $12, $17, $0D, $5F, $1D, $11, $0E, $5F, $1D, $11, $1B;($B4FC)
+;			  e	e	_	i	t	e	m	s	,	_	t	h	e	n	_	f
 TB17E3_Byte_B50C:  .byte $0E, $0E, $5F, $12, $1D, $0E, $16, $1C, $48, $5F, $1D, $11, $0E, $17, $5F, $0F
-;              i    g    h    t    !    '   END
+;			  i	g	h	t	!	'   END
 TB17E3_Byte_B51C:  .byte $12, $10, $11, $1D, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E4:
-;              E    x    c    e    l    l    e    n    t    _    m    o    v    e    !   END
+;			  E	x	c	e	l	l	e	n	t	_	m	o	v	e	!   END
 TB17E4_Byte_B523:  .byte $28, $21, $0C, $0E, $15, $15, $0E, $17, $1D, $5F, $16, $18, $1F, $0E, $4C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E5:
-;              '   NAME  ?    \n   T    h    i    s    _    i    s    _    G    w    a    e
+;			  '   NAME  ?	\n   T	h	i	s	_	i	s	_	G	w	a	e
 TB17E5_Byte_B533:  .byte $50, $F8, $4B, $FD, $37, $11, $12, $1C, $5F, $12, $1C, $5F, $2A, $20, $0A, $0E
-;              l    i    n    .    \n   K    n    o    w    _    t    h    a    t    _    t
+;			  l	i	n	.	\n   K	n	o	w	_	t	h	a	t	_	t
 TB17E5_Byte_B543:  .byte $15, $12, $17, $47, $FD, $2E, $17, $18, $20, $5F, $1D, $11, $0A, $1D, $5F, $1D
-;              h    o    u    _    h    a    t    h    _    r    e    a    c    h    e    d
+;			  h	o	u	_	h	a	t	h	_	r	e	a	c	h	e	d
 TB17E5_Byte_B553:  .byte $11, $18, $1E, $5F, $11, $0A, $1D, $11, $5F, $1B, $0E, $0A, $0C, $11, $0E, $0D
-;              _    t    h    e    _    f    i    n    a    l    _    l    e    v    e    l
+;			  _	t	h	e	_	f	i	n	a	l	_	l	e	v	e	l
 TB17E5_Byte_B563:  .byte $5F, $1D, $11, $0E, $5F, $0F, $12, $17, $0A, $15, $5F, $15, $0E, $1F, $0E, $15
-;              .'  WAIT END
+;			  .'  WAIT END
 TB17E5_Byte_B573:  .byte $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E6:
-;              T    h    o    u    _    a    r    t    _    a    s    l    e    e    p    .
+;			  T	h	o	u	_	a	r	t	_	a	s	l	e	e	p	.
 TB17E6_Byte_B576:  .byte $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0A, $1C, $15, $0E, $0E, $19, $47
-;             END
+;			 END
 TB17E6_Byte_B586:  .byte $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E7:
-;              _    \n   T    h    o    u    _    a    r    t    _    s    t    i    l    l
-        .byte $60, $FD, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $1C, $1D, $12, $15, $15;($B587)
-;              _    a    s    l    e    e    p    .   END
+;			  _	\n   T	h	o	u	_	a	r	t	_	s	t	i	l	l
+		.byte $60, $FD, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $1C, $1D, $12, $15, $15;($B587)
+;			  _	a	s	l	e	e	p	.   END
 TB17E7_Byte_B597:  .byte $5F, $0A, $1C, $15, $0E, $0E, $19, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E8:
-;              _    \n  NAME  _    a    w    a    k    e    s    .   END
+;			  _	\n  NAME  _	a	w	a	k	e	s	.   END
 TB17E8_Byte_B5A0:  .byte $60, $FD, $F8, $5F, $0A, $20, $0A, $14, $0E, $1C, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E9:
-;              T    h    e    _   ENMY  _    h    a    t    h    _    r    e    c    o    v
+;			  T	h	e	_   ENMY  _	h	a	t	h	_	r	e	c	o	v
 TB17E9_Byte_B5AC:  .byte $37, $11, $0E, $5F, $F4, $5F, $11, $0A, $1D, $11, $5F, $1B, $0E, $0C, $18, $1F
-;              e    r    e    d    .   END
+;			  e	r	e	d	.   END
 TB17E9_Byte_B5BC:  .byte $0E, $1B, $0E, $0D, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E10:
-;              I    t    _    i    s    _    d    o    d    g    i    n    g    !   END
-        .byte $2C, $1D, $5F, $12, $1C, $5F, $0D, $18, $0D, $10, $12, $17, $10, $4C, $FC;($B5C2)
+;			  I	t	_	i	s	_	d	o	d	g	i	n	g	!   END
+		.byte $2C, $1D, $5F, $12, $1C, $5F, $0D, $18, $0D, $10, $12, $17, $10, $4C, $FC;($B5C2)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E11:
-;              T    h    e    r    e    _    i    s    _    n    o    _    d    o    o    r
-        .byte $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $17, $18, $5F, $0D, $18, $18, $1B;($B5D1)
-;              _    h    e    r    e    .   END
-        .byte $5F, $11, $0E, $1B, $0E, $47, $FC;($B5E1)
+;			  T	h	e	r	e	_	i	s	_	n	o	_	d	o	o	r
+		.byte $37, $11, $0E, $1B, $0E, $5F, $12, $1C, $5F, $17, $18, $5F, $0D, $18, $18, $1B;($B5D1)
+;			  _	h	e	r	e	.   END
+		.byte $5F, $11, $0E, $1B, $0E, $47, $FC;($B5E1)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E12:
-;              T    h    o    u    _    h    a    s    t    _    n    o    t    _    a    _
+;			  T	h	o	u	_	h	a	s	t	_	n	o	t	_	a	_
 TB17E12_Byte_B5E8:  .byte $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $17, $18, $1D, $5F, $0A, $5F
-;              k    e    y    _    t    o    _    u    s    e    .   END
+;			  k	e	y	_	t	o	_	u	s	e	.   END
 TB17E12_Byte_B5F8:  .byte $14, $0E, $22, $5F, $1D, $18, $5F, $1E, $1C, $0E, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E13:
-;              '    D    e    a    t    h    _    s    h    o    u    l    d    _    n    o
-        .byte $50, $27, $0E, $0A, $1D, $11, $5F, $1C, $11, $18, $1E, $15, $0D, $5F, $17, $18;($B604)
-;              t    _    h    a    v    e    _    t    a    k    e    n    _    t    h    e
-        .byte $1D, $5F, $11, $0A, $1F, $0E, $5F, $1D, $0A, $14, $0E, $17, $5F, $1D, $11, $0E;($B614)
-;              e    ,    _   NAME  .'  WAIT  \n   '    I    _    w    i    l    l    _    g
-        .byte $0E, $48, $5F, $F8, $52, $FB, $FD, $50, $2C, $5F, $20, $12, $15, $15, $5F, $10;($B624)
-;              i    v    e    _    t    h    e    e    _    a    n    o    t    h    e    r
-        .byte $12, $1F, $0E, $5F, $1D, $11, $0E, $0E, $5F, $0A, $17, $18, $1D, $11, $0E, $1B;($B634)
-;              _    c    h    a    n    c    e    .'  WAIT END
+;			  '	D	e	a	t	h	_	s	h	o	u	l	d	_	n	o
+		.byte $50, $27, $0E, $0A, $1D, $11, $5F, $1C, $11, $18, $1E, $15, $0D, $5F, $17, $18;($B604)
+;			  t	_	h	a	v	e	_	t	a	k	e	n	_	t	h	e
+		.byte $1D, $5F, $11, $0A, $1F, $0E, $5F, $1D, $0A, $14, $0E, $17, $5F, $1D, $11, $0E;($B614)
+;			  e	,	_   NAME  .'  WAIT  \n   '	I	_	w	i	l	l	_	g
+		.byte $0E, $48, $5F, $F8, $52, $FB, $FD, $50, $2C, $5F, $20, $12, $15, $15, $5F, $10;($B624)
+;			  i	v	e	_	t	h	e	e	_	a	n	o	t	h	e	r
+		.byte $12, $1F, $0E, $5F, $1D, $11, $0E, $0E, $5F, $0A, $17, $18, $1D, $11, $0E, $1B;($B634)
+;			  _	c	h	a	n	c	e	.'  WAIT END
 TB17E13_Byte_B644:  .byte $5F, $0C, $11, $0A, $17, $0C, $0E, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E14:
-;              T    h    y    _    p    o    w    e    r    _    i    n    c    r    e    a
+;			  T	h	y	_	p	o	w	e	r	_	i	n	c	r	e	a
 TB17E14_Byte_B64E:  .byte $37, $11, $22, $5F, $19, $18, $20, $0E, $1B, $5F, $12, $17, $0C, $1B, $0E, $0A
-;              s    e    s    _    b    y    _   AMNT  .   END
+;			  s	e	s	_	b	y	_   AMNT  .   END
 TB17E14_Byte_B65E:  .byte $1C, $0E, $1C, $5F, $0B, $22, $5F, $F5, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB17E15:
-;              T    h    y    _    R    e    s    p    o    n    s    e    _    S    p    e
+;			  T	h	y	_	R	e	s	p	o	n	s	e	_	S	p	e
 TB17E15_Byte_B668:  .byte $37, $11, $22, $5F, $35, $0E, $1C, $19, $18, $17, $1C, $0E, $5F, $36, $19, $0E
-;              e    d    _    i    n    c    r    e    a    s    e    s    _    b    y    _
+;			  e	d	_	i	n	c	r	e	a	s	e	s	_	b	y	_
 TB17E15_Byte_B678:  .byte $0E, $0D, $5F, $12, $17, $0C, $1B, $0E, $0A, $1C, $0E, $1C, $5F, $0B, $22, $5F
-;             AMNT  .   END
-        .byte $F5, $47, $FC     ;($B688)
+;			 AMNT  .   END
+		.byte $F5, $47, $FC	 ;($B688)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock18:
 TB18E0:
-;             WAIT  _    T    h    y    _    M    a    x    i    m    u    m    _    H    i
+;			 WAIT  _	T	h	y	_	M	a	x	i	m	u	m	_	H	i
 TB18E0_Byte_B68B:  .byte $FB, $5F, $37, $11, $22, $5F, $30, $0A, $21, $12, $16, $1E, $16, $5F, $2B, $12
-;              t   PNTS  _    i    n    c    r    e    a    s    e    _    b    y    _   AMNT
+;			  t   PNTS  _	i	n	c	r	e	a	s	e	_	b	y	_   AMNT
 TB18E0_Byte_B69B:  .byte $1D, $F0, $5F, $12, $17, $0C, $1B, $0E, $0A, $1C, $0E, $5F, $0B, $22, $5F, $F5
-;              .   END
+;			  .   END
 TB18E0_Byte_B6AB:  .byte $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E1:
-;             WAIT  _    T    h    y    _    M    a    x    i    m    u    m    _    M    a
+;			 WAIT  _	T	h	y	_	M	a	x	i	m	u	m	_	M	a
 TB18E1_Byte_B6AD:  .byte $FB, $5F, $37, $11, $22, $5F, $30, $0A, $21, $12, $16, $1E, $16, $5F, $30, $0A
-;              g    i    c   PNTS  _    i    n    c    r    e    a    s    e    _    b    y
+;			  g	i	c   PNTS  _	i	n	c	r	e	a	s	e	_	b	y
 TB18E1_Byte_B6BD:  .byte $10, $12, $0C, $F0, $5F, $12, $17, $0C, $1B, $0E, $0A, $1C, $0E, $5F, $0B, $22
-;              _   AMNT  .   END
+;			  _   AMNT  .   END
 TB18E1_Byte_B6CD:  .byte $5F, $F5, $47, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E2:
-;              '    T    o    _    r    e    a    c    h    _    t    h    e    _    n    e
-        .byte $50, $37, $18, $5F, $1B, $0E, $0A, $0C, $11, $5F, $1D, $11, $0E, $5F, $17, $0E;($B6D1)
-;              x    t    _    l    e    v    e    l    ,    _    t    h    y    _    E    x
+;			  '	T	o	_	r	e	a	c	h	_	t	h	e	_	n	e
+		.byte $50, $37, $18, $5F, $1B, $0E, $0A, $0C, $11, $5F, $1D, $11, $0E, $5F, $17, $0E;($B6D1)
+;			  x	t	_	l	e	v	e	l	,	_	t	h	y	_	E	x
 TB18E2_Byte_B6E1:  .byte $21, $1D, $5F, $15, $0E, $1F, $0E, $15, $48, $5F, $1D, $11, $22, $5F, $28, $21
-;              p    e    r    i    e    n    c    e   PNTS  _    m    u    s    t    _    i
+;			  p	e	r	i	e	n	c	e   PNTS  _	m	u	s	t	_	i
 TB18E2_Byte_B6F1:  .byte $19, $0E, $1B, $12, $0E, $17, $0C, $0E, $F0, $5F, $16, $1E, $1C, $1D, $5F, $12
-;              n    c    r    e    a    s    e    _    b    y    _   AMNT  .'  WAIT END
-        .byte $17, $0C, $1B, $0E, $0A, $1C, $0E, $5F, $0B, $22, $5F, $F5, $52, $FB, $FC;($B701)
+;			  n	c	r	e	a	s	e	_	b	y	_   AMNT  .'  WAIT END
+		.byte $17, $0C, $1B, $0E, $0A, $1C, $0E, $5F, $0B, $22, $5F, $F5, $52, $FB, $FC;($B701)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E3:
-;              '    N    o    w    ,    _    g    o    ,    _   NAME  !    '   END
+;			  '	N	o	w	,	_	g	o	,	_   NAME  !	'   END
 TB18E3_Byte_B710:  .byte $50, $31, $18, $20, $48, $5F, $10, $18, $48, $5F, $F8, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E4:
-;              '    T    h    o    u    _    h    a    s    t    _    f    a    i    l    e
+;			  '	T	h	o	u	_	h	a	s	t	_	f	a	i	l	e
 TB18E4_Byte_B71E:  .byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0F, $0A, $12, $15, $0E
-;              d    _    a    n    d    _    t    h    o    u    _    a    r    t    _    c
+;			  d	_	a	n	d	_	t	h	o	u	_	a	r	t	_	c
 TB18E4_Byte_B72E:  .byte $0D, $5F, $0A, $17, $0D, $5F, $1D, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $0C
-;              u    r    s    e    d    .'  WAIT  \n   '    L    e    a    v    e    _    a
+;			  u	r	s	e	d	.'  WAIT  \n   '	L	e	a	v	e	_	a
 TB18E4_Byte_B73E:  .byte $1E, $1B, $1C, $0E, $0D, $52, $FB, $FD, $50, $2F, $0E, $0A, $1F, $0E, $5F, $0A
-;              t    _    o    n    c    e    !    '   END
+;			  t	_	o	n	c	e	!	'   END
 TB18E4_Byte_B74E:  .byte $1D, $5F, $18, $17, $0C, $0E, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E5:
-;              '    ..   ..   '   END
+;			  '	..   ..   '   END
 TB18E5_Byte_B757:  .byte $50, $45, $45, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E6:
-;              '    R    e    a    l    l    y    ?    '    \n  END
-        .byte $50, $35, $0E, $0A, $15, $15, $22, $4B, $40, $FD, $FC;($B75C)
+;			  '	R	e	a	l	l	y	?	'	\n  END
+		.byte $50, $35, $0E, $0A, $15, $15, $22, $4B, $40, $FD, $FC;($B75C)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E7:
-;              '    I    _    a    m    _    g    l    a    d    _    t    h    o    u    _
-        .byte $50, $2C, $5F, $0A, $16, $5F, $10, $15, $0A, $0D, $5F, $1D, $11, $18, $1E, $5F;($B767)
-;              h    a    s    t    _    r    e    t    u    r    n    e    d    .    \n   A
+;			  '	I	_	a	m	_	g	l	a	d	_	t	h	o	u	_
+		.byte $50, $2C, $5F, $0A, $16, $5F, $10, $15, $0A, $0D, $5F, $1D, $11, $18, $1E, $5F;($B767)
+;			  h	a	s	t	_	r	e	t	u	r	n	e	d	.	\n   A
 TB18E7_Byte_B777:  .byte $11, $0A, $1C, $1D, $5F, $1B, $0E, $1D, $1E, $1B, $17, $0E, $0D, $47, $FD, $24
-;              l    l    _    o    u    r    _    h    o    p    e    s    _    a    r    e
-        .byte $15, $15, $5F, $18, $1E, $1B, $5F, $11, $18, $19, $0E, $1C, $5F, $0A, $1B, $0E;($B787)
-;              _    r    i    d    i    n    g    _    o    n    _    t    h    e    e    .'
+;			  l	l	_	o	u	r	_	h	o	p	e	s	_	a	r	e
+		.byte $15, $15, $5F, $18, $1E, $1B, $5F, $11, $18, $19, $0E, $1C, $5F, $0A, $1B, $0E;($B787)
+;			  _	r	i	d	i	n	g	_	o	n	_	t	h	e	e	.'
 TB18E7_Byte_B797:  .byte $5F, $1B, $12, $0D, $12, $17, $10, $5F, $18, $17, $5F, $1D, $11, $0E, $0E, $52
-;             WAIT END
+;			 WAIT END
 TB18E7_Byte_B7A7:  .byte $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E8:
-;              '    S    e    e    _    m    e    _    a    g    a    i    n    _    w    h
+;			  '	S	e	e	_	m	e	_	a	g	a	i	n	_	w	h
 TB18E8_Byte_B7A9:  .byte $50, $36, $0E, $0E, $5F, $16, $0E, $5F, $0A, $10, $0A, $12, $17, $5F, $20, $11
-;              e    n    _    t    h    y    _    l    e    v    e    l    _    h    a    s
+;			  e	n	_	t	h	y	_	l	e	v	e	l	_	h	a	s
 TB18E8_Byte_B7B9:  .byte $0E, $17, $5F, $1D, $11, $22, $5F, $15, $0E, $1F, $0E, $15, $5F, $11, $0A, $1C
-;              _    i    n    c    r    e    a    s    e    d    .'  WAIT END
+;			  _	i	n	c	r	e	a	s	e	d	.'  WAIT END
 TB18E8_Byte_B7C9:  .byte $5F, $12, $17, $0C, $1B, $0E, $0A, $1C, $0E, $0D, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E9:
-;              T    h    e    _    D    r    a    g    o    n    l    o    r    d    _    r
+;			  T	h	e	_	D	r	a	g	o	n	l	o	r	d	_	r
 TB18E9_Byte_B7D6:  .byte $37, $11, $0E, $5F, $27, $1B, $0A, $10, $18, $17, $15, $18, $1B, $0D, $5F, $1B
-;              e    v    e    a    l    e    d    _    h    i    s    _    t    r    u    e
+;			  e	v	e	a	l	e	d	_	h	i	s	_	t	r	u	e
 TB18E9_Byte_B7E6:  .byte $0E, $1F, $0E, $0A, $15, $0E, $0D, $5F, $11, $12, $1C, $5F, $1D, $1B, $1E, $0E
-;              _    s    e    l    f    !   END
+;			  _	s	e	l	f	!   END
 TB18E9_Byte_B7F6:  .byte $5F, $1C, $0E, $15, $0F, $4C, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E10:
-;             WAIT  T    h    o    u    _    h    a    s    t    _    f    o    u    n    d
-        .byte $FB, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0F, $18, $1E, $17, $0D;($B7FD)
-;              _    t    h    e    _    B    a    l    l    _    o    f    _    L    i    g
-        .byte $5F, $1D, $11, $0E, $5F, $25, $0A, $15, $15, $5F, $18, $0F, $5F, $2F, $12, $10;($B80D)
-;              h    t    .   WAIT  \n   R    a    d    i    a    n    c    e    _    s    t
+;			 WAIT  T	h	o	u	_	h	a	s	t	_	f	o	u	n	d
+		.byte $FB, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0F, $18, $1E, $17, $0D;($B7FD)
+;			  _	t	h	e	_	B	a	l	l	_	o	f	_	L	i	g
+		.byte $5F, $1D, $11, $0E, $5F, $25, $0A, $15, $15, $5F, $18, $0F, $5F, $2F, $12, $10;($B80D)
+;			  h	t	.   WAIT  \n   R	a	d	i	a	n	c	e	_	s	t
 TB18E10_Byte_B81D:  .byte $11, $1D, $47, $FB, $FD, $35, $0A, $0D, $12, $0A, $17, $0C, $0E, $5F, $1C, $1D
-;              r    e    a    m    s    _    f    o    r    t    h    _    a    s    _    t
+;			  r	e	a	m	s	_	f	o	r	t	h	_	a	s	_	t
 TB18E10_Byte_B82D:  .byte $1B, $0E, $0A, $16, $1C, $5F, $0F, $18, $1B, $1D, $11, $5F, $0A, $1C, $5F, $1D
-;              h    y    _    h    a    n    d    s    _    t    o    u    c    h    _    t
-        .byte $11, $22, $5F, $11, $0A, $17, $0D, $1C, $5F, $1D, $18, $1E, $0C, $11, $5F, $1D;($B83D)
-;              h    e    _    o    b    j    e    c    t    _    a    n    d    _    h    o
+;			  h	y	_	h	a	n	d	s	_	t	o	u	c	h	_	t
+		.byte $11, $22, $5F, $11, $0A, $17, $0D, $1C, $5F, $1D, $18, $1E, $0C, $11, $5F, $1D;($B83D)
+;			  h	e	_	o	b	j	e	c	t	_	a	n	d	_	h	o
 TB18E10_Byte_B84D:  .byte $11, $0E, $5F, $18, $0B, $13, $0E, $0C, $1D, $5F, $0A, $17, $0D, $5F, $11, $18
-;              l    d    _    i    t    _    a    l    o    f    t    .   WAIT  \n   A    c
+;			  l	d	_	i	t	_	a	l	o	f	t	.   WAIT  \n   A	c
 TB18E10_Byte_B85D:  .byte $15, $0D, $5F, $12, $1D, $5F, $0A, $15, $18, $0F, $1D, $47, $FB, $FD, $24, $0C
-;              r    o    s    s    _    t    h    e    _    l    a    n    d    _    s    p
-        .byte $1B, $18, $1C, $1C, $5F, $1D, $11, $0E, $5F, $15, $0A, $17, $0D, $5F, $1C, $19;($B86D)
-;              r    e    a    d    s    _    t    h    e    _    b    r    i    l    l    i
-        .byte $1B, $0E, $0A, $0D, $1C, $5F, $1D, $11, $0E, $5F, $0B, $1B, $12, $15, $15, $12;($B87D)
-;              a    n    c    e    _    u    n    t    i    l    _    a    l    l    _    s
-        .byte $0A, $17, $0C, $0E, $5F, $1E, $17, $1D, $12, $15, $5F, $0A, $15, $15, $5F, $1C;($B88D)
-;              h    a    d    o    w    s    _    a    r    e    _    b    a    n    i    s
-        .byte $11, $0A, $0D, $18, $20, $1C, $5F, $0A, $1B, $0E, $5F, $0B, $0A, $17, $12, $1C;($B89D)
-;              h    e    d    _    a    n    d    _    p    e    a    c    e    _    i    s
+;			  r	o	s	s	_	t	h	e	_	l	a	n	d	_	s	p
+		.byte $1B, $18, $1C, $1C, $5F, $1D, $11, $0E, $5F, $15, $0A, $17, $0D, $5F, $1C, $19;($B86D)
+;			  r	e	a	d	s	_	t	h	e	_	b	r	i	l	l	i
+		.byte $1B, $0E, $0A, $0D, $1C, $5F, $1D, $11, $0E, $5F, $0B, $1B, $12, $15, $15, $12;($B87D)
+;			  a	n	c	e	_	u	n	t	i	l	_	a	l	l	_	s
+		.byte $0A, $17, $0C, $0E, $5F, $1E, $17, $1D, $12, $15, $5F, $0A, $15, $15, $5F, $1C;($B88D)
+;			  h	a	d	o	w	s	_	a	r	e	_	b	a	n	i	s
+		.byte $11, $0A, $0D, $18, $20, $1C, $5F, $0A, $1B, $0E, $5F, $0B, $0A, $17, $12, $1C;($B89D)
+;			  h	e	d	_	a	n	d	_	p	e	a	c	e	_	i	s
 TB18E10_Byte_B8AD:  .byte $11, $0E, $0D, $5F, $0A, $17, $0D, $5F, $19, $0E, $0A, $0C, $0E, $5F, $12, $1C
-;              _    r    e    s    t    o    r    e    d    .   END
-        .byte $5F, $1B, $0E, $1C, $1D, $18, $1B, $0E, $0D, $47, $FC;($B8BD)
+;			  _	r	e	s	t	o	r	e	d	.   END
+		.byte $5F, $1B, $0E, $1C, $1D, $18, $1B, $0E, $0D, $47, $FC;($B8BD)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E11:
-;              '    T    h    e    _    l    e    g    e    n    d    s    _    h    a    v
+;			  '	T	h	e	_	l	e	g	e	n	d	s	_	h	a	v
 TB18E11_Byte_B8C8:  .byte $50, $37, $11, $0E, $5F, $15, $0E, $10, $0E, $17, $0D, $1C, $5F, $11, $0A, $1F
-;              e    _    p    r    o    v    e    n    _    t    r    u    e    .'  WAIT  \n
+;			  e	_	p	r	o	v	e	n	_	t	r	u	e	.'  WAIT  \n
 TB18E11_Byte_B8D8:  .byte $0E, $5F, $19, $1B, $18, $1F, $0E, $17, $5F, $1D, $1B, $1E, $0E, $52, $FB, $FD
-;              '    T    h    o    u    _    a    r    t    _    i    n    d    e    e    d
+;			  '	T	h	o	u	_	a	r	t	_	i	n	d	e	e	d
 TB18E11_Byte_B8E8:  .byte $50, $37, $11, $18, $1E, $5F, $0A, $1B, $1D, $5F, $12, $17, $0D, $0E, $0E, $0D
-;              _    o    f    _    t    h    e    _    l    i    n    e    _    o    f    _
+;			  _	o	f	_	t	h	e	_	l	i	n	e	_	o	f	_
 TB18E11_Byte_B8F8:  .byte $5F, $18, $0F, $5F, $1D, $11, $0E, $5F, $15, $12, $17, $0E, $5F, $18, $0F, $5F
-;              E    r    d    r    i    c    k    .'  WAIT  \n   '    I    t    _    i    s
-        .byte $28, $1B, $0D, $1B, $12, $0C, $14, $52, $FB, $FD, $50, $2C, $1D, $5F, $12, $1C;($B908)
-;              _    t    h    y    _    r    i    g    h    t    _    t    o    _    r    u
+;			  E	r	d	r	i	c	k	.'  WAIT  \n   '	I	t	_	i	s
+		.byte $28, $1B, $0D, $1B, $12, $0C, $14, $52, $FB, $FD, $50, $2C, $1D, $5F, $12, $1C;($B908)
+;			  _	t	h	y	_	r	i	g	h	t	_	t	o	_	r	u
 TB18E11_Byte_B918:  .byte $5F, $1D, $11, $22, $5F, $1B, $12, $10, $11, $1D, $5F, $1D, $18, $5F, $1B, $1E
-;              l    e    _    o    v    e    r    _    t    h    i    s    _    l    a    n
-        .byte $15, $0E, $5F, $18, $1F, $0E, $1B, $5F, $1D, $11, $12, $1C, $5F, $15, $0A, $17;($B928)
-;              d    .'  WAIT  \n   '    W    i    l    l    _    t    h    o    u    _    t
-        .byte $0D, $52, $FB, $FD, $50, $3A, $12, $15, $15, $5F, $1D, $11, $18, $1E, $5F, $1D;($B938)
-;              a    k    e    _    m    y    _    p    l    a    c    e    ?    '   WAIT  \n
+;			  l	e	_	o	v	e	r	_	t	h	i	s	_	l	a	n
+		.byte $15, $0E, $5F, $18, $1F, $0E, $1B, $5F, $1D, $11, $12, $1C, $5F, $15, $0A, $17;($B928)
+;			  d	.'  WAIT  \n   '	W	i	l	l	_	t	h	o	u	_	t
+		.byte $0D, $52, $FB, $FD, $50, $3A, $12, $15, $15, $5F, $1D, $11, $18, $1E, $5F, $1D;($B938)
+;			  a	k	e	_	m	y	_	p	l	a	c	e	?	'   WAIT  \n
 TB18E11_Byte_B948:  .byte $0A, $14, $0E, $5F, $16, $22, $5F, $19, $15, $0A, $0C, $0E, $4B, $40, $FB, $FD
-;             NAME  _    t    h    o    u    g    h    t    _    c    a    r    e    f    u
+;			 NAME  _	t	h	o	u	g	h	t	_	c	a	r	e	f	u
 TB18E11_Byte_B958:  .byte $F8, $5F, $1D, $11, $18, $1E, $10, $11, $1D, $5F, $0C, $0A, $1B, $0E, $0F, $1E
-;              l    l    y    _    b    e    f    o    r    e    _    a    n    s    w    e
+;			  l	l	y	_	b	e	f	o	r	e	_	a	n	s	w	e
 TB18E11_Byte_B968:  .byte $15, $15, $22, $5F, $0B, $0E, $0F, $18, $1B, $0E, $5F, $0A, $17, $1C, $20, $0E
-;              r    i    n    g    .   WAIT  \n   '    I    _    c    a    n    n    o    t
+;			  r	i	n	g	.   WAIT  \n   '	I	_	c	a	n	n	o	t
 TB18E11_Byte_B978:  .byte $1B, $12, $17, $10, $47, $FB, $FD, $50, $2C, $5F, $0C, $0A, $17, $17, $18, $1D
-;              ,    '    \n   s    a    i    d    _   NAME  .   WAIT  \n   '    I    f    _
-        .byte $48, $40, $FD, $1C, $0A, $12, $0D, $5F, $F8, $47, $FB, $FD, $50, $2C, $0F, $5F;($B988)
-;              e    v    e    r    _    I    _    a    m    _    t    o    _    r    u    l
+;			  ,	'	\n   s	a	i	d	_   NAME  .   WAIT  \n   '	I	f	_
+		.byte $48, $40, $FD, $1C, $0A, $12, $0D, $5F, $F8, $47, $FB, $FD, $50, $2C, $0F, $5F;($B988)
+;			  e	v	e	r	_	I	_	a	m	_	t	o	_	r	u	l
 TB18E11_Byte_B998:  .byte $0E, $1F, $0E, $1B, $5F, $2C, $5F, $0A, $16, $5F, $1D, $18, $5F, $1B, $1E, $15
-;              e    _    a    _    c    o    u    n    t    r    y    ,    _    i    t    _
+;			  e	_	a	_	c	o	u	n	t	r	y	,	_	i	t	_
 TB18E11_Byte_B9A8:  .byte $0E, $5F, $0A, $5F, $0C, $18, $1E, $17, $1D, $1B, $22, $48, $5F, $12, $1D, $5F
-;              m    u    s    t    _    b    e    _    a    _    l    a    n    d    _    t
-        .byte $16, $1E, $1C, $1D, $5F, $0B, $0E, $5F, $0A, $5F, $15, $0A, $17, $0D, $5F, $1D;($B9B8)
-;              h    a    t    _    I    _    m    y    s    e    l    f    _    f    i    n
+;			  m	u	s	t	_	b	e	_	a	_	l	a	n	d	_	t
+		.byte $16, $1E, $1C, $1D, $5F, $0B, $0E, $5F, $0A, $5F, $15, $0A, $17, $0D, $5F, $1D;($B9B8)
+;			  h	a	t	_	I	_	m	y	s	e	l	f	_	f	i	n
 TB18E11_Byte_B9C8:  .byte $11, $0A, $1D, $5F, $2C, $5F, $16, $22, $1C, $0E, $15, $0F, $5F, $0F, $12, $17
-;              d    .'  END
+;			  d	.'  END
 TB18E11_Byte_B9D8:  .byte $0D, $52, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E12:
-;             WAIT  G    w    a    e    l    i    n    _    s    a    i    d    :    \n   '
+;			 WAIT  G	w	a	e	l	i	n	_	s	a	i	d	:	\n   '
 TB18E12_Byte_B9DB:  .byte $FB, $2A, $20, $0A, $0E, $15, $12, $17, $5F, $1C, $0A, $12, $0D, $44, $FD, $50
-;              P    l    e    a    s    e    ,    _    w    a    i    t    .'   \n  END
+;			  P	l	e	a	s	e	,	_	w	a	i	t	.'   \n  END
 TB18E12_Byte_B9EB:  .byte $33, $15, $0E, $0A, $1C, $0E, $48, $5F, $20, $0A, $12, $1D, $52, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E13:
-;              '    I    _    w    i    s    h    _    t    o    _    g    o    _    w    i
-        .byte $50, $2C, $5F, $20, $12, $1C, $11, $5F, $1D, $18, $5F, $10, $18, $5F, $20, $12;($B9FA)
-;              t    h    _    t    h    e    e    _    o    n    _    t    h    y    _    j
+;			  '	I	_	w	i	s	h	_	t	o	_	g	o	_	w	i
+		.byte $50, $2C, $5F, $20, $12, $1C, $11, $5F, $1D, $18, $5F, $10, $18, $5F, $20, $12;($B9FA)
+;			  t	h	_	t	h	e	e	_	o	n	_	t	h	y	_	j
 TB18E13_Byte_BA0A:  .byte $1D, $11, $5F, $1D, $11, $0E, $0E, $5F, $18, $17, $5F, $1D, $11, $22, $5F, $13
-;              o    u    r    n    e    y    .'  WAIT END
-        .byte $18, $1E, $1B, $17, $0E, $22, $52, $FB, $FC;($BA1A)
+;			  o	u	r	n	e	y	.'  WAIT END
+		.byte $18, $1E, $1B, $17, $0E, $22, $52, $FB, $FC;($BA1A)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E14:
-;              '    M    a    y    _    I    _    t    r    a    v    e    l    _    a    s
+;			  '	M	a	y	_	I	_	t	r	a	v	e	l	_	a	s
 TB18E14_Byte_BA23:  .byte $50, $30, $0A, $22, $5F, $2C, $5F, $1D, $1B, $0A, $1F, $0E, $15, $5F, $0A, $1C
-;              _    t    h    y    _    c    o    m    p    a    n    i    o    n    ?    '
+;			  _	t	h	y	_	c	o	m	p	a	n	i	o	n	?	'
 TB18E14_Byte_BA33:  .byte $5F, $1D, $11, $22, $5F, $0C, $18, $16, $19, $0A, $17, $12, $18, $17, $4B, $40
-;              \n  END
+;			  \n  END
 TB18E14_Byte_BA43:  .byte $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB18E15:
-;              '    H    u    r    r    a    h    !    \n   H    u    r    r    a    h    !
+;			  '	H	u	r	r	a	h	!	\n   H	u	r	r	a	h	!
 TB18E15_Byte_BA45:  .byte $50, $2B, $1E, $1B, $1B, $0A, $11, $4C, $FD, $2B, $1E, $1B, $1B, $0A, $11, $4C
-;              \n   L    o    n    g    _    l    i    v    e    _   NAME  !    '    \n  END
-        .byte $FD, $2F, $18, $17, $10, $5F, $15, $12, $1F, $0E, $5F, $F8, $4C, $40, $FD, $FC;($BA55)
+;			  \n   L	o	n	g	_	l	i	v	e	_   NAME  !	'	\n  END
+		.byte $FD, $2F, $18, $17, $10, $5F, $15, $12, $1F, $0E, $5F, $F8, $4C, $40, $FD, $FC;($BA55)
 
 ;----------------------------------------------------------------------------------------------------
 
 TextBlock19:
 TB19E0:
-;              '    T    h    o    u    _    h    a    s    t    _    b    r    o    u    g
+;			  '	T	h	o	u	_	h	a	s	t	_	b	r	o	u	g
 TB19E0_Byte_BA65:  .byte $50, $37, $11, $18, $1E, $5F, $11, $0A, $1C, $1D, $5F, $0B, $1B, $18, $1E, $10
-;              h    t    _    u    s    _    p    e    a    c    e    ,    _    a    g    a
+;			  h	t	_	u	s	_	p	e	a	c	e	,	_	a	g	a
 TB19E0_Byte_BA75:  .byte $11, $1D, $5F, $1E, $1C, $5F, $19, $0E, $0A, $0C, $0E, $48, $5F, $0A, $10, $0A
-;              i    n    .'  END
-        .byte $12, $17, $52, $FC;($BA85)
+;			  i	n	.'  END
+		.byte $12, $17, $52, $FC;($BA85)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E1:
-;              '    C    o    m    e    _    n    o    w    ,    _    K    i    n    g    _
+;			  '	C	o	m	e	_	n	o	w	,	_	K	i	n	g	_
 TB19E1_Byte_BA89:  .byte $50, $26, $18, $16, $0E, $5F, $17, $18, $20, $48, $5F, $2E, $12, $17, $10, $5F
-;              L    o    r    i    k    _    a    w    a    i    t    s    .'  END
-        .byte $2F, $18, $1B, $12, $14, $5F, $0A, $20, $0A, $12, $1D, $1C, $52, $FC;($BA99)
+;			  L	o	r	i	k	_	a	w	a	i	t	s	.'  END
+		.byte $2F, $18, $1B, $12, $14, $5F, $0A, $20, $0A, $12, $1D, $1C, $52, $FC;($BA99)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E2:
-;             WAIT  \n   _    \n   _    \n   _    \n   _    \n   _    \n   _    \n   A    n
+;			 WAIT  \n   _	\n   _	\n   _	\n   _	\n   _	\n   _	\n   A	n
 TB19E2_Byte_BAA7:  .byte $FB, $FD, $60, $FD, $60, $FD, $60, $FD, $60, $FD, $60, $FD, $60, $FD, $24, $17
-;              d    _    t    h    u    s    _    t    h    e    _    t    a    l    e    _
+;			  d	_	t	h	u	s	_	t	h	e	_	t	a	l	e	_
 TB19E2_Byte_BAB7:  .byte $0D, $5F, $1D, $11, $1E, $1C, $5F, $1D, $11, $0E, $5F, $1D, $0A, $15, $0E, $5F
-;              c    o    m    e    s    _    t    o    _    a    n    _    e    n    d    ..
+;			  c	o	m	e	s	_	t	o	_	a	n	_	e	n	d	..
 TB19E2_Byte_BAC7:  .byte $0C, $18, $16, $0E, $1C, $5F, $1D, $18, $5F, $0A, $17, $5F, $0E, $17, $0D, $45
-;              ..   \n   u    n    l    e    s    s    _    t    h    e    _    d    r    a
-        .byte $45, $FD, $1E, $17, $15, $0E, $1C, $1C, $5F, $1D, $11, $0E, $5F, $0D, $1B, $0A;($BAD7)
-;              g    o    n    s    _    r    e    t    u    r    n    _    a    g    a    i
+;			  ..   \n   u	n	l	e	s	s	_	t	h	e	_	d	r	a
+		.byte $45, $FD, $1E, $17, $15, $0E, $1C, $1C, $5F, $1D, $11, $0E, $5F, $0D, $1B, $0A;($BAD7)
+;			  g	o	n	s	_	r	e	t	u	r	n	_	a	g	a	i
 TB19E2_Byte_BAE7:  .byte $10, $18, $17, $1C, $5F, $1B, $0E, $1D, $1E, $1B, $17, $5F, $0A, $10, $0A, $12
-;              n    .    \n   _    \n   _    \n   _    \n  END
-        .byte $17, $47, $FD, $60, $FD, $60, $FD, $60, $FD, $FC;($BAF7)
+;			  n	.	\n   _	\n   _	\n   _	\n  END
+		.byte $17, $47, $FD, $60, $FD, $60, $FD, $60, $FD, $FC;($BAF7)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E3:
-;              '    W    i    l    l    _    t    h    o    u    _    t    e    l    l    _
-        .byte $50, $3A, $12, $15, $15, $5F, $1D, $11, $18, $1E, $5F, $1D, $0E, $15, $15, $5F;($BB01)
-;              m    e    _    n    o    w    _    o    f    _    t    h    y    _    d    e
+;			  '	W	i	l	l	_	t	h	o	u	_	t	e	l	l	_
+		.byte $50, $3A, $12, $15, $15, $5F, $1D, $11, $18, $1E, $5F, $1D, $0E, $15, $15, $5F;($BB01)
+;			  m	e	_	n	o	w	_	o	f	_	t	h	y	_	d	e
 TB19E3_Byte_BB11:  .byte $16, $0E, $5F, $17, $18, $20, $5F, $18, $0F, $5F, $1D, $11, $22, $5F, $0D, $0E
-;              e    d    s    _    s    o    _    t    h    e    y    _    w    o    n    '
+;			  e	d	s	_	s	o	_	t	h	e	y	_	w	o	n	'
 TB19E3_Byte_BB21:  .byte $0E, $0D, $1C, $5F, $1C, $18, $5F, $1D, $11, $0E, $22, $5F, $20, $18, $17, $53
-;              t    _    b    e    _    f    o    r    g    o    t    t    e    n    ?    '
-        .byte $1D, $5F, $0B, $0E, $5F, $0F, $18, $1B, $10, $18, $1D, $1D, $0E, $17, $4B, $40;($BB31)
-;              \n  END
-        .byte $FD, $FC          ;($BB41)
+;			  t	_	b	e	_	f	o	r	g	o	t	t	e	n	?	'
+		.byte $1D, $5F, $0B, $0E, $5F, $0F, $18, $1B, $10, $18, $1D, $1D, $0E, $17, $4B, $40;($BB31)
+;			  \n  END
+		.byte $FD, $FC		  ;($BB41)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E4:
-;              '    T    h    y    _    d    e    e    d    s    _    h    a    v    e    _
-        .byte $50, $37, $11, $22, $5F, $0D, $0E, $0E, $0D, $1C, $5F, $11, $0A, $1F, $0E, $5F;($BB43)
-;              b    e    e    n    _    r    e    c    o    r    d    e    d    _    o    n
-        .byte $0B, $0E, $0E, $17, $5F, $1B, $0E, $0C, $18, $1B, $0D, $0E, $0D, $5F, $18, $17;($BB53)
-;              _    t    h    e    _    I    m    p    e    r    i    a    l    _    S    c
+;			  '	T	h	y	_	d	e	e	d	s	_	h	a	v	e	_
+		.byte $50, $37, $11, $22, $5F, $0D, $0E, $0E, $0D, $1C, $5F, $11, $0A, $1F, $0E, $5F;($BB43)
+;			  b	e	e	n	_	r	e	c	o	r	d	e	d	_	o	n
+		.byte $0B, $0E, $0E, $17, $5F, $1B, $0E, $0C, $18, $1B, $0D, $0E, $0D, $5F, $18, $17;($BB53)
+;			  _	t	h	e	_	I	m	p	e	r	i	a	l	_	S	c
 TB19E4_Byte_BB63:  .byte $5F, $1D, $11, $0E, $5F, $2C, $16, $19, $0E, $1B, $12, $0A, $15, $5F, $36, $0C
-;              r    o    l    l    s    _    o    f    _    H    o    n    o    r    .'  WAIT
+;			  r	o	l	l	s	_	o	f	_	H	o	n	o	r	.'  WAIT
 TB19E4_Byte_BB73:  .byte $1B, $18, $15, $15, $1C, $5F, $18, $0F, $5F, $2B, $18, $17, $18, $1B, $52, $FB
-;             END
-        .byte $FC               ;($BB83)
+;			 END
+		.byte $FC			   ;($BB83)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E5:
-;              '    D    o    s    t    _    t    h    o    u    _    w    i    s    h    _
+;			  '	D	o	s	t	_	t	h	o	u	_	w	i	s	h	_
 TB19E5_Byte_BB84:  .byte $50, $27, $18, $1C, $1D, $5F, $1D, $11, $18, $1E, $5F, $20, $12, $1C, $11, $5F
-;              t    o    _    c    o    n    t    i    n    u    e    _    t    h    y    _
+;			  t	o	_	c	o	n	t	i	n	u	e	_	t	h	y	_
 TB19E5_Byte_BB94:  .byte $1D, $18, $5F, $0C, $18, $17, $1D, $12, $17, $1E, $0E, $5F, $1D, $11, $22, $5F
-;              q    u    e    s    t    ?    '    \n  END
-        .byte $1A, $1E, $0E, $1C, $1D, $4B, $40, $FD, $FC;($BBA4)
+;			  q	u	e	s	t	?	'	\n  END
+		.byte $1A, $1E, $0E, $1C, $1D, $4B, $40, $FD, $FC;($BBA4)
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E6:
-;              '    R    e    s    t    _    t    h    e    n    _    f    o    r    _    a
+;			  '	R	e	s	t	_	t	h	e	n	_	f	o	r	_	a
 TB19E6_Byte_BBAD:  .byte $50, $35, $0E, $1C, $1D, $5F, $1D, $11, $0E, $17, $5F, $0F, $18, $1B, $5F, $0A
-;              w    h    i    l    e    .'  WAIT END
+;			  w	h	i	l	e	.'  WAIT END
 TB19E6_Byte_BBBD:  .byte $20, $11, $12, $15, $0E, $52, $FB, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E7:
-;              '    G    o    _   NAME  !    '   END
+;			  '	G	o	_   NAME  !	'   END
 TB19E7_Byte_BBC5:  .byte $50, $2A, $18, $5F, $F8, $4C, $40, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E8:
-;              P    l    e    a    s    e    _    p    u    s    h    _    R    E    S    E
+;			  P	l	e	a	s	e	_	p	u	s	h	_	R	E	S	E
 TB19E8_Byte_BBCD:  .byte $33, $15, $0E, $0A, $1C, $0E, $5F, $19, $1E, $1C, $11, $5F, $35, $28, $36, $28
-;              T    ,    _    h    o    l    d    _    i    t    _    i    n    ,    _    t
-        .byte $37, $48, $5F, $11, $18, $15, $0D, $5F, $12, $1D, $5F, $12, $17, $48, $5F, $1D;($BBDD)
-;              h    e    n    _    t    u    r    n    _    o    f    f    _    t    h    e
-        .byte $11, $0E, $17, $5F, $1D, $1E, $1B, $17, $5F, $18, $0F, $0F, $5F, $1D, $11, $0E;($BBED)
-;              _    P    O    W    E    R    .   WAIT  \n   I    f    _    y    o    u    _
+;			  T	,	_	h	o	l	d	_	i	t	_	i	n	,	_	t
+		.byte $37, $48, $5F, $11, $18, $15, $0D, $5F, $12, $1D, $5F, $12, $17, $48, $5F, $1D;($BBDD)
+;			  h	e	n	_	t	u	r	n	_	o	f	f	_	t	h	e
+		.byte $11, $0E, $17, $5F, $1D, $1E, $1B, $17, $5F, $18, $0F, $0F, $5F, $1D, $11, $0E;($BBED)
+;			  _	P	O	W	E	R	.   WAIT  \n   I	f	_	y	o	u	_
 TB19E8_Byte_BBFD:  .byte $5F, $33, $32, $3A, $28, $35, $47, $FB, $FD, $2C, $0F, $5F, $22, $18, $1E, $5F
-;              t    u    r    n    _    t    h    e    _    p    o    w    e    r    _    o
+;			  t	u	r	n	_	t	h	e	_	p	o	w	e	r	_	o
 TB19E8_Byte_BC0D:  .byte $1D, $1E, $1B, $17, $5F, $1D, $11, $0E, $5F, $19, $18, $20, $0E, $1B, $5F, $18
-;              f    f    _    f    i    r    s    t    ,    _    t    h    e    _    I    m
-        .byte $0F, $0F, $5F, $0F, $12, $1B, $1C, $1D, $48, $5F, $1D, $11, $0E, $5F, $2C, $16;($BC1D)
-;              p    e    r    i    a    l    _    S    c    r    o    l    l    _    o    f
-        .byte $19, $0E, $1B, $12, $0A, $15, $5F, $36, $0C, $1B, $18, $15, $15, $5F, $18, $0F;($BC2D)
-;              _    H    o    n    o    r    _    c    o    n    t    a    i    n    i    n
+;			  f	f	_	f	i	r	s	t	,	_	t	h	e	_	I	m
+		.byte $0F, $0F, $5F, $0F, $12, $1B, $1C, $1D, $48, $5F, $1D, $11, $0E, $5F, $2C, $16;($BC1D)
+;			  p	e	r	i	a	l	_	S	c	r	o	l	l	_	o	f
+		.byte $19, $0E, $1B, $12, $0A, $15, $5F, $36, $0C, $1B, $18, $15, $15, $5F, $18, $0F;($BC2D)
+;			  _	H	o	n	o	r	_	c	o	n	t	a	i	n	i	n
 TB19E8_Byte_BC3D:  .byte $5F, $2B, $18, $17, $18, $1B, $5F, $0C, $18, $17, $1D, $0A, $12, $17, $12, $17
-;              g    _    y    o    u    r    _    d    e    e    d    s    _    m    a    y
+;			  g	_	y	o	u	r	_	d	e	e	d	s	_	m	a	y
 TB19E8_Byte_BC4D:  .byte $10, $5F, $22, $18, $1E, $1B, $5F, $0D, $0E, $0E, $0D, $1C, $5F, $16, $0A, $22
-;              _    b    e    _    l    o    s    t    .    \n   _    \n   _    \n  END
+;			  _	b	e	_	l	o	s	t	.	\n   _	\n   _	\n  END
 TB19E8_Byte_BC5D:  .byte $5F, $0B, $0E, $5F, $15, $18, $1C, $1D, $47, $FD, $60, $FD, $60, $FD, $FC
 
 ;----------------------------------------------------------------------------------------------------
 
 TB19E9:
-;              U    n    f    o    r    t    u    n    a    t    e    l    y    ,    _    N
-        .byte $38, $17, $0F, $18, $1B, $1D, $1E, $17, $0A, $1D, $0E, $15, $22, $48, $5F, $31;($BC6C)
-;              O    _    d    e    e    d    s    _    w    e    r    e    _    r    e    c
-        .byte $32, $5F, $0D, $0E, $0E, $0D, $1C, $5F, $20, $0E, $1B, $0E, $5F, $1B, $0E, $0C;($BC7C)
-;              o    r    d    e    d    _    o    n    _    I    m    p    e    r    i    a
-        .byte $18, $1B, $0D, $0E, $0D, $5F, $18, $17, $5F, $2C, $16, $19, $0E, $1B, $12, $0A;($BC8C)
-;              l    _    S    c    r    o    l    l    _    n    u    m    b    e    r    _
-        .byte $15, $5F, $36, $0C, $1B, $18, $15, $15, $5F, $17, $1E, $16, $0B, $0E, $1B, $5F;($BC9C)
-;             AMNT  .   WAIT END
-        .byte $F5, $47, $FB, $FC;($BCAC)
+;			  U	n	f	o	r	t	u	n	a	t	e	l	y	,	_	N
+		.byte $38, $17, $0F, $18, $1B, $1D, $1E, $17, $0A, $1D, $0E, $15, $22, $48, $5F, $31;($BC6C)
+;			  O	_	d	e	e	d	s	_	w	e	r	e	_	r	e	c
+		.byte $32, $5F, $0D, $0E, $0E, $0D, $1C, $5F, $20, $0E, $1B, $0E, $5F, $1B, $0E, $0C;($BC7C)
+;			  o	r	d	e	d	_	o	n	_	I	m	p	e	r	i	a
+		.byte $18, $1B, $0D, $0E, $0D, $5F, $18, $17, $5F, $2C, $16, $19, $0E, $1B, $12, $0A;($BC8C)
+;			  l	_	S	c	r	o	l	l	_	n	u	m	b	e	r	_
+		.byte $15, $5F, $36, $0C, $1B, $18, $15, $15, $5F, $17, $1E, $16, $0B, $0E, $1B, $5F;($BC9C)
+;			 AMNT  .   WAIT END
+		.byte $F5, $47, $FB, $FC;($BCAC)
 
 ;----------------------------------------------------------------------------------------------------
 
 DoIntroRoutine:
-        JSR WaitForNMI          ;($BCB0)($FF74)Wait for VBlank interrupt.
-        LDA IntroPalPtr1        ;($BCB3)
-DoIntroRou_Store_BCB6:  STA PalettePointerLB            ;Get pointer to palette data.
-        LDA IntroPalPtr1+1      ;($BCB8)
-        STA PalettePointerUB    ;($BCBB)Hide intro text.
+		JSR WaitForNMI		  ;($BCB0)($FF74)Wait for VBlank interrupt.
+		LDA IntroPalPtr1		;($BCB3)
+DoIntroRou_Store_BCB6:  STA PalettePointerLB			;Get pointer to palette data.
+		LDA IntroPalPtr1+1	  ;($BCB8)
+		STA PalettePointerUB	;($BCBB)Hide intro text.
 
-DoIntroRou_Load_BCBD:  LDA #$00                ;No palette modification.
-        STA PalModByte          ;($BCBF)
+DoIntroRou_Load_BCBD:  LDA #$00				;No palette modification.
+		STA PalModByte		  ;($BCBF)
 
-DoIntroRou_Call_BCC1:  JSR PrepBGPalLoad       ;($C63D)Setup PPU buffer
-        JSR SetBlackBackDrop    ;($BCC4)($BDE0)Set black background.
+DoIntroRou_Call_BCC1:  JSR PrepBGPalLoad	   ;($C63D)Setup PPU buffer
+		JSR SetBlackBackDrop	;($BCC4)($BDE0)Set black background.
 
-        LDA #MSC_INTRO          ;($BCC7)Start intro music.
-DoIntroRou_PlayMusic:  BRK                     ;
-        .byte $04, $17          ;($BCCA)($81A0)InitMusicSFX, bank 1.
+		LDA #MSC_INTRO		  ;($BCC7)Start intro music.
+DoIntroRou_PlayMusic:  BRK					 ;
+		.byte $04, $17		  ;($BCCA)($81A0)InitMusicSFX, bank 1.
 
-        JSR WaitForNMI          ;($BCCC)($FF74)Wait for VBlank interrupt.
-        * JSR GetJoypadStatus   ;($BCCF)($C608)Get input button presses.
-        LDA JoypadBtns          ;($BCD2)
-        AND #IN_SEL_STRT        ;($BCD4)Is select or start being pressed?
-DoIntroRou_Branch_BCD6:  BNE ShowIntroText       ;If so, branch to show intro text.
+		JSR WaitForNMI		  ;($BCCC)($FF74)Wait for VBlank interrupt.
+		* JSR GetJoypadStatus   ;($BCCF)($C608)Get input button presses.
+		LDA JoypadBtns		  ;($BCD2)
+		AND #IN_SEL_STRT		;($BCD4)Is select or start being pressed?
+DoIntroRou_Branch_BCD6:  BNE ShowIntroText	   ;If so, branch to show intro text.
 
-        LDA MusicTrigger        ;($BCD8)Has music trigger been reached?
-        CMP #$FC                ;($BCDB)
-DoIntroRou_Branch_BCDD:  BEQ ShowIntroText       ;If so, branch to show intro text.
-        BNE -                   ;($BCDF)Else branch to wait more.
+		LDA MusicTrigger		;($BCD8)Has music trigger been reached?
+		CMP #$FC				;($BCDB)
+DoIntroRou_Branch_BCDD:  BEQ ShowIntroText	   ;If so, branch to show intro text.
+		BNE -				   ;($BCDF)Else branch to wait more.
 
 ShowIntroText:
-ShowIntroT_Call_BCE1:  JSR WaitForNMI          ;($FF74)Wait for VBlank interrupt.
-        LDA IntroPalPtr2        ;($BCE4)
-        STA PalettePointerLB    ;($BCE7)Get pointer to palette data.
-ShowIntroT_Load_BCE9:  LDA IntroPalPtr2+1      ;
-        STA PalettePointerUB    ;($BCEC)Show intro text.
+ShowIntroT_Call_BCE1:  JSR WaitForNMI		  ;($FF74)Wait for VBlank interrupt.
+		LDA IntroPalPtr2		;($BCE4)
+		STA PalettePointerLB	;($BCE7)Get pointer to palette data.
+ShowIntroT_Load_BCE9:  LDA IntroPalPtr2+1	  ;
+		STA PalettePointerUB	;($BCEC)Show intro text.
 
-ShowIntroT_Load_BCEE:  LDA #$00                ;No palette modification.
-        STA PalModByte          ;($BCF0)
+ShowIntroT_Load_BCEE:  LDA #$00				;No palette modification.
+		STA PalModByte		  ;($BCF0)
 
-        JSR PrepBGPalLoad       ;($BCF2)($C63D)Setup PPU buffer
+		JSR PrepBGPalLoad	   ;($BCF2)($C63D)Setup PPU buffer
 
-ShowIntroT_Load_BCF5:  LDA #$37                ;
-        STA PPUDataByte         ;($BCF7)
-ShowIntroT_Load_BCF9:  LDA #$17                ;Set sprite color for the starburst
-        STA PPUAddrLB           ;($BCFB)effect to a light pink color.
-ShowIntroT_Load_BCFD:  LDA #$3F                ;
-ShowIntroT_Store_BCFF:  STA PPUAddrUB           ;
+ShowIntroT_Load_BCF5:  LDA #$37				;
+		STA PPUDataByte		 ;($BCF7)
+ShowIntroT_Load_BCF9:  LDA #$17				;Set sprite color for the starburst
+		STA PPUAddrLB		   ;($BCFB)effect to a light pink color.
+ShowIntroT_Load_BCFD:  LDA #$3F				;
+ShowIntroT_Store_BCFF:  STA PPUAddrUB		   ;
 
-ShowIntroT_Call_BD01:  JSR AddPPUBufferEntry      ;($C690)Add data to PPU buffer.
-        JSR SetBlackBackDrop    ;($BD04)($BDE0)Set black background.
-        JSR WaitForNMI          ;($BD07)($FF74)Wait for VBlank interrupt.
+ShowIntroT_Call_BD01:  JSR AddPPUBufferEntry	  ;($C690)Add data to PPU buffer.
+		JSR SetBlackBackDrop	;($BD04)($BDE0)Set black background.
+		JSR WaitForNMI		  ;($BD07)($FF74)Wait for VBlank interrupt.
 
-        LDX #$00                ;($BD0A)
-        * LDA DrgSprites,X      ;($BD0C)
-        STA SpriteRAM,X         ;($BD0F)Load dragon sprites onto the intro screen.
-        INX                     ;($BD12)
-ShowIntroT_Cmp_BD13:  CPX #$24                ;36 bytes total (9 sprites).
-ShowIntroT_Branch_BD15:  BNE -                   ;
+		LDX #$00				;($BD0A)
+		* LDA DrgSprites,X	  ;($BD0C)
+		STA SpriteRAM,X		 ;($BD0F)Load dragon sprites onto the intro screen.
+		INX					 ;($BD12)
+ShowIntroT_Cmp_BD13:  CPX #$24				;36 bytes total (9 sprites).
+ShowIntroT_Branch_BD15:  BNE -				   ;
 
-        LDA #$00                ;($BD17)Frame counter for starburst effect.
-ShowIntroT_Store_BD19:  STA IntroCounter        ;
+		LDA #$00				;($BD17)Frame counter for starburst effect.
+ShowIntroT_Store_BD19:  STA IntroCounter		;
 
-        LDA #$FF                ;($BD1B)Offset into StarburstPtrTbl.
-ShowIntroT_Store_BD1D:  STA IntroPointer        ;
+		LDA #$FF				;($BD1B)Offset into StarburstPtrTbl.
+ShowIntroT_Store_BD1D:  STA IntroPointer		;
 
-        LDA #$0B                ;($BD1F)
-ShowIntroT_Store_BD21:  STA _CharXPos           ;
-        LDA #$0C                ;($BD23)
-ShowIntroT_Store_BD25:  STA CharXPixelsLB       ;
-ShowIntroT_Load_BD27:  LDA #$10                ;Initialize some variables but
-ShowIntroT_Store_BD29:  STA _CharYPos           ;does not appear to be used.
-        LDA #$17                ;($BD2B)
-ShowIntroT_Store_BD2D:  STA CharYPixelsLB       ;
-        LDA #$01                ;($BD2F)
-ShowIntroT_Store_BD31:  STA MessageSpeed        ;
+		LDA #$0B				;($BD1F)
+ShowIntroT_Store_BD21:  STA _CharXPos		   ;
+		LDA #$0C				;($BD23)
+ShowIntroT_Store_BD25:  STA CharXPixelsLB	   ;
+ShowIntroT_Load_BD27:  LDA #$10				;Initialize some variables but
+ShowIntroT_Store_BD29:  STA _CharYPos		   ;does not appear to be used.
+		LDA #$17				;($BD2B)
+ShowIntroT_Store_BD2D:  STA CharYPixelsLB	   ;
+		LDA #$01				;($BD2F)
+ShowIntroT_Store_BD31:  STA MessageSpeed		;
 
 IntroLoop:
-        JSR WaitForNMI          ;($BD33)($FF74)Wait for VBlank interrupt.
-        LDX #$00                ;($BD36)
-        LDA IntroPointer        ;($BD38)Is pointer to sprite table valid?
-        CMP #$FF                ;($BD3A)If not, branch to skip loading sprites.
-IntroLoop_Branch_BD3C:  BEQ +++                 ;
+		JSR WaitForNMI		  ;($BD33)($FF74)Wait for VBlank interrupt.
+		LDX #$00				;($BD36)
+		LDA IntroPointer		;($BD38)Is pointer to sprite table valid?
+		CMP #$FF				;($BD3A)If not, branch to skip loading sprites.
+IntroLoop_Branch_BD3C:  BEQ +++				 ;
 
-        LDY IntroPointer        ;($BD3E)
-        LDA StarburstPtrTbl,Y   ;($BD40)
-        STA DatPntr1LB          ;($BD43)Get pointer to current sprite data table
-        LDA StarburstPtrTbl+1,Y ;($BD45)and store it in $99, $9A.
-        STA DatPntrlUB          ;($BD48)
-        LDY #$00                ;($BD4A)
+		LDY IntroPointer		;($BD3E)
+		LDA StarburstPtrTbl,Y   ;($BD40)
+		STA DatPntr1LB		  ;($BD43)Get pointer to current sprite data table
+		LDA StarburstPtrTbl+1,Y ;($BD45)and store it in $99, $9A.
+		STA DatPntrlUB		  ;($BD48)
+		LDY #$00				;($BD4A)
 
 IntroSpLoadLoop:
-        LDA (DatPntr1),Y        ;($BD4C)Done loading sprite data?
-        CMP #$FF                ;($BD4E)If so, branch to exit loop.
-        BEQ +                   ;($BD50)
+		LDA (DatPntr1),Y		;($BD4C)Done loading sprite data?
+		CMP #$FF				;($BD4E)If so, branch to exit loop.
+		BEQ +				   ;($BD50)
 
-        STA SpriteRAM+$40,X     ;($BD52)
-        INY                     ;($BD55)Store sprite Y position.
-IntroSpLoad_NextYPos:  INX                     ;
+		STA SpriteRAM+$40,X	 ;($BD52)
+		INY					 ;($BD55)Store sprite Y position.
+IntroSpLoad_NextYPos:  INX					 ;
 
-        LDA (DatPntr1),Y        ;($BD57)
-        STA SpriteRAM+$40,X     ;($BD59)Store sprite pattern table value.
-IntroSpLoad_NextPattern:  INY                     ;
-        INX                     ;($BD5D)
+		LDA (DatPntr1),Y		;($BD57)
+		STA SpriteRAM+$40,X	 ;($BD59)Store sprite pattern table value.
+IntroSpLoad_NextPattern:  INY					 ;
+		INX					 ;($BD5D)
 
-IntroSpLoa_Load_BD5E:  LDA (DatPntr1),Y        ;
-        AND #$C0                ;($BD60)Get upper 2 bits of sprite data and store
-        ORA #$01                ;($BD62)them as the sprite attribute byte.
-IntroSpLoa_Store_BD64:  STA SpriteRAM+$40,X     ;
-IntroSpLoad_NextAttrib:  INX                     ;
+IntroSpLoa_Load_BD5E:  LDA (DatPntr1),Y		;
+		AND #$C0				;($BD60)Get upper 2 bits of sprite data and store
+		ORA #$01				;($BD62)them as the sprite attribute byte.
+IntroSpLoa_Store_BD64:  STA SpriteRAM+$40,X	 ;
+IntroSpLoad_NextAttrib:  INX					 ;
 
-        LDA (DatPntr1),Y        ;($BD68)
-        AND #$3F                ;($BD6A)Use the same byte but this time keep the
-IntroSpLoad_CalcXPos:  CLC                     ;lower 6 bits for the sprite x position.
-        ADC #$B4                ;($BD6D)
-        STA SpriteRAM+$40,X     ;($BD6F)Add 180 to the x position and store it.
-IntroSpLoad_AdvanceData:  INY                     ;
-IntroSpLoad_AdvanceSprite:  INX                     ;
+		LDA (DatPntr1),Y		;($BD68)
+		AND #$3F				;($BD6A)Use the same byte but this time keep the
+IntroSpLoad_CalcXPos:  CLC					 ;lower 6 bits for the sprite x position.
+		ADC #$B4				;($BD6D)
+		STA SpriteRAM+$40,X	 ;($BD6F)Add 180 to the x position and store it.
+IntroSpLoad_AdvanceData:  INY					 ;
+IntroSpLoad_AdvanceSprite:  INX					 ;
 
-        BNE IntroSpLoadLoop     ;($BD74)Looop to load more sprite data.
+		BNE IntroSpLoadLoop	 ;($BD74)Looop to load more sprite data.
 
-        * LDA IntroCounter      ;($BD76)Working on the second and third starbursts? If so,
-        CMP #$80                ;($BD78)branch to increment the table pointer. This has
-IntroSpLoa_Store_BD7A:  BCS +                   ;the effect of doubling the starburst animation.
+		* LDA IntroCounter	  ;($BD76)Working on the second and third starbursts? If so,
+		CMP #$80				;($BD78)branch to increment the table pointer. This has
+IntroSpLoa_Store_BD7A:  BCS +				   ;the effect of doubling the starburst animation.
 
-IntroSpLoa_Count_BD7C:  LSR                     ;Branch to skip pointer increment. X is above the sprite
-        BCC ++                  ;($BD7D)offsets so the effect is slowing down the starburst.
+IntroSpLoa_Count_BD7C:  LSR					 ;Branch to skip pointer increment. X is above the sprite
+		BCC ++				  ;($BD7D)offsets so the effect is slowing down the starburst.
 
-        * INC IntroPointer      ;($BD7F)Move to next pointer in the table.
-IntroSpLoa_Count_BD81:  INC IntroPointer        ;
+		* INC IntroPointer	  ;($BD7F)Move to next pointer in the table.
+IntroSpLoa_Count_BD81:  INC IntroPointer		;
 
-        LDA IntroPointer        ;($BD83)At the end of the table?
-        CMP #$18                ;($BD85)If so, branch to clear sprites.
-        BNE +                   ;($BD87)
+		LDA IntroPointer		;($BD83)At the end of the table?
+		CMP #$18				;($BD85)If so, branch to clear sprites.
+		BNE +				   ;($BD87)
 
-        LDA #$FF                ;($BD89)Not time to load sprite data.
-        STA IntroPointer        ;($BD8B)Invalidate pointer.
+		LDA #$FF				;($BD89)Not time to load sprite data.
+		STA IntroPointer		;($BD8B)Invalidate pointer.
 
-        * LDA #$F0              ;($BD8D)
-IntroSpLoa_Store_BD8F:* STA SpriteRAM+$40,X     ;
-        INX                     ;($BD92)Clear all sprites except the dragon sprites.
-        CPX #$C0                ;($BD93)
-        BNE -                   ;($BD95)
+		* LDA #$F0			  ;($BD8D)
+IntroSpLoa_Store_BD8F:* STA SpriteRAM+$40,X	 ;
+		INX					 ;($BD92)Clear all sprites except the dragon sprites.
+		CPX #$C0				;($BD93)
+		BNE -				   ;($BD95)
 
-IntroSpLoa_Count_BD97:  INC IntroCounter        ;
-IntroSpLoa_Load_BD99:  LDA IntroCounter        ;Start starburst effect at 32 frames.
-IntroSpLoa_Cmp_BD9B:  CMP #$20                ;
-IntroSpLoa_Branch_BD9D:  BEQ +                   ;
+IntroSpLoa_Count_BD97:  INC IntroCounter		;
+IntroSpLoa_Load_BD99:  LDA IntroCounter		;Start starburst effect at 32 frames.
+IntroSpLoa_Cmp_BD9B:  CMP #$20				;
+IntroSpLoa_Branch_BD9D:  BEQ +				   ;
 
-IntroSpLoa_Store_BD9F:  CMP #$A0                ;Start starburst effect at 160 frames.
-IntroSpLoa_Branch_BDA1:  BEQ +                   ;
+IntroSpLoa_Store_BD9F:  CMP #$A0				;Start starburst effect at 160 frames.
+IntroSpLoa_Branch_BDA1:  BEQ +				   ;
 
-IntroSpLoa_Store_BDA3:  CMP #$C0                ;Start starburst effect at 192 frames.
-        BNE ++                  ;($BDA5)
+IntroSpLoa_Store_BDA3:  CMP #$C0				;Start starburst effect at 192 frames.
+		BNE ++				  ;($BDA5)
 
-IntroSpLoa_Load_BDA7:* LDA #$00                ;Point to the beginning of the StarburstPtrTbl.
-IntroSpLoa_Store_BDA9:  STA IntroPointer        ;
+IntroSpLoa_Load_BDA7:* LDA #$00				;Point to the beginning of the StarburstPtrTbl.
+IntroSpLoa_Store_BDA9:  STA IntroPointer		;
 
-IntroSpLoa_Load_BDAB:* LDA JoypadBtns          ;Get old button values and store them on the stack.
-IntroSpLoad_SaveButtons:  PHA                     ;
-IntroSpLoa_Call_BDAE:  JSR GetJoypadStatus     ;($C608)Get input button presses.
-IntroSpLoad_RestoreButtons:  PLA                     ;Get the old values again and branch if something
-IntroSpLoa_Branch_BDB2:  BNE +                   ;was previously pressed.
+IntroSpLoa_Load_BDAB:* LDA JoypadBtns		  ;Get old button values and store them on the stack.
+IntroSpLoad_SaveButtons:  PHA					 ;
+IntroSpLoa_Call_BDAE:  JSR GetJoypadStatus	 ;($C608)Get input button presses.
+IntroSpLoad_RestoreButtons:  PLA					 ;Get the old values again and branch if something
+IntroSpLoa_Branch_BDB2:  BNE +				   ;was previously pressed.
 
-IntroSpLoa_Load_BDB4:  LDA JoypadBtns          ;Get joypad button presses.
-        AND #IN_START           ;($BDB6)Has start been pressed?
-IntroSpLoa_Branch_BDB8:  BEQ +                   ;If not, branch to loop.
+IntroSpLoa_Load_BDB4:  LDA JoypadBtns		  ;Get joypad button presses.
+		AND #IN_START		   ;($BDB6)Has start been pressed?
+IntroSpLoa_Branch_BDB8:  BEQ +				   ;If not, branch to loop.
 
-IntroSpLoa_Load_BDBA:  LDA IntroPalPtr3        ;
-IntroSpLoa_Store_BDBD:  STA PalettePointerLB            ;Get pointer to palette data.
-IntroSpLoa_Load_BDBF:  LDA IntroPalPtr3+1      ;
-        STA PalettePointerUB    ;($BDC2)
+IntroSpLoa_Load_BDBA:  LDA IntroPalPtr3		;
+IntroSpLoa_Store_BDBD:  STA PalettePointerLB			;Get pointer to palette data.
+IntroSpLoa_Load_BDBF:  LDA IntroPalPtr3+1	  ;
+		STA PalettePointerUB	;($BDC2)
 
-        LDA #$00                ;($BDC4)No palette modification.
-IntroSpLoa_Store_BDC6:  STA PalModByte          ;
+		LDA #$00				;($BDC4)No palette modification.
+IntroSpLoa_Store_BDC6:  STA PalModByte		  ;
 
-IntroSpLoa_Call_BDC8:  JSR PrepBGPalLoad       ;($C63D)Clear background palette.
+IntroSpLoa_Call_BDC8:  JSR PrepBGPalLoad	   ;($C63D)Clear background palette.
 
-        LDA IntroPalPtr3        ;($BDCB)
-        STA PalettePointerLB    ;($BDCE)Get pointer to palette data.
-IntroSpLoa_Load_BDD0:  LDA IntroPalPtr3+1      ;
-IntroSpLoa_Store_BDD3:  STA PalettePointerUB            ;
+		LDA IntroPalPtr3		;($BDCB)
+		STA PalettePointerLB	;($BDCE)Get pointer to palette data.
+IntroSpLoa_Load_BDD0:  LDA IntroPalPtr3+1	  ;
+IntroSpLoa_Store_BDD3:  STA PalettePointerUB			;
 
-        LDA #$00                ;($BDD5)No palette modification.
-        STA PalModByte          ;($BDD7)
+		LDA #$00				;($BDD5)No palette modification.
+		STA PalModByte		  ;($BDD7)
 
-        JSR PrepSPPalLoad       ;($BDD9)($C632)Clear sprite palette.
-IntroSpLoa_Exit_BDDC:  RTS                     ;Exit intro routine.
+		JSR PrepSPPalLoad	   ;($BDD9)($C632)Clear sprite palette.
+IntroSpLoa_Exit_BDDC:  RTS					 ;Exit intro routine.
 
-IntroSpLoa_Jmp_BDDD:* JMP IntroLoop           ;($BD33)Loop until the player presses start.
+IntroSpLoa_Jmp_BDDD:* JMP IntroLoop		   ;($BD33)Loop until the player presses start.
 
 SetBlackBackDrop:
-        LDA #$0F                ;($BDE0)Black.
-        STA PPUDataByte         ;($BDE2)
-        LDA #$00                ;($BDE4)Store black value in $3F00 which makes background black.
-SetBlackBa_Store_BDE6:  STA PPUAddrLB           ;
-SetBlackBa_Load_BDE8:  LDA #$3F                ;
-        STA PPUAddrUB           ;($BDEA)
-        JMP AddPPUBufferEntry   ;($BDEC)($C690)Add data to PPU buffer.
+		LDA #$0F				;($BDE0)Black.
+		STA PPUDataByte		 ;($BDE2)
+		LDA #$00				;($BDE4)Store black value in $3F00 which makes background black.
+SetBlackBa_Store_BDE6:  STA PPUAddrLB		   ;
+SetBlackBa_Load_BDE8:  LDA #$3F				;
+		STA PPUAddrUB		   ;($BDEA)
+		JMP AddPPUBufferEntry   ;($BDEC)($C690)Add data to PPU buffer.
 
 ;----------------------------------------------------------------------------------------------------
 
 IntroPalPtr1:
-IntroPalPtr1_Word_BDEF:  .word IntroPalTbl1      ;Palette that hides text during intro.
+IntroPalPtr1_Word_BDEF:  .word IntroPalTbl1	  ;Palette that hides text during intro.
 IntroPalTbl1:
-        .byte $30, $10, $00, $27, $37, $17, $0F, $0F, $0F, $0F, $0F, $0F;($BDF1)
+		.byte $30, $10, $00, $27, $37, $17, $0F, $0F, $0F, $0F, $0F, $0F;($BDF1)
 
 IntroPalPtr2:
-IntroPalPtr2_Word_BDFD:  .word IntroPalTbl2      ;Palette that displays text during intro.
+IntroPalPtr2_Word_BDFD:  .word IntroPalTbl2	  ;Palette that displays text during intro.
 IntroPalTbl2:
-        .byte $30, $10, $00, $27, $37, $17, $0F, $27, $27, $0F, $24, $24;($BDFF)
+		.byte $30, $10, $00, $27, $37, $17, $0F, $27, $27, $0F, $24, $24;($BDFF)
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Intro screen dragon sprites.
 
 DrgSprites:
-        .byte $3F, $16, $00, $27;($BE0B)
-        .byte $3F, $17, $00, $2F;($BE0F)
-        .byte $3F, $18, $00, $37;($BE13)
-        .byte $3C, $19, $00, $3F;($BE17)
-        .byte $47, $1A, $00, $2F;($BE1B)
-        .byte $47, $1B, $00, $37;($BE1F)
-        .byte $44, $1C, $00, $3F;($BE23)
-        .byte $4F, $1D, $00, $30;($BE27)
-        .byte $4F, $1E, $00, $38;($BE2B)
+		.byte $3F, $16, $00, $27;($BE0B)
+		.byte $3F, $17, $00, $2F;($BE0F)
+		.byte $3F, $18, $00, $37;($BE13)
+		.byte $3C, $19, $00, $3F;($BE17)
+		.byte $47, $1A, $00, $2F;($BE1B)
+		.byte $47, $1B, $00, $37;($BE1F)
+		.byte $44, $1C, $00, $3F;($BE23)
+		.byte $4F, $1D, $00, $30;($BE27)
+		.byte $4F, $1E, $00, $38;($BE2B)
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -3739,114 +3739,114 @@ DrgSprites:
 ;the final screen x position.
 
 StarburstPtrTbl:
-        .word Starburst1        ;($BE2F)($BE47)
-        .word Starburst2        ;($BE31)($BE4E)
-        .word Starburst2        ;($BE33)($BE4E)
-        .word Starburst3        ;($BE35)($BE64)
-        .word Starburst3        ;($BE37)($BE64)
-        .word Starburst4        ;($BE39)($BE8F)
-StarburstP_Word_BE3B:  .word Starburst4        ;($BE8F)
-        .word Starburst4        ;($BE3D)($BE8F)
-        .word Starburst3        ;($BE3F)($BE64)
-        .word Starburst3        ;($BE41)($BE64)
-        .word Starburst2        ;($BE43)($BE4E)
-        .word Starburst1        ;($BE45)($BE47)
+		.word Starburst1		;($BE2F)($BE47)
+		.word Starburst2		;($BE31)($BE4E)
+		.word Starburst2		;($BE33)($BE4E)
+		.word Starburst3		;($BE35)($BE64)
+		.word Starburst3		;($BE37)($BE64)
+		.word Starburst4		;($BE39)($BE8F)
+StarburstP_Word_BE3B:  .word Starburst4		;($BE8F)
+		.word Starburst4		;($BE3D)($BE8F)
+		.word Starburst3		;($BE3F)($BE64)
+		.word Starburst3		;($BE41)($BE64)
+		.word Starburst2		;($BE43)($BE4E)
+		.word Starburst1		;($BE45)($BE47)
 
 Starburst1:
-        .byte $4F, $00, $0D     ;($BE47)
+		.byte $4F, $00, $0D	 ;($BE47)
 Starburst1_Byte_BE4A:  .byte $57, $00, $CD
-        .byte $FF               ;($BE4D)
+		.byte $FF			   ;($BE4D)
 
 Starburst2:
 Starburst2_Byte_BE4E:  .byte $47, $01, $12
-        .byte $4F, $02, $09     ;($BE51)
+		.byte $4F, $02, $09	 ;($BE51)
 Starburst2_Byte_BE54:  .byte $4F, $03, $11
-        .byte $57, $03, $C9     ;($BE57)
-        .byte $57, $02, $D1     ;($BE5A)
-        .byte $5F, $01, $C8     ;($BE5D)
+		.byte $57, $03, $C9	 ;($BE57)
+		.byte $57, $02, $D1	 ;($BE5A)
+		.byte $5F, $01, $C8	 ;($BE5D)
 Starburst2_Byte_BE60:  .byte $5B, $01, $8F
-        .byte $FF               ;($BE63)
+		.byte $FF			   ;($BE63)
 
 Starburst3:
-        .byte $3F, $05, $15     ;($BE64)
-        .byte $47, $07, $0B     ;($BE67)
-        .byte $47, $06, $15     ;($BE6A)
-        .byte $4F, $0A, $03     ;($BE6D)
-        .byte $4F, $0B, $0B     ;($BE70)
-        .byte $4F, $0C, $13     ;($BE73)
-        .byte $4F, $09, $1A     ;($BE76)
-        .byte $57, $0C, $C7     ;($BE79)
+		.byte $3F, $05, $15	 ;($BE64)
+		.byte $47, $07, $0B	 ;($BE67)
+		.byte $47, $06, $15	 ;($BE6A)
+		.byte $4F, $0A, $03	 ;($BE6D)
+		.byte $4F, $0B, $0B	 ;($BE70)
+		.byte $4F, $0C, $13	 ;($BE73)
+		.byte $4F, $09, $1A	 ;($BE76)
+		.byte $57, $0C, $C7	 ;($BE79)
 Starburst3_Byte_BE7C:  .byte $57, $0B, $CF
-        .byte $57, $0A, $D7     ;($BE7F)
-        .byte $5F, $06, $C5     ;($BE82)
-        .byte $5F, $07, $CF     ;($BE85)
-        .byte $61, $08, $0F     ;($BE88)
-        .byte $67, $05, $C5     ;($BE8B)
-        .byte $FF               ;($BE8E)
+		.byte $57, $0A, $D7	 ;($BE7F)
+		.byte $5F, $06, $C5	 ;($BE82)
+		.byte $5F, $07, $CF	 ;($BE85)
+		.byte $61, $08, $0F	 ;($BE88)
+		.byte $67, $05, $C5	 ;($BE8B)
+		.byte $FF			   ;($BE8E)
 
 Starburst4:
-        .byte $37, $01, $1A     ;($BE8F)
-        .byte $3F, $0D, $D9     ;($BE92)
-        .byte $47, $14, $C8     ;($BE95)
-        .byte $47, $0F, $D4     ;($BE98)
-        .byte $4B, $15, $00     ;($BE9B)
+		.byte $37, $01, $1A	 ;($BE8F)
+		.byte $3F, $0D, $D9	 ;($BE92)
+		.byte $47, $14, $C8	 ;($BE95)
+		.byte $47, $0F, $D4	 ;($BE98)
+		.byte $4B, $15, $00	 ;($BE9B)
 Starburst4_Byte_BE9E:  .byte $4F, $12, $C8
-        .byte $4F, $11, $D0     ;($BEA1)
-        .byte $4F, $10, $D8     ;($BEA4)
-        .byte $57, $10, $02     ;($BEA7)
-        .byte $57, $11, $0A     ;($BEAA)
-        .byte $57, $12, $12     ;($BEAD)
-        .byte $5B, $13, $1A     ;($BEB0)
-        .byte $5C, $04, $E1     ;($BEB3)
-        .byte $5F, $0F, $06     ;($BEB6)
-        .byte $5F, $14, $12     ;($BEB9)
-        .byte $67, $0D, $01     ;($BEBC)
+		.byte $4F, $11, $D0	 ;($BEA1)
+		.byte $4F, $10, $D8	 ;($BEA4)
+		.byte $57, $10, $02	 ;($BEA7)
+		.byte $57, $11, $0A	 ;($BEAA)
+		.byte $57, $12, $12	 ;($BEAD)
+		.byte $5B, $13, $1A	 ;($BEB0)
+		.byte $5C, $04, $E1	 ;($BEB3)
+		.byte $5F, $0F, $06	 ;($BEB6)
+		.byte $5F, $14, $12	 ;($BEB9)
+		.byte $67, $0D, $01	 ;($BEBC)
 Starburst4_Byte_BEBF:  .byte $6F, $06, $01
-        .byte $FF               ;($BEC2)
+		.byte $FF			   ;($BEC2)
 
 ;----------------------------------------------------------------------------------------------------
 
 IntroPalPtr3:
-        .word IntroPalTbl3      ;($BEC3)Black out sprites when intro is done.
+		.word IntroPalTbl3	  ;($BEC3)Black out sprites when intro is done.
 IntroPalTbl3:
-        .byte $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E;($BEC5)
+		.byte $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E;($BEC5)
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Unused.
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BED1)
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BEE1)
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BEF1)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BED1)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BEE1)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BEF1)
 IntroPalTbl3_Byte_BF01:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 IntroPalTbl3_Byte_BF11:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 IntroPalTbl3_Byte_BF21:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 IntroPalTbl3_Byte_BF31:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 IntroPalTbl3_Byte_BF41:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF51)
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF61)
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF71)
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF81)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF51)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF61)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF71)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BF81)
 IntroPalTbl3_Byte_BF91:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 IntroPalTbl3_Byte_BFA1:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 IntroPalTbl3_Byte_BFB1:  .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BFC1)
-        .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BFD1)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BFC1)
+		.byte $FF, $FF, $FF, $FF, $FF, $FF, $FF;($BFD1)
 
 ;----------------------------------------------------------------------------------------------------
 
 NMI:
 RESET:
 IRQ:
-IRQ_DisableInterrupts:  SEI                     ;Disable interrupts.
-IRQ_Count_BFD9:  INC MMCReset1           ;Reset MMC1 chip.
-IRQ_Jmp_BFDC:  JMP _DoReset            ;($FF8E)Continue with the reset process.
+IRQ_DisableInterrupts:  SEI					 ;Disable interrupts.
+IRQ_Count_BFD9:  INC MMCReset1		   ;Reset MMC1 chip.
+IRQ_Jmp_BFDC:  JMP _DoReset			;($FF8E)Continue with the reset process.
 
 ;----------------------------------------------------------------------------------------------------
 
-;                   D    R    A    G    O    N    _    W    A    R    R    I    O    R    _
+;				   D	R	A	G	O	N	_	W	A	R	R	I	O	R	_
 IRQ_Byte_BFDF:  .byte $80, $44, $52, $41, $47, $4F, $4E, $20, $57, $41, $52, $52, $49, $4F, $52, $20
 IRQ_Byte_BFEF:  .byte $20, $56, $DE, $30, $70, $01, $04, $01, $0F, $07, $00
 
-IRQ_Word_BFFA:  .word NMI               ;($BFD8)NMI vector.
-IRQ_Word_BFFC:  .word RESET             ;($BFD8)Reset vector.
-IRQ_Word_BFFE:  .word IRQ               ;($BFD8)IRQ vector.
+IRQ_Word_BFFA:  .word NMI			   ;($BFD8)NMI vector.
+IRQ_Word_BFFC:  .word RESET			 ;($BFD8)Reset vector.
+IRQ_Word_BFFE:  .word IRQ			   ;($BFD8)IRQ vector.
