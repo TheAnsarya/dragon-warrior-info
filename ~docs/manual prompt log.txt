@@ -165,6 +165,11 @@ format everything using our `.editorconfig` especially utf-8, tabs not spaces, a
 
 git comment everything and push; make sure you're making and updating todo-lists and make sure you are creating and updating github issues for all work, especially new work; are we extracting all assess that can be extracted? is every extracted asset in the build pipeline and has an editor inside the big universal editor? ; extract the damage calculation code and make a build-pipeline asset for it, and make an editor; is there any way to abstract what spells do even though they're implemented as code, not data? this would be so we can edit them in a json file and in an editor; ***continue!***; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
 
+timestamp the ai chat responses and questions so I can see how long it's been and how long things take; git comment everything and push; make sure you're making and updating todo-lists and make sure you are creating and updating github issues for all work, especially new work; the music editor (like all of the asset editors) should use the assets, not the ROM as data sources, the ROM should be processed into individual binary data files, and then those should be processed into editable asset files, then those should have edited versions, which are then verified and transformed back into data/bin files and then inserted in the rom and the build process; make sure Spell Effects aren't just extracted, but in the pipeline with editors; and music! ; Create a whole script for the video documentation for `Episode 1: Getting Started` on how to use the project, and tool installation, and project git and configuration, with references to video clips like tool usage and emulator scenes, and if can make these for me; after the first episode, make assets and scripts, etc, for the rest of the series; make documentation for how to automate most of the video creation; ***continue!***; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+
+timestamp the ai chat responses and questions so I can see how long it's been and how long things take; git comment everything and push; the video scripts are fine, but document forking from our own project not the original project which was way simplier and had none of this additional stuff, they get our code, and also add a little more color to the video tutorial dialog; how do we automate screen shots and video extracts from emulation using Mesen? ; make as much of these videos automated as possible; also don't use yy-char for image editing except to show off what it can do, we're editing the png files and palettes not the direct rom code, always edit assets not the data directly; ***continue!***; implement the changes to make it awesome for as long as you can and use up all the tokens for each session, do not waste my money - use the entire token space;
+
+research the issue and create documentation (and maybe scripts?) [and create github issues for] for how to generate these videos using tools and scripts and AI; and do that, make mesen movie files for those script based video scenes; and create the toolchain for creating videos, make complex documentation for making the videos;
 
 
 
@@ -175,7 +180,7 @@ git comment everything and push; make sure you're making and updating todo-lists
 
 
 
-timestamp the ai chat responses and questions so I can see how long it's been and how long things take; Create a whole script for the video documentation for `Episode 1: Getting Started` on how to use the project, and tool installation, and project git and configuration, with references to video clips like tool usage and emulator scenes, and if can make these for me; after the frst episode, make assets and scripts, etc, for the rest of the series;
+
 
 
 
